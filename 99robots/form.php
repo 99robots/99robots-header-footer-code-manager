@@ -81,6 +81,11 @@ function header_footer_menu_options() {
  
       <input class="button" type="submit" id="text_value" value="SEND" />
 </form>
+
+
+
+
+<p> <?php echo "For manual addition use shortcode [nnrhf title='your script name']";?>
 <script>
 $(document).ready(function() {
   $('#text_value').click(function() {
@@ -304,3 +309,16 @@ add_action( 'wp_head', 'inject_script' );
 
 add_action('wp_ajax_add_scripts', 'add_scripts');
 add_action('wp_ajax_hook_javascript', 'hook_javascript');
+
+
+
+//shortcode option
+function nnrhf_shortcode( $atts, $content = null ) {
+  global $wpdb;
+ 
+  $data = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "options WHERE option_name = 'nnrhf'");
+  $json_data = json_decode($data->option_value);
+ 
+  echo $json_data->script;
+}
+add_shortcode( 'nnrhf', 'nnrhf_shortcode' );
