@@ -112,16 +112,16 @@ function hfcm_create() {
         <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
             <table class='wp-list-table widefat fixed hfcm-form-width'>
                 <tr>
-                    <th>Script Name</th>
+                    <th class="hfcm-th-width">Script Name</th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                 </tr>
                 <tr>
-                    <th>Snippet / Code</th>
+                    <th class="hfcm-th-width">Snippet / Code</th>
                     <td><textarea name="data[snippet]" class="hfcm-field-width"><?php echo $snippet; ?></textarea></td>
                 </tr>
                 <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
                 <tr>
-                    <th>Mobile Status</th>
+                    <th class="hfcm-th-width">Mobile Status</th>
                     <td>
                         <select name="data[mobile_status]">
                             <?php
@@ -138,7 +138,7 @@ function hfcm_create() {
                 </tr>
                 <?php $larray = array("header" => "Header", "footer" => "Footer"); ?>
                 <tr>
-                    <th>Location</th>
+                    <th class="hfcm-th-width">Location</th>
                     <td>
                         <select name="data[location]">
                             <?php
@@ -155,7 +155,7 @@ function hfcm_create() {
                 </tr>
                 <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
                 <tr>
-                    <th>Display on</th>
+                    <th class="hfcm-th-width">Display on</th>
                     <td>
                         <select name="data[display_on]" onchange="js:showotherboxes(this.value);">
                             <?php
@@ -179,7 +179,7 @@ function hfcm_create() {
                 }
                 ?>
                 <tr id="s_pages" style="<?php echo $spagesstyle; ?>">
-                    <th>Page List</th>
+                    <th class="hfcm-th-width">Page List</th>
                     <td>
                         <select name="data[s_pages][]" multiple>
                             <?php
@@ -226,7 +226,7 @@ function hfcm_create() {
                 }
                 ?>
                 <tr id="s_categories" style="<?php echo $scategoriesstyle; ?>">
-                    <th>Category List</th>
+                    <th class="hfcm-th-width">Category List</th>
                     <td>
                         <select name="data[s_categories][]" multiple>
                             <?php
@@ -242,7 +242,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <tr id="s_tags" style="<?php echo $stagsstyle; ?>">
-                    <th>Tags List</th>
+                    <th class="hfcm-th-width">Tags List</th>
                     <td>
                         <select name="data[s_tags][]" multiple>
                             <?php
@@ -258,7 +258,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <tr id="c_posttype" style="<?php echo $cpostssstyle; ?>">
-                    <th>Custom Post Types</th>
+                    <th class="hfcm-th-width">Custom Post Types</th>
                     <td>
                         <select name="data[s_custom_posts][]" multiple>
                             <?php
@@ -274,7 +274,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <tr>
-                    <th>Status</th>
+                    <th class="hfcm-th-width">Status</th>
                     <td>
                         <select name="data[status]">
                             <?php
