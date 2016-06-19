@@ -8,8 +8,8 @@
   Version: 1.0.0
  */
 
-global $tp_db_version;
-$tp_db_version = '1.0';
+global $hfcm_db_version;
+$hfcm_db_version = '1.0';
 
 // function to create the DB / Options / Defaults					
 function hfcm_options_install() {
