@@ -67,9 +67,8 @@ function hfcm_create() {
     }
     //insert
     if (isset($_POST['insert'])) {
-        //print_r($_POST);//exit;
         global $wpdb;
-        $statusi = $wpdb->insert(
+        $wpdb->insert(
                 $table_name, //table
                 array(
             "name" => $name,
@@ -84,7 +83,7 @@ function hfcm_create() {
             "s_tags" => serialize($_POST['data']['s_tags']),
                 )
         );
-        $message = "Script Added Successfully"; //exit;
+        $message = "Script Added Successfully";
     }
     ?>
     <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/header-footer-code-manager/style-admin.css" rel="stylesheet" />

@@ -13,7 +13,6 @@ function hfcm_update() {
         $display_on = $_POST['data']["display_on"];
         $status = $_POST['data']["status"];
         $s_pages = $_POST['data']["s_pages"];
-        //echo "<pre>";print_r($_POST['data']);echo "</pre>";
         $s_custom_posts = $_POST['data']["s_custom_posts"];
         $s_categories = $_POST['data']["s_categories"];
         $s_tags = $_POST['data']["s_tags"];
