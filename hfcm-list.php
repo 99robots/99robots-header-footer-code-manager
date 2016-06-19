@@ -5,7 +5,7 @@ function hfcm_list() {
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $rows = $wpdb->get_results("SELECT * from $table_name");
     ?>
-    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/header-footer-code-manager/style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/99robots-header-footer-code-manager/style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>Scripts</h2>
         <div class="tablenav top">

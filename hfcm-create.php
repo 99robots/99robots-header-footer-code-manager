@@ -77,16 +77,16 @@ function hfcm_create() {
             "location" => $location,
             "display_on" => $display_on,
             "status" => $status,
-            "s_pages" => serialize($_POST['data']['s_pages']),
-            "s_custom_posts" => serialize($_POST['data']['s_custom_posts']),
-            "s_categories" => serialize($_POST['data']['s_categories']),
-            "s_tags" => serialize($_POST['data']['s_tags']),
+            "s_pages" => serialize($s_pages),
+            "s_custom_posts" => serialize($s_custom_posts),
+            "s_categories" => serialize($s_categories),
+            "s_tags" => serialize($s_tags),
                 )
         );
         $message = "Script Added Successfully";
     }
     ?>
-    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/header-footer-code-manager/style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/99robots-header-footer-code-manager/style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>Add New Script</h2>
         <?php if (isset($message)): ?><div class="updated"><p><?php echo $message; ?></p></div><?php endif; ?>

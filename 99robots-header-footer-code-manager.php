@@ -15,7 +15,7 @@ $tp_db_version = '1.0';
 function hfcm_options_install() {
 
     global $wpdb;
-    global $tp_db_version;
+    global $hfcm_db_version;
 
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $charset_collate = $wpdb->get_charset_collate();
@@ -37,7 +37,7 @@ function hfcm_options_install() {
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta($sql);
 
-    add_option('tp_db_version', $tp_db_version);
+    add_option('hfcm_db_version', $hfcm_db_version);
 }
 
 // run the install scripts upon plugin activation
