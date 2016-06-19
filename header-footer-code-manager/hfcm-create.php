@@ -110,14 +110,14 @@ function hfcm_create() {
             }
         </script>
         <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-            <table class='wp-list-table widefat fixed'>
+            <table class='wp-list-table widefat fixed hfcm-form-width'>
                 <tr>
                     <th>Script Name</th>
-                    <td><input type="text" name="data[name]" value="<?php echo $name; ?>"/></td>
+                    <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                 </tr>
                 <tr>
                     <th>Snippet / Code</th>
-                    <td><textarea name="data[snippet]"><?php echo $snippet; ?></textarea></td>
+                    <td><textarea name="data[snippet]" class="hfcm-field-width"><?php echo $snippet; ?></textarea></td>
                 </tr>
                 <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
                 <tr>
