@@ -7,7 +7,7 @@ function hfcm_update() {
     //update
     if (isset($_POST['update'])) {
         $name = $_POST['data']["name"];
-        $snippet = $_POST['data']["snippet"];
+        $snippet = stripslashes_deep($_POST['data']["snippet"]);
         $mobile_status = $_POST['data']["mobile_status"];
         $location = $_POST['data']["location"];
         $display_on = $_POST['data']["display_on"];

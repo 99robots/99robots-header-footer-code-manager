@@ -9,7 +9,7 @@ function hfcm_create() {
         $name = "";
     }
     if (!empty($_POST['data']["snippet"])) {
-        $snippet = $_POST['data']["snippet"];
+        $snippet = stripslashes_deep($_POST['data']["snippet"]);
     } else {
         $snippet = "";
     }
