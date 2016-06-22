@@ -23,7 +23,7 @@ function hfcm_options_install() {
             `script_id` int(10) NOT NULL AUTO_INCREMENT,
             `name` varchar(100) DEFAULT NULL,
             `snippet` text,
-            `mobile_status` enum('active','inactive') DEFAULT 'active',
+            `mobile_status` enum('yes','no') DEFAULT 'yes',
             `location` varchar(100) NOT NULL,
             `display_on` enum('All','s_pages','s_categories','s_custom_posts','s_tags','latest_posts') NOT NULL DEFAULT 'All',
             `s_pages` varchar(300) DEFAULT NULL,
@@ -82,7 +82,7 @@ function hfcm_shortcode($atts) {
         $id = (int) $atts['id'];
         $script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where status='active' AND script_id=%s", $id));
         if (!empty($script)) {
-            if ((wp_is_mobile() && $script[0]->mobile_status == "active") || !wp_is_mobile()) {
+            if ((wp_is_mobile() && $script[0]->mobile_status == "yes") || !wp_is_mobile()) {
                 echo $script[0]->snippet;
             }
         }
@@ -99,7 +99,7 @@ function hfcm_header_scripts() {
     $script = $wpdb->get_results("SELECT * from $table_name where location='header' AND status='active'");
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
-            if ((wp_is_mobile() && $scriptdata->mobile_status == "active") || !wp_is_mobile()) {
+            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || !wp_is_mobile()) {
                 if ($scriptdata->display_on == "All") {
                     echo $scriptdata->snippet;
                 } else if ($scriptdata->display_on == "latest_posts") {
@@ -135,7 +135,7 @@ function hfcm_footer_scripts() {
     $script = $wpdb->get_results("SELECT * from $table_name where location='footer' AND status='active'");
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
-            if ((wp_is_mobile() && $scriptdata->mobile_status == "active") || !wp_is_mobile()) {
+            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || !wp_is_mobile()) {
                 if ($scriptdata->display_on == "All") {
                     echo $scriptdata->snippet;
                 } else if ($scriptdata->display_on == "latest_posts") {

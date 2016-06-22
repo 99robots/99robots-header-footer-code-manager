@@ -50,19 +50,19 @@ function hfcm_update() {
             $display_on = $s->display_on;
             $status = $s->status;
             $s_pages = unserialize($s->s_pages);
-            if(!is_array($s_pages)) {
+            if (!is_array($s_pages)) {
                 $s_pages = array();
             }
             $s_custom_posts = unserialize($s->s_custom_posts);
-            if(!is_array($s_custom_posts)) {
+            if (!is_array($s_custom_posts)) {
                 $s_custom_posts = array();
             }
             $s_categories = unserialize($s->s_categories);
-            if(!is_array($s_categories)) {
+            if (!is_array($s_categories)) {
                 $s_categories = array();
             }
             $s_tags = unserialize($s->s_tags);
-            if(!is_array($s_tags)) {
+            if (!is_array($s_tags)) {
                 $s_tags = array();
             }
         }
@@ -70,7 +70,9 @@ function hfcm_update() {
     ?>
     <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/99robots-header-footer-code-manager/style-admin.css" rel="stylesheet" />
     <div class="wrap">
-        <h2>Script</h2>
+        <h1>Edit Snippet 
+            <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
+        </h1>
 
         <?php if (!empty($_GET['delete'])) { ?>
             <div class="updated"><p>Script deleted</p></div>
@@ -101,32 +103,10 @@ function hfcm_update() {
                 }
             </script>
             <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                <table class='wp-list-table widefat fixed hfcm-form-width'>
+                <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
                     <tr>
                         <th class="hfcm-th-width">Script Name</th>
                         <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
-                    </tr>
-                    <tr>
-                        <th class="hfcm-th-width">Snippet / Code</th>
-                        <td><textarea name="data[snippet]" class="hfcm-field-width"><?php echo $snippet; ?></textarea></td>
-                    </tr>
-                    <?php 
-                    $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
-                    <tr>
-                        <th class="hfcm-th-width">Mobile Status</th>
-                        <td>
-                            <select name="data[mobile_status]">
-                                <?php
-                                foreach ($statusarray as $smkey => $statusv) {
-                                    if ($mobile_status == $smkey) {
-                                        echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
-                                    } else {
-                                        echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </td>
                     </tr>
                     <?php $larray = array("header" => "Header", "footer" => "Footer"); ?>
                     <tr>
@@ -145,6 +125,7 @@ function hfcm_update() {
                             </select>
                         </td>
                     </tr>
+
                     <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
                     <tr>
                         <th class="hfcm-th-width">Display on</th>
@@ -164,7 +145,7 @@ function hfcm_update() {
                     </tr>
                     <?php
                     $pages = get_pages();
-                    if($display_on == "s_pages") {
+                    if ($display_on == "s_pages") {
                         $spagesstyle = "display:block;";
                     } else {
                         $spagesstyle = "display:none;";
@@ -191,13 +172,13 @@ function hfcm_update() {
                         'hide_empty' => 0
                     );
                     $categories = get_categories($args);
-                    if($display_on == "s_categories") {
+                    if ($display_on == "s_categories") {
                         $scategoriesstyle = "display:block;";
                     } else {
                         $scategoriesstyle = "display:none;";
                     }
                     $tags = get_tags($args);
-                    if($display_on == "s_tags") {
+                    if ($display_on == "s_tags") {
                         $stagsstyle = "display:block;";
                     } else {
                         $stagsstyle = "display:none;";
@@ -211,13 +192,13 @@ function hfcm_update() {
                     $operator = 'and'; // 'and' or 'or'
 
                     $c_posttypes = get_post_types($args, $output, $operator);
-                    if($display_on == "s_custom_posts") {
+                    if ($display_on == "s_custom_posts") {
                         $cpostssstyle = "display:block;";
                     } else {
                         $cpostssstyle = "display:none;";
                     }
                     ?>
-                    <tr id="s_categories" style="<?php  echo $scategoriesstyle; ?>">
+                    <tr id="s_categories" style="<?php echo $scategoriesstyle; ?>">
                         <th class="hfcm-th-width">Category List</th>
                         <td>
                             <select name="data[s_categories][]" multiple>
@@ -265,6 +246,24 @@ function hfcm_update() {
                             </select>
                         </td>
                     </tr>
+                    <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
+                    <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+                    <tr>
+                        <th class="hfcm-th-width">Display on Mobile?</th>
+                        <td>
+                            <select name="data[mobile_status]">
+                                <?php
+                                foreach ($mobilestatusarray as $smkey => $statusv) {
+                                    if ($mobile_status == $smkey) {
+                                        echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
+                                    } else {
+                                        echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <th class="hfcm-th-width">Status</th>
                         <td>
@@ -282,8 +281,12 @@ function hfcm_update() {
                         </td>
                     </tr>
                 </table>
-                <input type='submit' name="update" value='Save' class='button'>
-                <input type='submit' name="delete" value='Delete' class='button' onclick="return confirm('Are you sure, you want to delete this script?')">
+                <h1>Snippet / Code</h1>
+                <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10" cols="70"><?php echo $snippet; ?></textarea>
+
+                <div class="wp-core-ui">
+                    <input type='submit' name="update" value='Update' class='button button-primary button-large btnsave' />
+                </div>
             </form>
         <?php } ?>
 

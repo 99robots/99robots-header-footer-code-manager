@@ -14,11 +14,11 @@ function hfcm_list() {
             <thead>
                 <tr>
                     <th class="manage-column hfcm-list-width">ID</th>
-                    <th class="manage-column hfcm-list-width">Name</th>
-                    <th class="manage-column hfcm-list-width">Mobile Status</th>
+                    <th class="manage-column hfcm-list-width">Code Name</th>
                     <th class="manage-column hfcm-list-width">Location</th>
                     <th class="manage-column hfcm-list-width">Display On</th>
-                    <th class="manage-column hfcm-list-width">Script Status</th>
+                    <th class="manage-column hfcm-list-width">Display on Mobile?</th>
+                    <th class="manage-column hfcm-list-width">Status</th>
                 </tr>
             </thead>
 
@@ -40,9 +40,9 @@ function hfcm_list() {
                             </span>
                         </div>
                     </td>
-                    <td class="manage-column hfcm-list-width"><?php echo $row->mobile_status; ?></td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->location; ?></td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->display_on; ?></td>
+                    <td class="manage-column hfcm-list-width"><?php echo $row->mobile_status; ?></td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->status; ?></td>
                 </tr>
             <?php } ?>

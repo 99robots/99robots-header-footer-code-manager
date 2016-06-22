@@ -110,31 +110,10 @@ function hfcm_create() {
             }
         </script>
         <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-            <table class='wp-list-table widefat fixed hfcm-form-width'>
+            <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
                 <tr>
-                    <th class="hfcm-th-width">Script Name</th>
+                    <th class="hfcm-th-width">Code Name</th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
-                </tr>
-                <tr>
-                    <th class="hfcm-th-width">Snippet / Code</th>
-                    <td><textarea name="data[snippet]" class="hfcm-field-width"><?php echo $snippet; ?></textarea></td>
-                </tr>
-                <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
-                <tr>
-                    <th class="hfcm-th-width">Mobile Status</th>
-                    <td>
-                        <select name="data[mobile_status]">
-                            <?php
-                            foreach ($statusarray as $smkey => $statusv) {
-                                if ($mobile_status == $smkey) {
-                                    echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
-                                } else {
-                                    echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </td>
                 </tr>
                 <?php $larray = array("header" => "Header", "footer" => "Footer"); ?>
                 <tr>
@@ -273,6 +252,24 @@ function hfcm_create() {
                         </select>
                     </td>
                 </tr>
+                <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
+                <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+                <tr>
+                    <th class="hfcm-th-width">Display on Mobile?</th>
+                    <td>
+                        <select name="data[mobile_status]">
+                            <?php
+                            foreach ($mobilestatusarray as $smkey => $statusv) {
+                                if ($mobile_status == $smkey) {
+                                    echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
+                                } else {
+                                    echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <th class="hfcm-th-width">Status</th>
                     <td>
@@ -289,8 +286,9 @@ function hfcm_create() {
                         </select>
                     </td>
                 </tr>
-
             </table>
+            <h1>Snippet / Code</h1>
+            <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10" cols="70"><?php echo $snippet; ?></textarea>
             <div class="wp-core-ui">
                 <input type='submit' name="insert" value='Publish' class='button button-primary button-large btnsave' />
             </div>
