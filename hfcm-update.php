@@ -1,5 +1,6 @@
 <?php
 
+// function for submenu "Update snippet" page
 function hfcm_update() {
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";
@@ -84,6 +85,7 @@ function hfcm_update() {
 
         <?php } else { ?>
             <script type="text/javascript">
+                // function to show dependent dropdowns for "Display on" field.
                 function showotherboxes(type) {
                     if(type == "s_pages") {
                         jQuery("#s_pages").show();

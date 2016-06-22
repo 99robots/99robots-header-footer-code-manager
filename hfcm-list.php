@@ -1,5 +1,6 @@
 <?php
 
+// function for submenu "All Snippets/Codes" page
 function hfcm_list() {
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";

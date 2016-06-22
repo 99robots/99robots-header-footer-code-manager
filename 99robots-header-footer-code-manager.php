@@ -45,6 +45,7 @@ register_activation_hook(__FILE__, 'hfcm_options_install');
 
 add_action('admin_menu', 'hfcm_modifymenu');
 
+// function to create menu page, and submenu pages.
 function hfcm_modifymenu() {
 
     //this is the main item for the menu
@@ -79,10 +80,12 @@ function hfcm_modifymenu() {
             'hfcm_update'); //function
 }
 
+// files containing submenu functions
 require_once(plugin_dir_path(__FILE__) . 'hfcm-list.php');
 require_once(plugin_dir_path(__FILE__) . 'hfcm-create.php');
 require_once(plugin_dir_path(__FILE__) . 'hfcm-update.php');
 
+// function to implement shortcode
 function hfcm_shortcode($atts) {
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";
@@ -101,6 +104,7 @@ add_shortcode("hfcm", "hfcm_shortcode");
 
 add_action('wp_head', 'hfcm_header_scripts');
 
+// function to add snippets in the header
 function hfcm_header_scripts() {
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";
@@ -137,6 +141,7 @@ function hfcm_header_scripts() {
 
 add_action('wp_footer', 'hfcm_footer_scripts');
 
+// function to add snippets in the footer
 function hfcm_footer_scripts() {
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";
