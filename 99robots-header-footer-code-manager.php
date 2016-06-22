@@ -52,8 +52,16 @@ function hfcm_modifymenu() {
             'Header & Footer Code Manager', //menu title
             'manage_options', //capabilities
             'hfcm-list', //menu slug
-            'hfcm_list' //function
+            'hfcm_list', //function
+            plugins_url( 'assets/images/', __FILE__ ).'99robots.png'
     );
+    //this is a submenu
+    add_submenu_page('hfcm-list', //parent slug
+            'All Snippets/Codes', //page title
+            'All Snippets/Codes', //menu title
+            'manage_options', //capability
+            'hfcm-list', //menu slug
+            'hfcm_list'); //function
 
     //this is a submenu
     add_submenu_page('hfcm-list', //parent slug

@@ -86,7 +86,7 @@ function hfcm_create() {
         $message = "Script Added Successfully";
     }
     ?>
-    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/99robots-header-footer-code-manager/style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo plugins_url( 'assets/css/', __FILE__ ); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>Add New Snippet</h2>
         <?php if (isset($message)): ?><div class="updated"><p><?php echo $message; ?></p></div><?php endif; ?>

@@ -5,16 +5,16 @@ function hfcm_list() {
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $rows = $wpdb->get_results("SELECT * from $table_name");
     ?>
-    <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/99robots-header-footer-code-manager/style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo plugins_url( 'assets/css/', __FILE__ ); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
-        <h1>Scripts 
+        <h1>Snippets 
             <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
         </h1>
         <table class='wp-list-table widefat fixed striped posts'>
             <thead>
                 <tr>
-                    <th class="manage-column hfcm-list-width">ID</th>
-                    <th class="manage-column hfcm-list-width">Code Name</th>
+                    <th class="check-column padding20 manage-column hfcm-list-width">ID</th>
+                    <th class="manage-column column-title column-primary">Code Name</th>
                     <th class="manage-column hfcm-list-width">Location</th>
                     <th class="manage-column hfcm-list-width">Display On</th>
                     <th class="manage-column hfcm-list-width">Display on Mobile?</th>
@@ -24,8 +24,8 @@ function hfcm_list() {
 
             <?php foreach ($rows as $row) { ?>
                 <tr>
-                    <td class="manage-column hfcm-list-width"><?php echo $row->script_id; ?></td>
-                    <td class="manage-column hfcm-list-width">
+                    <td class="check-column padding20 manage-column hfcm-list-width"><?php echo $row->script_id; ?></td>
+                    <td class="manage-column column-title column-primary">
                         <?php echo $row->name; ?>
                         <div class="row-actions">
                             <span class="edit">
