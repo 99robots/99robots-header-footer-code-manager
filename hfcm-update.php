@@ -37,7 +37,7 @@ function hfcm_update() {
         );
     }
     //delete
-    else if (isset($_POST['delete'])) {
+    else if (isset($_GET['delete'])) {
         $wpdb->query($wpdb->prepare("DELETE FROM $table_name WHERE script_id = %s", $id));
     } else {
         //selecting value to update	
@@ -72,7 +72,7 @@ function hfcm_update() {
     <div class="wrap">
         <h2>Script</h2>
 
-        <?php if (!empty($_POST['delete'])) { ?>
+        <?php if (!empty($_GET['delete'])) { ?>
             <div class="updated"><p>Script deleted</p></div>
             <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; Back to list</a>
 

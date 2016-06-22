@@ -88,7 +88,7 @@ function hfcm_create() {
     ?>
     <link type="text/css" href="<?php echo WP_PLUGIN_URL; ?>/99robots-header-footer-code-manager/style-admin.css" rel="stylesheet" />
     <div class="wrap">
-        <h2>Add New Script</h2>
+        <h2>Add New Snippet</h2>
         <?php if (isset($message)): ?><div class="updated"><p><?php echo $message; ?></p></div><?php endif; ?>
         <script type="text/javascript">
             function showotherboxes(type) {
@@ -291,7 +291,9 @@ function hfcm_create() {
                 </tr>
 
             </table>
-            <input type='submit' name="insert" value='Save' class='button'>
+            <div class="wp-core-ui">
+                <input type='submit' name="insert" value='Publish' class='button button-primary button-large btnsave' />
+            </div>
         </form>
     </div>
     <?php
