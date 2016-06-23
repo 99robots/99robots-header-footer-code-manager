@@ -87,7 +87,7 @@ function hfcm_create() {
         $message = "Script Added Successfully";
     }
     ?>
-    <link type="text/css" href="<?php echo plugins_url( 'assets/css/', __FILE__ ); ?>style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>Add New Snippet</h2>
         <?php if (isset($message)): ?><div class="updated"><p><?php echo $message; ?></p></div><?php endif; ?>
@@ -96,17 +96,22 @@ function hfcm_create() {
             function showotherboxes(type) {
                 if(type == "s_pages") {
                     jQuery("#s_pages").show();
+                    jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
                     jQuery("#s_categories, #s_tags, #c_posttype").hide();
                 } else if(type == "s_categories") {
                     jQuery("#s_categories").show();
+                    jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
                     jQuery("#s_pages, #s_tags, #c_posttype").hide();
                 } else if(type == "s_custom_posts") {
                     jQuery("#c_posttype").show();
+                    jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
                     jQuery("#s_categories, #s_tags, #s_pages").hide();
                 } else if(type == "s_tags") {
+                    jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
                     jQuery("#s_tags").show();
                     jQuery("#s_categories, #s_pages, #c_posttype").hide();
                 } else {
+                    jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
                     jQuery("#s_pages, #s_categories, #s_tags, #c_posttype").hide();
                 } 
             }
@@ -116,23 +121,6 @@ function hfcm_create() {
                 <tr>
                     <th class="hfcm-th-width">Code Name</th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
-                </tr>
-                <?php $larray = array("header" => "Header", "footer" => "Footer"); ?>
-                <tr>
-                    <th class="hfcm-th-width">Location</th>
-                    <td>
-                        <select name="data[location]">
-                            <?php
-                            foreach ($larray as $lkey => $statusv) {
-                                if ($location == $lkey) {
-                                    echo "<option value='" . $lkey . "' selected='selected'>" . $statusv . "</option>";
-                                } else {
-                                    echo "<option value='" . $lkey . "'>" . $statusv . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </td>
                 </tr>
                 <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
                 <tr>
@@ -248,6 +236,23 @@ function hfcm_create() {
                                     echo "<option value='" . $cpkey . "' selected>" . $cpdata . "</option>";
                                 } else {
                                     echo "<option value='" . $cpkey . "'>" . $cpdata . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <?php $larray = array("header" => "Header", "footer" => "Footer"); ?>
+                <tr>
+                    <th class="hfcm-th-width">Location</th>
+                    <td>
+                        <select name="data[location]">
+                            <?php
+                            foreach ($larray as $lkey => $statusv) {
+                                if ($location == $lkey) {
+                                    echo "<option value='" . $lkey . "' selected='selected'>" . $statusv . "</option>";
+                                } else {
+                                    echo "<option value='" . $lkey . "'>" . $statusv . "</option>";
                                 }
                             }
                             ?>
