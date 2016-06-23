@@ -22,8 +22,8 @@ function hfcm_list() {
                 <tr>
                     <th class="check-column padding20 manage-column hfcm-list-width">ID</th>
                     <th class="manage-column column-title column-primary">Code Name</th>
-                    <th class="manage-column hfcm-list-width">Location</th>
                     <th class="manage-column hfcm-list-width">Display On</th>
+                    <th class="manage-column hfcm-list-width">Location</th>
                     <th class="manage-column hfcm-list-width">Display on Mobile?</th>
                     <th class="manage-column hfcm-list-width">Status</th>
                 </tr>
@@ -47,8 +47,18 @@ function hfcm_list() {
                             </span>
                         </div>
                     </td>
-                    <td class="manage-column hfcm-list-width"><?php echo $row->location; ?></td>
-                    <td class="manage-column hfcm-list-width"><?php echo $row->display_on; ?></td>
+                    <td class="manage-column hfcm-list-width">
+                        <?php 
+                        $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts");
+                        echo $darray[$row->display_on];
+                        ?>
+                    </td>
+                    <td class="manage-column hfcm-list-width">
+                        <?php 
+                        $larray = array("header" => "Header", "footer" => "Footer", "before_content"=>"Before Content", "after_content"=>"After Content");
+                        echo $larray[$row->location];
+                        ?>
+                    </td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->mobile_status; ?></td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->status; ?></td>
                 </tr>
