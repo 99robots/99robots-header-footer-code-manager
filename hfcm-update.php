@@ -69,7 +69,7 @@ function hfcm_update() {
         }
     }
     ?>
-    <link type="text/css" href="<?php echo plugins_url( 'assets/css/', __FILE__ ); ?>style-admin.css" rel="stylesheet" />
+    <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h1>Edit Snippet 
             <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
@@ -79,11 +79,12 @@ function hfcm_update() {
             <div class="updated"><p>Script deleted</p></div>
             <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; Back to list</a>
 
-        <?php } else if (!empty($_POST['update'])) { ?>
-            <div class="updated"><p>Script updated</p></div>
-            <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; Back to list</a>
-
         <?php } else { ?>
+            <?php if (!empty($_POST['update'])) { ?>
+                <div class="updated"><p>Script updated</p></div>
+                <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; Back to list</a>
+
+            <?php } ?>
             <script type="text/javascript">
                 // function to show dependent dropdowns for "Display on" field.
                 function showotherboxes(type) {
@@ -235,7 +236,13 @@ function hfcm_update() {
                             </select>
                         </td>
                     </tr>
-                    <?php $larray = array("header" => "Header", "footer" => "Footer"); ?>
+                    <?php
+                    if (in_array($display_on, array("s_pages", "s_custom_posts"))) {
+                        $larray = array("header" => "Header", "before_content" => "Before Content", "after_content" => "After Content", "footer" => "Footer");
+                    } else {
+                        $larray = array("header" => "Header", "footer" => "Footer");
+                    }
+                    ?>
                     <tr>
                         <th class="hfcm-th-width">Location</th>
                         <td>

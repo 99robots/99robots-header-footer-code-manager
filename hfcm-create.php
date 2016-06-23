@@ -242,7 +242,13 @@ function hfcm_create() {
                         </select>
                     </td>
                 </tr>
-                <?php $larray = array("header" => "Header", "footer" => "Footer"); ?>
+                <?php
+                if (in_array($display_on, array("s_pages", "s_custom_posts"))) {
+                    $larray = array("header" => "Header", "before_content" => "Before Content", "after_content" => "After Content", "footer" => "Footer");
+                } else {
+                    $larray = array("header" => "Header", "footer" => "Footer");
+                }
+                ?>
                 <tr>
                     <th class="hfcm-th-width">Location</th>
                     <td>
@@ -260,7 +266,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
-                <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+    <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
                 <tr>
                     <th class="hfcm-th-width">Display on Mobile?</th>
                     <td>

@@ -175,3 +175,31 @@ function hfcm_footer_scripts() {
         }
     }
 }
+
+add_action('the_content', 'hfcm_content_scripts');
+
+// function to add snippets before/after the content
+function hfcm_content_scripts($content) {
+    global $wpdb;
+    $table_name = $wpdb->prefix . "hfcm_scripts";
+    $script = $wpdb->get_results("SELECT * from $table_name where location NOT IN ('footer', 'header') AND status='active'");
+    if (!empty($script)) {
+        foreach ($script as $key => $scriptdata) {
+            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || !wp_is_mobile()) {
+                if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && in_array(get_post_type(), unserialize($scriptdata->s_custom_posts))) {
+                    if($scriptdata->location == "before_content") {
+                        return $scriptdata->snippet.$content;
+                    } else if($scriptdata->location == "after_content") {
+                        return $content.$scriptdata->snippet;
+                    } 
+                } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
+                    if($scriptdata->location == "before_content") {
+                        return $scriptdata->snippet.$content;
+                    } else if($scriptdata->location == "after_content") {
+                        return $content.$scriptdata->snippet;
+                    } 
+                }
+            }
+        }
+    }
+}
