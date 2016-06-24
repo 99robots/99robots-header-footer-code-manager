@@ -6,7 +6,23 @@ function hfcm_update() {
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $id = $_GET['id'];
     //update
-    if (isset($_POST['update'])) {
+    if(isset($_REQUEST['toggle']) && !empty($_REQUEST['togvalue'])) {
+        if($_REQUEST['togvalue'] == "on") {
+            $status = "active";
+        } else {
+            $status = "inactive";
+        }
+        $wpdb->update(
+                $table_name, //table
+                array(
+            "status" => $status,
+                ), //data
+                array('script_id' => $id), //where
+                array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
+                array('%s') //where format
+        );
+        die;
+    } else if (isset($_POST['update'])) {
         $name = $_POST['data']["name"];
         $snippet = stripslashes_deep($_POST['data']["snippet"]);
         $mobile_status = $_POST['data']["mobile_status"];

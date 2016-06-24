@@ -48,22 +48,48 @@ function hfcm_list() {
                         </div>
                     </td>
                     <td class="manage-column hfcm-list-width">
-                        <?php 
+                        <?php
                         $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts");
                         echo $darray[$row->display_on];
                         ?>
                     </td>
                     <td class="manage-column hfcm-list-width">
-                        <?php 
-                        $larray = array("header" => "Header", "footer" => "Footer", "before_content"=>"Before Content", "after_content"=>"After Content");
+                        <?php
+                        $larray = array("header" => "Header", "footer" => "Footer", "before_content" => "Before Content", "after_content" => "After Content");
                         echo $larray[$row->location];
                         ?>
                     </td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->mobile_status; ?></td>
-                    <td class="manage-column hfcm-list-width"><?php echo $row->status; ?></td>
+<!--                    <td class="manage-column hfcm-list-width"><?php //echo $row->status; ?></td>-->
+                    <?php if ($row->status == "active") { ?>
+                        <td class="manage-column hfcm-list-width" id="toggleScript"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" onclick="togglefunction('off', <?php echo $row->script_id; ?>);" /></td>
+                    <?php } else { ?>
+                        <td class="manage-column hfcm-list-width" id="toggleScript"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" onclick="togglefunction('on', <?php echo $row->script_id; ?>);" /></td>
+                     <?php } ?>
                 </tr>
             <?php } ?>
         </table>
+        <script>
+            function togglefunction(togvalue, scriptid) {
+                if(togvalue == "on") {
+                    jQuery.ajax({
+                        url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid, 
+                        data:{togvalue:togvalue},
+                        success: function(result){
+                            jQuery("#toggleScript").html('<img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" onclick="togglefunction(\'off\');" />');
+                        }
+                    });
+                } else {
+                    jQuery.ajax({
+                        url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid,
+                        data:{togvalue:togvalue},
+                        success: function(result){
+                            jQuery("#toggleScript").html('<img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" onclick="togglefunction(\'on\');" />');
+                        }
+                    });
+                }
+            }
+        </script>
     </div>
     <?php
 }
