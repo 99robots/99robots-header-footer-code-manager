@@ -6,8 +6,8 @@ function hfcm_update() {
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $id = $_GET['id'];
     //update
-    if(isset($_REQUEST['toggle']) && !empty($_REQUEST['togvalue'])) {
-        if($_REQUEST['togvalue'] == "on") {
+    if (isset($_REQUEST['toggle']) && !empty($_REQUEST['togvalue'])) {
+        if ($_REQUEST['togvalue'] == "on") {
             $status = "active";
         } else {
             $status = "inactive";
@@ -26,6 +26,7 @@ function hfcm_update() {
         $name = $_POST['data']["name"];
         $snippet = stripslashes_deep($_POST['data']["snippet"]);
         $mobile_status = $_POST['data']["mobile_status"];
+        $desktop_status = $_POST['data']["desktop_status"];
         $location = $_POST['data']["location"];
         $display_on = $_POST['data']["display_on"];
         $status = $_POST['data']["status"];
@@ -40,6 +41,7 @@ function hfcm_update() {
             "name" => $name,
             "snippet" => $snippet,
             "mobile_status" => $mobile_status,
+            "desktop_status" => $desktop_status,
             "location" => $location,
             "display_on" => $display_on,
             "status" => $status,
@@ -63,6 +65,7 @@ function hfcm_update() {
             $name = $s->name;
             $snippet = $s->snippet;
             $mobile_status = $s->mobile_status;
+            $desktop_status = $s->desktop_status;
             $location = $s->location;
             $display_on = $s->display_on;
             $status = $s->status;
@@ -277,6 +280,22 @@ function hfcm_update() {
                     </tr>
                     <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
                     <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+                    <tr>
+                        <th class="hfcm-th-width">Display on Desktop?</th>
+                        <td>
+                            <select name="data[desktop_status]">
+                                <?php
+                                foreach ($mobilestatusarray as $smkey => $statusv) {
+                                    if ($desktop_status == $smkey) {
+                                        echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
+                                    } else {
+                                        echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <th class="hfcm-th-width">Display on Mobile?</th>
                         <td>

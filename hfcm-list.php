@@ -24,6 +24,7 @@ function hfcm_list() {
                     <th class="manage-column column-title column-primary">Code Name</th>
                     <th class="manage-column hfcm-list-width">Display On</th>
                     <th class="manage-column hfcm-list-width">Location</th>
+                    <th class="manage-column hfcm-list-width">Display on Desktop?</th>
                     <th class="manage-column hfcm-list-width">Display on Mobile?</th>
                     <th class="manage-column hfcm-list-width">Status</th>
                 </tr>
@@ -60,6 +61,7 @@ function hfcm_list() {
                         ?>
                     </td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->mobile_status; ?></td>
+                    <td class="manage-column hfcm-list-width"><?php echo $row->desktop_status; ?></td>
 <!--                    <td class="manage-column hfcm-list-width"><?php //echo $row->status; ?></td>-->
                     <?php if ($row->status == "active") { ?>
                         <td class="manage-column hfcm-list-width" id="toggleScript"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" onclick="togglefunction('off', <?php echo $row->script_id; ?>);" /></td>

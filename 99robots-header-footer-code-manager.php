@@ -24,6 +24,7 @@ function hfcm_options_install() {
             `name` varchar(100) DEFAULT NULL,
             `snippet` text,
             `mobile_status` enum('yes','no') DEFAULT 'yes',
+            `desktop_status` enum('yes','no') DEFAULT 'yes',
             `location` varchar(100) NOT NULL,
             `display_on` enum('All','s_pages','s_categories','s_custom_posts','s_tags','latest_posts') NOT NULL DEFAULT 'All',
             `s_pages` varchar(300) DEFAULT NULL,
@@ -111,7 +112,7 @@ function hfcm_header_scripts() {
     $script = $wpdb->get_results("SELECT * from $table_name where location='header' AND status='active'");
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
-            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || !wp_is_mobile()) {
+            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || (!wp_is_mobile() && $scriptdata->desktop_status == "yes")) {
                 if ($scriptdata->display_on == "All") {
                     echo $scriptdata->snippet;
                 } else if ($scriptdata->display_on == "latest_posts") {
@@ -148,7 +149,7 @@ function hfcm_footer_scripts() {
     $script = $wpdb->get_results("SELECT * from $table_name where location='footer' AND status='active'");
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
-            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || !wp_is_mobile()) {
+            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || (!wp_is_mobile() && $scriptdata->desktop_status == "yes")) {
                 if ($scriptdata->display_on == "All") {
                     echo $scriptdata->snippet;
                 } else if ($scriptdata->display_on == "latest_posts") {
@@ -185,7 +186,7 @@ function hfcm_content_scripts($content) {
     $script = $wpdb->get_results("SELECT * from $table_name where location NOT IN ('footer', 'header') AND status='active'");
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
-            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || !wp_is_mobile()) {
+            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || (!wp_is_mobile() && $scriptdata->desktop_status == "yes")) {
                 if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && in_array(get_post_type(), unserialize($scriptdata->s_custom_posts))) {
                     if($scriptdata->location == "before_content") {
                         return $scriptdata->snippet.$content;

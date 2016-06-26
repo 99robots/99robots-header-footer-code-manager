@@ -19,6 +19,11 @@ function hfcm_create() {
     } else {
         $mobile_status = "";
     }
+    if (!empty($_POST['data']["desktop_status"])) {
+        $desktop_status = $_POST['data']["desktop_status"];
+    } else {
+        $desktop_status = "";
+    }
     if (!empty($_POST['data']["location"])) {
         $location = $_POST['data']["location"];
     } else {
@@ -75,6 +80,7 @@ function hfcm_create() {
             "name" => $name,
             "snippet" => $snippet,
             "mobile_status" => $mobile_status,
+            "desktop_status" => $desktop_status,
             "location" => $location,
             "display_on" => $display_on,
             "status" => $status,
@@ -266,7 +272,23 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
-    <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+                <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+                <tr>
+                    <th class="hfcm-th-width">Display on Desktop?</th>
+                    <td>
+                        <select name="data[desktop_status]">
+                            <?php
+                            foreach ($mobilestatusarray as $smkey => $statusv) {
+                                if ($desktop_status == $smkey) {
+                                    echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
+                                } else {
+                                    echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <th class="hfcm-th-width">Display on Mobile?</th>
                     <td>
