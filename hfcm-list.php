@@ -92,9 +92,17 @@ function hfcm_list() {
                     <td class="manage-column hfcm-list-width"><?php echo $row->desktop_status; ?></td>
         <!--                    <td class="manage-column hfcm-list-width"><?php //echo $row->status;   ?></td>-->
                     <?php if ($row->status == "active") { ?>
-                        <td class="manage-column hfcm-list-width" id="toggleScript"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" onclick="togglefunction('off', <?php echo $row->script_id; ?>);" /></td>
+                        <td class="manage-column hfcm-list-width" id="toggleScript<?php echo $row->script_id; ?>">
+                            <a href="javascript:void(0);" onclick="togglefunction('off', <?php echo $row->script_id; ?>);">
+                                <img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" />
+                            </a>
+                        </td>
                     <?php } else { ?>
-                        <td class="manage-column hfcm-list-width" id="toggleScript"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" onclick="togglefunction('on', <?php echo $row->script_id; ?>);" /></td>
+                        <td class="manage-column hfcm-list-width" id="toggleScript<?php echo $row->script_id; ?>">
+                            <a onclick="togglefunction('on', <?php echo $row->script_id; ?>);" href="javascript:void(0);">
+                                <img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" />
+                            </a>
+                        </td>
                         <?php } ?>
                 </tr>
             <?php } ?>
@@ -106,7 +114,7 @@ function hfcm_list() {
                         url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid, 
                         data:{togvalue:togvalue},
                         success: function(result){
-                            jQuery("#toggleScript").html('<img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" onclick="togglefunction(\'off\');" />');
+                            jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'off\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" /></a>');
                         }
                     });
                 } else {
@@ -114,7 +122,7 @@ function hfcm_list() {
                         url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid,
                         data:{togvalue:togvalue},
                         success: function(result){
-                            jQuery("#toggleScript").html('<img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" onclick="togglefunction(\'on\');" />');
+                            jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'on\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" /></a>');
                         }
                     });
                 }
