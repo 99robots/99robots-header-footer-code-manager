@@ -88,6 +88,7 @@ function hfcm_create() {
             "s_custom_posts" => serialize($s_custom_posts),
             "s_categories" => serialize($s_categories),
             "s_tags" => serialize($s_tags),
+            "created" => date("Y-m-d h:i:s")
                 )
         );
         $message = "Script Added Successfully";

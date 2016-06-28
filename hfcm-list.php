@@ -4,7 +4,19 @@
 function hfcm_list() {
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";
-    $rows = $wpdb->get_results("SELECT * from $table_name");
+    $activeclass = "";
+    $inactiveclass = "";
+    if(!empty($_GET['script_status']) && in_array($_GET['script_status'], array("active", "inactive"))) {
+        if($_GET['script_status'] == "active") {
+            $activeclass = "current";
+        }
+        if($_GET['script_status'] == "inactive") {
+            $inactiveclass = "current";
+        }
+        $rows = $wpdb->get_results("SELECT * from $table_name where status = '".$_GET['script_status']."'");
+    } else {
+        $rows = $wpdb->get_results("SELECT * from $table_name");
+    }
     $activecount = $wpdb->get_results("SELECT COUNT(*) as count from $table_name where status = 'active' ");
     $inactivecount = $wpdb->get_results("SELECT COUNT(*) as count from $table_name where status = 'inactive'");
     ?>
@@ -14,8 +26,16 @@ function hfcm_list() {
             <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
         </h1>
         <ul class="subsubsub">
-            <li class="all">Active <span class="count">(<?php echo $activecount[0]->count; ?>)</span> |</li>
-            <li class="publish">Inactive <span class="count">(<?php echo $inactivecount[0]->count; ?>)</span></li>
+            <li class="all">
+                <a class="<?php echo $activeclass; ?>" href="<?php echo admin_url('admin.php?page=hfcm-list&script_status=active'); ?>">
+                    Active <span class="count">(<?php echo $activecount[0]->count; ?>)</span>
+                </a> |
+            </li>
+            <li class="publish">
+                <a class="<?php echo $inactiveclass; ?>" href="<?php echo admin_url('admin.php?page=hfcm-list&script_status=inactive'); ?>">
+                    Inactive <span class="count">(<?php echo $inactivecount[0]->count; ?>)</span>
+                </a>
+            </li>
         </ul>
         <table class='wp-list-table widefat fixed striped posts'>
             <thead>
@@ -62,12 +82,12 @@ function hfcm_list() {
                     </td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->mobile_status; ?></td>
                     <td class="manage-column hfcm-list-width"><?php echo $row->desktop_status; ?></td>
-<!--                    <td class="manage-column hfcm-list-width"><?php //echo $row->status; ?></td>-->
+        <!--                    <td class="manage-column hfcm-list-width"><?php //echo $row->status;   ?></td>-->
                     <?php if ($row->status == "active") { ?>
                         <td class="manage-column hfcm-list-width" id="toggleScript"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" onclick="togglefunction('off', <?php echo $row->script_id; ?>);" /></td>
                     <?php } else { ?>
                         <td class="manage-column hfcm-list-width" id="toggleScript"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" onclick="togglefunction('on', <?php echo $row->script_id; ?>);" /></td>
-                     <?php } ?>
+                        <?php } ?>
                 </tr>
             <?php } ?>
         </table>
