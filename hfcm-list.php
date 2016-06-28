@@ -6,7 +6,9 @@ function hfcm_list() {
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $activeclass = "";
     $inactiveclass = "";
+    $allclass = "current";
     if(!empty($_GET['script_status']) && in_array($_GET['script_status'], array("active", "inactive"))) {
+        $allclass = "";
         if($_GET['script_status'] == "active") {
             $activeclass = "current";
         }
@@ -17,6 +19,7 @@ function hfcm_list() {
     } else {
         $rows = $wpdb->get_results("SELECT * from $table_name");
     }
+    $allcount = $wpdb->get_results("SELECT COUNT(*) as count from $table_name");
     $activecount = $wpdb->get_results("SELECT COUNT(*) as count from $table_name where status = 'active' ");
     $inactivecount = $wpdb->get_results("SELECT COUNT(*) as count from $table_name where status = 'inactive'");
     ?>
@@ -27,11 +30,16 @@ function hfcm_list() {
         </h1>
         <ul class="subsubsub">
             <li class="all">
+                <a class="<?php echo $allclass; ?>" href="<?php echo admin_url('admin.php?page=hfcm-list'); ?>">
+                    All <span class="count">(<?php echo $allcount[0]->count; ?>)</span>
+                </a> |
+            </li>
+            <li class="active">
                 <a class="<?php echo $activeclass; ?>" href="<?php echo admin_url('admin.php?page=hfcm-list&script_status=active'); ?>">
                     Active <span class="count">(<?php echo $activecount[0]->count; ?>)</span>
                 </a> |
             </li>
-            <li class="publish">
+            <li class="inactive">
                 <a class="<?php echo $inactiveclass; ?>" href="<?php echo admin_url('admin.php?page=hfcm-list&script_status=inactive'); ?>">
                     Inactive <span class="count">(<?php echo $inactivecount[0]->count; ?>)</span>
                 </a>
