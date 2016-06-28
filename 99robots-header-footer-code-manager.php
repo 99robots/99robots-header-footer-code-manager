@@ -60,14 +60,14 @@ function hfcm_modifymenu() {
     );
     //this is a submenu
     add_submenu_page('hfcm-list', //parent slug
-            'All Snippets/Codes', //page title
-            'All Snippets/Codes', //menu title
+            'All Snippets', //page title
+            'All Snippets', //menu title
             'manage_options', //capability
             'hfcm-list', //menu slug
             'hfcm_list'); //function
     //this is a submenu
     add_submenu_page('hfcm-list', //parent slug
-            'Add New Script', //page title
+            'Add New Snippet', //page title
             'Add New', //menu title
             'manage_options', //capability
             'hfcm-create', //menu slug

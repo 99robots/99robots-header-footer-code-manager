@@ -49,7 +49,7 @@ function hfcm_list() {
             <thead>
                 <tr>
                     <th class="check-column padding20 manage-column hfcm-list-width">ID</th>
-                    <th class="manage-column column-title column-primary">Code Name</th>
+                    <th class="manage-column column-title column-primary">Snippet Name</th>
                     <th class="manage-column hfcm-list-width">Display On</th>
                     <th class="manage-column hfcm-list-width">Location</th>
                     <th class="manage-column hfcm-list-width">Display on Desktop?</th>

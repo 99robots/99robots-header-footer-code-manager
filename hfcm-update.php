@@ -132,7 +132,7 @@ function hfcm_update() {
             <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                 <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
                     <tr>
-                        <th class="hfcm-th-width">Script Name</th>
+                        <th class="hfcm-th-width">Snippet Name</th>
                         <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                     </tr>
                     <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
