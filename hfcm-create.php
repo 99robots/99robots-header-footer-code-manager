@@ -92,8 +92,9 @@ function hfcm_create() {
                 )
         );
         $message = "Script Added Successfully";
-//        $lastid = $wpdb->insert_id;
-//        wp_redirect(admin_url('admin.php?page=hfcm-update&id=' . $lastid));
+        $lastid = $wpdb->insert_id;
+        echo "<script>window.location = '".admin_url('admin.php?page=hfcm-update&id=' . $lastid)."'</script>";
+        exit;
     }
     ?>
     <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
