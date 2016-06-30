@@ -129,7 +129,7 @@ class Snippets_List extends WP_List_Table {
      *
      * @return string
      */
-    function column_title($item) {
+    function column_name($item) {
 
         $delete_nonce = wp_create_nonce('hfcm_delete_snippet');
         $edit_nonce = wp_create_nonce('hfcm_edit_snippet');
