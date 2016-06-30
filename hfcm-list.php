@@ -59,6 +59,38 @@ class Snippets_List extends WP_List_Table {
     }
 
     /**
+     * Activate a snipppet record.
+     *
+     * @param int $id snippet ID
+     */
+    public static function activate_snippet($id) {
+        global $wpdb;
+        $table_name = "{$wpdb->prefix}hfcm_scripts";
+
+        $wpdb->update(
+                "$table_name", array(
+            "status" => "active",
+                ), array('script_id' => $id), [ '%s'], ["%d"]
+        );
+    }
+    
+    /**
+     * Deactivate a snipppet record.
+     *
+     * @param int $id snippet ID
+     */
+    public static function deactivate_snippet($id) {
+        global $wpdb;
+        $table_name = "{$wpdb->prefix}hfcm_scripts";
+
+        $wpdb->update(
+                "$table_name", array(
+            "status" => "inactive",
+                ), array('script_id' => $id), [ '%s'], ["%d"]
+        );
+    }
+
+    /**
      * Returns the count of records in the database.
      *
      * @return null|string
@@ -118,7 +150,7 @@ class Snippets_List extends WP_List_Table {
      */
     function column_cb($item) {
         return sprintf(
-                        '<input type="checkbox" name="bulk-delete[]" value="%s" />', $item['script_id']
+                        '<input type="checkbox" name="snippets[]" value="%s" />', $item['script_id']
         );
     }
 
@@ -185,7 +217,9 @@ class Snippets_List extends WP_List_Table {
      */
     public function get_bulk_actions() {
         $actions = [
-            'bulk-delete' => 'Delete'
+            'bulk-delete' => 'Delete',
+            'bulk-activate' => 'Activate',
+            'bulk-deactivate' => 'Deactivate',
         ];
 
         return $actions;
@@ -266,11 +300,41 @@ class Snippets_List extends WP_List_Table {
                 || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-delete' )
         ) {
 
-            $delete_ids = esc_sql($_POST['bulk-delete']);
+            $delete_ids = esc_sql($_POST['snippets']);
 
             // loop over the array of record IDs and delete them
             foreach ($delete_ids as $id) {
                 self::delete_snippet($id);
+            }
+
+            // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
+            // add_query_arg() return the current url
+            wp_redirect(esc_url_raw(add_query_arg()));
+            exit;
+        } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-activate' )
+                || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-activate' )
+        ) {
+
+            $activate_ids = esc_sql($_POST['snippets']);
+
+            // loop over the array of record IDs and activate them
+            foreach ($activate_ids as $id) {
+                self::activate_snippet($id);
+            }
+
+            // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
+            // add_query_arg() return the current url
+            wp_redirect(esc_url_raw(add_query_arg()));
+            exit;
+        } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-deactivate' )
+                || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-deactivate' )
+        ) {
+
+            $delete_ids = esc_sql($_POST['snippets']);
+
+            // loop over the array of record IDs and deactivate them
+            foreach ($delete_ids as $id) {
+                self::deactivate_snippet($id);
             }
 
             // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
