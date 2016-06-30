@@ -92,12 +92,21 @@ function hfcm_create() {
                 )
         );
         $message = "Script Added Successfully";
+        $lastid = $wpdb->insert_id;
+        wp_redirect(admin_url('admin.php?page=hfcm-update&id=' . $lastid));
     }
     ?>
     <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2>Add New Snippet</h2>
-        <?php if (isset($message)): ?><div class="updated"><p><?php echo $message; ?></p></div><?php endif; ?>
+        <?php if (isset($message)): ?>
+            <div class="updated">
+                <p><?php echo $message; ?></p>
+                <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; Back to list</a>
+            </div>
+            <?php exit;
+        endif;
+        ?>
         <script type="text/javascript">
             // function to show dependent dropdowns for "Display on" field.
             function showotherboxes(type) {
@@ -129,7 +138,7 @@ function hfcm_create() {
                     <th class="hfcm-th-width">Snippet Name</th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                 </tr>
-                <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
+    <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
                 <tr>
                     <th class="hfcm-th-width">Display on</th>
                     <td>
@@ -273,7 +282,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
-                <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+    <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
                 <tr>
                     <th class="hfcm-th-width">Display on Desktop?</th>
                     <td>
