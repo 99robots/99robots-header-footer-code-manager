@@ -93,7 +93,7 @@ function hfcm_create() {
         );
         $message = "Script Added Successfully";
         $lastid = $wpdb->insert_id;
-        echo "<script>window.location = '".admin_url('admin.php?page=hfcm-update&id=' . $lastid)."'</script>";
+        echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-update&id=' . $lastid) . "'</script>";
         exit;
     }
     ?>
@@ -105,7 +105,8 @@ function hfcm_create() {
                 <p><?php echo $message; ?></p>
                 <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; Back to list</a>
             </div>
-            <?php exit;
+            <?php
+            exit;
         endif;
         ?>
         <script type="text/javascript">
@@ -139,7 +140,7 @@ function hfcm_create() {
                     <th class="hfcm-th-width">Snippet Name</th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                 </tr>
-    <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
+                <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
                 <tr>
                     <th class="hfcm-th-width">Display on</th>
                     <td>
@@ -283,7 +284,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
-    <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+                <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
                 <tr>
                     <th class="hfcm-th-width">Display on Desktop?</th>
                     <td>
