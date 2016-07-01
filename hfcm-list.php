@@ -323,75 +323,96 @@ class Snippets_List extends WP_List_Table {
             }
 
             // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
-                // add_query_arg() return the current url
-                echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
-                exit;
-            } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-activate' )
-                    || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-activate' )
-            ) {
+            // add_query_arg() return the current url
+            echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
+            exit;
+        } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-activate' )
+                || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-activate' )
+        ) {
 
-                $activate_ids = esc_sql($_POST['snippets']);
+            $activate_ids = esc_sql($_POST['snippets']);
 
-                // loop over the array of record IDs and activate them
-                foreach ($activate_ids as $id) {
-                    self::activate_snippet($id);
-                }
-
-                // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
-                // add_query_arg() return the current url
-                echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
-                exit;
-            } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-deactivate' )
-                    || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-deactivate' )
-            ) {
-
-                $delete_ids = esc_sql($_POST['snippets']);
-
-                // loop over the array of record IDs and deactivate them
-                foreach ($delete_ids as $id) {
-                    self::deactivate_snippet($id);
-                }
-
-                // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
-                // add_query_arg() return the current url
-                echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
-                exit;
+            // loop over the array of record IDs and activate them
+            foreach ($activate_ids as $id) {
+                self::activate_snippet($id);
             }
+
+            // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
+            // add_query_arg() return the current url
+            echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
+            exit;
+        } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-deactivate' )
+                || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-deactivate' )
+        ) {
+
+            $delete_ids = esc_sql($_POST['snippets']);
+
+            // loop over the array of record IDs and deactivate them
+            foreach ($delete_ids as $id) {
+                self::deactivate_snippet($id);
+            }
+
+            // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
+            // add_query_arg() return the current url
+            echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
+            exit;
         }
     }
 
-    function hfcm_list() {
-        global $wpdb;
-        $table_name = $wpdb->prefix . "hfcm_scripts";
-        $activeclass = "";
-        $inactiveclass = "";
-        $allclass = "current";
-        $snippetObj = new Snippets_List();
+}
 
-        if (!empty($_GET['script_status']) && in_array($_GET['script_status'], array("active", "inactive"))) {
-            $allclass = "";
-            if ($_GET['script_status'] == "active") {
-                $activeclass = "current";
-            }
-            if ($_GET['script_status'] == "inactive") {
-                $inactiveclass = "current";
-            }
+function hfcm_list() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . "hfcm_scripts";
+    $activeclass = "";
+    $inactiveclass = "";
+    $allclass = "current";
+    $snippetObj = new Snippets_List();
+
+    if (!empty($_GET['script_status']) && in_array($_GET['script_status'], array("active", "inactive"))) {
+        $allclass = "";
+        if ($_GET['script_status'] == "active") {
+            $activeclass = "current";
         }
-        ?>
-        <div class="wrap">
-            <h1>Snippets 
-                <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
-            </h1>
-
-            <form method="post">
-                <?php
-                $snippetObj->prepare_items();
-                $snippetObj->display();
-                ?>
-            </form>
-
-        </div>
-        <?php
+        if ($_GET['script_status'] == "inactive") {
+            $inactiveclass = "current";
+        }
     }
+    ?>
+    <div class="wrap">
+        <h1>Snippets 
+            <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
+        </h1>
 
-    
+        <form method="post">
+            <?php
+            $snippetObj->prepare_items();
+            $snippetObj->display();
+            ?>
+        </form>
+
+    </div>
+    <?php
+}
+?>
+<script>
+    function togglefunction(togvalue, scriptid) {
+        if(togvalue == "on") {
+            jQuery.ajax({
+                url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid, 
+                data:{togvalue:togvalue},
+                success: function(result){
+                    jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'off\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" /></a>');
+                }
+            });
+        } else {
+            jQuery.ajax({
+                url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid,
+                data:{togvalue:togvalue},
+                success: function(result){
+                    jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'on\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" /></a>');
+                }
+            });
+        }
+    }
+</script>
