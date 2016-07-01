@@ -73,7 +73,7 @@ class Snippets_List extends WP_List_Table {
                 ), array('script_id' => $id), [ '%s'], ["%d"]
         );
     }
-    
+
     /**
      * Deactivate a snipppet record.
      *
@@ -133,11 +133,11 @@ class Snippets_List extends WP_List_Table {
                 return $item[$column_name];
             case 'status':
                 if ($item[$column_name] == "inactive") {
-                    return '<p id="toggleScript'.$item['script_id'].'"><a onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);">
+                    return '<p id="toggleScript' . $item['script_id'] . '"><a onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);">
                             <img src="' . plugins_url('assets/images/', __FILE__) . 'off.png" />
                         </a></p>';
                 } else if ($item[$column_name] == "active") {
-                    return '<p id="toggleScript'.$item['script_id'].'"><a href="javascript:void(0);" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');">
+                    return '<p id="toggleScript' . $item['script_id'] . '"><a href="javascript:void(0);" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');">
                             <img src="' . plugins_url('assets/images/', __FILE__) . 'on.png" />
                         </a></p>';
                 } else {
@@ -293,14 +293,14 @@ class Snippets_List extends WP_List_Table {
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
 
-            if (!wp_verify_nonce($nonce, 'sp_delete_snippet')) {
+            if (!wp_verify_nonce($nonce, 'hfcm_delete_snippet')) {
                 die('Go get a life script kiddies');
             } else {
                 self::delete_snippet(absint($_GET['snippet']));
 
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
                 // add_query_arg() return the current url
-                wp_redirect(esc_url_raw(add_query_arg()));
+                echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-list') . "'</script>";
                 exit;
             }
         }
@@ -318,75 +318,75 @@ class Snippets_List extends WP_List_Table {
             }
 
             // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
-            // add_query_arg() return the current url
-            wp_redirect(esc_url_raw(add_query_arg()));
-            exit;
-        } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-activate' )
-                || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-activate' )
-        ) {
+                // add_query_arg() return the current url
+                echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
+                exit;
+            } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-activate' )
+                    || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-activate' )
+            ) {
 
-            $activate_ids = esc_sql($_POST['snippets']);
+                $activate_ids = esc_sql($_POST['snippets']);
 
-            // loop over the array of record IDs and activate them
-            foreach ($activate_ids as $id) {
-                self::activate_snippet($id);
+                // loop over the array of record IDs and activate them
+                foreach ($activate_ids as $id) {
+                    self::activate_snippet($id);
+                }
+
+                // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
+                // add_query_arg() return the current url
+                echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
+                exit;
+            } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-deactivate' )
+                    || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-deactivate' )
+            ) {
+
+                $delete_ids = esc_sql($_POST['snippets']);
+
+                // loop over the array of record IDs and deactivate them
+                foreach ($delete_ids as $id) {
+                    self::deactivate_snippet($id);
+                }
+
+                // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
+                // add_query_arg() return the current url
+                echo "<script>window.location = '" . esc_url_raw(add_query_arg()) . "'</script>";
+                exit;
             }
-
-            // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
-            // add_query_arg() return the current url
-            wp_redirect(esc_url_raw(add_query_arg()));
-            exit;
-        } else if (( isset($_POST['action']) && $_POST['action'] == 'bulk-deactivate' )
-                || ( isset($_POST['action2']) && $_POST['action2'] == 'bulk-deactivate' )
-        ) {
-
-            $delete_ids = esc_sql($_POST['snippets']);
-
-            // loop over the array of record IDs and deactivate them
-            foreach ($delete_ids as $id) {
-                self::deactivate_snippet($id);
-            }
-
-            // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
-            // add_query_arg() return the current url
-            wp_redirect(esc_url_raw(add_query_arg()));
-            exit;
         }
     }
 
-}
+    function hfcm_list() {
+        global $wpdb;
+        $table_name = $wpdb->prefix . "hfcm_scripts";
+        $activeclass = "";
+        $inactiveclass = "";
+        $allclass = "current";
+        $snippetObj = new Snippets_List();
 
-function hfcm_list() {
-    global $wpdb;
-    $table_name = $wpdb->prefix . "hfcm_scripts";
-    $activeclass = "";
-    $inactiveclass = "";
-    $allclass = "current";
-    $snippetObj = new Snippets_List();
+        if (!empty($_GET['script_status']) && in_array($_GET['script_status'], array("active", "inactive"))) {
+            $allclass = "";
+            if ($_GET['script_status'] == "active") {
+                $activeclass = "current";
+            }
+            if ($_GET['script_status'] == "inactive") {
+                $inactiveclass = "current";
+            }
+        }
+        ?>
+        <div class="wrap">
+            <h1>Snippets 
+                <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
+            </h1>
 
-    if (!empty($_GET['script_status']) && in_array($_GET['script_status'], array("active", "inactive"))) {
-        $allclass = "";
-        if ($_GET['script_status'] == "active") {
-            $activeclass = "current";
-        }
-        if ($_GET['script_status'] == "inactive") {
-            $inactiveclass = "current";
-        }
+            <form method="post">
+                <?php
+                $snippetObj->prepare_items();
+                $snippetObj->display();
+                ?>
+            </form>
+
+        </div>
+        <?php
     }
-    ?>
-    <div class="wrap">
-        <h1>Snippets 
-            <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
-        </h1>
 
-        <form method="post">
-            <?php
-            $snippetObj->prepare_items();
-            $snippetObj->display();
-            ?>
-        </form>
-
-    </div>
-    <?php
-}
-
+    
