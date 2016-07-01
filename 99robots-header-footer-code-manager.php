@@ -23,8 +23,7 @@ function hfcm_options_install() {
             `script_id` int(10) NOT NULL AUTO_INCREMENT,
             `name` varchar(100) DEFAULT NULL,
             `snippet` text,
-            `mobile_status` enum('yes','no') DEFAULT 'yes',
-            `desktop_status` enum('yes','no') DEFAULT 'yes',
+            `device_type` enum('mobile','desktop', 'both') DEFAULT 'both',
             `location` varchar(100) NOT NULL,
             `display_on` enum('All','s_pages','s_categories','s_custom_posts','s_tags','latest_posts') NOT NULL DEFAULT 'All',
             `s_pages` varchar(300) DEFAULT NULL,
@@ -94,9 +93,13 @@ function hfcm_shortcode($atts) {
         $id = (int) $atts['id'];
         $script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where status='active' AND script_id=%s", $id));
         if (!empty($script)) {
-            if ((wp_is_mobile() && $script[0]->mobile_status == "yes") || (!wp_is_mobile() && $script[0]->desktop_status == "yes")) {
+            if($script[0]->device_type == "mobile" && wp_is_mobile()) {
                 echo "<!-- HFCM by 99robots - Snippet #" . $script[0]->script_id . ": " . $script[0]->name . " -->" . $script[0]->snippet . "<!-- /end HFCM by 99robots -->";
-            }
+            } else if($script[0]->device_type == "desktop" && !wp_is_mobile()) {
+                echo "<!-- HFCM by 99robots - Snippet #" . $script[0]->script_id . ": " . $script[0]->name . " -->" . $script[0]->snippet . "<!-- /end HFCM by 99robots -->";
+            } else if($script[0]->device_type == "both") {
+                echo "<!-- HFCM by 99robots - Snippet #" . $script[0]->script_id . ": " . $script[0]->name . " -->" . $script[0]->snippet . "<!-- /end HFCM by 99robots -->";
+            } 
         }
     }
 }
@@ -112,7 +115,30 @@ function hfcm_header_scripts() {
     $script = $wpdb->get_results("SELECT * from $table_name where location='header' AND status='active'");
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
-            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || (!wp_is_mobile() && $scriptdata->desktop_status == "yes")) {
+            if(wp_is_mobile() && in_array($script[0]->device_type, array("mobile", "both"))) {
+                if ($scriptdata->display_on == "All") {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                } else if ($scriptdata->display_on == "latest_posts") {
+                    $latestposts = wp_get_recent_posts();
+                    $islatest = false;
+                    foreach ($latestposts as $key => $lpostdata) {
+                        if (get_the_ID() == $lpostdata['ID']) {
+                            $islatest = true;
+                        }
+                    }
+                    if ($islatest) {
+                        echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                    }
+                } else if ($scriptdata->display_on == "s_categories" && !empty($scriptdata->s_categories) && in_category(unserialize($scriptdata->s_categories))) {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                } else if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && in_array(get_post_type(), unserialize($scriptdata->s_custom_posts))) {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                } else if ($scriptdata->display_on == "s_tags" && !empty($scriptdata->s_tags) && is_tag(unserialize($scriptdata->s_tags))) {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                }
+            } else if(!wp_is_mobile() && in_array($script[0]->device_type, array("desktop", "both"))) {
                 if ($scriptdata->display_on == "All") {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
                 } else if ($scriptdata->display_on == "latest_posts") {
@@ -149,7 +175,30 @@ function hfcm_footer_scripts() {
     $script = $wpdb->get_results("SELECT * from $table_name where location='footer' AND status='active'");
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
-            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || (!wp_is_mobile() && $scriptdata->desktop_status == "yes")) {
+            if(wp_is_mobile() && in_array($script[0]->device_type, array("mobile", "both"))) {
+                if ($scriptdata->display_on == "All") {
+                    echo $scriptdata->snippet;
+                } else if ($scriptdata->display_on == "latest_posts") {
+                    $latestposts = wp_get_recent_posts();
+                    $islatest = false;
+                    foreach ($latestposts as $key => $lpostdata) {
+                        if (get_the_ID() == $lpostdata['ID']) {
+                            $islatest = true;
+                        }
+                    }
+                    if ($islatest) {
+                        echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                    }
+                } else if ($scriptdata->display_on == "s_categories" && !empty($scriptdata->s_categories) && in_category(unserialize($scriptdata->s_categories))) {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                } else if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && in_array(get_post_type(), unserialize($scriptdata->s_custom_posts))) {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                } else if ($scriptdata->display_on == "s_tags" && !empty($scriptdata->s_tags) && is_tag(unserialize($scriptdata->s_tags))) {
+                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                }
+            } else if(!wp_is_mobile() && in_array($script[0]->device_type, array("desktop", "both"))) {
                 if ($scriptdata->display_on == "All") {
                     echo $scriptdata->snippet;
                 } else if ($scriptdata->display_on == "latest_posts") {
@@ -186,7 +235,21 @@ function hfcm_content_scripts($content) {
     $script = $wpdb->get_results("SELECT * from $table_name where location NOT IN ('footer', 'header') AND status='active'");
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
-            if ((wp_is_mobile() && $scriptdata->mobile_status == "yes") || (!wp_is_mobile() && $scriptdata->desktop_status == "yes")) {
+            if(wp_is_mobile() && in_array($script[0]->device_type, array("mobile", "both"))) {
+                if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && in_array(get_post_type(), unserialize($scriptdata->s_custom_posts))) {
+                    if ($scriptdata->location == "before_content") {
+                        return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->" . $content;
+                    } else if ($scriptdata->location == "after_content") {
+                        return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                    }
+                } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
+                    if ($scriptdata->location == "before_content") {
+                        return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->" . $content;
+                    } else if ($scriptdata->location == "after_content") {
+                        return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->";
+                    }
+                }
+            } else if(!wp_is_mobile() && in_array($script[0]->device_type, array("desktop", "both"))) {
                 if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && in_array(get_post_type(), unserialize($scriptdata->s_custom_posts))) {
                     if ($scriptdata->location == "before_content") {
                         return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->" . $scriptdata->snippet . "<!-- /end HFCM by 99robots -->" . $content;

@@ -127,10 +127,16 @@ class Snippets_List extends WP_List_Table {
                 return $item[$column_name];
             case 'location':
                 return $item[$column_name];
-            case 'desktop_status':
-                return $item[$column_name];
-            case 'mobile_status':
-                return $item[$column_name];
+            case 'device_type':
+                if ($item[$column_name] == "both") {
+                    return 'Show on All Devices';
+                } else if ($item[$column_name] == "mobile") {
+                    return 'Only Mobile Devices';
+                } else if ($item[$column_name] == "desktop") {
+                    return 'Only Computers';
+                } else {
+                    return $item[$column_name];
+                }
             case 'status':
                 if ($item[$column_name] == "inactive") {
                     return '<p id="toggleScript' . $item['script_id'] . '"><a onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);">
@@ -198,8 +204,7 @@ class Snippets_List extends WP_List_Table {
             'name' => __('Snippet Name', 'sp'),
             'display_on' => __('Display On', 'sp'),
             'location' => __('Location', 'sp'),
-            'desktop_status' => __('Display On Desktop?', 'sp'),
-            'mobile_status' => __('Display on Mobile?', 'sp'),
+            'device_type' => __('Devices', 'sp'),
             'status' => __('Status', 'sp')
         ];
 

@@ -23,32 +23,82 @@ function hfcm_update() {
         );
         die;
     } else if (isset($_POST['update'])) {
-        $name = $_POST['data']["name"];
-        $snippet = stripslashes_deep($_POST['data']["snippet"]);
-        $mobile_status = $_POST['data']["mobile_status"];
-        $desktop_status = $_POST['data']["desktop_status"];
-        $location = $_POST['data']["location"];
-        $display_on = $_POST['data']["display_on"];
-        $status = $_POST['data']["status"];
-        $s_pages = $_POST['data']["s_pages"];
-        $s_custom_posts = $_POST['data']["s_custom_posts"];
-        $s_categories = $_POST['data']["s_categories"];
-        $s_tags = $_POST['data']["s_tags"];
+        if (!empty($_POST['data']["name"])) {
+            $name = $_POST['data']["name"];
+        } else {
+            $name = "";
+        }
+        if (!empty($_POST['data']["snippet"])) {
+            $snippet = stripslashes_deep($_POST['data']["snippet"]);
+        } else {
+            $snippet = "";
+        }
+        if (!empty($_POST['data']["device_type"])) {
+            $device_type = $_POST['data']["device_type"];
+        } else {
+            $device_type = "";
+        }
+        if (!empty($_POST['data']["location"])) {
+            $location = $_POST['data']["location"];
+        } else {
+            $location = "";
+        }
+        if (!empty($_POST['data']["display_on"])) {
+            $display_on = $_POST['data']["display_on"];
+        } else {
+            $display_on = "";
+        }
+        if (!empty($_POST['data']["status"])) {
+            $status = $_POST['data']["status"];
+        } else {
+            $status = "";
+        }
+        if (!empty($_POST['data']["s_pages"])) {
+            $s_pages = $_POST['data']["s_pages"];
+        } else {
+            $s_pages = "";
+        }
+        if (!is_array($s_pages)) {
+            $s_pages = array();
+        }
+        if (!empty($_POST['data']["s_custom_posts"])) {
+            $s_custom_posts = $_POST['data']["s_custom_posts"];
+        } else {
+            $s_custom_posts = "";
+        }
+        if (!is_array($s_custom_posts)) {
+            $s_custom_posts = array();
+        }
+        if (!empty($_POST['data']["s_categories"])) {
+            $s_categories = $_POST['data']["s_categories"];
+        } else {
+            $s_categories = "";
+        }
+        if (!is_array($s_categories)) {
+            $s_categories = array();
+        }
+        if (!empty($_POST['data']["s_tags"])) {
+            $s_tags = $_POST['data']["s_tags"];
+        } else {
+            $s_tags = "";
+        }
+        if (!is_array($s_tags)) {
+            $s_tags = array();
+        }
 
         $wpdb->update(
                 $table_name, //table
                 array(
             "name" => $name,
             "snippet" => $snippet,
-            "mobile_status" => $mobile_status,
-            "desktop_status" => $desktop_status,
+            "device_type" => $device_type,
             "location" => $location,
             "display_on" => $display_on,
             "status" => $status,
-            "s_pages" => serialize($_POST['data']['s_pages']),
-            "s_custom_posts" => serialize($_POST['data']['s_custom_posts']),
-            "s_categories" => serialize($_POST['data']['s_categories']),
-            "s_tags" => serialize($_POST['data']['s_tags']),
+            "s_pages" => serialize($s_pages),
+            "s_custom_posts" => serialize($s_custom_posts),
+            "s_categories" => serialize($s_categories),
+            "s_tags" => serialize($s_tags),
                 ), //data
                 array('script_id' => $id), //where
                 array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
@@ -64,8 +114,7 @@ function hfcm_update() {
         foreach ($script as $s) {
             $name = $s->name;
             $snippet = $s->snippet;
-            $mobile_status = $s->mobile_status;
-            $desktop_status = $s->desktop_status;
+            $device_type = $s->device_type;
             $location = $s->location;
             $display_on = $s->display_on;
             $status = $s->status;
@@ -278,34 +327,19 @@ function hfcm_update() {
                             </select>
                         </td>
                     </tr>
-                    <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
+                    <?php $devicetypearray = array("both" => "Show on All Devices", "desktop" => "Only Computers", "mobile" => "Only Mobile Devices"); ?>
                     <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
+
                     <tr>
-                        <th class="hfcm-th-width">Display on Desktop?</th>
+                        <th class="hfcm-th-width">Devices?</th>
                         <td>
-                            <select name="data[desktop_status]">
+                            <select name="data[device_type]">
                                 <?php
-                                foreach ($mobilestatusarray as $smkey => $statusv) {
-                                    if ($desktop_status == $smkey) {
-                                        echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
+                                foreach ($devicetypearray as $smkey => $typev) {
+                                    if ($device_type == $smkey) {
+                                        echo "<option value='" . $smkey . "' selected='selected'>" . $typev . "</option>";
                                     } else {
-                                        echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="hfcm-th-width">Display on Mobile?</th>
-                        <td>
-                            <select name="data[mobile_status]">
-                                <?php
-                                foreach ($mobilestatusarray as $smkey => $statusv) {
-                                    if ($mobile_status == $smkey) {
-                                        echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
-                                    } else {
-                                        echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
+                                        echo "<option value='" . $smkey . "'>" . $typev . "</option>";
                                     }
                                 }
                                 ?>

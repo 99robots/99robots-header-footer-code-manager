@@ -14,15 +14,10 @@ function hfcm_create() {
     } else {
         $snippet = "";
     }
-    if (!empty($_POST['data']["mobile_status"])) {
-        $mobile_status = $_POST['data']["mobile_status"];
+    if (!empty($_POST['data']["device_type"])) {
+        $device_type = $_POST['data']["device_type"];
     } else {
-        $mobile_status = "";
-    }
-    if (!empty($_POST['data']["desktop_status"])) {
-        $desktop_status = $_POST['data']["desktop_status"];
-    } else {
-        $desktop_status = "";
+        $device_type = "";
     }
     if (!empty($_POST['data']["location"])) {
         $location = $_POST['data']["location"];
@@ -79,8 +74,7 @@ function hfcm_create() {
                 array(
             "name" => $name,
             "snippet" => $snippet,
-            "mobile_status" => $mobile_status,
-            "desktop_status" => $desktop_status,
+            "device_type" => $device_type,
             "location" => $location,
             "display_on" => $display_on,
             "status" => $status,
@@ -283,34 +277,18 @@ function hfcm_create() {
                         </select>
                     </td>
                 </tr>
-                <?php $mobilestatusarray = array("yes" => "Yes", "no" => "No"); ?>
+                <?php $devicetypearray = array("both" => "Show on All Devices", "desktop" => "Only Computers", "mobile" => "Only Mobile Devices"); ?>
                 <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
                 <tr>
-                    <th class="hfcm-th-width">Display on Desktop?</th>
+                    <th class="hfcm-th-width">Devices?</th>
                     <td>
-                        <select name="data[desktop_status]">
+                        <select name="data[device_type]">
                             <?php
-                            foreach ($mobilestatusarray as $smkey => $statusv) {
-                                if ($desktop_status == $smkey) {
-                                    echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
+                            foreach ($devicetypearray as $smkey => $typev) {
+                                if ($device_type == $smkey) {
+                                    echo "<option value='" . $smkey . "' selected='selected'>" . $typev . "</option>";
                                 } else {
-                                    echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="hfcm-th-width">Display on Mobile?</th>
-                    <td>
-                        <select name="data[mobile_status]">
-                            <?php
-                            foreach ($mobilestatusarray as $smkey => $statusv) {
-                                if ($mobile_status == $smkey) {
-                                    echo "<option value='" . $smkey . "' selected='selected'>" . $statusv . "</option>";
-                                } else {
-                                    echo "<option value='" . $smkey . "'>" . $statusv . "</option>";
+                                    echo "<option value='" . $smkey . "'>" . $typev . "</option>";
                                 }
                             }
                             ?>
