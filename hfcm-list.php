@@ -227,9 +227,9 @@ class Snippets_List extends WP_List_Table {
      */
     public function get_bulk_actions() {
         $actions = [
-            'bulk-delete' => 'Delete',
             'bulk-activate' => 'Activate',
             'bulk-deactivate' => 'Deactivate',
+            'bulk-delete' => 'Remove',
         ];
 
         return $actions;
