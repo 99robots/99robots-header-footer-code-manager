@@ -132,7 +132,17 @@ class Snippets_List extends WP_List_Table {
             case 'mobile_status':
                 return $item[$column_name];
             case 'status':
-                return $item[$column_name];
+                if ($item[$column_name] == "inactive") {
+                    return '<p id="toggleScript'.$item['script_id'].'"><a onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);">
+                            <img src="' . plugins_url('assets/images/', __FILE__) . 'off.png" />
+                        </a></p>';
+                } else if ($item[$column_name] == "active") {
+                    return '<p id="toggleScript'.$item['script_id'].'"><a href="javascript:void(0);" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');">
+                            <img src="' . plugins_url('assets/images/', __FILE__) . 'on.png" />
+                        </a></p>';
+                } else {
+                    return $item[$column_name];
+                }
             case 'script_id':
                 return $item[$column_name];
 
