@@ -34,6 +34,11 @@ function hfcm_create() {
     } else {
         $status = "";
     }
+    if (!empty($_POST['data']["lp_count"])) {
+        $lp_count = $_POST['data']["lp_count"];
+    } else {
+        $lp_count = "";
+    }
     if (!empty($_POST['data']["s_pages"])) {
         $s_pages = $_POST['data']["s_pages"];
     } else {
@@ -78,12 +83,14 @@ function hfcm_create() {
             "location" => $location,
             "display_on" => $display_on,
             "status" => $status,
+            "lp_count" => $lp_count,
             "s_pages" => serialize($s_pages),
             "s_custom_posts" => serialize($s_custom_posts),
             "s_categories" => serialize($s_categories),
             "s_tags" => serialize($s_tags),
             "created" => date("Y-m-d h:i:s")
-                )
+                ),
+                array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s")
         );
         $message = "Script Added Successfully";
         $lastid = $wpdb->insert_id;
@@ -109,22 +116,26 @@ function hfcm_create() {
                 if(type == "s_pages") {
                     jQuery("#s_pages").show();
                     jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                    jQuery("#s_categories, #s_tags, #c_posttype").hide();
+                    jQuery("#s_categories, #s_tags, #c_posttype, #lp_count").hide();
                 } else if(type == "s_categories") {
                     jQuery("#s_categories").show();
                     jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
-                    jQuery("#s_pages, #s_tags, #c_posttype").hide();
+                    jQuery("#s_pages, #s_tags, #c_posttype, #lp_count").hide();
                 } else if(type == "s_custom_posts") {
                     jQuery("#c_posttype").show();
                     jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                    jQuery("#s_categories, #s_tags, #s_pages").hide();
+                    jQuery("#s_categories, #s_tags, #s_pages, #lp_count").hide();
                 } else if(type == "s_tags") {
                     jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
                     jQuery("#s_tags").show();
-                    jQuery("#s_categories, #s_pages, #c_posttype").hide();
-                } else {
+                    jQuery("#s_categories, #s_pages, #c_posttype, #lp_count").hide();
+                } else if(type == "latest_posts") {
                     jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
                     jQuery("#s_pages, #s_categories, #s_tags, #c_posttype").hide();
+                    jQuery("#lp_count").show();
+                } else {
+                    jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
+                    jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
                 } 
             }
         </script>
@@ -248,6 +259,22 @@ function hfcm_create() {
                                     echo "<option value='" . $cpkey . "' selected>" . $cpdata . "</option>";
                                 } else {
                                     echo "<option value='" . $cpkey . "'>" . $cpdata . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr id="lp_count" style="display:none;">
+                    <th class="hfcm-th-width">Post Count</th>
+                    <td>
+                        <select name="data[lp_count]">
+                            <?php
+                            for ($i=1;$i<=20;$i++) {
+                                if ($i == $lp_count) {
+                                    echo "<option value='" . $i . "' selected>" . $i . "</option>";
+                                } else {
+                                    echo "<option value='" . $i . "'>" . $i . "</option>";
                                 }
                             }
                             ?>

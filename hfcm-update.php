@@ -48,6 +48,11 @@ function hfcm_update() {
         } else {
             $display_on = "";
         }
+        if (!empty($_POST['data']["lp_count"])) {
+            $lp_count = $_POST['data']["lp_count"];
+        } else {
+            $lp_count = "";
+        }
         if (!empty($_POST['data']["status"])) {
             $status = $_POST['data']["status"];
         } else {
@@ -95,6 +100,7 @@ function hfcm_update() {
             "location" => $location,
             "display_on" => $display_on,
             "status" => $status,
+            "lp_count" => $lp_count,
             "s_pages" => serialize($s_pages),
             "s_custom_posts" => serialize($s_custom_posts),
             "s_categories" => serialize($s_categories),
@@ -118,6 +124,7 @@ function hfcm_update() {
             $location = $s->location;
             $display_on = $s->display_on;
             $status = $s->status;
+            $lp_count = $s->lp_count;
             $s_pages = unserialize($s->s_pages);
             if (!is_array($s_pages)) {
                 $s_pages = array();
@@ -159,22 +166,26 @@ function hfcm_update() {
                     if(type == "s_pages") {
                         jQuery("#s_pages").show();
                         jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                        jQuery("#s_categories, #s_tags, #c_posttype").hide();
+                        jQuery("#s_categories, #s_tags, #c_posttype, #lp_count").hide();
                     } else if(type == "s_categories") {
                         jQuery("#s_categories").show();
                         jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
-                        jQuery("#s_pages, #s_tags, #c_posttype").hide();
+                        jQuery("#s_pages, #s_tags, #c_posttype, #lp_count").hide();
                     } else if(type == "s_custom_posts") {
                         jQuery("#c_posttype").show();
                         jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                        jQuery("#s_categories, #s_tags, #s_pages").hide();
+                        jQuery("#s_categories, #s_tags, #s_pages, #lp_count").hide();
                     } else if(type == "s_tags") {
                         jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
                         jQuery("#s_tags").show();
-                        jQuery("#s_categories, #s_pages, #c_posttype").hide();
-                    } else {
+                        jQuery("#s_categories, #s_pages, #c_posttype, #lp_count").hide();
+                    } else if(type == "latest_posts") {
                         jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
                         jQuery("#s_pages, #s_categories, #s_tags, #c_posttype").hide();
+                        jQuery("#lp_count").show();
+                    } else {
+                        jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
                     } 
                 }
             </script>
@@ -255,6 +266,11 @@ function hfcm_update() {
                     } else {
                         $cpostssstyle = "display:none;";
                     }
+                    if ($display_on == "latest_posts") {
+                        $lpcountstyle = "display:block;";
+                    } else {
+                        $lpcountstyle = "display:none;";
+                    }
                     ?>
                     <tr id="s_categories" style="<?php echo $scategoriesstyle; ?>">
                         <th class="hfcm-th-width">Category List</th>
@@ -298,6 +314,22 @@ function hfcm_update() {
                                         echo "<option value='" . $cpkey . "' selected>" . $cpdata . "</option>";
                                     } else {
                                         echo "<option value='" . $cpkey . "'>" . $cpdata . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr id="lp_count" style="<?php echo $lpcountstyle; ?>">
+                        <th class="hfcm-th-width">Post Count</th>
+                        <td>
+                            <select name="data[lp_count]">
+                                <?php
+                                for ($i = 1; $i <= 20; $i++) {
+                                    if ($i == $lp_count) {
+                                        echo "<option value='" . $i . "' selected>" . $i . "</option>";
+                                    } else {
+                                        echo "<option value='" . $i . "'>" . $i . "</option>";
                                     }
                                 }
                                 ?>

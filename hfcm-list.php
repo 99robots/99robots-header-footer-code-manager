@@ -392,27 +392,26 @@ function hfcm_list() {
         </form>
 
     </div>
+    <script>
+        function togglefunction(togvalue, scriptid) {
+            if(togvalue == "on") {
+                jQuery.ajax({
+                    url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid, 
+                    data:{togvalue:togvalue},
+                    success: function(result){
+                        jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'off\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" /></a>');
+                    }
+                });
+            } else {
+                jQuery.ajax({
+                    url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid,
+                    data:{togvalue:togvalue},
+                    success: function(result){
+                        jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'on\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" /></a>');
+                    }
+                });
+            }
+        }
+    </script>
     <?php
 }
-?>
-<script>
-    function togglefunction(togvalue, scriptid) {
-        if(togvalue == "on") {
-            jQuery.ajax({
-                url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid, 
-                data:{togvalue:togvalue},
-                success: function(result){
-                    jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'off\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" /></a>');
-                }
-            });
-        } else {
-            jQuery.ajax({
-                url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid,
-                data:{togvalue:togvalue},
-                success: function(result){
-                    jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'on\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" /></a>');
-                }
-            });
-        }
-    }
-</script>
