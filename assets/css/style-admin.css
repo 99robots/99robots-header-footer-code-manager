@@ -5,3 +5,16 @@
 .hfcm-field-width {width:75%}
 .btnsave {margin-top:10px !important; float:right;}
 .padding20 {padding:20px !important;}
+.round-toggle { position: absolute; margin-left: -9999px; visibility: hidden;}
+.round-toggle + label { display: inline-block; position: relative; cursor: pointer; outline: none;  user-select: none;  vertical-align:middle;}
+input.round-toggle-round-flat + label { padding: 2px; width: 50px; height: 25px; background-color: #fe8330; border-radius: 60px;}
+input.round-toggle-round-flat + label:before,
+input.round-toggle-round-flat + label:after {display: block; position: absolute; content: "";}
+input.round-toggle-round-flat + label:after { top: 3px; left: 3px; bottom: 3px; width: 23px; background-color: #323d43; border-radius: 52px; transition: margin 0.25s;}
+input.round-toggle-round-flat:checked + label {}
+input.round-toggle-round-flat:checked + label:after {margin-left: 25px;}
+/* Pricing table */
+.switch {text-align:center;}
+.switch label{cursor:pointer;padding:10px;}
+.switch label:hover{color:#777;}
+input.round-toggle-round-flat + label:hover:after{background-color:#555;} 

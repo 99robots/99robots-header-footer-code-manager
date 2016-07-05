@@ -139,13 +139,21 @@ class Snippets_List extends WP_List_Table {
                 }
             case 'status':
                 if ($item[$column_name] == "inactive") {
-                    return '<p id="toggleScript' . $item['script_id'] . '"><a onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);">
-                            <img src="' . plugins_url('assets/images/', __FILE__) . 'off.png" />
-                        </a></p>';
+                    return '<div class="switch">
+                                <label for="round-toggle">OFF</label>
+                                <input id="round-toggle" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);" />
+                                <label for="round-toggle"></label>
+                                <label for="round-toggle">ON</label>
+                            </div>
+                            ';
                 } else if ($item[$column_name] == "active") {
-                    return '<p id="toggleScript' . $item['script_id'] . '"><a href="javascript:void(0);" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');">
-                            <img src="' . plugins_url('assets/images/', __FILE__) . 'on.png" />
-                        </a></p>';
+                    return '<div class="switch">
+                                <label for="round-toggle">OFF</label>
+                                <input id="round-toggle" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');" checked="checked" />
+                                <label for="round-toggle"></label>
+                                <label for="round-toggle">ON</label>
+                            </div>
+                            ';
                 } else {
                     return $item[$column_name];
                 }
@@ -362,6 +370,7 @@ class Snippets_List extends WP_List_Table {
 }
 
 function hfcm_list() {
+
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $activeclass = "";
@@ -379,6 +388,7 @@ function hfcm_list() {
         }
     }
     ?>
+    <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h1>Snippets 
             <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
@@ -399,7 +409,7 @@ function hfcm_list() {
                     url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid, 
                     data:{togvalue:togvalue},
                     success: function(result){
-                        jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'off\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>on.png" /></a>');
+                            
                     }
                 });
             } else {
@@ -407,7 +417,7 @@ function hfcm_list() {
                     url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid,
                     data:{togvalue:togvalue},
                     success: function(result){
-                        jQuery("#toggleScript"+scriptid).html('<a href="javascript:void(0);" onclick="togglefunction(\'on\', '+scriptid+');"><img src="<?php echo plugins_url('assets/images/', __FILE__); ?>off.png" /></a>');
+                            
                     }
                 });
             }
