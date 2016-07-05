@@ -140,18 +140,18 @@ class Snippets_List extends WP_List_Table {
             case 'status':
                 if ($item[$column_name] == "inactive") {
                     return '<div class="switch">
-                                <label for="round-toggle">OFF</label>
-                                <input id="round-toggle" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);" />
-                                <label for="round-toggle"></label>
-                                <label for="round-toggle">ON</label>
+                                <label for="nnr-round-toggle'. $item['script_id'] . '">OFF</label>
+                                <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);" />
+                                <label for="nnr-round-toggle'. $item['script_id'] . '"></label>
+                                <label for="nnr-round-toggle'. $item['script_id'] . '">ON</label>
                             </div>
                             ';
                 } else if ($item[$column_name] == "active") {
                     return '<div class="switch">
-                                <label for="round-toggle">OFF</label>
-                                <input id="round-toggle" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');" checked="checked" />
-                                <label for="round-toggle"></label>
-                                <label for="round-toggle">ON</label>
+                                <label for="nnr-round-toggle'. $item['script_id'] . '">OFF</label>
+                                <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');" checked="checked" />
+                                <label for="nnr-round-toggle'. $item['script_id'] . '"></label>
+                                <label for="nnr-round-toggle'. $item['script_id'] . '">ON</label>
                             </div>
                             ';
                 } else {
