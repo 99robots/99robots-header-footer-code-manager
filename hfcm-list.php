@@ -139,7 +139,7 @@ class Snippets_List extends WP_List_Table {
                 }
             case 'status':
                 if ($item[$column_name] == "inactive") {
-                    return '<div class="switch">
+                    return '<div class="nnr-switch">
                                 <label for="nnr-round-toggle'. $item['script_id'] . '">OFF</label>
                                 <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);" />
                                 <label for="nnr-round-toggle'. $item['script_id'] . '"></label>
@@ -147,7 +147,7 @@ class Snippets_List extends WP_List_Table {
                             </div>
                             ';
                 } else if ($item[$column_name] == "active") {
-                    return '<div class="switch">
+                    return '<div class="nnr-switch">
                                 <label for="nnr-round-toggle'. $item['script_id'] . '">OFF</label>
                                 <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');" checked="checked" />
                                 <label for="nnr-round-toggle'. $item['script_id'] . '"></label>

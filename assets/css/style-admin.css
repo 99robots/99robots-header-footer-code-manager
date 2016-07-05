@@ -14,7 +14,7 @@ input.round-toggle-round-flat + label:after { top: 3px; left: 3px; bottom: 3px; 
 input.round-toggle-round-flat:checked + label {}
 input.round-toggle-round-flat:checked + label:after {margin-left: 25px;}
 /* Pricing table */
-.switch {text-align:center;}
-.switch label{cursor:pointer;padding:10px;}
-.switch label:hover{color:#777;}
+.nnr-switch {text-align:center;}
+.nnr-switch label{cursor:pointer;padding:10px;}
+.nnr-switch label:hover{color:#777;}
 input.round-toggle-round-flat + label:hover:after{background-color:#555;} 
