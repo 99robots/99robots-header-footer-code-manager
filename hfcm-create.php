@@ -145,11 +145,11 @@ function hfcm_create() {
                     <th class="hfcm-th-width">Snippet Name</th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                 </tr>
-                <?php $darray = array("All" => "All", "s_pages" => "Specific pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
+                <?php $darray = array("All" => "All", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
                 <tr>
                     <th class="hfcm-th-width">Display on</th>
                     <td>
-                        <select name="data[display_on]" onchange="js:showotherboxes(this.value);">
+                        <select name="data[display_on]" onchange="showotherboxes(this.value);">
                             <?php
                             foreach ($darray as $dkey => $statusv) {
                                 if ($display_on == $dkey) {
