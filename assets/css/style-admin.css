@@ -3,7 +3,7 @@
 .hfcm-form-width {width:100%;}
 .hfcm-th-width {width:25%; padding:20px 20px 0 !important;}
 .hfcm-field-width {width:75%}
-.btnsave {margin-top:10px !important; float:right;}
+.nnr-btnsave {margin-top:10px !important;}
 .padding20 {padding:20px !important;}
 .round-toggle { position: absolute; margin-left: -9999px; visibility: hidden;}
 .round-toggle + label { display: inline-block; position: relative; cursor: pointer; outline: none;  user-select: none;  vertical-align:middle;}

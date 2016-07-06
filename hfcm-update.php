@@ -399,7 +399,7 @@ function hfcm_update() {
                 <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10" cols="70"><?php echo $snippet; ?></textarea>
 
                 <div class="wp-core-ui">
-                    <input type='submit' name="update" value='Update' class='button button-primary button-large btnsave' />
+                    <input type='submit' name="update" value='Update' class='button button-primary button-large nnr-btnsave' />
                 </div>
             </form>
         <?php } ?>

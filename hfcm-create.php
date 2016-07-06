@@ -342,7 +342,7 @@ function hfcm_create() {
             <h1>Snippet / Code</h1>
             <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10" cols="70"><?php echo $snippet; ?></textarea>
             <div class="wp-core-ui">
-                <input type='submit' name="insert" value='Publish' class='button button-primary button-large btnsave' />
+                <input type='submit' name="insert" value='Save' class='button button-primary button-large nnr-btnsave' />
             </div>
         </form>
     </div>
