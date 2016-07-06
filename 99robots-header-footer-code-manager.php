@@ -148,7 +148,7 @@ function hfcm_header_scripts() {
                     }
                 } else if ($scriptdata->display_on == "s_categories" && !empty($scriptdata->s_categories) && in_category(unserialize($scriptdata->s_categories))) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular($scriptdata->s_custom_posts) && !empty($scriptdata->s_custom_posts)) {
+                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular(unserialize($scriptdata->s_custom_posts)) && !empty($scriptdata->s_custom_posts)) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                 } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
@@ -186,7 +186,7 @@ function hfcm_header_scripts() {
                     }
                 } else if ($scriptdata->display_on == "s_categories" && !empty($scriptdata->s_categories) && in_category(unserialize($scriptdata->s_categories))) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular($scriptdata->s_custom_posts) && !empty($scriptdata->s_custom_posts)) {
+                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular(unserialize($scriptdata->s_custom_posts)) && !empty($scriptdata->s_custom_posts)) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                 } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
@@ -238,7 +238,7 @@ function hfcm_footer_scripts() {
                     }
                 } else if ($scriptdata->display_on == "s_categories" && !empty($scriptdata->s_categories) && in_category(unserialize($scriptdata->s_categories))) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular($scriptdata->s_custom_posts) && !empty($scriptdata->s_custom_posts)) {
+                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular(unserialize($scriptdata->s_custom_posts)) && !empty($scriptdata->s_custom_posts)) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                 } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
@@ -276,7 +276,7 @@ function hfcm_footer_scripts() {
                     }
                 } else if ($scriptdata->display_on == "s_categories" && !empty($scriptdata->s_categories) && in_category(unserialize($scriptdata->s_categories))) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular($scriptdata->s_custom_posts) && !empty($scriptdata->s_custom_posts)) {
+                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular(unserialize($scriptdata->s_custom_posts)) && !empty($scriptdata->s_custom_posts)) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                 } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
                     echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
@@ -298,32 +298,44 @@ function hfcm_content_scripts($content) {
     if (!empty($script)) {
         foreach ($script as $key => $scriptdata) {
             if (wp_is_mobile() && in_array($script[0]->device_type, array("mobile", "both"))) {
-                if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && is_singular($scriptdata->s_custom_posts)) {
+                if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && is_singular(unserialize($scriptdata->s_custom_posts))) {
                     if ($scriptdata->location == "before_content") {
                         return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
                     } else if ($scriptdata->location == "after_content") {
                         return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
+                    } else {
+                        return $content;
                     }
                 } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
                     if ($scriptdata->location == "before_content") {
                         return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
                     } else if ($scriptdata->location == "after_content") {
                         return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
+                    } else {
+                        return $content;
                     }
+                } else {
+                    return $content;
                 }
             } else if (!wp_is_mobile() && in_array($script[0]->device_type, array("desktop", "both"))) {
-                if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && is_singular($scriptdata->s_custom_posts)) {
+                if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && is_singular(unserialize($scriptdata->s_custom_posts))) {
                     if ($scriptdata->location == "before_content") {
                         return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
                     } else if ($scriptdata->location == "after_content") {
                         return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
+                    } else {
+                        return $content;
                     }
                 } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
                     if ($scriptdata->location == "before_content") {
                         return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
                     } else if ($scriptdata->location == "after_content") {
                         return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
+                    } else {
+                        return $content;
                     }
+                } else {
+                    return $content;
                 }
             } else {
                 return $content;
