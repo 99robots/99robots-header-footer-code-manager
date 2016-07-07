@@ -124,7 +124,8 @@ class Snippets_List extends WP_List_Table {
             case 'name':
                 return $item[$column_name];
             case 'display_on':
-                return $item[$column_name];
+                $darray = array("All" => "All", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement");
+                return $darray[$item[$column_name]];
             case 'location':
                 return $item[$column_name];
             case 'device_type':

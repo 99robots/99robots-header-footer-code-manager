@@ -25,7 +25,7 @@ function hfcm_options_install() {
             `snippet` text,
             `device_type` enum('mobile','desktop', 'both') DEFAULT 'both',
             `location` varchar(100) NOT NULL,
-            `display_on` enum('All','s_pages','s_categories','s_custom_posts','s_tags','latest_posts') NOT NULL DEFAULT 'All',
+            `display_on` enum('All','s_pages','s_categories','s_custom_posts','s_tags','latest_posts','manual') NOT NULL DEFAULT 'All',
             `lp_count` int(10) DEFAULT NULL,
             `s_pages` varchar(300) DEFAULT NULL,
             `s_custom_posts` varchar(300) DEFAULT NULL,

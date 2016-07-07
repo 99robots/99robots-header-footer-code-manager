@@ -19,15 +19,15 @@ function hfcm_create() {
     } else {
         $device_type = "";
     }
-    if (!empty($_POST['data']["location"])) {
-        $location = $_POST['data']["location"];
-    } else {
-        $location = "";
-    }
     if (!empty($_POST['data']["display_on"])) {
         $display_on = $_POST['data']["display_on"];
     } else {
         $display_on = "";
+    }
+    if (!empty($_POST['data']["location"]) && $display_on != "manual") {
+        $location = $_POST['data']["location"];
+    } else {
+        $location = "";
     }
     if (!empty($_POST['data']["status"])) {
         $status = $_POST['data']["status"];
@@ -89,8 +89,7 @@ function hfcm_create() {
             "s_categories" => serialize($s_categories),
             "s_tags" => serialize($s_tags),
             "created" => date("Y-m-d h:i:s")
-                ),
-                array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s")
+                ), array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s")
         );
         $message = "Script Added Successfully";
         $lastid = $wpdb->insert_id;
@@ -114,28 +113,31 @@ function hfcm_create() {
             // function to show dependent dropdowns for "Display on" field.
             function showotherboxes(type) {
                 if(type == "s_pages") {
-                    jQuery("#s_pages").show();
+                    jQuery("#s_pages, #locationtr").show();
                     jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
                     jQuery("#s_categories, #s_tags, #c_posttype, #lp_count").hide();
                 } else if(type == "s_categories") {
-                    jQuery("#s_categories").show();
+                    jQuery("#s_categories, #locationtr").show();
                     jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
                     jQuery("#s_pages, #s_tags, #c_posttype, #lp_count").hide();
                 } else if(type == "s_custom_posts") {
-                    jQuery("#c_posttype").show();
+                    jQuery("#c_posttype, #locationtr").show();
                     jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
                     jQuery("#s_categories, #s_tags, #s_pages, #lp_count").hide();
                 } else if(type == "s_tags") {
                     jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                    jQuery("#s_tags").show();
+                    jQuery("#s_tags, #locationtr").show();
                     jQuery("#s_categories, #s_pages, #c_posttype, #lp_count").hide();
                 } else if(type == "latest_posts") {
                     jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
                     jQuery("#s_pages, #s_categories, #s_tags, #c_posttype").hide();
-                    jQuery("#lp_count").show();
+                    jQuery("#lp_count, #locationtr").show();
+                } else if(type == "manual") {
+                    jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr").hide();
                 } else {
                     jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
                     jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
+                    jQuery("#locationtr").show();
                 } 
             }
         </script>
@@ -145,7 +147,7 @@ function hfcm_create() {
                     <th class="hfcm-th-width">Snippet Name</th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                 </tr>
-                <?php $darray = array("All" => "All", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts"); ?>
+                <?php $darray = array("All" => "All", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement"); ?>
                 <tr>
                     <th class="hfcm-th-width">Display on</th>
                     <td>
@@ -270,7 +272,7 @@ function hfcm_create() {
                     <td>
                         <select name="data[lp_count]">
                             <?php
-                            for ($i=1;$i<=20;$i++) {
+                            for ($i = 1; $i <= 20; $i++) {
                                 if ($i == $lp_count) {
                                     echo "<option value='" . $i . "' selected>" . $i . "</option>";
                                 } else {
@@ -288,10 +290,10 @@ function hfcm_create() {
                     $larray = array("header" => "Header", "footer" => "Footer");
                 }
                 ?>
-                <tr>
+                <tr id="locationtr">
                     <th class="hfcm-th-width">Location</th>
                     <td>
-                        <select name="data[location]">
+                        <select name="data[location]" id="data_location">
                             <?php
                             foreach ($larray as $lkey => $statusv) {
                                 if ($location == $lkey) {
