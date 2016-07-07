@@ -275,6 +275,11 @@ function hfcm_update() {
                     } else {
                         $lpcountstyle = "display:none;";
                     }
+                    if ($display_on == "manual") {
+                        $locationstyle = "display:none;";
+                    } else {
+                        $locationstyle = "display:block;";
+                    }
                     ?>
                     <tr id="s_categories" style="<?php echo $scategoriesstyle; ?>">
                         <th class="hfcm-th-width">Category List</th>
@@ -347,7 +352,7 @@ function hfcm_update() {
                         $larray = array("header" => "Header", "footer" => "Footer");
                     }
                     ?>
-                    <tr id="locationtr">
+                    <tr id="locationtr" style="<?php echo $locationstyle; ?>">
                         <th class="hfcm-th-width">Location</th>
                         <td>
                             <select name="data[location]" id="data_location">
@@ -401,7 +406,7 @@ function hfcm_update() {
                 </table>
                 <h1>Snippet / Code</h1>
                 <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10" cols="70"><?php echo $snippet; ?></textarea>
-
+                <p><strong>Short Code: [hfcm id="<?php echo $id; ?>"]</strong></p>
                 <div class="wp-core-ui">
                     <input type='submit' name="update" value='Update' class='button button-primary button-large nnr-btnsave' />
                 </div>
