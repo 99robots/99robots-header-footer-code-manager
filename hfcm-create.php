@@ -71,6 +71,14 @@ function hfcm_create() {
     if (!is_array($s_tags)) {
         $s_tags = array();
     }
+    //Get Last inserted ID
+    $lastinsertedid = $wpdb->get_results("SELECT script_id from $table_name ORDER BY script_id DESC LIMIT 0,1");
+    if (empty($lastinsertedid)) {
+        $shortcode = '[hfcm id="1"]';
+    } else {
+        $shortcode = '[hfcm id="' . ($lastinsertedid[0]->script_id+1) . '"]';
+    }
+
     //insert
     if (isset($_POST['insert'])) {
         global $wpdb;
@@ -338,6 +346,12 @@ function hfcm_create() {
                             }
                             ?>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="hfcm-th-width">Shortcode</th>
+                    <td>
+                        <p><?php echo $shortcode; ?></p>
                     </td>
                 </tr>
             </table>

@@ -160,7 +160,8 @@ class Snippets_List extends WP_List_Table {
                 }
             case 'script_id':
                 return $item[$column_name];
-
+            case 'shortcode':
+                return '[hfcm id="'.$item["script_id"].'"]';
             default:
                 return print_r($item, true); //Show the whole array for troubleshooting purposes
         }
@@ -214,7 +215,8 @@ class Snippets_List extends WP_List_Table {
             'display_on' => __('Display On', 'sp'),
             'location' => __('Location', 'sp'),
             'device_type' => __('Devices', 'sp'),
-            'status' => __('Status', 'sp')
+            'status' => __('Status', 'sp'),
+            'shortcode' => __('Shortcode', 'sp')
         ];
 
         return $columns;

@@ -48,7 +48,7 @@ function hfcm_update() {
         } else {
             $location = "";
         }
-        
+
         if (!empty($_POST['data']["lp_count"])) {
             $lp_count = $_POST['data']["lp_count"];
         } else {
@@ -403,10 +403,16 @@ function hfcm_update() {
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                        <th class="hfcm-th-width">Shortcode</th>
+                        <td>
+                            <p>[hfcm id="<?php echo $id; ?>"]</p>
+                        </td>
+                    </tr>
                 </table>
                 <h1>Snippet / Code</h1>
                 <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10" cols="70"><?php echo $snippet; ?></textarea>
-                <p><strong>Short Code: [hfcm id="<?php echo $id; ?>"]</strong></p>
+
                 <div class="wp-core-ui">
                     <input type='submit' name="update" value='Update' class='button button-primary button-large nnr-btnsave' />
                 </div>
