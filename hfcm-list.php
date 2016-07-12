@@ -142,7 +142,7 @@ class Snippets_List extends WP_List_Table {
                 if ($item[$column_name] == "inactive") {
                     return '<div class="nnr-switch">
                                 <label for="nnr-round-toggle'. $item['script_id'] . '">OFF</label>
-                                <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'on\', ' . $item['script_id'] . ');" href="javascript:void(0);" />
+                                <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . $item['script_id'] . '" />
                                 <label for="nnr-round-toggle'. $item['script_id'] . '"></label>
                                 <label for="nnr-round-toggle'. $item['script_id'] . '">ON</label>
                             </div>
@@ -150,7 +150,7 @@ class Snippets_List extends WP_List_Table {
                 } else if ($item[$column_name] == "active") {
                     return '<div class="nnr-switch">
                                 <label for="nnr-round-toggle'. $item['script_id'] . '">OFF</label>
-                                <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" onclick="togglefunction(\'off\', ' . $item['script_id'] . ');" checked="checked" />
+                                <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . $item['script_id'] . '" checked="checked" />
                                 <label for="nnr-round-toggle'. $item['script_id'] . '"></label>
                                 <label for="nnr-round-toggle'. $item['script_id'] . '">ON</label>
                             </div>
@@ -406,25 +406,23 @@ function hfcm_list() {
 
     </div>
     <script>
-        function togglefunction(togvalue, scriptid) {
-            if(togvalue == "on") {
-                jQuery.ajax({
-                    url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid, 
-                    data:{togvalue:togvalue},
-                    success: function(result){
-                            
-                    }
-                });
-            } else {
-                jQuery.ajax({
-                    url: "<?php echo admin_url('admin.php?page=hfcm-update&toggle=true&id='); ?>"+scriptid,
-                    data:{togvalue:togvalue},
-                    success: function(result){
-                            
-                    }
-                });
-            }
-        }
+		jQuery('.nnr-switch input').click(function()
+			{	var t=jQuery(this),
+					togvalue = t.is(':checked')?'on':'off',
+					scriptid = t.data('id');
+					
+				jQuery.ajax(
+					{	url: '<?php echo admin_url('admin.php'); ?>', 
+						data:
+						{	page: 'hfcm-update',
+							toggle: true,
+							id: scriptid,
+							togvalue: togvalue
+						}
+					}
+				);	
+			}
+		);
     </script>
     <?php
 }
