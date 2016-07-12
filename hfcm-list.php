@@ -124,7 +124,7 @@ class Snippets_List extends WP_List_Table {
             case 'name':
                 return $item[$column_name];
             case 'display_on':
-                $darray = array("All" => "All", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement");
+                $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement");
                 return $darray[$item[$column_name]];
             case 'location':
                 return $item[$column_name];
@@ -141,18 +141,18 @@ class Snippets_List extends WP_List_Table {
             case 'status':
                 if ($item[$column_name] == "inactive") {
                     return '<div class="nnr-switch">
-                                <label for="nnr-round-toggle'. $item['script_id'] . '">OFF</label>
-                                <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . $item['script_id'] . '" />
-                                <label for="nnr-round-toggle'. $item['script_id'] . '"></label>
-                                <label for="nnr-round-toggle'. $item['script_id'] . '">ON</label>
+                                <label for="nnr-round-toggle' . $item['script_id'] . '">OFF</label>
+                                <input id="nnr-round-toggle' . $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . $item['script_id'] . '" />
+                                <label for="nnr-round-toggle' . $item['script_id'] . '"></label>
+                                <label for="nnr-round-toggle' . $item['script_id'] . '">ON</label>
                             </div>
                             ';
                 } else if ($item[$column_name] == "active") {
                     return '<div class="nnr-switch">
-                                <label for="nnr-round-toggle'. $item['script_id'] . '">OFF</label>
-                                <input id="nnr-round-toggle'. $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . $item['script_id'] . '" checked="checked" />
-                                <label for="nnr-round-toggle'. $item['script_id'] . '"></label>
-                                <label for="nnr-round-toggle'. $item['script_id'] . '">ON</label>
+                                <label for="nnr-round-toggle' . $item['script_id'] . '">OFF</label>
+                                <input id="nnr-round-toggle' . $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . $item['script_id'] . '" checked="checked" />
+                                <label for="nnr-round-toggle' . $item['script_id'] . '"></label>
+                                <label for="nnr-round-toggle' . $item['script_id'] . '">ON</label>
                             </div>
                             ';
                 } else {
@@ -161,7 +161,7 @@ class Snippets_List extends WP_List_Table {
             case 'script_id':
                 return $item[$column_name];
             case 'shortcode':
-                return '[hfcm id="'.$item["script_id"].'"]';
+                return '[hfcm id="' . $item["script_id"] . '"]';
             default:
                 return print_r($item, true); //Show the whole array for troubleshooting purposes
         }
@@ -406,23 +406,23 @@ function hfcm_list() {
 
     </div>
     <script>
-		jQuery('.nnr-switch input').click(function()
-			{	var t=jQuery(this),
-					togvalue = t.is(':checked')?'on':'off',
-					scriptid = t.data('id');
-					
-				jQuery.ajax(
-					{	url: '<?php echo admin_url('admin.php'); ?>', 
-						data:
-						{	page: 'hfcm-update',
-							toggle: true,
-							id: scriptid,
-							togvalue: togvalue
-						}
-					}
-				);	
-			}
-		);
+        jQuery('.nnr-switch input').click(function()
+        {	var t=jQuery(this),
+            togvalue = t.is(':checked')?'on':'off',
+            scriptid = t.data('id');
+    					
+            jQuery.ajax(
+            {	url: '<?php echo admin_url('admin.php'); ?>', 
+                data:
+                    {	page: 'hfcm-update',
+                    toggle: true,
+                    id: scriptid,
+                    togvalue: togvalue
+                }
+            }
+        );	
+        }
+    );
     </script>
     <?php
 }

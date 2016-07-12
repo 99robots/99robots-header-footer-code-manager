@@ -64,8 +64,16 @@ function hfcm_update() {
         } else {
             $s_pages = "";
         }
+        if (!empty($_POST['data']["s_posts"])) {
+            $s_posts = $_POST['data']["s_posts"];
+        } else {
+            $s_posts = "";
+        }
         if (!is_array($s_pages)) {
             $s_pages = array();
+        }
+        if (!is_array($s_posts)) {
+            $s_posts = array();
         }
         if (!empty($_POST['data']["s_custom_posts"])) {
             $s_custom_posts = $_POST['data']["s_custom_posts"];
@@ -103,6 +111,7 @@ function hfcm_update() {
             "status" => $status,
             "lp_count" => $lp_count,
             "s_pages" => serialize($s_pages),
+            "s_posts" => serialize($s_posts),
             "s_custom_posts" => serialize($s_custom_posts),
             "s_categories" => serialize($s_categories),
             "s_tags" => serialize($s_tags),
@@ -129,6 +138,10 @@ function hfcm_update() {
             $s_pages = unserialize($s->s_pages);
             if (!is_array($s_pages)) {
                 $s_pages = array();
+            }
+            $s_posts = unserialize($s->s_posts);
+            if (!is_array($s_posts)) {
+                $s_posts = array();
             }
             $s_custom_posts = unserialize($s->s_custom_posts);
             if (!is_array($s_custom_posts)) {
@@ -167,28 +180,32 @@ function hfcm_update() {
                     if(type == "s_pages") {
                         jQuery("#s_pages, #locationtr").show();
                         jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                        jQuery("#s_categories, #s_tags, #c_posttype, #lp_count").hide();
+                        jQuery("#s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
+                    } else if(type == "s_posts") {
+                        jQuery("#s_posts, #locationtr").show();
+                        jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
                     } else if(type == "s_categories") {
                         jQuery("#s_categories, #locationtr").show();
                         jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
-                        jQuery("#s_pages, #s_tags, #c_posttype, #lp_count").hide();
+                        jQuery("#s_pages, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
                     } else if(type == "s_custom_posts") {
                         jQuery("#c_posttype, #locationtr").show();
                         jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                        jQuery("#s_categories, #s_tags, #s_pages, #lp_count").hide();
+                        jQuery("#s_categories, #s_tags, #s_pages, #lp_count, #s_posts").hide();
                     } else if(type == "s_tags") {
                         jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
                         jQuery("#s_tags, #locationtr").show();
-                        jQuery("#s_categories, #s_pages, #c_posttype, #lp_count").hide();
+                        jQuery("#s_categories, #s_pages, #c_posttype, #lp_count, #s_posts").hide();
                     } else if(type == "latest_posts") {
                         jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
-                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype").hide();
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #s_posts").hide();
                         jQuery("#lp_count, #locationtr").show();
                     } else if(type == "manual") {
-                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr").hide();
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr, #s_posts").hide();
                     } else {
                         jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
-                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
                         jQuery("#locationtr").show();
                     } 
                 }
@@ -199,7 +216,7 @@ function hfcm_update() {
                         <th class="hfcm-th-width">Snippet Name</th>
                         <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                     </tr>
-                    <?php $darray = array("All" => "All", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement"); ?>
+                    <?php $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement"); ?>
                     <tr>
                         <th class="hfcm-th-width">Display on</th>
                         <td>
@@ -219,7 +236,7 @@ function hfcm_update() {
                     <?php
                     $pages = get_pages();
                     if ($display_on == "s_pages") {
-                        $spagesstyle = "display:block;";
+                        $spagesstyle = "";
                     } else {
                         $spagesstyle = "display:none;";
                     }
@@ -242,21 +259,6 @@ function hfcm_update() {
                     </tr>
                     <?php
                     $args = array(
-                        'hide_empty' => 0
-                    );
-                    $categories = get_categories($args);
-                    if ($display_on == "s_categories") {
-                        $scategoriesstyle = "display:block;";
-                    } else {
-                        $scategoriesstyle = "display:none;";
-                    }
-                    $tags = get_tags($args);
-                    if ($display_on == "s_tags") {
-                        $stagsstyle = "display:block;";
-                    } else {
-                        $stagsstyle = "display:none;";
-                    }
-                    $args = array(
                         'public' => true,
                         '_builtin' => false,
                     );
@@ -265,8 +267,52 @@ function hfcm_update() {
                     $operator = 'and'; // 'and' or 'or'
 
                     $c_posttypes = get_post_types($args, $output, $operator);
+                    $posttypes = array("post");
+                    foreach ($c_posttypes as $cpkey => $cpdata) {
+                        $posttypes[] = $cpdata;
+                    }
+                    $posts = get_posts(array("post_type" => $posttypes, 'posts_per_page' => -1, 'numberposts' => -1, "orderby"=>"title", "order"=>"ASC"));
+                    if ($display_on == "s_posts") {
+                        $spostsstyle = "";
+                    } else {
+                        $spostsstyle = "display:none;";
+                    }
+                    ?>
+                    <tr id="s_posts" style="<?php echo $spostsstyle; ?>">
+                        <th class="hfcm-th-width">Post List</th>
+                        <td>
+                            <select class="nnr-wraptext" name="data[s_posts][]" multiple>
+                                <?php
+                                foreach ($posts as $pkey => $pdata) {
+                                    if (in_array($pdata->ID, $s_posts)) {
+                                        echo "<option value='" . $pdata->ID . "' selected>" . $pdata->post_title . "</option>";
+                                    } else {
+                                        echo "<option value='" . $pdata->ID . "'>" . $pdata->post_title . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <?php
+                    $args = array(
+                        'hide_empty' => 0
+                    );
+                    $categories = get_categories($args);
+                    if ($display_on == "s_categories") {
+                        $scategoriesstyle = "";
+                    } else {
+                        $scategoriesstyle = "display:none;";
+                    }
+                    $tags = get_tags($args);
+                    if ($display_on == "s_tags") {
+                        $stagsstyle = "";
+                    } else {
+                        $stagsstyle = "display:none;";
+                    }
+
                     if ($display_on == "s_custom_posts") {
-                        $cpostssstyle = "display:block;";
+                        $cpostssstyle = "";
                     } else {
                         $cpostssstyle = "display:none;";
                     }
@@ -278,7 +324,7 @@ function hfcm_update() {
                     if ($display_on == "manual") {
                         $locationstyle = "display:none;";
                     } else {
-                        $locationstyle = "display:block;";
+                        $locationstyle = "";
                     }
                     ?>
                     <tr id="s_categories" style="<?php echo $scategoriesstyle; ?>">
@@ -346,7 +392,7 @@ function hfcm_update() {
                         </td>
                     </tr>
                     <?php
-                    if (in_array($display_on, array("s_pages", "s_custom_posts"))) {
+                    if (in_array($display_on, array("s_posts", "s_pages", "s_custom_posts"))) {
                         $larray = array("header" => "Header", "before_content" => "Before Content", "after_content" => "After Content", "footer" => "Footer");
                     } else {
                         $larray = array("header" => "Header", "footer" => "Footer");

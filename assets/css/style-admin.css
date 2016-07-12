@@ -18,3 +18,4 @@ input.round-toggle-round-flat:checked + label:after {margin-left: 17px;}
 .nnr-switch label:hover{color:#40B000;}
 input.round-toggle-round-flat:checked + label{color:#4aaeee;background:#4aaeee;} 
 input.round-toggle-round-flat:checked + label:hover{color:#ff2525;}
+.nnr-wraptext {width: -moz-available;}
