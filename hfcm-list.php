@@ -127,6 +127,7 @@ class Snippets_List extends WP_List_Table {
                 $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement");
                 return $darray[$item[$column_name]];
             case 'location':
+				if (!$item[$column_name]) return 'N/A';
                 return $item[$column_name];
             case 'device_type':
                 if ($item[$column_name] == "both") {
@@ -211,11 +212,11 @@ class Snippets_List extends WP_List_Table {
         $columns = [
             'cb' => '<input type="checkbox" />',
             'script_id' => __('ID', 'sp'),
+            'status' => __('Status', 'sp'),
             'name' => __('Snippet Name', 'sp'),
             'display_on' => __('Display On', 'sp'),
             'location' => __('Location', 'sp'),
             'device_type' => __('Devices', 'sp'),
-            'status' => __('Status', 'sp'),
             'shortcode' => __('Shortcode', 'sp')
         ];
 

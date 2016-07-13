@@ -175,7 +175,7 @@ function hfcm_update() {
 
             <?php } ?>
             <script type="text/javascript">
-                // function to show dependent dropdowns for "Display on" field.
+                // function to show dependent dropdowns for "Site Display" field.
                 function showotherboxes(type) {
                     if(type == "s_pages") {
                         jQuery("#s_pages, #locationtr").show();
@@ -218,7 +218,7 @@ function hfcm_update() {
                     </tr>
                     <?php $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement"); ?>
                     <tr>
-                        <th class="hfcm-th-width">Display on</th>
+                        <th class="hfcm-th-width">Site Display</th>
                         <td>
                             <select name="data[display_on]" onchange="js:showotherboxes(this.value);">
                                 <?php
@@ -418,7 +418,7 @@ function hfcm_update() {
                     <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
 
                     <tr>
-                        <th class="hfcm-th-width">Devices?</th>
+                        <th class="hfcm-th-width">Device Display</th>
                         <td>
                             <select name="data[device_type]">
                                 <?php
@@ -456,12 +456,16 @@ function hfcm_update() {
                         </td>
                     </tr>
                 </table>
-                <h1>Snippet / Code</h1>
-                <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10" cols="70"><?php echo $snippet; ?></textarea>
+				<div class="wrap">
+					<h1>Snippet / Code</h1>
+					<div class="wrap">
+						<textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10"><?php echo $snippet; ?></textarea>
 
-                <div class="wp-core-ui">
-                    <input type='submit' name="update" value='Update' class='button button-primary button-large nnr-btnsave' />
-                </div>
+						<div class="wp-core-ui">
+							<input type='submit' name="update" value='Update' class='button button-primary button-large nnr-btnsave' />
+						</div>
+					</div>
+				</div>
             </form>
         <?php } ?>
 
