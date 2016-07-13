@@ -128,7 +128,7 @@ class Snippets_List extends WP_List_Table {
                 return $darray[$item[$column_name]];
             case 'location':
 				if (!$item[$column_name]) return 'N/A';
-                return $item[$column_name];
+                return ucwords($item[$column_name]);
             case 'device_type':
                 if ($item[$column_name] == "both") {
                     return 'Show on All Devices';
