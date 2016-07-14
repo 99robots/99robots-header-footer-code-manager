@@ -2,7 +2,7 @@
 .hfcm-list-width {min-width:10%}
 .hfcm-form-width {width:100%;}
 .hfcm-th-width {width:25%; padding:20px 20px 0 !important;}
-.hfcm-field-width,.hfcm-form-width select {min-width:300px;}
+.hfcm-field-width,.hfcm-form-width select {width:400px;}
 #newcontent {width:75%;}
 
 .nnr-btnsave {margin-top:10px !important;}
@@ -26,7 +26,8 @@ input.round-toggle-round-flat:checked + label:hover{color:#ff2525;}
 .nnr-wraptext {width: -moz-available;}
 @media (max-width: 782px)
 {	.hfcm-form-width select {min-width:auto;}
-	#newcontent {width:103%;}
+	#newcontent {width:103%;width:calc(100% + 24px);}
 	table.hfcm-form-width td{padding:10px 21px 0 17px;}
 	table.hfcm-form-width tr:last-child td{padding-bottom:20px;}
+	#wpbody .hfcm-form-width select[multiple]{height: auto;}
 }
