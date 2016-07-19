@@ -414,7 +414,7 @@ function hfcm_update() {
                             </select>
                         </td>
                     </tr>
-                    <?php $devicetypearray = array("both" => "Show on All Devices", "desktop" => "Only Computers", "mobile" => "Only Mobile Devices"); ?>
+                    <?php $devicetypearray = array("both" => "Show on All Devices", "desktop" => "Only Desktop", "mobile" => "Only Mobile Devices"); ?>
                     <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
 
                     <tr>

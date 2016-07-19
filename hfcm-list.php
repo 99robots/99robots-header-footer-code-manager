@@ -125,6 +125,24 @@ class Snippets_List extends WP_List_Table {
                 return $item[$column_name];
             case 'display_on':
                 $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement");
+				
+				
+				if ($item[$column_name] == 's_posts') 
+				{	
+					$s_posts = unserialize( $item['s_posts'] );
+			
+					$n=0;
+					foreach($s_posts as $ID) {
+						if( get_post_status( $ID )=='publish' ) {
+							$n++; 
+							// there's at least 1, so no need to keep counting
+							break;
+						}
+					}
+					
+					if (!$n) return '<span style="color:red;">No post selected</span>';
+				}
+				
                 return $darray[$item[$column_name]];
             case 'location':
 				if (!$item[$column_name]) return 'N/A';
@@ -407,23 +425,21 @@ function hfcm_list() {
 
     </div>
     <script>
-        jQuery('.nnr-switch input').click(function()
-        {	var t=jQuery(this),
+    jQuery('.nnr-switch input').click(function(){
+		var t=jQuery(this),
             togvalue = t.is(':checked')?'on':'off',
             scriptid = t.data('id');
     					
-            jQuery.ajax(
-            {	url: '<?php echo admin_url('admin.php'); ?>', 
-                data:
-                    {	page: 'hfcm-update',
-                    toggle: true,
-                    id: scriptid,
-                    togvalue: togvalue
-                }
-            }
-        );	
-        }
-    );
+		jQuery.ajax({
+			url: '<?php echo admin_url('admin.php'); ?>', 
+			data: {
+				page: 'hfcm-update',
+				toggle: true,
+				id: scriptid,
+				togvalue: togvalue
+			}
+		});
+    });
     </script>
     <?php
 }

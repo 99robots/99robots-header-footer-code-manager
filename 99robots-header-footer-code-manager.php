@@ -87,23 +87,44 @@ require_once(plugin_dir_path(__FILE__) . 'hfcm-list.php');
 require_once(plugin_dir_path(__FILE__) . 'hfcm-create.php');
 require_once(plugin_dir_path(__FILE__) . 'hfcm-update.php');
 
+// function to render the snippet
+function hfcm_render_snippet($scriptdata, $content='', $ret = false) {
+	$output = "<!-- HFCM by 99 Robots - Snippet # {$scriptdata->script_id}: {$scriptdata->name} -->\n{$scriptdata->snippet}\n<!-- /end HFCM by 99 Robots -->\n";
+	
+	switch ($scriptdata->location)
+	{	case 'before_content':
+			return $output.$content;
+			break;
+		case 'after_content':
+			return $content.$output;
+			break;
+		default:
+			if ($ret) return $output;
+			echo $output;
+	}
+	
+	return $content;
+}
+
 // function to implement shortcode
 function hfcm_shortcode($atts) {
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";
     if (!empty($atts['id'])) {
         $id = (int) $atts['id'];
-        $script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where status='active' AND script_id=%s", $id));
-        if (!empty($script)) {
-            if ($script[0]->device_type == "mobile" && wp_is_mobile()) {
-                return "<!-- HFCM by 99robots - Snippet #" . $script[0]->script_id . ": " . $script[0]->name . " -->\n" . $script[0]->snippet . "\n<!-- /end HFCM by 99robots -->";
-            } else if ($script[0]->device_type == "desktop" && !wp_is_mobile()) {
-                return "<!-- HFCM by 99robots - Snippet #" . $script[0]->script_id . ": " . $script[0]->name . " -->\n" . $script[0]->snippet . "\n<!-- /end HFCM by 99robots -->";
-            } else if ($script[0]->device_type == "both") {
-                return "<!-- HFCM by 99robots - Snippet #" . $script[0]->script_id . ": " . $script[0]->name . " -->\n" . $script[0]->snippet . "\n<!-- /end HFCM by 99robots -->";
-            }
-        }
+		$hide_device = wp_is_mobile()?'desktop':'mobile';
+        $script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where status='active' AND device_type!='$hide_device' AND script_id=%s", $id));
+        if ( !empty($script) && hfcm_device_check($script[0]) ) {
+			return hfcm_render_snippet($script[0], '', true);
+		}
     }
+}
+
+// function to unserialize array and check if empty
+function hfcm_not_empty( $scriptdata, $prop_name ) {
+	$data = unserialize( $scriptdata->{$prop_name} );
+	if (empty($data)) return false;
+	return true;
 }
 
 add_shortcode("hfcm", "hfcm_shortcode");
@@ -111,94 +132,71 @@ add_shortcode("hfcm", "hfcm_shortcode");
 add_action('wp_head', 'hfcm_header_scripts');
 
 // function to add snippets in the header
-function hfcm_header_scripts() {
+function hfcm_header_scripts($content) {
     global $wpdb;
     $table_name = $wpdb->prefix . "hfcm_scripts";
-    $script = $wpdb->get_results("SELECT * from $table_name where location='header' AND status='active'");
-    if (!empty($script)) {
+	$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
+    $script = $wpdb->get_results("SELECT * from $table_name where location='header' AND status='active' AND device_type!='$hide_device'");
+    if ( !empty($script) ) {
         foreach ($script as $key => $scriptdata) {
-            if (wp_is_mobile() && in_array($script[0]->device_type, array("mobile", "both"))) {
-                if ($scriptdata->display_on == "All") {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "latest_posts" && is_single()) {
-                    $args = array(
-                        'public' => true,
-                        '_builtin' => false,
-                    );
-                    $output = 'names'; // names or objects, note names is the default
-                    $operator = 'and'; // 'and' or 'or'
-                    $c_posttypes = get_post_types($args, $output, $operator);
-                    $posttypes = array("post");
-                    foreach ($c_posttypes as $cpkey => $cpdata) {
-                        $posttypes[] = $cpdata;
-                    }
-                    if (!empty($scriptdata->lp_count)) {
-                        $latestposts = wp_get_recent_posts(array("numberposts" => $scriptdata->lp_count, "post_type" => $posttypes));
-                    } else {
-                        $latestposts = wp_get_recent_posts(array("post_type" => $posttypes));
-                    }
+			switch ($scriptdata->display_on)
+			{	case 'All':
+					hfcm_render_snippet($scriptdata);
+					break;
+				case 'latest_posts':
+					if ( is_single() ) {
+						$args = array(
+							'public' => true,
+							'_builtin' => false,
+						);
+						$output = 'names'; // names or objects, note names is the default
+						$operator = 'and'; // 'and' or 'or'
+						$c_posttypes = get_post_types($args, $output, $operator);
+						$posttypes = array("post");
+						foreach ($c_posttypes as $cpkey => $cpdata) {
+							$posttypes[] = $cpdata;
+						}
+						if (!empty($scriptdata->lp_count)) {
+							$latestposts = wp_get_recent_posts(array("numberposts" => $scriptdata->lp_count, "post_type" => $posttypes));
+						} else {
+							$latestposts = wp_get_recent_posts(array("post_type" => $posttypes));
+						}
 
-                    $islatest = false;
-                    foreach ($latestposts as $key => $lpostdata) {
-                        if (get_the_ID() == $lpostdata['ID']) {
-                            $islatest = true;
-                        }
-                    }
-                    if ($islatest) {
-                        echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                    }
-                } else if ($scriptdata->display_on == "s_categories" && !empty($scriptdata->s_categories) && in_category(unserialize($scriptdata->s_categories))) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular(unserialize($scriptdata->s_custom_posts)) && !empty($scriptdata->s_custom_posts)) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_posts" && !empty($scriptdata->s_posts) && is_single(unserialize($scriptdata->s_posts))) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_tags" && !empty($scriptdata->s_tags) && is_tag(unserialize($scriptdata->s_tags))) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                }
-            } else if (!wp_is_mobile() && in_array($script[0]->device_type, array("desktop", "both"))) {
-                if ($scriptdata->display_on == "All") {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "latest_posts" && is_single()) {
-                    $args = array(
-                        'public' => true,
-                        '_builtin' => false,
-                    );
-                    $output = 'names'; // names or objects, note names is the default
-                    $operator = 'and'; // 'and' or 'or'
-                    $c_posttypes = get_post_types($args, $output, $operator);
-                    $posttypes = array("post");
-                    foreach ($c_posttypes as $cpkey => $cpdata) {
-                        $posttypes[] = $cpdata;
-                    }
-                    if (!empty($scriptdata->lp_count)) {
-                        $latestposts = wp_get_recent_posts(array("numberposts" => $scriptdata->lp_count, "post_type" => $posttypes));
-                    } else {
-                        $latestposts = wp_get_recent_posts(array("post_type" => $posttypes));
-                    }
-                    $islatest = false;
-                    foreach ($latestposts as $key => $lpostdata) {
-                        if (get_the_ID() == $lpostdata['ID']) {
-                            $islatest = true;
-                        }
-                    }
-                    if ($islatest) {
-                        echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                    }
-                } else if ($scriptdata->display_on == "s_categories" && !empty($scriptdata->s_categories) && in_category(unserialize($scriptdata->s_categories))) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_custom_posts" && is_singular(unserialize($scriptdata->s_custom_posts)) && !empty($scriptdata->s_custom_posts)) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_posts" && !empty($scriptdata->s_posts) && is_single(unserialize($scriptdata->s_posts))) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                } else if ($scriptdata->display_on == "s_tags" && !empty($scriptdata->s_tags) && is_tag(unserialize($scriptdata->s_tags))) {
-                    echo "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                }
-            }
+						$islatest = false;
+						foreach ($latestposts as $key => $lpostdata) {
+							if (get_the_ID() == $lpostdata['ID']) {
+								$islatest = true;
+							}
+						}
+						if ($islatest)
+							hfcm_render_snippet($scriptdata);
+					}
+					break;
+				case 's_categories':
+					if ( hfcm_not_empty($scriptdata, 's_categories') && in_category(unserialize($scriptdata->s_categories)) ) {
+						hfcm_render_snippet($scriptdata);
+					}
+					break;
+				case 's_custom_posts':
+					if ( hfcm_not_empty($scriptdata, 's_custom_posts') && is_singular(unserialize($scriptdata->s_custom_posts)) ) {
+						hfcm_render_snippet($scriptdata);
+					}
+					break;
+				case 's_posts':
+					if ( hfcm_not_empty($scriptdata, 's_posts') && is_single(unserialize($scriptdata->s_posts)) ) {
+						hfcm_render_snippet($scriptdata);
+					}
+					break;
+				case 's_pages':
+					if ( hfcm_not_empty($scriptdata, 's_pages') && is_page(unserialize($scriptdata->s_pages)) ) {
+						hfcm_render_snippet($scriptdata);
+					}
+					break;
+				case 's_tags':
+					if ( hfcm_not_empty($scriptdata, 's_tags') && is_page(unserialize($scriptdata->s_tags)) ) {
+						hfcm_render_snippet($scriptdata);
+					}				
+			}
         }
     }
 }
