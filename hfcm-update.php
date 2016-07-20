@@ -124,6 +124,12 @@ function hfcm_update() {
                 array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
                 array('%s') //where format
         );
+        $script = $wpdb->get_results($wpdb->prepare("SELECT created_by, created from $table_name where script_id=%s", $id));
+
+        $createdby = $script[0]->created_by;
+        $createdon = $script[0]->created;
+        $lastmodifiedby = $current_user->display_name;
+        $lastrevisiondate = date("Y-m-d h:i:s");
     }
     //delete
     else if (isset($_GET['delete'])) {
@@ -467,9 +473,11 @@ function hfcm_update() {
                         <th class="hfcm-th-width">Created/Edited</th>
                         <td>
                             <p>
-                                Snippet created by <b><?php echo $createdby; ?></b> on <?php echo date("d/m/Y", strtotime($createdon)); ?>
+                                <?php _e('Snippet created by', '99robots-header-footer-code-manager'); ?> <b><?php echo $createdby; ?></b> on <?php echo date("d/m/Y", strtotime($createdon)); ?>
                                 <br/>
-                                Last edited by <b><?php echo $lastmodifiedby; ?></b> on <?php echo date("d/m/Y", strtotime($lastrevisiondate)); ?>
+                                <?php if (!empty($lastmodifiedby)) { ?>
+                                    <?php _e('Last edited by', '99robots-header-footer-code-manager'); ?> <b><?php echo $lastmodifiedby; ?></b> on <?php echo date("d/m/Y", strtotime($lastrevisiondate)); ?>
+                                <?php } ?>
                             </p>
                         </td>
                     </tr>

@@ -6,7 +6,6 @@
   Description: Header & Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
   Author: 99robots
   Author URI: https://99robots.com/
-  Plugin URI: http://www.satollo.net/plugins/header-footer
   Version: 1.0.0
   Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
   Text Domain: 99robots-header-footer-code-manager
@@ -60,14 +59,13 @@ register_activation_hook(__FILE__, 'hfcm_options_install');
 add_action('admin_menu', 'hfcm_modifymenu');
 
 /*
- * this function loads my plugin translation files
+ * this function loads plugins translation files
  */
-
 function load_hfcm_translation_files() {
     load_plugin_textdomain('99robots-header-footer-code-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
 
-//add action to load my plugin files
+//add action to load plugin files
 add_action('plugins_loaded', 'load_hfcm_translation_files');
 
 // function to create menu page, and submenu pages.
@@ -324,6 +322,10 @@ add_action('the_content', 'hfcm_content_scripts');
 // function to add snippets before/after the content
 function hfcm_content_scripts($content) {
     global $wpdb;
+    
+    $beforecontent = "";
+    $aftercontent = "";
+    
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $script = $wpdb->get_results("SELECT * from $table_name where location NOT IN ('footer', 'header') AND status='active'");
     if (!empty($script)) {
@@ -331,56 +333,40 @@ function hfcm_content_scripts($content) {
             if (wp_is_mobile() && in_array($script[0]->device_type, array("mobile", "both"))) {
                 if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && is_singular(unserialize($scriptdata->s_custom_posts))) {
                     if ($scriptdata->location == "before_content") {
-                        return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
+                        $beforecontent .= "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
                     } else if ($scriptdata->location == "after_content") {
-                        return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                    } else {
-                        return $content;
+                        $aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                     }
                 } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
                     if ($scriptdata->location == "before_content") {
-                        return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
+                        $beforecontent .= "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
                     } else if ($scriptdata->location == "after_content") {
-                        return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                    } else {
-                        return $content;
+                        $aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                     }
                 } else if ($scriptdata->display_on == "s_posts" && !empty($scriptdata->s_posts) && is_single(unserialize($scriptdata->s_posts))) {
                     if ($scriptdata->location == "before_content") {
-                        return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
+                        $beforecontent .= "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
                     } else if ($scriptdata->location == "after_content") {
-                        return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                    } else {
-                        return $content;
+                        $aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                     }
-                } else {
-                    return $content;
                 }
             } else if (!wp_is_mobile() && in_array($script[0]->device_type, array("desktop", "both"))) {
                 if ($scriptdata->display_on == "s_custom_posts" && !empty($scriptdata->s_custom_posts) && is_singular(unserialize($scriptdata->s_custom_posts))) {
                     if ($scriptdata->location == "before_content") {
-                        return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
+                        $beforecontent .= "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
                     } else if ($scriptdata->location == "after_content") {
-                        return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                    } else {
-                        return $content;
+                        $aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                     }
                 } else if ($scriptdata->display_on == "s_pages" && !empty($scriptdata->s_pages) && is_page(unserialize($scriptdata->s_pages))) {
                     if ($scriptdata->location == "before_content") {
-                        return "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->" . $content;
+                        $beforecontent .= "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
                     } else if ($scriptdata->location == "after_content") {
-                        return $content . "<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-                    } else {
-                        return $content;
+                        $aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ": " . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
                     }
-                } else {
-                    return $content;
                 }
-            } else {
-                return $content;
             }
         }
-    } else {
-        return $content;
     }
+    
+    return $beforecontent.$content.$aftercontent;
 }
