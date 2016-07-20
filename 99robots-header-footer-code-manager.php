@@ -41,7 +41,10 @@ function hfcm_options_install() {
             `s_categories` varchar(300) DEFAULT NULL,
             `s_tags` varchar(300) DEFAULT NULL,
             `status` enum('active','inactive') NOT NULL DEFAULT 'active',
+            `created_by` varchar(300) DEFAULT NULL,
+            `last_modified_by` varchar(300) DEFAULT NULL,
             `created` datetime DEFAULT NULL,
+            `last_revision_date` datetime DEFAULT NULL,
             PRIMARY KEY (`script_id`)
           ) $charset_collate; ";
 

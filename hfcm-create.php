@@ -3,6 +3,9 @@
 // function for submenu "Add snippet" page
 function hfcm_create() {
     global $wpdb;
+    global $current_user; 
+    //get_currentuserinfo();
+    
     $table_name = $wpdb->prefix . "hfcm_scripts";
     if (!empty($_POST['data']["name"])) {
         $name = $_POST['data']["name"];
@@ -93,20 +96,21 @@ function hfcm_create() {
         $wpdb->insert(
                 $table_name, //table
                 array(
-            "name" => $name,
-            "snippet" => $snippet,
-            "device_type" => $device_type,
-            "location" => $location,
-            "display_on" => $display_on,
-            "status" => $status,
-            "lp_count" => $lp_count,
-            "s_pages" => serialize($s_pages),
-            "s_posts" => serialize($s_posts),
-            "s_custom_posts" => serialize($s_custom_posts),
-            "s_categories" => serialize($s_categories),
-            "s_tags" => serialize($s_tags),
-            "created" => date("Y-m-d h:i:s")
-                ), array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s", "%s")
+                    "name" => $name,
+                    "snippet" => $snippet,
+                    "device_type" => $device_type,
+                    "location" => $location,
+                    "display_on" => $display_on,
+                    "status" => $status,
+                    "lp_count" => $lp_count,
+                    "s_pages" => serialize($s_pages),
+                    "s_posts" => serialize($s_posts),
+                    "s_custom_posts" => serialize($s_custom_posts),
+                    "s_categories" => serialize($s_categories),
+                    "s_tags" => serialize($s_tags),
+                    "created" => date("Y-m-d h:i:s"),
+                    "created_by" => $current_user->display_name
+                ), array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s", "%s", "%s")
         );
         $message = "Script Added Successfully";
         $lastid = $wpdb->insert_id;

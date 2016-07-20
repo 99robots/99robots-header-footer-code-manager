@@ -3,6 +3,8 @@
 // function for submenu "Update snippet" page
 function hfcm_update() {
     global $wpdb;
+    global $current_user;
+
     $table_name = $wpdb->prefix . "hfcm_scripts";
     $id = $_GET['id'];
     //update
@@ -115,6 +117,8 @@ function hfcm_update() {
             "s_custom_posts" => serialize($s_custom_posts),
             "s_categories" => serialize($s_categories),
             "s_tags" => serialize($s_tags),
+            "last_revision_date" => date("Y-m-d h:i:s"),
+            "last_modified_by" => $current_user->display_name
                 ), //data
                 array('script_id' => $id), //where
                 array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
@@ -155,6 +159,10 @@ function hfcm_update() {
             if (!is_array($s_tags)) {
                 $s_tags = array();
             }
+            $createdby = $s->created_by;
+            $lastmodifiedby = $s->last_modified_by;
+            $createdon = $s->created;
+            $lastrevisiondate = $s->last_revision_date;
         }
     }
     ?>
@@ -455,9 +463,20 @@ function hfcm_update() {
                             <p>[hfcm id="<?php echo $id; ?>"]</p>
                         </td>
                     </tr>
+                    <tr>
+                        <th class="hfcm-th-width">Created/Edited</th>
+                        <td>
+                            <p>
+                                Snippet created by <b><?php echo $createdby; ?></b> on <?php echo date("d/m/Y", strtotime($createdon)); ?>
+                                <br/>
+                                Last edited by <b><?php echo $lastmodifiedby; ?></b> on <?php echo date("d/m/Y", strtotime($lastrevisiondate)); ?>
+                            </p>
+                        </td>
+                    </tr>
                 </table>
                 <div class="wrap">
                     <h1><?php _e('Snippet', '99robots-header-footer-code-manager'); ?> / <?php _e('Code', '99robots-header-footer-code-manager'); ?></h1>
+
                     <div class="wrap">
                         <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10"><?php echo $snippet; ?></textarea>
 
