@@ -116,11 +116,11 @@ function hfcm_create() {
     ?>
     <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
-        <h2>Add New Snippet</h2>
+        <h2><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></h2>
         <?php if (isset($message)): ?>
             <div class="updated">
                 <p><?php echo $message; ?></p>
-                <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; Back to list</a>
+                <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
             </div>
             <?php
             exit;
@@ -165,12 +165,12 @@ function hfcm_create() {
         <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
             <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
                 <tr>
-                    <th class="hfcm-th-width">Snippet Name</th>
+                    <th class="hfcm-th-width"><?php _e('Snippet Name', '99robots-header-footer-code-manager'); ?></th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                 </tr>
                 <?php $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement"); ?>
                 <tr>
-                    <th class="hfcm-th-width">Site Display</th>
+                    <th class="hfcm-th-width"><?php _e('Site Display', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[display_on]" onchange="showotherboxes(this.value);">
                             <?php
@@ -194,7 +194,7 @@ function hfcm_create() {
                 }
                 ?>
                 <tr id="s_pages" style="<?php echo $spagesstyle; ?>">
-                    <th class="hfcm-th-width">Page List</th>
+                    <th class="hfcm-th-width"><?php _e('Page List', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[s_pages][]" multiple>
                             <?php
@@ -223,7 +223,7 @@ function hfcm_create() {
                 foreach ($c_posttypes as $cpkey => $cpdata) {
                     $posttypes[] = $cpdata;
                 }
-                $posts = get_posts(array("post_type" => $posttypes, 'posts_per_page'=>-1, 'numberposts'=>-1, "orderby"=>"title", "order"=>"ASC"));
+                $posts = get_posts(array("post_type" => $posttypes, 'posts_per_page' => -1, 'numberposts' => -1, "orderby" => "title", "order" => "ASC"));
                 if ($display_on == "s_posts") {
                     $spostsstyle = "display:block;";
                 } else {
@@ -231,7 +231,7 @@ function hfcm_create() {
                 }
                 ?>
                 <tr id="s_posts" style="<?php echo $spostsstyle; ?>">
-                    <th class="hfcm-th-width">Post List</th>
+                    <th class="hfcm-th-width"><?php _e('Post List', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select class="nnr-wraptext" name="data[s_posts][]" multiple>
                             <?php
@@ -269,7 +269,7 @@ function hfcm_create() {
                 }
                 ?>
                 <tr id="s_categories" style="<?php echo $scategoriesstyle; ?>">
-                    <th class="hfcm-th-width">Category List</th>
+                    <th class="hfcm-th-width"><?php _e('Category List', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[s_categories][]" multiple>
                             <?php
@@ -285,7 +285,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <tr id="s_tags" style="<?php echo $stagsstyle; ?>">
-                    <th class="hfcm-th-width">Tags List</th>
+                    <th class="hfcm-th-width"><?php _e('Tags List', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[s_tags][]" multiple>
                             <?php
@@ -301,7 +301,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <tr id="c_posttype" style="<?php echo $cpostssstyle; ?>">
-                    <th class="hfcm-th-width">Custom Post Types</th>
+                    <th class="hfcm-th-width"><?php _e('Custom Post Types', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[s_custom_posts][]" multiple>
                             <?php
@@ -317,7 +317,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <tr id="lp_count" style="display:none;">
-                    <th class="hfcm-th-width">Post Count</th>
+                    <th class="hfcm-th-width"><?php _e('Post Count', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[lp_count]">
                             <?php
@@ -340,7 +340,7 @@ function hfcm_create() {
                 }
                 ?>
                 <tr id="locationtr">
-                    <th class="hfcm-th-width">Location</th>
+                    <th class="hfcm-th-width"><?php _e('Location', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[location]" id="data_location">
                             <?php
@@ -358,7 +358,7 @@ function hfcm_create() {
                 <?php $devicetypearray = array("both" => "Show on All Devices", "desktop" => "Only Desktop", "mobile" => "Only Mobile Devices"); ?>
                 <?php $statusarray = array("active" => "Active", "inactive" => "Inactive"); ?>
                 <tr>
-                    <th class="hfcm-th-width">Device Display</th>
+                    <th class="hfcm-th-width"><?php _e('Device Display', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[device_type]">
                             <?php
@@ -374,7 +374,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <tr>
-                    <th class="hfcm-th-width">Status</th>
+                    <th class="hfcm-th-width"><?php _e('Status', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <select name="data[status]">
                             <?php
@@ -390,21 +390,21 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <tr>
-                    <th class="hfcm-th-width">Shortcode</th>
+                    <th class="hfcm-th-width"><?php _e('Shortcode', '99robots-header-footer-code-manager'); ?></th>
                     <td>
                         <p><?php echo $shortcode; ?></p>
                     </td>
                 </tr>
             </table>
-			<div class="wrap">
-				<h1>Snippet / Code</h1>
-				<div class="wrap">
-					<textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10"><?php echo $snippet; ?></textarea>
-					<div class="wp-core-ui">
-						<input type='submit' name="insert" value='Save' class='button button-primary button-large nnr-btnsave' />
-					</div>
-				</div>
-			</div>
+            <div class="wrap">
+                <h1><?php _e('Snippet', '99robots-header-footer-code-manager'); ?> / <?php _e('Code', '99robots-header-footer-code-manager'); ?></h1>
+                <div class="wrap">
+                    <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10"><?php echo $snippet; ?></textarea>
+                    <div class="wp-core-ui">
+                        <input type='submit' name="insert" value='<?php _e('Save', '99robots-header-footer-code-manager'); ?>' class='button button-primary button-large nnr-btnsave' />
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
     <?php

@@ -9,8 +9,8 @@ class Snippets_List extends WP_List_Table {
     public function __construct() {
 
         parent::__construct([
-            'singular' => __('Snippet', 'sp'), //singular name of the listed records
-            'plural' => __('Snippets', 'sp'), //plural name of the listed records
+            'singular' => __('Snippet', '99robots-header-footer-code-manager'), //singular name of the listed records
+            'plural' => __('Snippets', '99robots-header-footer-code-manager'), //plural name of the listed records
             'ajax' => false //does this table support ajax?
         ]);
     }
@@ -108,7 +108,7 @@ class Snippets_List extends WP_List_Table {
 
     /** Text displayed when no snippet data is available */
     public function no_items() {
-        _e('No Snippets avaliable.', 'sp');
+        _e('No Snippets avaliable.', '99robots-header-footer-code-manager');
     }
 
     /**
@@ -125,27 +125,28 @@ class Snippets_List extends WP_List_Table {
                 return $item[$column_name];
             case 'display_on':
                 $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement");
-				
-				
-				if ($item[$column_name] == 's_posts') 
-				{	
-					$s_posts = unserialize( $item['s_posts'] );
-			
-					$n=0;
-					foreach($s_posts as $ID) {
-						if( get_post_status( $ID )=='publish' ) {
-							$n++; 
-							// there's at least 1, so no need to keep counting
-							break;
-						}
-					}
-					
-					if (!$n) return '<span style="color:red;">No post selected</span>';
-				}
-				
+
+
+                if ($item[$column_name] == 's_posts') {
+                    $s_posts = unserialize($item['s_posts']);
+
+                    $n = 0;
+                    foreach ($s_posts as $ID) {
+                        if (get_post_status($ID) == 'publish') {
+                            $n++;
+                            // there's at least 1, so no need to keep counting
+                            break;
+                        }
+                    }
+
+                    if (!$n)
+                        return '<span style="color:red;">No post selected</span>';
+                }
+
                 return $darray[$item[$column_name]];
             case 'location':
-				if (!$item[$column_name]) return 'N/A';
+                if (!$item[$column_name])
+                    return 'N/A';
                 return ucwords($item[$column_name]);
             case 'device_type':
                 if ($item[$column_name] == "both") {
@@ -214,8 +215,8 @@ class Snippets_List extends WP_List_Table {
         $title = '<strong>' . $item['name'] . '</strong>';
 
         $actions = [
-            'edit' => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">Edit</a>', esc_attr("hfcm-update"), 'edit', absint($item['script_id']), $edit_nonce),
-            'delete' => sprintf('<a href="?page=%s&action=%s&snippet=%s&_wpnonce=%s">Delete</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['script_id']), $delete_nonce)
+            'edit' => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Edit', '99robots-header-footer-code-manager') . '</a>', esc_attr("hfcm-update"), 'edit', absint($item['script_id']), $edit_nonce),
+            'delete' => sprintf('<a href="?page=%s&action=%s&snippet=%s&_wpnonce=%s">' . __('Delete', '99robots-header-footer-code-manager') . '</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['script_id']), $delete_nonce)
         ];
 
         return $title . $this->row_actions($actions);
@@ -229,13 +230,13 @@ class Snippets_List extends WP_List_Table {
     function get_columns() {
         $columns = [
             'cb' => '<input type="checkbox" />',
-            'script_id' => __('ID', 'sp'),
-            'status' => __('Status', 'sp'),
-            'name' => __('Snippet Name', 'sp'),
-            'display_on' => __('Display On', 'sp'),
-            'location' => __('Location', 'sp'),
-            'device_type' => __('Devices', 'sp'),
-            'shortcode' => __('Shortcode', 'sp')
+            'script_id' => __('ID', '99robots-header-footer-code-manager'),
+            'status' => __('Status', '99robots-header-footer-code-manager'),
+            'name' => __('Snippet Name', '99robots-header-footer-code-manager'),
+            'display_on' => __('Display On', '99robots-header-footer-code-manager'),
+            'location' => __('Location', '99robots-header-footer-code-manager'),
+            'device_type' => __('Devices', '99robots-header-footer-code-manager'),
+            'shortcode' => __('Shortcode', '99robots-header-footer-code-manager')
         ];
 
         return $columns;
@@ -262,9 +263,9 @@ class Snippets_List extends WP_List_Table {
      */
     public function get_bulk_actions() {
         $actions = [
-            'bulk-activate' => 'Activate',
-            'bulk-deactivate' => 'Deactivate',
-            'bulk-delete' => 'Remove',
+            'bulk-activate' => __('Activate', '99robots-header-footer-code-manager'),
+            'bulk-deactivate' => __('Deactivate', '99robots-header-footer-code-manager'),
+            'bulk-delete' => __('Remove', '99robots-header-footer-code-manager'),
         ];
 
         return $actions;
@@ -412,8 +413,8 @@ function hfcm_list() {
     ?>
     <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
-        <h1>Snippets 
-            <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">Add New Snippet</a>
+        <h1><?php _e('Snippets', '99robots-header-footer-code-manager'); ?> 
+            <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action"><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></a>
         </h1>
 
         <form method="post">
@@ -425,21 +426,21 @@ function hfcm_list() {
 
     </div>
     <script>
-    jQuery('.nnr-switch input').click(function(){
-		var t=jQuery(this),
+        jQuery('.nnr-switch input').click(function(){
+            var t=jQuery(this),
             togvalue = t.is(':checked')?'on':'off',
             scriptid = t.data('id');
-    					
-		jQuery.ajax({
-			url: '<?php echo admin_url('admin.php'); ?>', 
-			data: {
-				page: 'hfcm-update',
-				toggle: true,
-				id: scriptid,
-				togvalue: togvalue
-			}
-		});
-    });
+        					
+            jQuery.ajax({
+                url: '<?php echo admin_url('admin.php'); ?>', 
+                data: {
+                    page: 'hfcm-update',
+                    toggle: true,
+                    id: scriptid,
+                    togvalue: togvalue
+                }
+            });
+        });
     </script>
     <?php
 }

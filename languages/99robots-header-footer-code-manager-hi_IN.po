@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Header & Footer Code Manager\n"
+"POT-Creation-Date: 2016-07-20 23:02+0530\n"
+"PO-Revision-Date: 2016-07-20 23:11+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: hi_IN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: 99robots-header-footer-code-manager.php\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#. Plugin Name of the plugin/theme
+#: 99robots-header-footer-code-manager.php:73
+#: 99robots-header-footer-code-manager.php:74
+msgid "Header & Footer Code Manager"
+msgstr "हैडर और पाद संहिता प्रबंधक"
+
+#: 99robots-header-footer-code-manager.php:82
+#: 99robots-header-footer-code-manager.php:83
+msgid "All Snippets"
+msgstr "सभी टुकड़े"
+
+#: 99robots-header-footer-code-manager.php:89 hfcm-create.php:119
+#: hfcm-list.php:417 hfcm-update.php:164
+msgid "Add New Snippet"
+msgstr "नया स्निपेट जोड़े"
+
+#: 99robots-header-footer-code-manager.php:90
+msgid "Add New"
+msgstr "नया जोड़ें"
+
+#: 99robots-header-footer-code-manager.php:96
+msgid "Update Script"
+msgstr "अद्यतन स्क्रिप्ट"
+
+#: 99robots-header-footer-code-manager.php:97 hfcm-update.php:465
+msgid "Update"
+msgstr "अद्यतन"
+
+#: hfcm-create.php:123 hfcm-update.php:169 hfcm-update.php:174
+msgid "Back to list"
+msgstr "दोबारा सूची पर जाएं"
+
+#: hfcm-create.php:168 hfcm-list.php:235 hfcm-update.php:216
+msgid "Snippet Name"
+msgstr "स्निपेट नाम"
+
+#: hfcm-create.php:173 hfcm-update.php:221
+msgid "Site Display"
+msgstr "पर प्रदर्शन"
+
+#: hfcm-create.php:197 hfcm-update.php:245
+msgid "Page List"
+msgstr "पेज सूची"
+
+#: hfcm-create.php:234 hfcm-update.php:282
+msgid "Post List"
+msgstr "पोस्ट सूची"
+
+#: hfcm-create.php:272 hfcm-update.php:331
+msgid "Category List"
+msgstr "श्रेणी सूची"
+
+#: hfcm-create.php:288 hfcm-update.php:347
+msgid "Tags List"
+msgstr "टैग सूची"
+
+#: hfcm-create.php:304 hfcm-update.php:363
+msgid "Custom Post Types"
+msgstr "कस्टम पोस्ट प्रकार"
+
+#: hfcm-create.php:320 hfcm-update.php:379
+msgid "Post Count"
+msgstr "पोस्ट गिनती "
+
+#: hfcm-create.php:343 hfcm-list.php:237 hfcm-update.php:402
+msgid "Location"
+msgstr "स्थान"
+
+#: hfcm-create.php:361 hfcm-update.php:421
+msgid "Device Display"
+msgstr "यंत्र प्रदर्शन"
+
+#: hfcm-create.php:377 hfcm-list.php:234 hfcm-update.php:437
+msgid "Status"
+msgstr "स्थिति"
+
+#: hfcm-create.php:393 hfcm-list.php:239 hfcm-update.php:453
+msgid "Shortcode"
+msgstr "छोटे संकेत"
+
+#: hfcm-create.php:400 hfcm-list.php:12 hfcm-update.php:460
+msgid "Snippet"
+msgstr "स्निपेट"
+
+#: hfcm-create.php:400 hfcm-update.php:460
+msgid "Code"
+msgstr "कोड"
+
+#: hfcm-create.php:404
+msgid "Save"
+msgstr "जमा करें"
+
+#: hfcm-list.php:13 hfcm-list.php:416
+msgid "Snippets"
+msgstr "स्निपेट्स"
+
+#: hfcm-list.php:111
+msgid "No Snippets avaliable."
+msgstr "कोई स्निपेट्स उपलब्ध नहीं"
+
+#: hfcm-list.php:218
+msgid "Edit"
+msgstr "सम्पादन"
+
+#: hfcm-list.php:219
+msgid "Delete"
+msgstr "मिटाएं"
+
+#: hfcm-list.php:233
+msgid "ID"
+msgstr "आईडी"
+
+#: hfcm-list.php:236
+msgid "Display On"
+msgstr "पर प्रदर्शन"
+
+#: hfcm-list.php:238
+msgid "Devices"
+msgstr "उपकरण"
+
+#: hfcm-list.php:266
+msgid "Activate"
+msgstr "सक्रिय करें"
+
+#: hfcm-list.php:267
+msgid "Deactivate"
+msgstr "निष्क्रिय करें"
+
+#: hfcm-list.php:268
+msgid "Remove"
+msgstr "हटा दें"
+
+#: hfcm-update.php:163
+msgid "Edit Snippet"
+msgstr "स्निपेट सम्पादन"
+
+#: hfcm-update.php:168
+msgid "Script deleted"
+msgstr "आलेख नष्ट कर दिया"
+
+#. Plugin URI of the plugin/theme
+msgid "https://99robots.com/products"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Header & Footer Code Manager by 99 Robots is a quick and simple way for you "
+"to add tracking code snippets, conversion pixels, or other scripts required "
+"by third party services for analytics, marketing, or chat functions. For "
+"detailed documentation, please visit the plugin's <a href=\"https://99robots."
+"com/\"> official page</a>."
+msgstr ""
+"हैडर और पाद संहिता प्रबंधक 99 रोबोटों द्वारा आप ट्रैकिंग कोड के टुकड़े , रूपांतरण पिक्सल , "
+"या अन्य एनालिटिक्स, विपणन के लिए तीसरे पक्ष के सेवाओं के लिए आवश्यक लिपियों जोड़ने के लिए, "
+"या कार्यों चैट के लिए एक त्वरित और आसान तरीका है। विस्तृत दस्तावेज के लिए, कृपया प्लगइन के "
+"आधिकारिक पृष्ठ पर जाएँ"
+
+#. Author of the plugin/theme
+msgid "99robots"
+msgstr "99robots"
+
+#. Author URI of the plugin/theme
+msgid "https://99robots.com/"
+msgstr ""
