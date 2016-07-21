@@ -108,7 +108,7 @@ function hfcm_create() {
                     "s_custom_posts" => serialize($s_custom_posts),
                     "s_categories" => serialize($s_categories),
                     "s_tags" => serialize($s_tags),
-                    "created" => date("Y-m-d h:i:s"),
+                    "created" => date("Y-m-d H:i:s"),
                     "created_by" => $current_user->display_name
                 ), array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s", "%s", "%s")
         );

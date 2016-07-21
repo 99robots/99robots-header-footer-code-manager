@@ -117,7 +117,7 @@ function hfcm_update() {
             "s_custom_posts" => serialize($s_custom_posts),
             "s_categories" => serialize($s_categories),
             "s_tags" => serialize($s_tags),
-            "last_revision_date" => date("Y-m-d h:i:s"),
+            "last_revision_date" => date("Y-m-d H:i:s"),
             "last_modified_by" => $current_user->display_name
                 ), //data
                 array('script_id' => $id), //where
@@ -129,7 +129,7 @@ function hfcm_update() {
         $createdby = $script[0]->created_by;
         $createdon = $script[0]->created;
         $lastmodifiedby = $current_user->display_name;
-        $lastrevisiondate = date("Y-m-d h:i:s");
+        $lastrevisiondate = date("Y-m-d H:i:s");
     }
     //delete
     else if (isset($_GET['delete'])) {
@@ -473,10 +473,10 @@ function hfcm_update() {
                         <th class="hfcm-th-width">Created/Edited</th>
                         <td>
                             <p>
-                                <?php _e('Snippet created by', '99robots-header-footer-code-manager'); ?> <b><?php echo $createdby; ?></b> on <?php echo date("d/m/Y", strtotime($createdon)); ?>
+                                <?php _e('Snippet created by', '99robots-header-footer-code-manager'); ?> <b><?php echo $createdby; ?></b> on <?php echo date("d/m/Y", strtotime($createdon)); ?> at <?php echo date("h:i A", strtotime($createdon)); ?>
                                 <br/>
                                 <?php if (!empty($lastmodifiedby)) { ?>
-                                    <?php _e('Last edited by', '99robots-header-footer-code-manager'); ?> <b><?php echo $lastmodifiedby; ?></b> on <?php echo date("d/m/Y", strtotime($lastrevisiondate)); ?>
+                                    <?php _e('Last edited by', '99robots-header-footer-code-manager'); ?> <b><?php echo $lastmodifiedby; ?></b> on <?php echo date("d/m/Y", strtotime($lastrevisiondate)); ?> at <?php echo date("h:i A", strtotime($lastrevisiondate)); ?>
                                 <?php } ?>
                             </p>
                         </td>
