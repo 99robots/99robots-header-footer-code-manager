@@ -1,7 +1,7 @@
 <?php
 
 /*
-  Plugin Name: Header & Footer Code Manager
+  Plugin Name: Header Footer Code Manager
   Plugin URI: https://99robots.com/products
   Description: Header & Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
   Author: 99robots
