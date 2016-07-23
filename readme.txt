@@ -6,7 +6,7 @@ Tested up to: 4.5.3
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Donate link:
+Donate link: https://99robots.com
 
 Header & Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat features. 
 
@@ -25,10 +25,22 @@ Also please check out our other [plugins](https://99robots.com/products/?utm_sou
 == Screenshots ==
 
 1. Dashboard - All Snippets
-2. Add New Snippet
+2. Add New Snippet - Read the documentation at: 
+http://www.99robots.com/docs/header-footer-code-manager
+
+== Frequently Asked Questions ==
+
+= Q. I have a question =
+A. Since this is a free plugin, please ask all questions on the supoprt forum here on WordPress.org. We will try to respond to every question within 48 hours. 
+
+= Q. How can I request a feature or encourage future development? =
+A. Free plugins rely on user feedback. Therefore, the best thing you can do for us is to leave a review to encourage other users to try the plugin. The more users, the more likely newer features will be added. That's a very small thing to ask for in exchange for a FREE plugin.
+
+= Q. Do you support X or Y tracking scripts? =
+A. If your script is not supported, just let us know to give us a chance to reply. After all, it's a free plugin, but we will do our best to ensure all reputable services are supported. When asking for such, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
 
 = 1.0.0 
 = 2016-07-20
-* Initial release :)
+* Initial release - HFCM is born! :)
