@@ -8,13 +8,81 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
 
-Header & Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat features. 
+Easily add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat features.
 
 == Description ==
-
-Header & Footer Code Manager by 99 Robots is a quick and simple way for you to add snippets to the header or footer of your site.
+Header & Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer of your site. 
 
 Also please check out our other [plugins](https://99robots.com/products/?utm_source=wprepo&utm_medium=header-footer-cm&utm_campaign=desc) :)
+
+= BENEFITS =
+Here are some of the problems this plugin solves:
+* Never have to worry about inadvertently breaking your site by adding code
+* Avoid inadvertently placing snippets in the wrong place
+* Eliminate the need for a dozen or more silly plugins just to add a small code snippet - Less plugins is always better!
+* Never lose your code snippets when switching or changing themes
+* Know exactly which snippets are loading on your site, where they display, and who added them
+
+= FEATURES =
+* Add an unlimited number of scripts and styles anywhere and on any post / page
+* Manage which posts or pages the script loads
+* Supports custom post types
+* Supports ability to load only on a specific post or page, or latest posts
+* Control where exactly on the page the script is loaded - head, footer, before content, or after content
+* Script can load only on desktops or mobile. Enable or disable one or the other. 
+* Use shortcodes to manually place the code anywhere
+* Label every snippet for easy reference
+* Plugin logs which user added and last edited the snippet, and when
+
+= PAGE DISPLAY OPTIONS =
+1. Site wide on every post / page
+2. Specific post
+3. Specific page
+4. Specific category
+5. Specific tag
+6. Specific custom post type
+7. Latest posts only (you choose how many)
+8. Manually place using shortcodes
+
+= INJECTION LOCATIONS =
+1. Head section
+2. Footer
+3. Top of content
+4. Bottom of content
+
+= DEVICE OPTIONS =
+* Show on All Devices
+* Only Desktop
+* Only Mobile Devices
+
+= SUPPORTED SERVICES =
+Here are a handful of the supported services, however the plugin can accept almost ANY code snippet (HTML / Javascript / CSS) from any service.
+* Google Analytics
+* Google Adsense
+* Google Tag Manager
+* Clicky Web Analytics or other analytics tracking scripts
+* Chat modules such as Olark, Drip, or 
+* Pinterest site verification
+* Facebook Pixels, Facebook Scripts, Facebook og:image Tag
+* Google Conversion Pixels
+* Twitter
+* Heatmaps from Crazy Egg, notification bars Hello Bar, etc.
+* and the list goes on and on...
+
+> #### Plugin Information
+> * [Plugin Site](https://www.99robots.com/header-footer-code-manager)
+> * [Plugin Documentation](https://www.99robots.com/docs/header-footer-code-manager)
+
+---
+> #### Plugins by 99 Robots
+> * [All Premium Plugins](https://www.99robots.com/products)
+> * [Free Plugins](https://profiles.wordpress.org/99robots#content-plugins)
+
+---
+
+> #### Follow Us
+We have one of the most interesting blogs and newsletters. Join or follow us: 
+> [Blog](https://www.99robots.com/blog) | [FaceBook](https://www.facebook.com/99robots/)  |  [Twitter](http://twitter.com/99robots)  | [Google+](https://plus.google.com/u/0/+99robots/) | [YouTube](https://www.youtube.com/user/99robots) | [Pinterest](http://www.pinterest.com/99robots/)
 
 == Installation ==
 
