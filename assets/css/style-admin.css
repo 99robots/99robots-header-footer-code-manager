@@ -22,6 +22,7 @@ input.round-toggle-round-flat:checked + label:after {margin-left: 10px;}
 .nnr-switch label:hover{color:#40B000;}
 input.round-toggle-round-flat:checked + label{color:#4aaeee;background:#4aaeee;} 
 input.round-toggle-round-flat:checked + label:hover{color:#ff2525;}
+.hfcm-red{color:red}
 
 .nnr-wraptext {width: -moz-available;}
 @media (max-width: 782px)

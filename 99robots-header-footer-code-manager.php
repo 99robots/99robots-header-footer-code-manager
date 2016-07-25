@@ -135,7 +135,7 @@ function hfcm_shortcode($atts) {
         $id = (int) $atts['id'];
         $hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
         $script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where status='active' AND device_type!='$hide_device' AND script_id=%s", $id));
-        if (!empty($script) && hfcm_device_check($script[0])) {
+        if ( !empty($script) ) {
             return hfcm_render_snippet($script[0], '', true);
         }
     }

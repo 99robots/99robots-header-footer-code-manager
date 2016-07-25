@@ -190,39 +190,44 @@ function hfcm_update() {
             <?php } ?>
             <script type="text/javascript">
                 // function to show dependent dropdowns for "Site Display" field.
-                function showotherboxes(type) {
-                    if(type == "s_pages") {
-                        jQuery("#s_pages, #locationtr").show();
-                        jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                        jQuery("#s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
-                    } else if(type == "s_posts") {
-                        jQuery("#s_posts, #locationtr").show();
-                        jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
-                    } else if(type == "s_categories") {
-                        jQuery("#s_categories, #locationtr").show();
-                        jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
-                        jQuery("#s_pages, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
-                    } else if(type == "s_custom_posts") {
-                        jQuery("#c_posttype, #locationtr").show();
-                        jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                        jQuery("#s_categories, #s_tags, #s_pages, #lp_count, #s_posts").hide();
-                    } else if(type == "s_tags") {
-                        jQuery("#data_location").html('<option value="header">Header</option><option value="before_content">Before Content</option><option value="after_content">After Content</option><option value="footer">Footer</option>');
-                        jQuery("#s_tags, #locationtr").show();
-                        jQuery("#s_categories, #s_pages, #c_posttype, #lp_count, #s_posts").hide();
-                    } else if(type == "latest_posts") {
-                        jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
-                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #s_posts").hide();
-                        jQuery("#lp_count, #locationtr").show();
-                    } else if(type == "manual") {
-                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr, #s_posts").hide();
-                    } else {
-                        jQuery("#data_location").html('<option value="header">Header</option><option value="footer">Footer</option>');
-                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
-                        jQuery("#locationtr").show();
-                    } 
-                }
+				function showotherboxes(type) {
+					var header = '<option value="header"><?php _e('Header', '99robots-header-footer-code-manager');?></option>',
+						before_content = '<option value="before_content"><?php _e('Before Content', '99robots-header-footer-code-manager');?></option>',
+						after_content = '<option value="after_content"><?php _e('After Content', '99robots-header-footer-code-manager');?></option>',
+						footer = '<option value="footer"><?php _e('Footer', '99robots-header-footer-code-manager');?></option>',
+						all_options = header + before_content + after_content + footer;
+					if(type == "s_pages") {
+						jQuery("#s_pages, #locationtr").show();
+						jQuery("#data_location").html( all_options );
+						jQuery("#s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
+					} else if(type == "s_posts") {
+						jQuery("#s_posts, #locationtr").show();
+						jQuery("#data_location").html( all_options );
+						jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
+					} else if(type == "s_categories") {
+						jQuery("#s_categories, #locationtr").show();
+						jQuery("#data_location").html( header + footer );
+						jQuery("#s_pages, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
+					} else if(type == "s_custom_posts") {
+						jQuery("#c_posttype, #locationtr").show();
+						jQuery("#data_location").html( all_options );
+						jQuery("#s_categories, #s_tags, #s_pages, #lp_count, #s_posts").hide();
+					} else if(type == "s_tags") {
+						jQuery("#data_location").html( all_options );
+						jQuery("#s_tags, #locationtr").show();
+						jQuery("#s_categories, #s_pages, #c_posttype, #lp_count, #s_posts").hide();
+					} else if(type == "latest_posts") {
+						jQuery("#data_location").html( header + footer );
+						jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #s_posts").hide();
+						jQuery("#lp_count, #locationtr").show();
+					} else if(type == "manual") {
+						jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr, #s_posts").hide();
+					} else {
+						jQuery("#data_location").html( header + footer);
+						jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
+						jQuery("#locationtr").show();
+					} 
+				}
             </script>
             <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                 <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
@@ -230,21 +235,21 @@ function hfcm_update() {
                         <th class="hfcm-th-width"><?php _e('Snippet Name', '99robots-header-footer-code-manager'); ?></th>
                         <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
                     </tr>
-                    <?php $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement"); ?>
+                    <?php $darray = array("All" => "Site Wide", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Shortcode Only"); ?>
                     <tr>
                         <th class="hfcm-th-width"><?php _e('Site Display', '99robots-header-footer-code-manager'); ?></th>
                         <td>
-                            <select name="data[display_on]" onchange="js:showotherboxes(this.value);">
-                                <?php
-                                foreach ($darray as $dkey => $statusv) {
-                                    if ($display_on == $dkey) {
-                                        echo "<option value='" . $dkey . "' selected='selected'>" . $statusv . "</option>";
-                                    } else {
-                                        echo "<option value='" . $dkey . "'>" . $statusv . "</option>";
-                                    }
-                                }
-                                ?>
-                            </select>
+							<select name="data[display_on]" onchange="showotherboxes(this.value);">
+								<?php
+								foreach ($darray as $dkey => $statusv) {
+									if ($display_on == $dkey) {
+										echo "<option value='" . $dkey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
+									} else {
+										echo "<option value='" . $dkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
+									}
+								}
+								?>
+							</select>
                         </td>
                     </tr>
                     <?php
@@ -419,9 +424,9 @@ function hfcm_update() {
                                 <?php
                                 foreach ($larray as $lkey => $statusv) {
                                     if ($location == $lkey) {
-                                        echo "<option value='" . $lkey . "' selected='selected'>" . $statusv . "</option>";
+                                        echo "<option value='" . $lkey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
                                     } else {
-                                        echo "<option value='" . $lkey . "'>" . $statusv . "</option>";
+                                        echo "<option value='" . $lkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
                                     }
                                 }
                                 ?>
@@ -438,9 +443,9 @@ function hfcm_update() {
                                 <?php
                                 foreach ($devicetypearray as $smkey => $typev) {
                                     if ($device_type == $smkey) {
-                                        echo "<option value='" . $smkey . "' selected='selected'>" . $typev . "</option>";
+                                        echo "<option value='" . $smkey . "' selected='selected'>" . __($typev, '99robots-header-footer-code-manager') . "</option>";
                                     } else {
-                                        echo "<option value='" . $smkey . "'>" . $typev . "</option>";
+                                        echo "<option value='" . $smkey . "'>" . __($typev, '99robots-header-footer-code-manager') . "</option>";
                                     }
                                 }
                                 ?>
@@ -454,9 +459,9 @@ function hfcm_update() {
                                 <?php
                                 foreach ($statusarray as $skey => $statusv) {
                                     if ($status == $skey) {
-                                        echo "<option value='" . $skey . "' selected='selected'>" . $statusv . "</option>";
+                                        echo "<option value='" . $skey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
                                     } else {
-                                        echo "<option value='" . $skey . "'>" . $statusv . "</option>";
+                                        echo "<option value='" . $skey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
                                     }
                                 }
                                 ?>
@@ -470,13 +475,13 @@ function hfcm_update() {
                         </td>
                     </tr>
                     <tr>
-                        <th class="hfcm-th-width">Created/Edited</th>
+                        <th class="hfcm-th-width"><?php _e('Changelog', '99robots-header-footer-code-manager');?></th>
                         <td>
                             <p>
-                                <?php _e('Snippet created by', '99robots-header-footer-code-manager'); ?> <b><?php echo $createdby; ?></b> on <?php echo date("d/m/Y", strtotime($createdon)); ?> at <?php echo date("h:i A", strtotime($createdon)); ?>
+                                <?php _e('Snippet created by', '99robots-header-footer-code-manager'); ?> <b><?php echo $createdby; ?></b> <?php echo __('on', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option( 'date_format' ), strtotime($createdon)) . ' ' . __('at', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option( 'time_format' ), strtotime($createdon)); ?>
                                 <br/>
                                 <?php if (!empty($lastmodifiedby)) { ?>
-                                    <?php _e('Last edited by', '99robots-header-footer-code-manager'); ?> <b><?php echo $lastmodifiedby; ?></b> on <?php echo date("d/m/Y", strtotime($lastrevisiondate)); ?> at <?php echo date("h:i A", strtotime($lastrevisiondate)); ?>
+                                    <?php _e('Last edited by', '99robots-header-footer-code-manager'); ?> <b><?php echo $lastmodifiedby; ?></b> <?php echo __('on', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option( 'date_format' ), strtotime($lastrevisiondate)) . ' ' . __('at', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option( 'time_format' ), strtotime($lastrevisiondate)); ?>
                                 <?php } ?>
                             </p>
                         </td>

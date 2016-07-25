@@ -124,37 +124,36 @@ class Snippets_List extends WP_List_Table {
             case 'name':
                 return $item[$column_name];
             case 'display_on':
-                $darray = array("All" => "All", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Manual Placement");
+                $darray = array("All" => "Site Wide", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Shortcode Only");
 
 
                 if ($item[$column_name] == 's_posts') {
                     $s_posts = unserialize($item['s_posts']);
 
-                    $n = 0;
                     foreach ($s_posts as $ID) {
                         if (get_post_status($ID) == 'publish') {
-                            $n++;
-                            // there's at least 1, so no need to keep counting
-                            break;
+                            return '<span class="hfcm-red">'. __('No post selected', '99robots-header-footer-code-manager') .'</span>'.
+									// deactivate snippet (only if active)
+									"<script>jQuery(function($){\$('#nnr-round-toggle{$item['script_id']}:checked').click();})</script>";
                         }
                     }
-
-                    if (!$n)
-                        return '<span style="color:red;">No post selected</span>';
                 }
-
-                return $darray[$item[$column_name]];
+				
+                return __( $darray[ $item[ $column_name ] ] , '99robots-header-footer-code-manager');
             case 'location':
                 if (!$item[$column_name])
-                    return 'N/A';
-                return ucwords($item[$column_name]);
+                    return __('N/A', '99robots-header-footer-code-manager');
+				
+				$larray = array("header" => "Header", "before_content" => "Before Content", "after_content" => "After Content", "footer" => "Footer");
+				
+                return __( $larray[ $item[$column_name] ], '99robots-header-footer-code-manager');
             case 'device_type':
                 if ($item[$column_name] == "both") {
-                    return 'Show on All Devices';
+                    return __('Show on All Devices', '99robots-header-footer-code-manager');
                 } else if ($item[$column_name] == "mobile") {
-                    return 'Only Mobile Devices';
+                    return __('Only Mobile Devices', '99robots-header-footer-code-manager');
                 } else if ($item[$column_name] == "desktop") {
-                    return 'Only Computers';
+                    return __('Only Desktop', '99robots-header-footer-code-manager');
                 } else {
                     return $item[$column_name];
                 }
@@ -196,7 +195,7 @@ class Snippets_List extends WP_List_Table {
      */
     function column_cb($item) {
         return sprintf(
-                        '<input type="checkbox" name="snippets[]" value="%s" />', $item['script_id']
+			'<input type="checkbox" name="snippets[]" value="%s" />', $item['script_id']
         );
     }
 
@@ -306,17 +305,17 @@ class Snippets_List extends WP_List_Table {
         //All link
         $class = ($current == 'all' ? ' class="current"' : '');
         $all_url = remove_query_arg('customvar');
-        $views['all'] = "<a href='{$all_url }' {$class} >All (" . $this->record_count() . ")</a>";
+        $views['all'] = "<a href='{$all_url }' {$class} >" . __('All', '99robots-header-footer-code-manager') . " (" . $this->record_count() . ")</a>";
 
         //Foo link
         $foo_url = add_query_arg('customvar', 'active');
         $class = ($current == 'active' ? ' class="current"' : '');
-        $views['active'] = "<a href='{$foo_url}' {$class} >Active (" . $this->record_count('active') . ")</a>";
+        $views['active'] = "<a href='{$foo_url}' {$class} >" . __('Active', '99robots-header-footer-code-manager') . " (" . $this->record_count('active') . ")</a>";
 
         //Bar link
         $bar_url = add_query_arg('customvar', 'inactive');
         $class = ($current == 'inactive' ? ' class="current"' : '');
-        $views['inactive'] = "<a href='{$bar_url}' {$class} >Inactive (" . $this->record_count('inactive') . ")</a>";
+        $views['inactive'] = "<a href='{$bar_url}' {$class} >" . __('Inactive', '99robots-header-footer-code-manager') . " (" . $this->record_count('inactive') . ")</a>";
 
         return $views;
     }
