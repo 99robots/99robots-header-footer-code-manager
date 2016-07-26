@@ -117,7 +117,7 @@ function hfcm_update() {
             "s_custom_posts" => serialize($s_custom_posts),
             "s_categories" => serialize($s_categories),
             "s_tags" => serialize($s_tags),
-            "last_revision_date" => date("Y-m-d H:i:s"),
+            "last_revision_date" => current_time("Y-m-d H:i:s"),
             "last_modified_by" => $current_user->display_name
                 ), //data
                 array('script_id' => $id), //where
@@ -129,7 +129,7 @@ function hfcm_update() {
         $createdby = $script[0]->created_by;
         $createdon = $script[0]->created;
         $lastmodifiedby = $current_user->display_name;
-        $lastrevisiondate = date("Y-m-d H:i:s");
+        $lastrevisiondate = current_time("Y-m-d H:i:s");
     }
     //delete
     else if (isset($_GET['delete'])) {
