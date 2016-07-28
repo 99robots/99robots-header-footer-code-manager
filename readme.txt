@@ -1,6 +1,6 @@
 === Header Footer Code Manager ===
 Contributors: 99robots, charliepatel
-Tags: header, footer, header footer, code manager, code library, snippet, snippets, functions.php, tracking, tracking code, google analytics, google tag manager, google adsense, adsense, adwords, tag manager, verification code, pinterest verification, conversion pixel, pixel, facebook pixel, facebook conversion pixel, google conversion pixel, hubspot, adwords remarketing, adwords tracking, analytics, conversion tracking, conversion tracking adwords, conversion tracking pixel, conversion tracking script, easy digital downloads, edd, Eloqua code, Eloqua tracking scripts, Facebook Ads, facebook conversion pixel, facebook custom audience, facebook retargeting, google adwords, google analytics, google analytics web tracking code, google recaptcha, google recaptcha snippet, google tag manager, Hubspot code, Hubspot tracking scripts, js snippets, Marketo code, Marketo tracking scripts, Pardo tracking codes, Pardot tracking scripts, pay per click tracking, pixel tracking code, recaptcha, remarketing, remarketing code, remarketing scripts, retargeting, retargeting code, retargeting scripts, scripts, snippets, Tag Management, track conversion, track conversions, tracking code, tracking codes, tracking script, woocommerce, wp e-commerce, wp ecommerce, chat script, chatlive, olark, qualaroo, helpdesk, zendesk, helpscout, help scout, desk, chat, hellobar, ads, adsense, analytics, blog, Facebook, footer, head, header, injections, og meta tag, open graph
+Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, tag manager, adsense, adwords, verification, conversion, pixel
 Requires at least: 4.0
 Tested up to: 4.5.3
 Stable tag: 1.0.0
@@ -75,14 +75,8 @@ Here are a handful of the supported services, however the plugin can accept almo
 
 ---
 > #### Plugins by 99 Robots
+> * [Free Plugins on WordPress.org](https://profiles.wordpress.org/99robots#content-plugins)
 > * [All Premium Plugins](https://www.99robots.com/products)
-> * [Free Plugins](https://profiles.wordpress.org/99robots#content-plugins)
-
----
-
-> #### Follow Us
-We have one of the most interesting blogs and newsletters. Join or follow us: 
-> [Blog](https://www.99robots.com/blog) | [FaceBook](https://www.facebook.com/99robots/)  |  [Twitter](http://twitter.com/99robots)  | [Google+](https://plus.google.com/u/0/+99robots/) | [YouTube](https://www.youtube.com/user/99robots) | [Pinterest](http://www.pinterest.com/99robots/)
 
 == Installation ==
 
@@ -99,13 +93,13 @@ http://www.99robots.com/docs/header-footer-code-manager
 == Frequently Asked Questions ==
 
 = Q. I have a question =
-A. Since this is a free plugin, please ask all questions on the supoprt forum here on WordPress.org. We will try to respond to every question within 48 hours. 
+A. Since this is a free plugin, please ask all questions on the support forum here on WordPress.org. We will try to respond to every question within 48 hours. 
 
 = Q. How can I request a feature or encourage future development? =
-A. Free plugins rely on user feedback. Therefore, the best thing you can do for us is to leave a review to encourage other users to try the plugin. The more users, the more likely newer features will be added. That's a very small thing to ask for in exchange for a FREE plugin.
+A. Free plugins rely on user feedback. Therefore, the best thing you can do for us is to leave a review to encourage others to try the plugin. The more users, the more likely newer features will be added. That's a very small thing to ask for in exchange for a FREE plugin.
 
 = Q. Do you support X or Y tracking scripts? =
-A. If your script is not supported, just let us know to give us a chance to reply. After all, it's a free plugin, but we will do our best to ensure all reputable services are supported. When asking for such, it would be nice to get a sample of the script so that we can see its structure.
+A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
 
