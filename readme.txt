@@ -11,9 +11,7 @@ Donate link: https://99robots.com
 Easily add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat features.
 
 == Description ==
-Header & Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer of your site. 
-
-Also please check out our other [plugins](https://99robots.com/products/?utm_source=wprepo&utm_medium=header-footer-cm&utm_campaign=desc) :)
+Header & Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer or above or below the content of your page. 
 
 = BENEFITS =
 Here are some of the problems this plugin solves:
