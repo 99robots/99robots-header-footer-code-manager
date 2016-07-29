@@ -55,9 +55,11 @@ function hfcm_create() {
     if (!is_array($s_pages)) {
         $s_pages = array();
     }
+    array_map('absint', $s_pages );
     if (!is_array($s_posts)) {
         $s_posts = array();
     }
+    array_map('absint', $s_posts );
     if (!empty($_POST['data']["s_custom_posts"])) {
         $s_custom_posts = $_POST['data']["s_custom_posts"];
     } else {
@@ -66,6 +68,7 @@ function hfcm_create() {
     if (!is_array($s_custom_posts)) {
         $s_custom_posts = array();
     }
+    array_map('absint', $s_custom_posts );
     if (!empty($_POST['data']["s_categories"])) {
         $s_categories = $_POST['data']["s_categories"];
     } else {
@@ -74,6 +77,7 @@ function hfcm_create() {
     if (!is_array($s_categories)) {
         $s_categories = array();
     }
+    array_map('absint', $s_categories );
     if (!empty($_POST['data']["s_tags"])) {
         $s_tags = $_POST['data']["s_tags"];
     } else {
@@ -82,6 +86,8 @@ function hfcm_create() {
     if (!is_array($s_tags)) {
         $s_tags = array();
     }
+    array_map('absint', $s_tags );
+    
     //Get Last inserted ID
     $lastinsertedid = $wpdb->get_results("SELECT script_id from $table_name ORDER BY script_id DESC LIMIT 0,1");
     if (empty($lastinsertedid)) {
@@ -103,13 +109,13 @@ function hfcm_create() {
             "display_on" => $display_on,
             "status" => $status,
             "lp_count" => $lp_count,
-            "s_pages" => serialize($s_pages),
-            "s_posts" => serialize($s_posts),
-            "s_custom_posts" => serialize($s_custom_posts),
-            "s_categories" => serialize($s_categories),
-            "s_tags" => serialize($s_tags),
+            "s_pages" => sanitize_text_field(serialize($s_pages)),
+            "s_posts" => sanitize_text_field(serialize($s_posts)),
+            "s_custom_posts" => sanitize_text_field(serialize($s_custom_posts)),
+            "s_categories" => sanitize_text_field(serialize($s_categories)),
+            "s_tags" => sanitize_text_field(serialize($s_tags)),
             "created" => current_time("Y-m-d H:i:s"),
-            "created_by" => $current_user->display_name
+            "created_by" => sanitize_text_field($current_user->display_name)
                 ), array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s", "%s", "%s")
         );
         $message = "Script Added Successfully";
