@@ -3,7 +3,7 @@ if (!class_exists('WP_List_Table')) {
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Snippets_List extends WP_List_Table {
+class hfcm_Snippets_List extends WP_List_Table {
 
     /** Class constructor */
     public function __construct() {
@@ -398,7 +398,7 @@ function hfcm_list() {
     $activeclass = "";
     $inactiveclass = "";
     $allclass = "current";
-    $snippetObj = new Snippets_List();
+    $snippetObj = new hfcm_Snippets_List();
 
     if (!empty($_GET['script_status']) && in_array($_GET['script_status'], array("active", "inactive"))) {
         $allclass = "";

@@ -61,12 +61,12 @@ add_action('admin_menu', 'hfcm_modifymenu');
 /*
  * this function loads plugins translation files
  */
-function load_hfcm_translation_files() {
+function hfcm_load_translation_files() {
     load_plugin_textdomain('99robots-header-footer-code-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
 
 //add action to load plugin files
-add_action('plugins_loaded', 'load_hfcm_translation_files');
+add_action('plugins_loaded', 'hfcm_load_translation_files');
 
 // function to create menu page, and submenu pages.
 function hfcm_modifymenu() {
