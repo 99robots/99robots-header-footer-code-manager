@@ -3,12 +3,12 @@
 // function for submenu "Add snippet" page
 function hfcm_create() {
     global $wpdb;
-    global $current_user; 
+    global $current_user;
     //get_currentuserinfo();
-    
+
     $table_name = $wpdb->prefix . "hfcm_scripts";
     if (!empty($_POST['data']["name"])) {
-        $name = $_POST['data']["name"];
+        $name = sanitize_text_field($_POST['data']["name"]);
     } else {
         $name = "";
     }
@@ -18,27 +18,27 @@ function hfcm_create() {
         $snippet = "";
     }
     if (!empty($_POST['data']["device_type"])) {
-        $device_type = $_POST['data']["device_type"];
+        $device_type = sanitize_text_field($_POST['data']["device_type"]);
     } else {
         $device_type = "";
     }
     if (!empty($_POST['data']["display_on"])) {
-        $display_on = $_POST['data']["display_on"];
+        $display_on = sanitize_text_field($_POST['data']["display_on"]);
     } else {
         $display_on = "";
     }
     if (!empty($_POST['data']["location"]) && $display_on != "manual") {
-        $location = $_POST['data']["location"];
+        $location = sanitize_text_field($_POST['data']["location"]);
     } else {
         $location = "";
     }
     if (!empty($_POST['data']["status"])) {
-        $status = $_POST['data']["status"];
+        $status = sanitize_text_field($_POST['data']["status"]);
     } else {
         $status = "";
     }
     if (!empty($_POST['data']["lp_count"])) {
-        $lp_count = $_POST['data']["lp_count"];
+        $lp_count = sanitize_text_field($_POST['data']["lp_count"]);
     } else {
         $lp_count = "";
     }
@@ -96,20 +96,20 @@ function hfcm_create() {
         $wpdb->insert(
                 $table_name, //table
                 array(
-                    "name" => $name,
-                    "snippet" => $snippet,
-                    "device_type" => $device_type,
-                    "location" => $location,
-                    "display_on" => $display_on,
-                    "status" => $status,
-                    "lp_count" => $lp_count,
-                    "s_pages" => serialize($s_pages),
-                    "s_posts" => serialize($s_posts),
-                    "s_custom_posts" => serialize($s_custom_posts),
-                    "s_categories" => serialize($s_categories),
-                    "s_tags" => serialize($s_tags),
-                    "created" => current_time("Y-m-d H:i:s"),
-                    "created_by" => $current_user->display_name
+            "name" => $name,
+            "snippet" => $snippet,
+            "device_type" => $device_type,
+            "location" => $location,
+            "display_on" => $display_on,
+            "status" => $status,
+            "lp_count" => $lp_count,
+            "s_pages" => serialize($s_pages),
+            "s_posts" => serialize($s_posts),
+            "s_custom_posts" => serialize($s_custom_posts),
+            "s_categories" => serialize($s_categories),
+            "s_tags" => serialize($s_tags),
+            "created" => current_time("Y-m-d H:i:s"),
+            "created_by" => $current_user->display_name
                 ), array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s", "%s", "%s")
         );
         $message = "Script Added Successfully";
@@ -133,11 +133,11 @@ function hfcm_create() {
         <script type="text/javascript">
             // function to show dependent dropdowns for "Site Display" field.
             function showotherboxes(type) {
-				var header = '<option value="header"><?php _e('Header', '99robots-header-footer-code-manager');?></option>',
-					before_content = '<option value="before_content"><?php _e('Before Content', '99robots-header-footer-code-manager');?></option>',
-					after_content = '<option value="after_content"><?php _e('After Content', '99robots-header-footer-code-manager');?></option>',
-					footer = '<option value="footer"><?php _e('Footer', '99robots-header-footer-code-manager');?></option>',
-					all_options = header + before_content + after_content + footer;
+                var header = '<option value="header"><?php _e('Header', '99robots-header-footer-code-manager'); ?></option>',
+                before_content = '<option value="before_content"><?php _e('Before Content', '99robots-header-footer-code-manager'); ?></option>',
+                after_content = '<option value="after_content"><?php _e('After Content', '99robots-header-footer-code-manager'); ?></option>',
+                footer = '<option value="footer"><?php _e('Footer', '99robots-header-footer-code-manager'); ?></option>',
+                all_options = header + before_content + after_content + footer;
                 if(type == "s_pages") {
                     jQuery("#s_pages, #locationtr").show();
                     jQuery("#data_location").html( all_options );
@@ -181,17 +181,17 @@ function hfcm_create() {
                 <tr>
                     <th class="hfcm-th-width"><?php _e('Site Display', '99robots-header-footer-code-manager'); ?></th>
                     <td>
-						<select name="data[display_on]" onchange="showotherboxes(this.value);">
-							<?php
-							foreach ($darray as $dkey => $statusv) {
-								if ($display_on == $dkey) {
-									echo "<option value='" . $dkey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
-								} else {
-									echo "<option value='" . $dkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
-								}
-							}
-							?>
-						</select>
+                        <select name="data[display_on]" onchange="showotherboxes(this.value);">
+                            <?php
+                            foreach ($darray as $dkey => $statusv) {
+                                if ($display_on == $dkey) {
+                                    echo "<option value='" . $dkey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
+                                } else {
+                                    echo "<option value='" . $dkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
                     </td>
                 </tr>
                 <?php

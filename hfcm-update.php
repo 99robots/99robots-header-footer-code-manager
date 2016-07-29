@@ -26,7 +26,7 @@ function hfcm_update() {
         die;
     } else if (isset($_POST['update'])) {
         if (!empty($_POST['data']["name"])) {
-            $name = $_POST['data']["name"];
+            $name = sanitize_text_field($_POST['data']["name"]);
         } else {
             $name = "";
         }
@@ -36,33 +36,33 @@ function hfcm_update() {
             $snippet = "";
         }
         if (!empty($_POST['data']["device_type"])) {
-            $device_type = $_POST['data']["device_type"];
+            $device_type = sanitize_text_field($_POST['data']["device_type"]);
         } else {
             $device_type = "";
         }
         if (!empty($_POST['data']["display_on"])) {
-            $display_on = $_POST['data']["display_on"];
+            $display_on = sanitize_text_field($_POST['data']["display_on"]);
         } else {
             $display_on = "";
         }
         if (!empty($_POST['data']["location"]) && $display_on != "manual") {
-            $location = $_POST['data']["location"];
+            $location = sanitize_text_field($_POST['data']["location"]);
         } else {
             $location = "";
         }
 
         if (!empty($_POST['data']["lp_count"])) {
-            $lp_count = $_POST['data']["lp_count"];
+            $lp_count = sanitize_text_field($_POST['data']["lp_count"]);
         } else {
             $lp_count = "";
         }
         if (!empty($_POST['data']["status"])) {
-            $status = $_POST['data']["status"];
+            $status = sanitize_text_field($_POST['data']["status"]);
         } else {
             $status = "";
         }
         if (!empty($_POST['data']["s_pages"])) {
-            $s_pages = $_POST['data']["s_pages"];
+            $s_pages = sanitize_text_field($_POST['data']["s_pages"]);
         } else {
             $s_pages = "";
         }
@@ -138,13 +138,13 @@ function hfcm_update() {
         //selecting value to update	
         $script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where script_id=%s", $id));
         foreach ($script as $s) {
-            $name = $s->name;
-            $snippet = $s->snippet;
-            $device_type = $s->device_type;
-            $location = $s->location;
-            $display_on = $s->display_on;
-            $status = $s->status;
-            $lp_count = $s->lp_count;
+            $name = esc_html($s->name);
+            $snippet = esc_js($s->snippet);
+            $device_type = esc_html($s->device_type);
+            $location = esc_html($s->location);
+            $display_on = esc_html($s->display_on);
+            $status = esc_html($s->status);
+            $lp_count = esc_html($s->lp_count);
             $s_pages = unserialize($s->s_pages);
             if (!is_array($s_pages)) {
                 $s_pages = array();
@@ -165,10 +165,10 @@ function hfcm_update() {
             if (!is_array($s_tags)) {
                 $s_tags = array();
             }
-            $createdby = $s->created_by;
-            $lastmodifiedby = $s->last_modified_by;
-            $createdon = $s->created;
-            $lastrevisiondate = $s->last_revision_date;
+            $createdby = esc_html($s->created_by);
+            $lastmodifiedby = esc_html($s->last_modified_by);
+            $createdon = esc_html($s->created);
+            $lastrevisiondate = esc_html($s->last_revision_date);
         }
     }
     ?>
@@ -190,44 +190,44 @@ function hfcm_update() {
             <?php } ?>
             <script type="text/javascript">
                 // function to show dependent dropdowns for "Site Display" field.
-				function showotherboxes(type) {
-					var header = '<option value="header"><?php _e('Header', '99robots-header-footer-code-manager');?></option>',
-						before_content = '<option value="before_content"><?php _e('Before Content', '99robots-header-footer-code-manager');?></option>',
-						after_content = '<option value="after_content"><?php _e('After Content', '99robots-header-footer-code-manager');?></option>',
-						footer = '<option value="footer"><?php _e('Footer', '99robots-header-footer-code-manager');?></option>',
-						all_options = header + before_content + after_content + footer;
-					if(type == "s_pages") {
-						jQuery("#s_pages, #locationtr").show();
-						jQuery("#data_location").html( all_options );
-						jQuery("#s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
-					} else if(type == "s_posts") {
-						jQuery("#s_posts, #locationtr").show();
-						jQuery("#data_location").html( all_options );
-						jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
-					} else if(type == "s_categories") {
-						jQuery("#s_categories, #locationtr").show();
-						jQuery("#data_location").html( header + footer );
-						jQuery("#s_pages, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
-					} else if(type == "s_custom_posts") {
-						jQuery("#c_posttype, #locationtr").show();
-						jQuery("#data_location").html( all_options );
-						jQuery("#s_categories, #s_tags, #s_pages, #lp_count, #s_posts").hide();
-					} else if(type == "s_tags") {
-						jQuery("#data_location").html( all_options );
-						jQuery("#s_tags, #locationtr").show();
-						jQuery("#s_categories, #s_pages, #c_posttype, #lp_count, #s_posts").hide();
-					} else if(type == "latest_posts") {
-						jQuery("#data_location").html( header + footer );
-						jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #s_posts").hide();
-						jQuery("#lp_count, #locationtr").show();
-					} else if(type == "manual") {
-						jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr, #s_posts").hide();
-					} else {
-						jQuery("#data_location").html( header + footer);
-						jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
-						jQuery("#locationtr").show();
-					} 
-				}
+                function showotherboxes(type) {
+                    var header = '<option value="header"><?php _e('Header', '99robots-header-footer-code-manager'); ?></option>',
+                    before_content = '<option value="before_content"><?php _e('Before Content', '99robots-header-footer-code-manager'); ?></option>',
+                    after_content = '<option value="after_content"><?php _e('After Content', '99robots-header-footer-code-manager'); ?></option>',
+                    footer = '<option value="footer"><?php _e('Footer', '99robots-header-footer-code-manager'); ?></option>',
+                    all_options = header + before_content + after_content + footer;
+                    if(type == "s_pages") {
+                        jQuery("#s_pages, #locationtr").show();
+                        jQuery("#data_location").html( all_options );
+                        jQuery("#s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
+                    } else if(type == "s_posts") {
+                        jQuery("#s_posts, #locationtr").show();
+                        jQuery("#data_location").html( all_options );
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count").hide();
+                    } else if(type == "s_categories") {
+                        jQuery("#s_categories, #locationtr").show();
+                        jQuery("#data_location").html( header + footer );
+                        jQuery("#s_pages, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
+                    } else if(type == "s_custom_posts") {
+                        jQuery("#c_posttype, #locationtr").show();
+                        jQuery("#data_location").html( all_options );
+                        jQuery("#s_categories, #s_tags, #s_pages, #lp_count, #s_posts").hide();
+                    } else if(type == "s_tags") {
+                        jQuery("#data_location").html( all_options );
+                        jQuery("#s_tags, #locationtr").show();
+                        jQuery("#s_categories, #s_pages, #c_posttype, #lp_count, #s_posts").hide();
+                    } else if(type == "latest_posts") {
+                        jQuery("#data_location").html( header + footer );
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #s_posts").hide();
+                        jQuery("#lp_count, #locationtr").show();
+                    } else if(type == "manual") {
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr, #s_posts").hide();
+                    } else {
+                        jQuery("#data_location").html( header + footer);
+                        jQuery("#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #s_posts").hide();
+                        jQuery("#locationtr").show();
+                    } 
+                }
             </script>
             <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                 <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
@@ -239,17 +239,17 @@ function hfcm_update() {
                     <tr>
                         <th class="hfcm-th-width"><?php _e('Site Display', '99robots-header-footer-code-manager'); ?></th>
                         <td>
-							<select name="data[display_on]" onchange="showotherboxes(this.value);">
-								<?php
-								foreach ($darray as $dkey => $statusv) {
-									if ($display_on == $dkey) {
-										echo "<option value='" . $dkey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
-									} else {
-										echo "<option value='" . $dkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
-									}
-								}
-								?>
-							</select>
+                            <select name="data[display_on]" onchange="showotherboxes(this.value);">
+                                <?php
+                                foreach ($darray as $dkey => $statusv) {
+                                    if ($display_on == $dkey) {
+                                        echo "<option value='" . $dkey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
+                                    } else {
+                                        echo "<option value='" . $dkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
+                                    }
+                                }
+                                ?>
+                            </select>
                         </td>
                     </tr>
                     <?php
@@ -475,13 +475,13 @@ function hfcm_update() {
                         </td>
                     </tr>
                     <tr>
-                        <th class="hfcm-th-width"><?php _e('Changelog', '99robots-header-footer-code-manager');?></th>
+                        <th class="hfcm-th-width"><?php _e('Changelog', '99robots-header-footer-code-manager'); ?></th>
                         <td>
                             <p>
-                                <?php _e('Snippet created by', '99robots-header-footer-code-manager'); ?> <b><?php echo $createdby; ?></b> <?php echo __('on', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option( 'date_format' ), strtotime($createdon)) . ' ' . __('at', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option( 'time_format' ), strtotime($createdon)); ?>
+                                <?php _e('Snippet created by', '99robots-header-footer-code-manager'); ?> <b><?php echo $createdby; ?></b> <?php echo __('on', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option('date_format'), strtotime($createdon)) . ' ' . __('at', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option('time_format'), strtotime($createdon)); ?>
                                 <br/>
                                 <?php if (!empty($lastmodifiedby)) { ?>
-                                    <?php _e('Last edited by', '99robots-header-footer-code-manager'); ?> <b><?php echo $lastmodifiedby; ?></b> <?php echo __('on', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option( 'date_format' ), strtotime($lastrevisiondate)) . ' ' . __('at', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option( 'time_format' ), strtotime($lastrevisiondate)); ?>
+                                    <?php _e('Last edited by', '99robots-header-footer-code-manager'); ?> <b><?php echo $lastmodifiedby; ?></b> <?php echo __('on', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option('date_format'), strtotime($lastrevisiondate)) . ' ' . __('at', '99robots-header-footer-code-manager') . ' ' . date_i18n(get_option('time_format'), strtotime($lastrevisiondate)); ?>
                                 <?php } ?>
                             </p>
                         </td>

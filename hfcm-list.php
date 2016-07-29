@@ -69,7 +69,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 
         $wpdb->update(
                 "$table_name", array(
-            "status" => "active",
+                    "status" => "active",
                 ), array('script_id' => $id), [ '%s'], ["%d"]
         );
     }
@@ -85,7 +85,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 
         $wpdb->update(
                 "$table_name", array(
-            "status" => "inactive",
+                    "status" => "inactive",
                 ), array('script_id' => $id), [ '%s'], ["%d"]
         );
     }
@@ -122,31 +122,27 @@ class hfcm_Snippets_List extends WP_List_Table {
     public function column_default($item, $column_name) {
         switch ($column_name) {
             case 'name':
-                return $item[$column_name];
+                return esc_html($item[$column_name]);
             case 'display_on':
                 $darray = array("All" => "Site Wide", "s_posts" => "Specific Posts", "s_pages" => "Specific Pages", "s_categories" => "Specific Categories", "s_custom_posts" => "Specific Custom Post Types", "s_tags" => "Specific Tags", "latest_posts" => "Latest Posts", "manual" => "Shortcode Only");
-
-
                 if ($item[$column_name] == 's_posts') {
                     $s_posts = unserialize($item['s_posts']);
 
                     foreach ($s_posts as $ID) {
                         if (get_post_status($ID) == 'publish') {
-                            return '<span class="hfcm-red">'. __('No post selected', '99robots-header-footer-code-manager') .'</span>'.
-									// deactivate snippet (only if active)
-									"<script>jQuery(function($){\$('#nnr-round-toggle{$item['script_id']}:checked').click();})</script>";
+                            return '<span class="hfcm-red">' . __('No post selected', '99robots-header-footer-code-manager') . '</span>' .
+                                    // deactivate snippet (only if active)
+                                    "<script>jQuery(function($){\$('#nnr-round-toggle{$item['script_id']}:checked').click();})</script>";
                         }
                     }
                 }
-				
-                return __( $darray[ $item[ $column_name ] ] , '99robots-header-footer-code-manager');
+                return __(esc_html($darray[$item[$column_name]]), '99robots-header-footer-code-manager');
             case 'location':
                 if (!$item[$column_name])
                     return __('N/A', '99robots-header-footer-code-manager');
-				
-				$larray = array("header" => "Header", "before_content" => "Before Content", "after_content" => "After Content", "footer" => "Footer");
-				
-                return __( $larray[ $item[$column_name] ], '99robots-header-footer-code-manager');
+
+                $larray = array("header" => "Header", "before_content" => "Before Content", "after_content" => "After Content", "footer" => "Footer");
+                return __(esc_html($larray[$item[$column_name]]), '99robots-header-footer-code-manager');
             case 'device_type':
                 if ($item[$column_name] == "both") {
                     return __('Show on All Devices', '99robots-header-footer-code-manager');
@@ -155,7 +151,7 @@ class hfcm_Snippets_List extends WP_List_Table {
                 } else if ($item[$column_name] == "desktop") {
                     return __('Only Desktop', '99robots-header-footer-code-manager');
                 } else {
-                    return $item[$column_name];
+                    return esc_html($item[$column_name]);
                 }
             case 'status':
                 if ($item[$column_name] == "inactive") {
@@ -175,10 +171,10 @@ class hfcm_Snippets_List extends WP_List_Table {
                             </div>
                             ';
                 } else {
-                    return $item[$column_name];
+                    return esc_html($item[$column_name]);
                 }
             case 'script_id':
-                return $item[$column_name];
+                return esc_html($item[$column_name]);
             case 'shortcode':
                 return '[hfcm id="' . $item["script_id"] . '"]';
             default:
@@ -195,7 +191,7 @@ class hfcm_Snippets_List extends WP_List_Table {
      */
     function column_cb($item) {
         return sprintf(
-			'<input type="checkbox" name="snippets[]" value="%s" />', $item['script_id']
+              '<input type="checkbox" name="snippets[]" value="%s" />', $item['script_id']
         );
     }
 
@@ -429,7 +425,7 @@ function hfcm_list() {
             var t=jQuery(this),
             togvalue = t.is(':checked')?'on':'off',
             scriptid = t.data('id');
-        					
+                            					
             jQuery.ajax({
                 url: '<?php echo admin_url('admin.php'); ?>', 
                 data: {
