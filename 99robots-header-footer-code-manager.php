@@ -12,9 +12,6 @@
   Domain Path: /languages
  */
 
-
-
-
 global $hfcm_db_version;
 $hfcm_db_version = '1.0';
 
