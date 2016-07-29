@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Header & Footer Code Manager\n"
+"Project-Id-Version: Header Footer Code Manager\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Fri Jul 22 2016 06:29:52 GMT-0400 (Pacific SA Standard "
 "Time)\n"
-"PO-Revision-Date: Mon Jul 25 2016 07:23:48 GMT-0400 (Pacific SA Standard "
+"PO-Revision-Date: Fri Jul 29 2016 12:26:24 GMT-0400 (Pacific SA Standard "
 "Time)\n"
 "Last-Translator: fran <franmejia0@gmail.com>\n"
 "Language-Team: \n"
@@ -24,52 +24,24 @@ msgstr ""
 "X-Loco-Target-Locale: es_US\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#. Name of the plugin
-msgid "Header Footer Code Manager"
-msgstr ""
-
-#. URI of the plugin
-msgid "https://99robots.com/products"
-msgstr ""
-
-#. Author of the plugin
-msgid "99robots"
-msgstr ""
-
-#. Author URI of the plugin
-msgid "https://99robots.com"
-msgstr ""
-
-#: ../hfcm-create.php:404 ../hfcm-list.php:12 ../hfcm-update.php:486
-msgid "Snippet"
-msgstr ""
-
-#: ../hfcm-list.php:13 ../hfcm-list.php:416
-msgid "Snippets"
-msgstr ""
-
-#: ../hfcm-list.php:233
-msgid "ID"
-msgstr ""
-
 #: ../hfcm-create.php:397 ../hfcm-list.php:239 ../hfcm-update.php:467
 msgid "Shortcode"
 msgstr "C&oacute;digo Corto"
 
 #. Description of the plugin
 msgid ""
-"Header & Footer Code Manager by 99 Robots is a quick and simple way for you "
-"to add tracking code snippets, conversion pixels, or other scripts required "
-"by third party services for analytics, marketing, or chat functions. For "
-"detailed documentation, please visit the plugin's <a href=\"https://99robots."
-"com/\"> official page</a>."
+"Header Footer Code Manager by 99 Robots is a quick and simple way for you to "
+"add tracking code snippets, conversion pixels, or other scripts required by "
+"third party services for analytics, tracking, marketing, or chat functions. "
+"For detailed documentation, please visit the plugin's <a href=\"https:"
+"//99robots.com/\"> official page</a>."
 msgstr ""
-"Header & Footer Code Manager de 99 Robots es una forma r&aacute;pida y "
+"Header Footer Code Manager de 99 Robots es una forma r&aacute;pida y "
 "sencilla para a&ntilde;adir codigos de rastreo, p&iacute;xeles de "
 "conversi&oacute;n, u otros c&oacute;digos requeridos por servicios de "
-"terceros para an&aacute;lisis, marketing o funciones de chat. Para una "
-"documentaci&oacute;n detallada, por favor visita la <a href=\"https:"
-"//99robots.com/\">p&aacute;gina oficial</a> del plugin."
+"terceros para realizar an&aacute;lisis, rastreo, marketing o funciones de "
+"chat. Para una documentaci&oacute;n detallada, por favor visita la <a "
+"href=\"https://99robots.com/\">p&aacute;gina oficial</a> del plugin."
 
 #. parent slug
 #. page title
