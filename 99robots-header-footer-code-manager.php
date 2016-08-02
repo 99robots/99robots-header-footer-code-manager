@@ -146,6 +146,22 @@ function hfcm_not_empty($scriptdata, $prop_name) {
     return true;
 }
 
+// force array values into integer
+function hfcm_arr2int($arr) {
+	if ( !is_array($arr) ) return '';
+	
+	$newarr = array();
+	
+	foreach ($arr as $val) {
+		$newval = (int) $val;
+		
+		if ($newval || $val == '0')
+			$newarr[] = $newval;
+	}
+	
+	return $newarr;
+}
+
 add_shortcode("hfcm", "hfcm_shortcode");
 
 add_action('wp_head', 'hfcm_header_scripts');

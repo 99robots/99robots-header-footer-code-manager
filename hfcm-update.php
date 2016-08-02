@@ -26,7 +26,7 @@ function hfcm_update() {
         die;
     } else if (isset($_POST['update'])) {
         if (!empty($_POST['data']["name"])) {
-            $name = sanitize_text_field($_POST['data']["name"]);
+            $name = sanitize_text_field( $_POST['data']["name"] );
         } else {
             $name = "";
         }
@@ -36,38 +36,38 @@ function hfcm_update() {
             $snippet = "";
         }
         if (!empty($_POST['data']["device_type"])) {
-            $device_type = sanitize_text_field($_POST['data']["device_type"]);
+            $device_type = sanitize_text_field( $_POST['data']["device_type"] );
         } else {
             $device_type = "";
         }
         if (!empty($_POST['data']["display_on"])) {
-            $display_on = sanitize_text_field($_POST['data']["display_on"]);
+            $display_on = sanitize_text_field( $_POST['data']["display_on"] );
         } else {
             $display_on = "";
         }
         if (!empty($_POST['data']["location"]) && $display_on != "manual") {
-            $location = sanitize_text_field($_POST['data']["location"]);
+            $location = sanitize_text_field( $_POST['data']["location"] );
         } else {
             $location = "";
         }
 
         if (!empty($_POST['data']["lp_count"])) {
-            $lp_count = sanitize_text_field($_POST['data']["lp_count"]);
+            $lp_count = max( 1, (int) $_POST['data']["lp_count"] ) ;
         } else {
             $lp_count = "";
         }
         if (!empty($_POST['data']["status"])) {
-            $status = sanitize_text_field($_POST['data']["status"]);
+            $status = sanitize_text_field( $_POST['data']["status"] );
         } else {
             $status = "";
         }
         if (!empty($_POST['data']["s_pages"])) {
-            $s_pages = $_POST['data']["s_pages"];
+            $s_pages = hfcm_arr2int( $_POST['data']["s_pages"] );
         } else {
             $s_pages = "";
         }
         if (!empty($_POST['data']["s_posts"])) {
-            $s_posts = $_POST['data']["s_posts"];
+            $s_posts = hfcm_arr2int( $_POST['data']["s_posts"] );
         } else {
             $s_posts = "";
         }
@@ -80,7 +80,7 @@ function hfcm_update() {
         }
         array_map('absint', $s_posts);
         if (!empty($_POST['data']["s_custom_posts"])) {
-            $s_custom_posts = $_POST['data']["s_custom_posts"];
+            $s_custom_posts = hfcm_arr2int( $_POST['data']["s_custom_posts"] );
         } else {
             $s_custom_posts = "";
         }
@@ -89,7 +89,7 @@ function hfcm_update() {
         }
         array_map('absint', $s_custom_posts);
         if (!empty($_POST['data']["s_categories"])) {
-            $s_categories = $_POST['data']["s_categories"];
+            $s_categories = hfcm_arr2int( $_POST['data']["s_categories"] );
         } else {
             $s_categories = "";
         }
@@ -98,7 +98,7 @@ function hfcm_update() {
         }
         array_map('absint', $s_categories);
         if (!empty($_POST['data']["s_tags"])) {
-            $s_tags = $_POST['data']["s_tags"];
+            $s_tags = hfcm_arr2int( $_POST['data']["s_tags"] );
         } else {
             $s_tags = "";
         }
@@ -117,13 +117,13 @@ function hfcm_update() {
                     "display_on" => $display_on,
                     "status" => $status,
                     "lp_count" => $lp_count,
-                    "s_pages" => sanitize_text_field(serialize($s_pages)),
-                    "s_posts" => sanitize_text_field(serialize($s_posts)),
-                    "s_custom_posts" => sanitize_text_field(serialize($s_custom_posts)),
-                    "s_categories" => sanitize_text_field(serialize($s_categories)),
-                    "s_tags" => sanitize_text_field(serialize($s_tags)),
+                    "s_pages" => serialize($s_pages),
+                    "s_posts" => serialize($s_posts),
+                    "s_custom_posts" => serialize($s_custom_posts),
+                    "s_categories" => serialize($s_categories),
+                    "s_tags" => serialize($s_tags),
                     "last_revision_date" => current_time("Y-m-d H:i:s"),
-                    "last_modified_by" => sanitize_text_field($current_user->display_name)
+                    "last_modified_by" => sanitize_text_field( $current_user->display_name )
                 ), //data
                 array('script_id' => $id), //where
                 array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
@@ -143,13 +143,13 @@ function hfcm_update() {
         //selecting value to update	
         $script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where script_id=%s", $id));
         foreach ($script as $s) {
-            $name = esc_html($s->name);
-            $snippet = esc_js($s->snippet);
-            $device_type = esc_html($s->device_type);
-            $location = esc_html($s->location);
-            $display_on = esc_html($s->display_on);
-            $status = esc_html($s->status);
-            $lp_count = esc_html($s->lp_count);
+            $name = $s->name;
+            $snippet = $s->snippet;
+            $device_type = $s->device_type;
+            $location = $s->location;
+            $display_on = $s->display_on;
+            $status = $s->status;
+            $lp_count = $s->lp_count;
             $s_pages = unserialize($s->s_pages);
             if (!is_array($s_pages)) {
                 $s_pages = array();
@@ -176,6 +176,16 @@ function hfcm_update() {
             $lastrevisiondate = esc_html($s->last_revision_date);
         }
     }
+	
+	// escape for html output
+	$name = esc_textarea($name);
+	$snippet = esc_textarea($snippet);
+	$device_type = esc_html($device_type);
+	$location = esc_html($location);
+	$display_on = esc_html($display_on);
+	$status = esc_html($status);
+	$lp_count = esc_html($lp_count);
+	
     ?>
     <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">

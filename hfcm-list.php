@@ -128,13 +128,18 @@ class hfcm_Snippets_List extends WP_List_Table {
                 if ($item[$column_name] == 's_posts') {
                     $s_posts = unserialize($item['s_posts']);
 
+					$empty = 1;
+					
                     foreach ($s_posts as $ID) {
                         if (get_post_status($ID) == 'publish') {
-                            return '<span class="hfcm-red">' . __('No post selected', '99robots-header-footer-code-manager') . '</span>' .
-                                    // deactivate snippet (only if active)
-                                    "<script>jQuery(function($){\$('#nnr-round-toggle{$item['script_id']}:checked').click();})</script>";
-                        }
+							$empty = 0;
+							break;
+						}
                     }
+					if ($empty)
+						return '<span class="hfcm-red">' . __('No post selected', '99robots-header-footer-code-manager') . '</span>' .
+								// deactivate snippet (only if active)
+								"<script>jQuery(function($){\$('#nnr-round-toggle{$item['script_id']}:checked').click();})</script>";
                 }
                 return __(esc_html($darray[$item[$column_name]]), '99robots-header-footer-code-manager');
             case 'location':
