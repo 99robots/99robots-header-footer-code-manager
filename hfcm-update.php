@@ -2,6 +2,10 @@
 
 // function for submenu "Update snippet" page
 function hfcm_update() {
+	
+	// check user capabilities
+	current_user_can('administrator');
+	
     global $wpdb;
     global $current_user;
 
@@ -9,6 +13,9 @@ function hfcm_update() {
     $id = $_GET['id'];
     //update
     if (isset($_REQUEST['toggle']) && !empty($_REQUEST['togvalue'])) {
+		// check nonce
+		check_ajax_referer( 'toggle-snippet', 'security' );
+		
         if ($_REQUEST['togvalue'] == "on") {
             $status = "active";
         } else {
@@ -25,6 +32,9 @@ function hfcm_update() {
         );
         die;
     } else if (isset($_POST['update'])) {
+		// check nonce
+		check_admin_referer( 'update-snippet_'.$id );
+	
         if (!empty($_POST['data']["name"])) {
             $name = sanitize_text_field( $_POST['data']["name"] );
         } else {
@@ -199,10 +209,17 @@ function hfcm_update() {
 
         <?php } else { ?>
             <?php if (!empty($_POST['update'])) { ?>
-                <div class="updated"><p>Script updated</p></div>
+                <div class="updated"><p><?php _e('Script updated', '99robots-header-footer-code-manager'); ?></p></div>
                 <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
 
-            <?php } ?>
+        <?php } else { ?>
+            <?php if (!empty($_GET['created'])) { ?>
+                <div class="updated"><p><?php _e('Script Added Successfully', '99robots-header-footer-code-manager'); ?></p></div>
+                <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
+
+            <?php } 
+			}
+		?>
             <script type="text/javascript">
                 // function to show dependent dropdowns for "Site Display" field.
                 function showotherboxes(type) {
@@ -244,7 +261,9 @@ function hfcm_update() {
                     } 
                 }
             </script>
-            <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+            <form method="post" action="<?php echo admin_url('admin.php?page=hfcm-update&id='.$id); ?>">
+				<?php wp_nonce_field( 'update-snippet_'.$id ); ?>
+				
                 <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
                     <tr>
                         <th class="hfcm-th-width"><?php _e('Snippet Name', '99robots-header-footer-code-manager'); ?></th>

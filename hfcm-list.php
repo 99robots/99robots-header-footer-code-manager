@@ -437,7 +437,8 @@ function hfcm_list() {
                     page: 'hfcm-update',
                     toggle: true,
                     id: scriptid,
-                    togvalue: togvalue
+                    togvalue: togvalue,
+					security: '<?php echo wp_create_nonce( 'toggle-snippet' ); ?>'
                 }
             });
         });

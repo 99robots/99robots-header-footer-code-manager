@@ -2,6 +2,10 @@
 
 // function for submenu "Add snippet" page
 function hfcm_create() {
+	
+	// check user capabilities
+	current_user_can('administrator');
+	
     global $wpdb;
     global $current_user;
 
@@ -97,6 +101,10 @@ function hfcm_create() {
 
     //insert
     if (isset($_POST['insert'])) {
+	
+		// check nonce
+		check_admin_referer( 'create-snippet' );
+	
         global $wpdb;
         $wpdb->insert(
                 $table_name, //table
@@ -117,9 +125,8 @@ function hfcm_create() {
             "created_by" => sanitize_text_field($current_user->display_name)
                 ), array("%s", "%s", "%s", "%s", "%s", "%s", "%d", "%s", "%s", "%s", "%s", "%s", "%s", "%s")
         );
-        $message = "Script Added Successfully";
         $lastid = $wpdb->insert_id;
-        echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-update&id=' . $lastid) . "'</script>";
+        echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-update&created=1&id=' . $lastid) . "'</script>";
         exit;
     }
 	
@@ -135,15 +142,7 @@ function hfcm_create() {
     <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></h2>
-        <?php if (isset($message)): ?>
-            <div class="updated">
-                <p><?php echo $message; ?></p>
-                <a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
-            </div>
-            <?php
-            exit;
-        endif;
-        ?>
+		
         <script type="text/javascript">
             // function to show dependent dropdowns for "Site Display" field.
             function showotherboxes(type) {
@@ -185,7 +184,9 @@ function hfcm_create() {
                 } 
             }
         </script>
-        <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+        <form method="post">
+			<?php wp_nonce_field( 'create-snippet' ); ?>
+			
             <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
                 <tr>
                     <th class="hfcm-th-width"><?php _e('Snippet Name', '99robots-header-footer-code-manager'); ?></th>
