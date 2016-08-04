@@ -1,6 +1,6 @@
 === Header Footer Code Manager ===
 Contributors: 99robots, charliepatel
-Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, tag manager, adsense, adwords, verification, conversion, pixel
+Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
 Tested up to: 4.5.3
 Stable tag: 1.0.0
@@ -70,11 +70,8 @@ Here are a handful of the supported services, however the plugin can accept almo
 > #### Plugin Information
 > * [Plugin Site](https://www.99robots.com/header-footer-code-manager)
 > * [Plugin Documentation](https://www.99robots.com/docs/header-footer-code-manager)
-
----
-> #### Plugins by 99 Robots
 > * [Free Plugins on WordPress.org](https://profiles.wordpress.org/99robots#content-plugins)
-> * [All Premium Plugins](https://www.99robots.com/products)
+> * [Premium Plugins](https://www.99robots.com/products)
 
 == Installation ==
 
