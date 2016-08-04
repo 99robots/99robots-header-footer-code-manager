@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Fri Jul 22 2016 06:29:52 GMT-0400 (Pacific SA Standard "
 "Time)\n"
-"PO-Revision-Date: Fri Jul 29 2016 12:25:44 GMT-0400 (Pacific SA Standard "
+"PO-Revision-Date: Thu Aug 04 2016 12:46:57 GMT-0400 (Pacific SA Standard "
 "Time)\n"
 "Last-Translator: fran <franmejia0@gmail.com>\n"
 "Language-Team: \n"
@@ -166,6 +166,12 @@ msgstr "Editar Snippet"
 #: ../hfcm-update.php:182
 msgid "Script deleted"
 msgstr "C&oacute;digo borrado"
+
+msgid "Script updated"
+msgstr "C&oacute;digo actualizado"
+
+msgid "Script Added Successfully"
+msgstr "C&oacute;digo a&ntilde;adido exitosamente"
 
 msgid "All"
 msgstr "Todo"

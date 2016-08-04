@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Fri Jul 22 2016 06:29:52 GMT-0400 (Pacific SA Standard "
 "Time)\n"
-"PO-Revision-Date: Fri Jul 29 2016 12:26:31 GMT-0400 (Pacific SA Standard "
+"PO-Revision-Date: Thu Aug 04 2016 12:45:10 GMT-0400 (Pacific SA Standard "
 "Time)\n"
 "Last-Translator: fran <franmejia0@gmail.com>\n"
 "Language-Team: \n"
@@ -181,6 +181,12 @@ msgstr "स्निपेट सम्पादन"
 #: ../hfcm-update.php:182
 msgid "Script deleted"
 msgstr "आलेख नष्ट कर दिया"
+
+msgid "Script updated"
+msgstr "स्क्रिप्ट अद्यतन"
+
+msgid "Script Added Successfully"
+msgstr "स्क्रिप्ट जोड़ा सफलतापूर्वक"
 
 msgid "All"
 msgstr "सभी टुकड़े"

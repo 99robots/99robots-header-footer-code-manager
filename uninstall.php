@@ -16,4 +16,3 @@ global $wpdb;
 $table_name = $wpdb->prefix . "hfcm_scripts";
 
 $wpdb->query("DROP TABLE IF EXISTS $table_name");
-?>
