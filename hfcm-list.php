@@ -325,12 +325,12 @@ class hfcm_Snippets_List extends WP_List_Table {
 	public function process_bulk_action() {
 
 		//Detect when a bulk action is being triggered...
-		if ('delete' === $this->current_action()) {
+		if ( 'delete' === $this->current_action() ) {
 
 			// In our file that handles the request, verify the nonce.
 			$nonce = esc_attr($_REQUEST['_wpnonce']);
 
-			if (!wp_verify_nonce($nonce, 'hfcm_delete_snippet')) {
+			if ( !wp_verify_nonce($nonce, 'hfcm_delete_snippet') ) {
 				die('Go get a life script kiddies');
 			} else {
 				self::delete_snippet(absint($_GET['snippet']));
@@ -341,7 +341,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 		}
 
 		// If the delete bulk action is triggered
-		if (( isset($_POST['action']) && 'bulk-delete' === $_POST['action'] )
+		if ( ( isset($_POST['action']) && 'bulk-delete' === $_POST['action'] )
 				|| ( isset($_POST['action2']) && 'bulk-delete' === $_POST['action2'] )
 		) {
 
@@ -352,7 +352,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 				self::delete_snippet($id);
 			}
 
-			echo "<script>window.location = '" . esc_url_raw( add_query_arg() ) . "'</script>";
+			echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-list') . "'</script>";
 			exit;
 		} else if (( isset($_POST['action']) && 'bulk-activate' === $_POST['action'] )
 				|| ( isset($_POST['action2']) && 'bulk-activate' === $_POST['action2'] )
@@ -365,7 +365,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 				self::activate_snippet($id);
 			}
 
-			echo "<script>window.location = '" . esc_url_raw( add_query_arg() ) . "'</script>";
+			echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-list') . "'</script>";
 			exit;
 		} else if (( isset($_POST['action']) && 'bulk-deactivate' === $_POST['action'] )
 				|| ( isset($_POST['action2']) && 'bulk-deactivate' === $_POST['action2'] )
@@ -378,7 +378,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 				self::deactivate_snippet($id);
 			}
 
-			echo "<script>window.location = '" . esc_url_raw( add_query_arg() ) . "'</script>";
+			echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-list') . "'</script>";
 			exit;
 		}
 	}
