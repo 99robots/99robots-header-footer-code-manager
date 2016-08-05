@@ -2,95 +2,100 @@
 
 // function for submenu "Add snippet" page
 function hfcm_create() {
-	
-	// check user capabilities
-	current_user_can('administrator');
-	
+
+    // check user capabilities
+    current_user_can('administrator');
+
     global $wpdb;
     global $current_user;
 
     $table_name = $wpdb->prefix . 'hfcm_scripts';
+    //insert
+    if (isset($_POST['insert'])) {
+        // check nonce
+        check_admin_referer('create-snippet');
+    }
     if (!empty($_POST['data']['name'])) {
-        $name = sanitize_text_field( $_POST['data']['name'] );
+        $name = sanitize_text_field($_POST['data']['name']);
     } else {
         $name = '';
     }
     if (!empty($_POST['data']['snippet'])) {
-        $snippet = stripslashes_deep( $_POST['data']['snippet']  );
+        $snippet = stripslashes_deep($_POST['data']['snippet']);
     } else {
         $snippet = '';
     }
     if (!empty($_POST['data']['device_type'])) {
-        $device_type = sanitize_text_field( $_POST['data']['device_type'] );
+        $device_type = sanitize_text_field($_POST['data']['device_type']);
     } else {
         $device_type = '';
     }
     if (!empty($_POST['data']['display_on'])) {
-        $display_on = sanitize_text_field( $_POST['data']['display_on'] );
+        $display_on = sanitize_text_field($_POST['data']['display_on']);
     } else {
         $display_on = '';
     }
     if (!empty($_POST['data']['location']) && $display_on != 'manual') {
-        $location = sanitize_text_field( $_POST['data']['location'] );
+        $location = sanitize_text_field($_POST['data']['location']);
     } else {
         $location = '';
     }
     if (!empty($_POST['data']['status'])) {
-        $status = sanitize_text_field( $_POST['data']['status'] );
+        $status = sanitize_text_field($_POST['data']['status']);
     } else {
         $status = '';
     }
     if (!empty($_POST['data']['lp_count'])) {
-        $lp_count = sanitize_text_field( $_POST['data']['lp_count'] );
+        $lp_count = sanitize_text_field($_POST['data']['lp_count']);
     } else {
         $lp_count = '';
     }
     if (!empty($_POST['data']['s_pages'])) {
-        $s_pages = hfcm_arr2int( $_POST['data']['s_pages'] );
+        $s_pages = hfcm_arr2int($_POST['data']['s_pages']);
     } else {
         $s_pages = '';
     }
     if (!empty($_POST['data']['s_posts'])) {
-        $s_posts = hfcm_arr2int( $_POST['data']['s_posts'] );
+        $s_posts = hfcm_arr2int($_POST['data']['s_posts']);
     } else {
         $s_posts = '';
     }
     if (!is_array($s_pages)) {
         $s_pages = array();
     }
-    array_map('absint', $s_pages );
+    array_map('absint', $s_pages);
     if (!is_array($s_posts)) {
         $s_posts = array();
     }
-    array_map('absint', $s_posts );
+    array_map('absint', $s_posts);
     if (!empty($_POST['data']['s_custom_posts'])) {
-        $s_custom_posts = hfcm_arr2int( $_POST['data']['s_custom_posts'] );
+        $s_custom_posts = hfcm_arr2int($_POST['data']['s_custom_posts']);
     } else {
         $s_custom_posts = '';
     }
     if (!is_array($s_custom_posts)) {
         $s_custom_posts = array();
     }
-    array_map('absint', $s_custom_posts );
+    array_map('absint', $s_custom_posts);
     if (!empty($_POST['data']['s_categories'])) {
-        $s_categories = hfcm_arr2int( $_POST['data']['s_categories'] );
+        $s_categories = hfcm_arr2int($_POST['data']['s_categories']);
     } else {
         $s_categories = '';
     }
     if (!is_array($s_categories)) {
         $s_categories = array();
     }
-    array_map('absint', $s_categories );
+    array_map('absint', $s_categories);
     if (!empty($_POST['data']['s_tags'])) {
-        $s_tags = hfcm_arr2int( $_POST['data']['s_tags'] );
+        $s_tags = hfcm_arr2int($_POST['data']['s_tags']);
     } else {
         $s_tags = '';
     }
     if (!is_array($s_tags)) {
         $s_tags = array();
     }
-    array_map('absint', $s_tags );
-    
+    array_map('absint', $s_tags);
+
     //Get Last inserted ID
     $lastinsertedid = $wpdb->get_results("SELECT script_id from $table_name ORDER BY script_id DESC LIMIT 0,1");
     if (empty($lastinsertedid)) {
@@ -101,10 +106,10 @@ function hfcm_create() {
 
     //insert
     if (isset($_POST['insert'])) {
-	
-		// check nonce
-		check_admin_referer( 'create-snippet' );
-	
+
+        // check nonce
+        check_admin_referer('create-snippet');
+
         global $wpdb;
         $wpdb->insert(
                 $table_name, //table
@@ -116,11 +121,11 @@ function hfcm_create() {
             'display_on' => $display_on,
             'status' => $status,
             'lp_count' => $lp_count,
-            's_pages' => wp_json_encode( $s_pages ),
-            's_posts' => wp_json_encode( $s_posts ),
-            's_custom_posts' => wp_json_encode( $s_custom_posts ),
-            's_categories' => wp_json_encode( $s_categories ),
-            's_tags' => wp_json_encode( $s_tags ),
+            's_pages' => wp_json_encode($s_pages),
+            's_posts' => wp_json_encode($s_posts),
+            's_custom_posts' => wp_json_encode($s_custom_posts),
+            's_categories' => wp_json_encode($s_categories),
+            's_tags' => wp_json_encode($s_tags),
             'created' => current_time('Y-m-d H:i:s'),
             'created_by' => sanitize_text_field($current_user->display_name)
                 ), array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s')
@@ -129,20 +134,20 @@ function hfcm_create() {
         echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-update&created=1&id=' . $lastid) . "'</script>";
         exit;
     }
-	
-	// escape for html output
-	$name = esc_textarea($name);
-	$snippet = esc_textarea($snippet);
-	$device_type = esc_html($device_type);
-	$location = esc_html($location);
-	$display_on = esc_html($display_on);
-	$status = esc_html($status);
-	$lp_count = esc_html($lp_count);
+
+    // escape for html output
+    $name = esc_textarea($name);
+    $snippet = esc_textarea($snippet);
+    $device_type = esc_html($device_type);
+    $location = esc_html($location);
+    $display_on = esc_html($display_on);
+    $status = esc_html($status);
+    $lp_count = esc_html($lp_count);
     ?>
     <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></h2>
-		
+
         <script type="text/javascript">
             // function to show dependent dropdowns for "Site Display" field.
             function showotherboxes(type) {
@@ -185,8 +190,8 @@ function hfcm_create() {
             }
         </script>
         <form method="post">
-			<?php wp_nonce_field( 'create-snippet' ); ?>
-			
+            <?php wp_nonce_field('create-snippet'); ?>
+
             <table class='wp-list-table widefat fixed hfcm-form-width form-table'>
                 <tr>
                     <th class="hfcm-th-width"><?php _e('Snippet Name', '99robots-header-footer-code-manager'); ?></th>
@@ -211,7 +216,7 @@ function hfcm_create() {
                 </tr>
                 <?php
                 $pages = get_pages();
-                if ('s_pages' === $display_on ) {
+                if ('s_pages' === $display_on) {
                     $spagesstyle = 'display:block;';
                 } else {
                     $spagesstyle = 'display:none;';
@@ -243,12 +248,12 @@ function hfcm_create() {
                 $operator = 'and'; // 'and' or 'or'
 
                 $c_posttypes = get_post_types($args, $output, $operator);
-                $posttypes = array( 'post' );
+                $posttypes = array('post');
                 foreach ($c_posttypes as $cpkey => $cpdata) {
                     $posttypes[] = $cpdata;
                 }
-                $posts = get_posts( array( 'post_type' => $posttypes, 'posts_per_page' => -1, 'numberposts' => -1, "orderby" => "title", "order" => "ASC" ) );
-                if ( 's_posts' === $display_on ) {
+                $posts = get_posts(array('post_type' => $posttypes, 'posts_per_page' => -1, 'numberposts' => -1, "orderby" => "title", "order" => "ASC"));
+                if ('s_posts' === $display_on) {
                     $spostsstyle = 'display:block;';
                 } else {
                     $spostsstyle = 'display:none;';
@@ -275,18 +280,18 @@ function hfcm_create() {
                     'hide_empty' => 0
                 );
                 $categories = get_categories($args);
-                if ( 's_categories' === $display_on ) {
+                if ('s_categories' === $display_on) {
                     $scategoriesstyle = 'display:block;';
                 } else {
                     $scategoriesstyle = 'display:none;';
                 }
                 $tags = get_tags($args);
-                if ( 's_tags' === $display_on ) {
+                if ('s_tags' === $display_on) {
                     $stagsstyle = 'display:block;';
                 } else {
                     $stagsstyle = 'display:none;';
                 }
-                if ( 's_custom_posts' === $display_on ) {
+                if ('s_custom_posts' === $display_on) {
                     $cpostssstyle = 'display:block;';
                 } else {
                     $cpostssstyle = 'display:none;';
@@ -357,7 +362,7 @@ function hfcm_create() {
                     </td>
                 </tr>
                 <?php
-                if ( in_array( $display_on, array( 's_posts', 's_pages', 's_custom_posts' ) ) ) {
+                if (in_array($display_on, array('s_posts', 's_pages', 's_custom_posts'))) {
                     $larray = array('header' => 'Header', 'before_content' => 'Before Content', 'after_content' => 'After Content', 'footer' => 'Footer');
                 } else {
                     $larray = array('header' => 'Header', 'footer' => 'Footer');
