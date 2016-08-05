@@ -56,13 +56,13 @@ register_activation_hook(__FILE__, 'hfcm_options_install');
 /*
  * register with hook 'admin_print_styles'
  */
-add_action('admin_print_styles', 'enqueueAssets');
+add_action('admin_print_styles', 'hfcm_enqueue_assets');
 
 /*
  * Enqueue style-file, if it exists.
  */
 
-function enqueueAssets() {
+function hfcm_enqueue_assets() {
     wp_register_style('hfcm_assets', plugins_url('assets/css/style-admin.css', __FILE__));
     wp_enqueue_style('hfcm_assets');
 }
