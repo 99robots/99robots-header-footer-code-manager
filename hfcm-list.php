@@ -404,7 +404,6 @@ function hfcm_list() {
 		}
 	}
 	?>
-	<link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
 	<div class="wrap">
 		<h1><?php _e('Snippets', '99robots-header-footer-code-manager'); ?> 
 			<a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action"><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></a>

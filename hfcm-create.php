@@ -144,7 +144,6 @@ function hfcm_create() {
     $status = esc_html($status);
     $lp_count = esc_html($lp_count);
     ?>
-    <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h2><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></h2>
 

@@ -196,7 +196,6 @@ function hfcm_update() {
     $status = esc_html($status);
     $lp_count = esc_html($lp_count);
     ?>
-    <link type="text/css" href="<?php echo plugins_url('assets/css/', __FILE__); ?>style-admin.css" rel="stylesheet" />
     <div class="wrap">
         <h1><?php _e('Edit Snippet', '99robots-header-footer-code-manager'); ?>
             <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action"><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></a>
