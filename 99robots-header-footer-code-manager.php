@@ -131,7 +131,7 @@ function hfcm_shortcode($atts) {
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
 	if (!empty($atts['id'])) {
 		$id = (int) $atts['id'];
-		$hide_device = jetpack_is_mobile() ? 'desktop' : 'mobile';
+		$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
 		$script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where status='active' AND device_type!='$hide_device' AND script_id=%s", $id));
 		if ( !empty($script) ) {
 			return hfcm_render_snippet($script[0], '', true);
@@ -173,7 +173,7 @@ add_action( 'wp_head', 'hfcm_header_scripts' );
 function hfcm_header_scripts( $content ) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . "hfcm_scripts";
-	$hide_device = jetpack_is_mobile() ? 'desktop' : 'mobile';
+	$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
 	$script = $wpdb->get_results( "SELECT * from $table_name where location='header' AND status='active' AND device_type!='$hide_device'" );
 	if ( !empty( $script ) ) {
 		foreach ( $script as $key => $scriptdata ) {
@@ -249,7 +249,7 @@ function hfcm_footer_scripts() {
 	$script = $wpdb->get_results("SELECT * from $table_name where location='footer' AND status='active'");
 	if (!empty($script)) {
 		foreach ($script as $key => $scriptdata) {
-			if ( jetpack_is_mobile() && in_array( $script[0]->device_type, array( 'mobile', 'both' ) ) ) {
+			if ( wp_is_mobile() && in_array( $script[0]->device_type, array( 'mobile', 'both' ) ) ) {
 				if ( 'All' === $scriptdata->display_on ) {
 					echo $scriptdata->snippet;
 				} else if ( 'latest_posts' === $scriptdata->display_on && is_single() ) {
@@ -289,7 +289,7 @@ function hfcm_footer_scripts() {
 				} else if ( 's_tags' === $scriptdata->display_on && !empty($scriptdata->s_tags) && is_tag( json_decode( $scriptdata->s_tags ) ) ) {
 					echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
 				}
-			} else if ( !jetpack_is_mobile() && in_array( $script[0]->device_type, array( 'desktop', 'both' ) ) ) {
+			} else if ( !wp_is_mobile() && in_array( $script[0]->device_type, array( 'desktop', 'both' ) ) ) {
 				if ( 'All' === $scriptdata->display_on ) {
 					echo $scriptdata->snippet;
 				} else if ( 'latest_posts' === $scriptdata->display_on && is_single()) {
@@ -347,7 +347,7 @@ function hfcm_content_scripts($content) {
 	$script = $wpdb->get_results("SELECT * from $table_name where location NOT IN ('footer', 'header') AND status='active'");
 	if ( !empty( $script ) ) {
 		foreach ( $script as $key => $scriptdata ) {
-			if ( jetpack_is_mobile() && in_array( $script[0]->device_type, array( 'mobile', 'both'  ) ) ) {
+			if ( wp_is_mobile() && in_array( $script[0]->device_type, array( 'mobile', 'both'  ) ) ) {
 				if ( 's_custom_posts' === $scriptdata->display_on && !empty($scriptdata->s_custom_posts) && is_singular( json_decode( $scriptdata->s_custom_posts ) ) ) {
 					if ( 'before_content' === $scriptdata->location ) {
 						$beforecontent .= '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
@@ -367,7 +367,7 @@ function hfcm_content_scripts($content) {
 						$aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
 					}
 				}
-			} else if ( !jetpack_is_mobile() && in_array($script[0]->device_type, array( 'desktop', 'both' ) ) ) {
+			} else if ( !wp_is_mobile() && in_array($script[0]->device_type, array( 'desktop', 'both' ) ) ) {
 				if ( 's_custom_posts' === $scriptdata->display_on && !empty($scriptdata->s_custom_posts) && is_singular( json_decode( $scriptdata->s_custom_posts ) ) ) {
 					if ( 'before_content' === $scriptdata->location ) {
 						$beforecontent .= '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
