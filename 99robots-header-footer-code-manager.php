@@ -112,12 +112,20 @@ function hfcm_modifymenu() {
 		'manage_options', //capability
 		'hfcm-update', //menu slug
 		'hfcm_update'); //function
+	//this submenu is HIDDEN, however, we need to add it anyways
+	add_submenu_page(null, //parent slug
+		__('Request Handler Script', '99robots-header-footer-code-manager'), //page title
+		__('Request Handler', '99robots-header-footer-code-manager'), //menu title
+		'manage_options', //capability
+		'hfcm-request-handler', //menu slug
+		'hfcm_request_handler'); //function
 }
 
 // files containing submenu functions
 require_once(plugin_dir_path(__FILE__) . 'hfcm-list.php');
 require_once(plugin_dir_path(__FILE__) . 'hfcm-create.php');
 require_once(plugin_dir_path(__FILE__) . 'hfcm-update.php');
+require_once(plugin_dir_path(__FILE__) . 'hfcm-request-handler.php');
 
 // function to render the snippet
 function hfcm_render_snippet($scriptdata, $content = '', $return = false) {

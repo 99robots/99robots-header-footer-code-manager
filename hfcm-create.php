@@ -5,96 +5,12 @@ function hfcm_create() {
 
 	// check user capabilities
 	current_user_can('administrator');
-	
-	if ( isset( $_POST['insert'] ) ) {
-		// check nonce
-		check_admin_referer('create-snippet');
-	}
-	
+
+
 	global $wpdb;
 
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
 
-	if ( !empty( $_POST['data']['name'] ) ) {
-		$name = sanitize_text_field( $_POST['data']['name'] );
-	} else {
-		$name = '';
-	}
-	if ( !empty( $_POST['data']['snippet'] ) ) {
-		$snippet = stripslashes_deep( $_POST['data']['snippet'] );
-	} else {
-		$snippet = '';
-	}
-	if ( !empty($_POST['data']['device_type'] ) ) {
-		$device_type = sanitize_text_field( $_POST['data']['device_type'] );
-	} else {
-		$device_type = '';
-	}
-	if ( !empty($_POST['data']['display_on'] ) ) {
-		$display_on = sanitize_text_field( $_POST['data']['display_on'] );
-	} else {
-		$display_on = '';
-	}
-	if ( !empty( $_POST['data']['location'] ) && $display_on != 'manual' ) {
-		$location = sanitize_text_field( $_POST['data']['location'] );
-	} else {
-		$location = '';
-	}
-	if ( !empty($_POST['data']['status'] ) ) {
-		$status = sanitize_text_field( $_POST['data']['status'] );
-	} else {
-		$status = '';
-	}
-	if ( !empty($_POST['data']['lp_count'] ) ) {
-		$lp_count = sanitize_text_field( $_POST['data']['lp_count'] );
-	} else {
-		$lp_count = '';
-	}
-	if ( !empty($_POST['data']['s_pages'] ) ) {
-		$s_pages = hfcm_arr2int( $_POST['data']['s_pages'] );
-	} else {
-		$s_pages = '';
-	}
-	if ( !empty( $_POST['data']['s_posts'] ) ) {
-		$s_posts = hfcm_arr2int( $_POST['data']['s_posts'] );
-	} else {
-		$s_posts = '';
-	}
-	if ( !is_array( $s_pages ) ) {
-		$s_pages = array();
-	}
-	array_map( 'absint', $s_pages );
-	if ( !is_array($s_posts) ) {
-		$s_posts = array();
-	}
-	array_map('absint', $s_posts);
-	if ( !empty( $_POST['data']['s_custom_posts'] ) ) {
-		$s_custom_posts = hfcm_arr2int( $_POST['data']['s_custom_posts'] );
-	} else {
-		$s_custom_posts = '';
-	}
-	if (!is_array($s_custom_posts)) {
-		$s_custom_posts = array();
-	}
-	array_map('absint', $s_custom_posts);
-	if ( !empty($_POST['data']['s_categories'] ) ) {
-		$s_categories = hfcm_arr2int( $_POST['data']['s_categories'] );
-	} else {
-		$s_categories = '';
-	}
-	if ( !is_array($s_categories) ) {
-		$s_categories = array();
-	}
-	array_map( 'absint', $s_categories );
-	if ( !empty( $_POST['data']['s_tags'] ) ) {
-		$s_tags = hfcm_arr2int( $_POST['data']['s_tags'] );
-	} else {
-		$s_tags = '';
-	}
-	if ( !is_array($s_tags) ) {
-		$s_tags = array();
-	}
-	array_map( 'absint', $s_tags );
 
 	//Get Last inserted ID
 	$lastinsertedid = $wpdb->get_results("SELECT script_id from $table_name ORDER BY script_id DESC LIMIT 0,1");
@@ -103,72 +19,33 @@ function hfcm_create() {
 	} else {
 		$shortcode = '[hfcm id="' . ($lastinsertedid[0]->script_id + 1) . '"]';
 	}
+	$display_on = "";
 
-	//insert
-	if ( isset( $_POST['insert'] ) ) {
-		
-		global $current_user;
-		
-		$wpdb->insert(
-				$table_name, //table
-				array(
-			'name' => $name,
-			'snippet' => $snippet,
-			'device_type' => $device_type,
-			'location' => $location,
-			'display_on' => $display_on,
-			'status' => $status,
-			'lp_count' => $lp_count,
-			's_pages' => wp_json_encode($s_pages),
-			's_posts' => wp_json_encode($s_posts),
-			's_custom_posts' => wp_json_encode($s_custom_posts),
-			's_categories' => wp_json_encode($s_categories),
-			's_tags' => wp_json_encode($s_tags),
-			'created' => current_time('Y-m-d H:i:s'),
-			'created_by' => sanitize_text_field($current_user->display_name)
-				), array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s')
-		);
-		
-		$lastid = $wpdb->insert_id;
-		hfcm_redirect( admin_url('admin.php?page=hfcm-update&created=1&id=' . $lastid) );
-		return;
-	}
-
-	// escape for html output
-	$name = 		esc_textarea( $name );
-	$snippet = 		esc_textarea( $snippet );
-	$device_type = 	esc_html( $device_type );
-	$location =		esc_html( $location );
-	$display_on = 	esc_html( $display_on );
-	$status =  		esc_html( $status );
-	$lp_count =		esc_html( $lp_count );
-	
 	// Register the script
-	wp_register_script( 'hfcm_showboxes', plugins_url( 'assets/js/showboxes.js', __FILE__ ) );
+	wp_register_script('hfcm_showboxes', plugins_url('assets/js/showboxes.js', __FILE__));
 
 	// Localize the script with new data
 	$translation_array = array(
-		'header' => __( 'Header', '99robots-header-footer-code-manager' ),
-		'before_content' => __( 'Before Content', '99robots-header-footer-code-manager' ),
-		'after_content' => __( 'After Content', '99robots-header-footer-code-manager' ),
-		'footer' => __( 'Footer', '99robots-header-footer-code-manager' )
+		'header' => __('Header', '99robots-header-footer-code-manager'),
+		'before_content' => __('Before Content', '99robots-header-footer-code-manager'),
+		'after_content' => __('After Content', '99robots-header-footer-code-manager'),
+		'footer' => __('Footer', '99robots-header-footer-code-manager')
 	);
-	wp_localize_script( 'hfcm_showboxes', 'hfcm_localize', $translation_array );
+	wp_localize_script('hfcm_showboxes', 'hfcm_localize', $translation_array);
 
 	// Enqueued script with localized data.
-	wp_enqueue_script( 'hfcm_showboxes' );
-	
+	wp_enqueue_script('hfcm_showboxes');
 	?>
 	<div class="wrap">
 		<h1><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></h1>
-		
-		<form method="post">
+
+		<form method="post" action="<?php echo admin_url('admin.php?page=hfcm-request-handler'); ?>">
 			<?php wp_nonce_field('create-snippet'); ?>
 
 			<table class='wp-list-table widefat fixed hfcm-form-width form-table'>
 				<tr>
 					<th class="hfcm-th-width"><?php _e('Snippet Name', '99robots-header-footer-code-manager'); ?></th>
-					<td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width" /></td>
+					<td><input type="text" name="data[name]" value="" class="hfcm-field-width" /></td>
 				</tr>
 				<?php $darray = array('All' => 'Site Wide', 's_posts' => 'Specific Posts', 's_pages' => 'Specific Pages', 's_categories' => 'Specific Categories', 's_custom_posts' => 'Specific Custom Post Types', 's_tags' => 'Specific Tags', 'latest_posts' => 'Latest Posts', 'manual' => 'Shortcode Only'); ?>
 				<tr>
@@ -177,11 +54,7 @@ function hfcm_create() {
 						<select name="data[display_on]" onchange="hfcm_showotherboxes(this.value);">
 							<?php
 							foreach ($darray as $dkey => $statusv) {
-								if ($display_on == $dkey) {
-									echo "<option value='" . $dkey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
-								} else {
-									echo "<option value='" . $dkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
-								}
+								echo "<option value='" . $dkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . "</option>";
 							}
 							?>
 						</select>
@@ -201,11 +74,7 @@ function hfcm_create() {
 						<select name="data[s_pages][]" multiple>
 							<?php
 							foreach ($pages as $pkey => $pdata) {
-								if (in_array($pdata->ID, $s_pages)) {
-									echo "<option value='" . $pdata->ID . "' selected>" . $pdata->post_title . '</option>';
-								} else {
-									echo "<option value='" . $pdata->ID . "'>" . $pdata->post_title . '</option>';
-								}
+								echo "<option value='" . $pdata->ID . "'>" . $pdata->post_title . '</option>';
 							}
 							?>
 						</select>
@@ -238,11 +107,7 @@ function hfcm_create() {
 						<select class="nnr-wraptext" name="data[s_posts][]" multiple>
 							<?php
 							foreach ($posts as $pkey => $pdata) {
-								if (in_array($pdata->ID, $s_pages)) {
-									echo "<option value='" . $pdata->ID . "' selected>" . $pdata->post_title . '</option>';
-								} else {
-									echo "<option value='" . $pdata->ID . "'>" . $pdata->post_title . '</option>';
-								}
+								echo "<option value='" . $pdata->ID . "'>" . $pdata->post_title . '</option>';
 							}
 							?>
 						</select>
@@ -276,11 +141,7 @@ function hfcm_create() {
 						<select name="data[s_categories][]" multiple>
 							<?php
 							foreach ($categories as $ckey => $cdata) {
-								if (in_array($cdata->term_id, $s_categories)) {
-									echo "<option value='" . $cdata->term_id . "' selected>" . $cdata->name . '</option>';
-								} else {
-									echo "<option value='" . $cdata->term_id . "'>" . $cdata->name . '</option>';
-								}
+								echo "<option value='" . $cdata->term_id . "'>" . $cdata->name . '</option>';
 							}
 							?>
 						</select>
@@ -292,11 +153,7 @@ function hfcm_create() {
 						<select name="data[s_tags][]" multiple>
 							<?php
 							foreach ($tags as $tkey => $tdata) {
-								if (in_array($tdata->slug, $s_tags)) {
-									echo "<option value='" . $tdata->slug . "' selected>" . $tdata->name . '</option>';
-								} else {
-									echo "<option value='" . $tdata->slug . "'>" . $tdata->name . '</option>';
-								}
+								echo "<option value='" . $tdata->slug . "'>" . $tdata->name . '</option>';
 							}
 							?>
 						</select>
@@ -308,11 +165,7 @@ function hfcm_create() {
 						<select name="data[s_custom_posts][]" multiple>
 							<?php
 							foreach ($c_posttypes as $cpkey => $cpdata) {
-								if (in_array($cpkey, $s_custom_posts)) {
-									echo "<option value='" . $cpkey . "' selected>" . $cpdata . '</option>';
-								} else {
-									echo "<option value='" . $cpkey . "'>" . $cpdata . '</option>';
-								}
+								echo "<option value='" . $cpkey . "'>" . $cpdata . '</option>';
 							}
 							?>
 						</select>
@@ -324,11 +177,7 @@ function hfcm_create() {
 						<select name="data[lp_count]">
 							<?php
 							for ($i = 1; $i <= 20; $i++) {
-								if ($i == $lp_count) {
-									echo "<option value='" . $i . "' selected>" . $i . '</option>';
-								} else {
-									echo "<option value='" . $i . "'>" . $i . '</option>';
-								}
+								echo "<option value='" . $i . "'>" . $i . '</option>';
 							}
 							?>
 						</select>
@@ -347,11 +196,7 @@ function hfcm_create() {
 						<select name="data[location]" id="data_location">
 							<?php
 							foreach ($larray as $lkey => $statusv) {
-								if ($location == $lkey) {
-									echo "<option value='" . $lkey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . '</option>';
-								} else {
-									echo "<option value='" . $lkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . '</option>';
-								}
+								echo "<option value='" . $lkey . "'>" . __($statusv, '99robots-header-footer-code-manager') . '</option>';
 							}
 							?>
 						</select>
@@ -365,11 +210,7 @@ function hfcm_create() {
 						<select name="data[device_type]">
 							<?php
 							foreach ($devicetypearray as $smkey => $typev) {
-								if ($device_type == $smkey) {
-									echo "<option value='" . $smkey . "' selected='selected'>" . __($typev, '99robots-header-footer-code-manager') . '</option>';
-								} else {
-									echo "<option value='" . $smkey . "'>" . __($typev, '99robots-header-footer-code-manager') . '</option>';
-								}
+								echo "<option value='" . $smkey . "'>" . __($typev, '99robots-header-footer-code-manager') . '</option>';
 							}
 							?>
 						</select>
@@ -381,11 +222,7 @@ function hfcm_create() {
 						<select name="data[status]">
 							<?php
 							foreach ($statusarray as $skey => $statusv) {
-								if ($status == $skey) {
-									echo "<option value='" . $skey . "' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . '</option>';
-								} else {
-									echo "<option value='" . $skey . "'>" . __($statusv, '99robots-header-footer-code-manager') . '</option>';
-								}
+								echo "<option value='" . $skey . "'>" . __($statusv, '99robots-header-footer-code-manager') . '</option>';
 							}
 							?>
 						</select>
@@ -401,7 +238,7 @@ function hfcm_create() {
 			<div class="wrap">
 				<h1><?php _e('Snippet', '99robots-header-footer-code-manager'); ?> / <?php _e('Code', '99robots-header-footer-code-manager'); ?></h1>
 				<div class="wrap">
-					<textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10"><?php echo $snippet; ?></textarea>
+					<textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent" name="newcontent" rows="10"></textarea>
 					<div class="wp-core-ui">
 						<input type='submit' name="insert" value='<?php _e('Save', '99robots-header-footer-code-manager'); ?>' class='button button-primary button-large nnr-btnsave' />
 					</div>

@@ -5,17 +5,13 @@ function hfcm_update() {
 
 	// check user capabilities
 	current_user_can('administrator');
-	
-	if ( isset( $_POST['update'] ) ) {
-		// check nonce
-		check_admin_referer('update-snippet_' . $id);
-	}
-	
+
 	global $wpdb;
 	global $current_user;
 
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
 	$id = $_GET['id'];
+
 	//update
 	if (isset($_REQUEST['toggle']) && !empty($_REQUEST['togvalue'])) {
 		// check nonce
@@ -36,122 +32,6 @@ function hfcm_update() {
 				array('%s') //where format
 		);
 		die;
-	} elseif ( isset( $_POST['update'] ) ) {
-
-		if ( !empty($_POST['data']['name'] ) ) {
-			$name = sanitize_text_field( $_POST['data']['name'] );
-		} else {
-			$name = '';
-		}
-		if ( !empty($_POST['data']['snippet'] ) ) {
-			$snippet = stripslashes_deep( $_POST['data']['snippet'] );
-		} else {
-			$snippet = '';
-		}
-		if ( !empty($_POST['data']['device_type'] ) ) {
-			$device_type = sanitize_text_field( $_POST['data']['device_type'] );
-		} else {
-			$device_type = '';
-		}
-		if ( !empty($_POST['data']['display_on'] ) ) {
-			$display_on = sanitize_text_field( $_POST['data']['display_on'] );
-		} else {
-			$display_on = '';
-		}
-		if ( !empty($_POST['data']['location'] ) && $display_on != 'manual' ) {
-			$location = sanitize_text_field( $_POST['data']['location'] );
-		} else {
-			$location = '';
-		}
-
-		if ( !empty($_POST['data']['lp_count'] ) ) {
-			$lp_count = max( 1, (int) $_POST['data']['lp_count'] );
-		} else {
-			$lp_count = '';
-		}
-		if (!empty( $_POST['data']['status'] ) ) {
-			$status = sanitize_text_field($_POST['data']['status']);
-		} else {
-			$status = '';
-		}
-		if ( !empty($_POST['data']['s_pages'] ) ) {
-			$s_pages = hfcm_arr2int( $_POST['data']['s_pages'] );
-		} else {
-			$s_pages = '';
-		}
-		if ( !empty($_POST['data']['s_posts'] ) ) {
-			$s_posts = hfcm_arr2int( $_POST['data']['s_posts'] );
-		} else {
-			$s_posts = '';
-		}
-		if ( !is_array( $s_pages ) ) {
-			$s_pages = array();
-		}
-		array_map( 'absint', $s_pages );
-		if ( !is_array($s_posts) ) {
-			$s_posts = array();
-		}
-		array_map( 'absint', $s_posts );
-		if ( !empty($_POST['data']['s_custom_posts'] ) ) {
-			$s_custom_posts = hfcm_arr2int( $_POST['data']['s_custom_posts'] );
-		} else {
-			$s_custom_posts = '';
-		}
-		if ( !is_array( $s_custom_posts ) ) {
-			$s_custom_posts = array();
-		}
-		array_map( 'absint', $s_custom_posts );
-		if ( !empty( $_POST['data']['s_categories'] ) ) {
-			$s_categories = hfcm_arr2int( $_POST['data']['s_categories'] );
-		} else {
-			$s_categories = '';
-		}
-		if ( !is_array($s_categories) ) {
-			$s_categories = array();
-		}
-		array_map( 'absint', $s_categories );
-		if ( !empty( $_POST['data']['s_tags'] ) ) {
-			$s_tags = hfcm_arr2int( $_POST['data']['s_tags'] );
-		} else {
-			$s_tags = '';
-		}
-		if ( !is_array($s_tags) ) {
-			$s_tags = array();
-		}
-		array_map( 'absint', $s_tags );
-
-		$wpdb->update(
-				$table_name, //table
-				array(
-			'name' => $name,
-			'snippet' => $snippet,
-			'device_type' => $device_type,
-			'location' => $location,
-			'display_on' => $display_on,
-			'status' => $status,
-			'lp_count' => $lp_count,
-			's_pages' => wp_json_encode($s_pages),
-			's_posts' => wp_json_encode($s_posts),
-			's_custom_posts' => wp_json_encode($s_custom_posts),
-			's_categories' => wp_json_encode($s_categories),
-			's_tags' => wp_json_encode($s_tags),
-			'last_revision_date' => current_time('Y-m-d H:i:s'),
-			'last_modified_by' => sanitize_text_field($current_user->display_name)
-				), //data
-				array('script_id' => $id), //where
-				array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
-				array('%s') //where format
-		);
-		$script = $wpdb->get_results($wpdb->prepare("SELECT created_by, created from $table_name where script_id=%s", $id));
-
-		$createdby = $script[0]->created_by;
-		$createdon = $script[0]->created;
-		$lastmodifiedby = $current_user->display_name;
-		$lastrevisiondate = current_time('Y-m-d H:i:s');
-		
-		//delete
-	} elseif (isset($_GET['delete'])) {
-		$wpdb->query($wpdb->prepare("DELETE FROM $table_name WHERE script_id = %s", $id));
 	} else {
 		//selecting value to update	
 		$script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where script_id=%s", $id));
@@ -198,34 +78,29 @@ function hfcm_update() {
 	$display_on = esc_html($display_on);
 	$status = esc_html($status);
 	$lp_count = esc_html($lp_count);
-	
+
 	// Register the script
-	wp_register_script( 'hfcm_showboxes', plugins_url( 'assets/js/showboxes.js', __FILE__ ) );
+	wp_register_script('hfcm_showboxes', plugins_url('assets/js/showboxes.js', __FILE__));
 
 	// Localize the script with new data
 	$translation_array = array(
-		'header' => __( 'Header', '99robots-header-footer-code-manager' ),
-		'before_content' => __( 'Before Content', '99robots-header-footer-code-manager' ),
-		'after_content' => __( 'After Content', '99robots-header-footer-code-manager' ),
-		'footer' => __( 'Footer', '99robots-header-footer-code-manager' )
+		'header' => __('Header', '99robots-header-footer-code-manager'),
+		'before_content' => __('Before Content', '99robots-header-footer-code-manager'),
+		'after_content' => __('After Content', '99robots-header-footer-code-manager'),
+		'footer' => __('Footer', '99robots-header-footer-code-manager')
 	);
-	wp_localize_script( 'hfcm_showboxes', 'hfcm_localize', $translation_array );
+	wp_localize_script('hfcm_showboxes', 'hfcm_localize', $translation_array);
 
 	// Enqueued script with localized data.
-	wp_enqueue_script( 'hfcm_showboxes' );
-	
+	wp_enqueue_script('hfcm_showboxes');
 	?>
 	<div class="wrap">
 		<h1><?php _e('Edit Snippet', '99robots-header-footer-code-manager'); ?>
 			<a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action"><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></a>
 		</h1>
 
-		<?php if (!empty($_GET['delete'])) { ?>
-			<div class="updated"><p><?php _e('Script deleted', '99robots-header-footer-code-manager'); ?></p></div>
-			<a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
-
-		<?php } else { ?>
-			<?php if (!empty($_POST['update'])) { ?>
+		<?php { ?>
+			<?php if (!empty($_GET['updated'])) { ?>
 				<div class="updated"><p><?php _e('Script updated', '99robots-header-footer-code-manager'); ?></p></div>
 				<a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
 
@@ -233,12 +108,11 @@ function hfcm_update() {
 				<?php if (!empty($_GET['created'])) { ?>
 					<div class="updated"><p><?php _e('Script Added Successfully', '99robots-header-footer-code-manager'); ?></p></div>
 					<a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
-
-				<?php
+					<?php
 				}
 			}
 			?>
-			<form method="post" action="<?php echo admin_url('admin.php?page=hfcm-update&id=' . $id); ?>">
+			<form method="post" action="<?php echo admin_url('admin.php?page=hfcm-request-handler&id=' . $id); ?>">
 				<?php wp_nonce_field('update-snippet_' . $id); ?>
 
 				<table class='wp-list-table widefat fixed hfcm-form-width form-table'>
