@@ -148,9 +148,9 @@ function hfcm_update() {
 		$createdon = $script[0]->created;
 		$lastmodifiedby = $current_user->display_name;
 		$lastrevisiondate = current_time('Y-m-d H:i:s');
-	}
-	//delete
-	else if (isset($_GET['delete'])) {
+		
+		//delete
+	} elseif (isset($_GET['delete'])) {
 		$wpdb->query($wpdb->prepare("DELETE FROM $table_name WHERE script_id = %s", $id));
 	} else {
 		//selecting value to update	
@@ -198,6 +198,22 @@ function hfcm_update() {
 	$display_on = esc_html($display_on);
 	$status = esc_html($status);
 	$lp_count = esc_html($lp_count);
+	
+	// Register the script
+	wp_register_script( 'hfcm_showboxes', plugins_url( 'assets/js/showboxes.js', __FILE__ ) );
+
+	// Localize the script with new data
+	$translation_array = array(
+		'header' => __( 'Header', '99robots-header-footer-code-manager' ),
+		'before_content' => __( 'Before Content', '99robots-header-footer-code-manager' ),
+		'after_content' => __( 'After Content', '99robots-header-footer-code-manager' ),
+		'footer' => __( 'Footer', '99robots-header-footer-code-manager' )
+	);
+	wp_localize_script( 'hfcm_showboxes', 'hfcm_localize', $translation_array );
+
+	// Enqueued script with localized data.
+	wp_enqueue_script( 'hfcm_showboxes' );
+	
 	?>
 	<div class="wrap">
 		<h1><?php _e('Edit Snippet', '99robots-header-footer-code-manager'); ?>
@@ -222,47 +238,6 @@ function hfcm_update() {
 				}
 			}
 			?>
-			<script type="text/javascript">
-				// function to show dependent dropdowns for "Site Display" field.
-				function showotherboxes(type) {
-					var header = '<option value="header"><?php _e('Header', '99robots-header-footer-code-manager'); ?></option>',
-					before_content = '<option value="before_content"><?php _e('Before Content', '99robots-header-footer-code-manager'); ?></option>',
-					after_content = '<option value="after_content"><?php _e('After Content', '99robots-header-footer-code-manager'); ?></option>',
-					footer = '<option value="footer"><?php _e('Footer', '99robots-header-footer-code-manager'); ?></option>',
-					all_options = header + before_content + after_content + footer;
-					if(type == 's_pages') {
-						jQuery('#s_pages, #locationtr').show();
-						jQuery('#data_location').html( all_options );
-						jQuery('#s_categories, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
-					} else if(type == 's_posts') {
-						jQuery('#s_posts, #locationtr').show();
-						jQuery('#data_location').html( all_options );
-						jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count').hide();
-					} else if(type == 's_categories') {
-						jQuery('#s_categories, #locationtr').show();
-						jQuery('#data_location').html( header + footer );
-						jQuery('#s_pages, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
-					} else if(type == 's_custom_posts') {
-						jQuery('#c_posttype, #locationtr').show();
-						jQuery('#data_location').html( all_options );
-						jQuery('#s_categories, #s_tags, #s_pages, #lp_count, #s_posts').hide();
-					} else if(type == 's_tags') {
-						jQuery('#data_location').html( all_options );
-						jQuery('#s_tags, #locationtr').show();
-						jQuery('#s_categories, #s_pages, #c_posttype, #lp_count, #s_posts').hide();
-					} else if(type == 'latest_posts') {
-						jQuery('#data_location').html( header + footer );
-						jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #s_posts').hide();
-						jQuery('#lp_count, #locationtr').show();
-					} else if(type == 'manual') {
-						jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr, #s_posts').hide();
-					} else {
-						jQuery('#data_location').html( header + footer);
-						jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
-						jQuery('#locationtr').show();
-					} 
-				}
-			</script>
 			<form method="post" action="<?php echo admin_url('admin.php?page=hfcm-update&id=' . $id); ?>">
 				<?php wp_nonce_field('update-snippet_' . $id); ?>
 
@@ -275,7 +250,7 @@ function hfcm_update() {
 					<tr>
 						<th class="hfcm-th-width"><?php _e('Site Display', '99robots-header-footer-code-manager'); ?></th>
 						<td>
-							<select name="data[display_on]" onchange="showotherboxes(this.value);">
+							<select name="data[display_on]" onchange="hfcm_showotherboxes(this.value);">
 								<?php
 								foreach ($darray as $dkey => $statusv) {
 									if ($display_on == $dkey) {

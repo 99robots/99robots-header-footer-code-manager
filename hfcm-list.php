@@ -110,7 +110,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 	public function no_items() {
 		_e('No Snippets avaliable.', '99robots-header-footer-code-manager');
 	}
-
+	
 	/**
 	 * Render a column when no column specific method exist.
 	 *
@@ -137,9 +137,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 						}
 					}
 					if ($empty)
-						return '<span class="hfcm-red">' . __('No post selected', '99robots-header-footer-code-manager') . '</span>' .
-								// deactivate snippet (only if active)
-								"<script>jQuery(function($){\$('#nnr-round-toggle{$item['script_id']}:checked').click();})</script>";
+						return '<span class="hfcm-red">' . __('No post selected', '99robots-header-footer-code-manager') . '</span>';
 				}
 				return __(esc_html($darray[$item[$column_name]]), '99robots-header-footer-code-manager');
 			case 'location':
@@ -152,9 +150,9 @@ class hfcm_Snippets_List extends WP_List_Table {
 			case 'device_type':
 				if ( 'both' === $item[$column_name] ) {
 					return __('Show on All Devices', '99robots-header-footer-code-manager');
-				} else if ( 'mobile' === $item[$column_name] ) {
+				} elseif ( 'mobile' === $item[$column_name] ) {
 					return __('Only Mobile Devices', '99robots-header-footer-code-manager');
-				} else if ( 'desktop' === $item[$column_name] ) {
+				} elseif ( 'desktop' === $item[$column_name] ) {
 					return __('Only Desktop', '99robots-header-footer-code-manager');
 				} else {
 					return esc_html($item[$column_name]);
@@ -168,7 +166,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 								<label for="nnr-round-toggle' . $item['script_id'] . '">ON</label>
 							</div>
 							';
-				} else if ( 'active' === $item[$column_name] ) {
+				} elseif ( 'active' === $item[$column_name] ) {
 					return '<div class="nnr-switch">
 								<label for="nnr-round-toggle' . $item['script_id'] . '">OFF</label>
 								<input id="nnr-round-toggle' . $item['script_id'] . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . $item['script_id'] . '" checked="checked" />
@@ -335,8 +333,8 @@ class hfcm_Snippets_List extends WP_List_Table {
 			} else {
 				self::delete_snippet(absint($_GET['snippet']));
 
-				echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-list') . "'</script>";
-				exit;
+				hfcm_redirect( admin_url('admin.php?page=hfcm-list') );
+				return;
 			}
 		}
 
@@ -352,9 +350,9 @@ class hfcm_Snippets_List extends WP_List_Table {
 				self::delete_snippet($id);
 			}
 
-			echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-list') . "'</script>";
-			exit;
-		} else if (( isset($_POST['action']) && 'bulk-activate' === $_POST['action'] )
+			hfcm_redirect( admin_url('admin.php?page=hfcm-list') );
+			return;
+		} elseif (( isset($_POST['action']) && 'bulk-activate' === $_POST['action'] )
 				|| ( isset($_POST['action2']) && 'bulk-activate' === $_POST['action2'] )
 		) {
 
@@ -365,9 +363,9 @@ class hfcm_Snippets_List extends WP_List_Table {
 				self::activate_snippet($id);
 			}
 
-			echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-list') . "'</script>";
-			exit;
-		} else if (( isset($_POST['action']) && 'bulk-deactivate' === $_POST['action'] )
+			hfcm_redirect( admin_url('admin.php?page=hfcm-list') );
+			return;
+		} elseif (( isset($_POST['action']) && 'bulk-deactivate' === $_POST['action'] )
 				|| ( isset($_POST['action2']) && 'bulk-deactivate' === $_POST['action2'] )
 		) {
 
@@ -377,14 +375,15 @@ class hfcm_Snippets_List extends WP_List_Table {
 			foreach ($delete_ids as $id) {
 				self::deactivate_snippet($id);
 			}
-
-			echo "<script>window.location = '" . admin_url('admin.php?page=hfcm-list') . "'</script>";
-			exit;
+			
+			hfcm_redirect( admin_url('admin.php?page=hfcm-list') );
+			return;
 		}
 	}
 
 }
 
+/** Generate list of all snippets */
 function hfcm_list() {
 
 	global $wpdb;
@@ -417,23 +416,18 @@ function hfcm_list() {
 		</form>
 
 	</div>
-	<script>
-		jQuery('.nnr-switch input').click(function(){
-			var t=jQuery(this),
-			togvalue = t.is(':checked')?'on':'off',
-			scriptid = t.data('id');
-												
-			jQuery.ajax({
-				url: '<?php echo admin_url('admin.php'); ?>', 
-				data: {
-					page: 'hfcm-update',
-					toggle: true,
-					id: scriptid,
-					togvalue: togvalue,
-					security: '<?php echo wp_create_nonce( 'toggle-snippet' ); ?>'
-				}
-			});
-		});
-	</script>
 	<?php
+		
+	// Register the script
+	wp_register_script( 'hfcm_toggle', plugins_url( 'assets/js/toggle.js', __FILE__ ) );
+
+	// Localize the script with new data
+	$translation_array = array(
+		'url' => admin_url('admin.php'),
+		'security' => wp_create_nonce( 'toggle-snippet' )
+	);
+	wp_localize_script( 'hfcm_toggle', 'hfcm_ajax', $translation_array );
+
+	// Enqueued script with localized data.
+	wp_enqueue_script( 'hfcm_toggle' );
 }
