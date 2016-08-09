@@ -1,16 +1,16 @@
 <?php
 
 /*
-  Plugin Name: Header Footer Code Manager
-  Plugin URI: https://99robots.com/products
-  Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
-  Author: 99robots
-  Author URI: https://99robots.com/
-  Version: 1.0.0
-  Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
-  Text Domain: 99robots-header-footer-code-manager
-  Domain Path: /languages
- */
+Plugin Name: Header Footer Code Manager
+Plugin URI: https://99robots.com/products
+Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
+Version: 1.0.0
+Author: 99robots
+Author URI: https://99robots.com/
+Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
+Text Domain: 99robots-header-footer-code-manager
+Domain Path: /languages
+*/
 
 global $hfcm_db_version;
 $hfcm_db_version = '1.0';
@@ -63,7 +63,7 @@ add_action('admin_print_styles', 'hfcm_enqueue_assets');
  */
 
 function hfcm_enqueue_assets() {
-	wp_register_style('hfcm_assets', plugins_url('assets/css/style-admin.css', __FILE__));
+	wp_register_style('hfcm_assets', plugins_url('css/style-admin.css', __FILE__));
 	wp_enqueue_style('hfcm_assets');
 }
 
@@ -89,7 +89,7 @@ function hfcm_modifymenu() {
 		'manage_options', //capabilities
 		'hfcm-list', //menu slug
 		'hfcm_list', //function
-		plugins_url('assets/images/', __FILE__) . '99robots.png'
+		plugins_url('images/', __FILE__) . '99robots.png'
 	);
 	//this is a submenu
 	add_submenu_page('hfcm-list', //parent slug
@@ -122,10 +122,10 @@ function hfcm_modifymenu() {
 }
 
 // files containing submenu functions
-require_once(plugin_dir_path(__FILE__) . 'hfcm-list.php');
-require_once(plugin_dir_path(__FILE__) . 'hfcm-create.php');
-require_once(plugin_dir_path(__FILE__) . 'hfcm-update.php');
-require_once(plugin_dir_path(__FILE__) . 'hfcm-request-handler.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-list.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-create.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-update.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-request-handler.php');
 
 // function to render the snippet
 function hfcm_render_snippet($scriptdata, $content = '', $return = false) {
@@ -415,7 +415,7 @@ function hfcm_content_scripts($content) {
 // Load redirection Javascript code
 function hfcm_redirect( $url = '' ) {
 	// Register the script
-	wp_register_script( 'hfcm_redirection', plugins_url( 'assets/js/location.js', __FILE__ ) );
+	wp_register_script( 'hfcm_redirection', plugins_url( 'js/location.js', __FILE__ ) );
 
 	// Localize the script with new data
 	$translation_array = array(

@@ -22,7 +22,7 @@ function hfcm_create() {
 	$display_on = "";
 
 	// Register the script
-	wp_register_script('hfcm_showboxes', plugins_url('assets/js/showboxes.js', __FILE__));
+	wp_register_script('hfcm_showboxes', plugins_url('js/showboxes.js', __FILE__));
 
 	// Localize the script with new data
 	$translation_array = array(

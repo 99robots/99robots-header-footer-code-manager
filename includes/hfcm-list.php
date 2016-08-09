@@ -419,7 +419,7 @@ function hfcm_list() {
 	<?php
 		
 	// Register the script
-	wp_register_script( 'hfcm_toggle', plugins_url( 'assets/js/toggle.js', __FILE__ ) );
+	wp_register_script( 'hfcm_toggle', plugins_url( 'js/toggle.js', __FILE__ ) );
 
 	// Localize the script with new data
 	$translation_array = array(

@@ -113,7 +113,7 @@ function hfcm_request_handler() {
 				), array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s')
 		);
 		$lastid = $wpdb->insert_id;
-		hfcm_redirect(admin_url('admin.php?page=hfcm-update&created=1&id=' . $lastid));
+		hfcm_redirect( admin_url( 'admin.php?page=hfcm-update&created=1&id=' . $lastid ) );
 	} else if (isset($_POST['update'])) {
 		$id = $_GET['id'];
 		// check nonce
@@ -222,6 +222,6 @@ function hfcm_request_handler() {
 				array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
 				array('%s') //where format
 		);
-		hfcm_redirect(admin_url('admin.php?page=hfcm-update&updated=1&id=' . $id));
+		hfcm_redirect( admin_url( 'admin.php?page=hfcm-update&updated=1&id=' . $id ) );
 	}
 }
