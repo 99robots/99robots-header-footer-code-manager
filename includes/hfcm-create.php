@@ -19,10 +19,10 @@ function hfcm_create() {
 	} else {
 		$shortcode = '[hfcm id="' . ($lastinsertedid[0]->script_id + 1) . '"]';
 	}
-	$display_on = "";
+	$display_on = '';
 
 	// Register the script
-	wp_register_script('hfcm_showboxes', plugins_url('js/showboxes.js', __FILE__));
+	wp_register_script('hfcm_showboxes', plugins_url('../js/showboxes.js', __FILE__));
 
 	// Localize the script with new data
 	$translation_array = array(
@@ -45,7 +45,7 @@ function hfcm_create() {
 			<table class='wp-list-table widefat fixed hfcm-form-width form-table'>
 				<tr>
 					<th class="hfcm-th-width"><?php _e('Snippet Name', '99robots-header-footer-code-manager'); ?></th>
-					<td><input type="text" name="data[name]" value="" class="hfcm-field-width" /></td>
+					<td><input type="text" name="data[name]" class="hfcm-field-width" /></td>
 				</tr>
 				<?php $darray = array('All' => 'Site Wide', 's_posts' => 'Specific Posts', 's_pages' => 'Specific Pages', 's_categories' => 'Specific Categories', 's_custom_posts' => 'Specific Custom Post Types', 's_tags' => 'Specific Tags', 'latest_posts' => 'Latest Posts', 'manual' => 'Shortcode Only'); ?>
 				<tr>

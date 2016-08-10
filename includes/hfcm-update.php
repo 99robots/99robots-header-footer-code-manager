@@ -69,17 +69,8 @@ function hfcm_update() {
 		}
 	}
 
-	// escape for html output
-	$name = esc_textarea( $name );
-	$snippet = esc_textarea( $snippet );
-	$device_type = esc_html( $device_type );
-	$location = esc_html( $location );
-	$display_on = esc_html( $display_on );
-	$status = esc_html( $status );
-	$lp_count = esc_html( $lp_count );
-
 	// Register the script
-	wp_register_script( 'hfcm_showboxes', plugins_url('js/showboxes.js', __FILE__ ) );
+	wp_register_script( 'hfcm_showboxes', plugins_url('../js/showboxes.js', __FILE__ ) );
 
 	// Localize the script with new data
 	$translation_array = array(
@@ -92,6 +83,16 @@ function hfcm_update() {
 
 	// Enqueued script with localized data.
 	wp_enqueue_script('hfcm_showboxes');
+
+	// escape for html output
+	$name = esc_textarea( $name );
+	$snippet = esc_textarea( $snippet );
+	$device_type = esc_html( $device_type );
+	$location = esc_html( $location );
+	$display_on = esc_html( $display_on );
+	$status = esc_html( $status );
+	$lp_count = esc_html( $lp_count );
+	
 	?>
 	<div class="wrap">
 		<h1><?php _e('Edit Snippet', '99robots-header-footer-code-manager'); ?>

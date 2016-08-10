@@ -17,13 +17,14 @@ $hfcm_db_version = '1.0';
 
 // function to create the DB / Options / Defaults					
 function hfcm_options_install() {
-
+	
 	global $wpdb;
 	global $hfcm_db_version;
-
-	$table_name = $wpdb->prefix . 'hfcm_scripts';
+	
+	$table_name      = $wpdb->prefix . 'hfcm_scripts';
 	$charset_collate = $wpdb->get_charset_collate();
-	$sql = "CREATE TABLE IF NOT EXISTS $table_name( 
+	$sql             = 
+		"CREATE TABLE IF NOT EXISTS $table_name( 
 			`script_id` int(10) NOT NULL AUTO_INCREMENT,
 			`name` varchar(100) DEFAULT NULL,
 			`snippet` text,
@@ -42,387 +43,276 @@ function hfcm_options_install() {
 			`created` datetime DEFAULT NULL,
 			`last_revision_date` datetime DEFAULT NULL,
 			PRIMARY KEY (`script_id`)
-		  ) $charset_collate; ";
-
+		) $charset_collate; ";
+	
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	dbDelta($sql);
-
-	add_option('hfcm_db_version', $hfcm_db_version);
+	dbDelta( $sql );
+	
+	add_option( 'hfcm_db_version', $hfcm_db_version );
 }
 
 // run the install scripts upon plugin activation
-register_activation_hook(__FILE__, 'hfcm_options_install');
+register_activation_hook( __FILE__, 'hfcm_options_install' );
 
 /*
  * register with hook 'admin_print_styles'
  */
-add_action('admin_print_styles', 'hfcm_enqueue_assets');
+add_action( 'admin_print_styles', 'hfcm_enqueue_assets' );
 
 /*
  * Enqueue style-file, if it exists.
  */
 
 function hfcm_enqueue_assets() {
-	wp_register_style('hfcm_assets', plugins_url('css/style-admin.css', __FILE__));
-	wp_enqueue_style('hfcm_assets');
+	wp_register_style( 'hfcm_assets', plugins_url( 'css/style-admin.css', __FILE__ ) );
+	wp_enqueue_style( 'hfcm_assets' );
 }
 
-add_action('admin_menu', 'hfcm_modifymenu');
+add_action( 'admin_menu', 'hfcm_modifymenu' );
 
 /*
  * this function loads plugins translation files
  */
 
 function hfcm_load_translation_files() {
-	load_plugin_textdomain('99robots-header-footer-code-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
+	load_plugin_textdomain( '99robots-header-footer-code-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 
 //add action to load plugin files
-add_action('plugins_loaded', 'hfcm_load_translation_files');
+add_action( 'plugins_loaded', 'hfcm_load_translation_files' );
 
 // function to create menu page, and submenu pages.
 function hfcm_modifymenu() {
-
+	
 	//this is the main item for the menu
-	add_menu_page(__('Header Footer Code Manager', '99robots-header-footer-code-manager'), //page title
-		__('Header Footer Code Manager', '99robots-header-footer-code-manager'), //menu title
+	add_menu_page( __( 'Header Footer Code Manager', '99robots-header-footer-code-manager' ), //page title
+		__( 'Header Footer Code Manager', '99robots-header-footer-code-manager' ), //menu title
 		'manage_options', //capabilities
 		'hfcm-list', //menu slug
 		'hfcm_list', //function
-		plugins_url('images/', __FILE__) . '99robots.png'
-	);
+		plugins_url( 'images/', __FILE__ ) . '99robots.png' );
 	//this is a submenu
-	add_submenu_page('hfcm-list', //parent slug
-		__('All Snippets', '99robots-header-footer-code-manager'), //page title
-		__('All Snippets', '99robots-header-footer-code-manager'), //menu title
+	add_submenu_page( 'hfcm-list', //parent slug
+		__( 'All Snippets', '99robots-header-footer-code-manager' ), //page title
+		__( 'All Snippets', '99robots-header-footer-code-manager' ), //menu title
 		'manage_options', //capability
 		'hfcm-list', //menu slug
-		'hfcm_list'); //function
+		'hfcm_list' ); //function
 	//this is a submenu
-	add_submenu_page('hfcm-list', //parent slug
-		__('Add New Snippet', '99robots-header-footer-code-manager'), //page title
-		__('Add New', '99robots-header-footer-code-manager'), //menu title
+	add_submenu_page( 'hfcm-list', //parent slug
+		__( 'Add New Snippet', '99robots-header-footer-code-manager' ), //page title
+		__( 'Add New', '99robots-header-footer-code-manager' ), //menu title
 		'manage_options', //capability
 		'hfcm-create', //menu slug
-		'hfcm_create'); //function
+		'hfcm_create' ); //function
 	//this submenu is HIDDEN, however, we need to add it anyways
-	add_submenu_page(null, //parent slug
-		__('Update Script', '99robots-header-footer-code-manager'), //page title
-		__('Update', '99robots-header-footer-code-manager'), //menu title
+	add_submenu_page( null, //parent slug
+		__( 'Update Script', '99robots-header-footer-code-manager' ), //page title
+		__( 'Update', '99robots-header-footer-code-manager' ), //menu title
 		'manage_options', //capability
 		'hfcm-update', //menu slug
-		'hfcm_update'); //function
+		'hfcm_update' ); //function
 	//this submenu is HIDDEN, however, we need to add it anyways
-	add_submenu_page(null, //parent slug
-		__('Request Handler Script', '99robots-header-footer-code-manager'), //page title
-		__('Request Handler', '99robots-header-footer-code-manager'), //menu title
+	add_submenu_page( null, //parent slug
+		__( 'Request Handler Script', '99robots-header-footer-code-manager' ), //page title
+		__( 'Request Handler', '99robots-header-footer-code-manager' ), //menu title
 		'manage_options', //capability
 		'hfcm-request-handler', //menu slug
-		'hfcm_request_handler'); //function
+		'hfcm_request_handler' ); //function
 }
 
 // files containing submenu functions
-require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-list.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-create.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-update.php');
-require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-request-handler.php');
+require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-list.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-create.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-update.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-request-handler.php' );
 
 // function to render the snippet
-function hfcm_render_snippet($scriptdata, $content = '', $return = false) {
+function hfcm_render_snippet( $scriptdata ) {
 	$output = "<!-- HFCM by 99 Robots - Snippet # {$scriptdata->script_id}: {$scriptdata->name} -->\n{$scriptdata->snippet}\n<!-- /end HFCM by 99 Robots -->\n";
-
-	switch ($scriptdata->location) {
-	case 'before_content':
-		return $output . $content;
-		break;
-	case 'after_content':
-		return $content . $output;
-		break;
-	default:
-		if ($return) {
-		return $output;
-		}
-		echo $output;
-	}
-
-	return $content;
+	
+	return $output;
 }
 
 // function to implement shortcode
-function hfcm_shortcode($atts) {
+function hfcm_shortcode( $atts ) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
-	if (!empty($atts['id'])) {
-	$id = (int) $atts['id'];
-	$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
-	$script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where status='active' AND device_type!='$hide_device' AND script_id=%s", $id));
-	if (!empty($script)) {
-		return hfcm_render_snippet($script[0], '', true);
-	}
+	if ( !empty( $atts['id'] ) ) {
+		$id          = (int) $atts['id'];
+		$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
+		$script      = $wpdb->get_results( $wpdb->prepare( "SELECT * from $table_name where status='active' AND device_type!='$hide_device' AND script_id=%s", $id ) );
+		if ( !empty( $script ) ) {
+			return hfcm_render_snippet( $script[0] );
+		}
 	}
 }
 
 // function to json_decode array and check if empty
-function hfcm_not_empty($scriptdata, $prop_name) {
-	$data = json_decode($scriptdata->{$prop_name});
-	if (empty($data)) {
-	return false;
+function hfcm_not_empty( $scriptdata, $prop_name ) {
+	$data = json_decode( $scriptdata->{$prop_name} );
+	if ( empty( $data ) ) {
+		return false;
 	}
 	return true;
 }
 
 // force array values into integer
-function hfcm_arr2int($arr) {
-	if (!is_array($arr))
-	return '';
-
+function hfcm_arr2int( $arr ) {
+	if ( !is_array( $arr ) )
+		return '';
+	
 	$newarr = array();
-
-	foreach ($arr as $val) {
-	$newval = (int) $val;
-
-	if ($newval || 0 === $val || '0' === $val) {
-		$newarr[] = $newval;
+	
+	foreach ( $arr as $val ) {
+		$newval = (int) $val;
+		
+		if ( $newval || 0 === $val || '0' === $val ) {
+			$newarr[] = $newval;
+		}
 	}
-	}
-
+	
 	return $newarr;
 }
 
-add_shortcode('hfcm', 'hfcm_shortcode');
+add_shortcode( 'hfcm', 'hfcm_shortcode' );
 
-add_action('wp_head', 'hfcm_header_scripts');
-
-// function to add snippets in the header
-function hfcm_header_scripts($content) {
+// decide which snippets to show - triggered by hooks
+function hfcm_add_snippets( $location = '', $content = '' ) {
 	global $wpdb;
-	$table_name = $wpdb->prefix . "hfcm_scripts";
-	$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
-	$script = $wpdb->get_results("SELECT * from $table_name where location='header' AND status='active' AND device_type!='$hide_device'");
-	if (!empty($script)) {
-	foreach ($script as $key => $scriptdata) {
-		switch ($scriptdata->display_on) {
-		case 'All':
-			hfcm_render_snippet($scriptdata);
-			break;
-		case 'latest_posts':
-			if (is_single()) {
-			$args = array(
-				'public' => true,
-				'_builtin' => false,
-			);
-			$output = 'names'; // names or objects, note names is the default
-			$operator = 'and'; // 'and' or 'or'
-			$c_posttypes = get_post_types($args, $output, $operator);
-			$posttypes = array("post");
-			foreach ($c_posttypes as $cpkey => $cpdata) {
-				$posttypes[] = $cpdata;
-			}
-			if (!empty($scriptdata->lp_count)) {
-				$latestposts = wp_get_recent_posts(array("numberposts" => $scriptdata->lp_count, "post_type" => $posttypes));
-			} else {
-				$latestposts = wp_get_recent_posts(array("post_type" => $posttypes));
-			}
+	
+	$beforecontent = '';
+	$aftercontent  = '';
 
-			$islatest = false;
-			foreach ($latestposts as $key => $lpostdata) {
-				if (get_the_ID() == $lpostdata['ID']) {
-				$islatest = true;
-				}
+	if ( $location && in_array( $location, array( 'header', 'footer' ) ) ) {
+		$display_location = "location='$location'";
+	} else {
+		$display_location = "location NOT IN ( 'header', 'footer' )";
+	}
+	
+	$table_name  = $wpdb->prefix . "hfcm_scripts";
+	$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
+	$script      = $wpdb->get_results( "SELECT * from $table_name where $display_location AND status='active' AND device_type!='$hide_device'" );
+
+	if ( !empty( $script ) ) {
+		foreach ( $script as $key => $scriptdata ) {
+			$out = '';
+			switch ( $scriptdata->display_on ) {
+				case 'All':
+					$out = hfcm_render_snippet( $scriptdata );
+					break;
+				case 'latest_posts':
+					if ( is_single() ) {
+						$args        = array(
+							'public' => true,
+							'_builtin' => false 
+						);
+						$output      = 'names'; // names or objects, note names is the default
+						$operator    = 'and'; // 'and' or 'or'
+						$c_posttypes = get_post_types( $args, $output, $operator );
+						$posttypes   = array(
+							"post" 
+						);
+						foreach ( $c_posttypes as $cpkey => $cpdata ) {
+							$posttypes[] = $cpdata;
+						}
+						if ( !empty( $scriptdata->lp_count ) ) {
+							$latestposts = wp_get_recent_posts( array(
+								"numberposts" => $scriptdata->lp_count,
+								"post_type" => $posttypes 
+							) );
+						} else {
+							$latestposts = wp_get_recent_posts( array(
+								"post_type" => $posttypes 
+							) );
+						}
+						
+						$islatest = false;
+						foreach ( $latestposts as $key => $lpostdata ) {
+							if ( get_the_ID() == $lpostdata['ID'] ) {
+								$islatest = true;
+							}
+						}
+						if ( $islatest ) {
+							$out = hfcm_render_snippet( $scriptdata );
+						}
+					}
+					break;
+				case 's_categories':
+					if ( hfcm_not_empty( $scriptdata, 's_categories' ) && in_category( json_decode( $scriptdata->s_categories ) ) ) {
+						$out = hfcm_render_snippet( $scriptdata );
+					}
+					break;
+				case 's_custom_posts':
+					if ( hfcm_not_empty( $scriptdata, 's_custom_posts' ) && is_singular( json_decode( $scriptdata->s_custom_posts ) ) ) {
+						$out = hfcm_render_snippet( $scriptdata );
+					}
+					break;
+				case 's_posts':
+					if ( hfcm_not_empty( $scriptdata, 's_posts' ) && is_single( json_decode( $scriptdata->s_posts ) ) ) {
+						$out = hfcm_render_snippet( $scriptdata );
+					}
+					break;
+				case 's_pages':
+					if ( hfcm_not_empty( $scriptdata, 's_pages' ) && is_page( json_decode( $scriptdata->s_pages ) ) ) {
+						$out = hfcm_render_snippet( $scriptdata );
+					}
+					break;
+				case 's_tags':
+					if ( hfcm_not_empty( $scriptdata, 's_tags' ) && is_page( json_decode( $scriptdata->s_tags ) ) ) {
+						$out = hfcm_render_snippet( $scriptdata );
+					}
 			}
-			if ($islatest) {
-				hfcm_render_snippet($scriptdata);
-			}
-			}
-			break;
-		case 's_categories':
-			if (hfcm_not_empty($scriptdata, 's_categories') && in_category(json_decode($scriptdata->s_categories))) {
-			hfcm_render_snippet($scriptdata);
-			}
-			break;
-		case 's_custom_posts':
-			if (hfcm_not_empty($scriptdata, 's_custom_posts') && is_singular(json_decode($scriptdata->s_custom_posts))) {
-			hfcm_render_snippet($scriptdata);
-			}
-			break;
-		case 's_posts':
-			if (hfcm_not_empty($scriptdata, 's_posts') && is_single(json_decode($scriptdata->s_posts))) {
-			hfcm_render_snippet($scriptdata);
-			}
-			break;
-		case 's_pages':
-			if (hfcm_not_empty($scriptdata, 's_pages') && is_page(json_decode($scriptdata->s_pages))) {
-			hfcm_render_snippet($scriptdata);
-			}
-			break;
-		case 's_tags':
-			if (hfcm_not_empty($scriptdata, 's_tags') && is_page(json_decode($scriptdata->s_tags))) {
-			hfcm_render_snippet($scriptdata);
+			
+			switch ( $scriptdata->location ) {
+				case 'before_content':
+					$beforecontent .= $out;
+					break;
+				case 'after_content':
+					$aftercontent  .= $out;
+					break;
+				default:
+					echo $out;
 			}
 		}
-	}
+		
+		// return results after the loop finishes
+		return $beforecontent . $content . $aftercontent;
 	}
 }
 
-add_action('wp_footer', 'hfcm_footer_scripts');
+add_action( 'wp_head', 'hfcm_header_scripts' );
+
+// function to add snippets in the header
+function hfcm_header_scripts() {
+	hfcm_add_snippets( 'header' );
+}
+
+add_action( 'wp_footer', 'hfcm_footer_scripts' );
 
 // function to add snippets in the footer
 function hfcm_footer_scripts() {
-	global $wpdb;
-	$table_name = $wpdb->prefix . "hfcm_scripts";
-	$script = $wpdb->get_results("SELECT * from $table_name where location='footer' AND status='active'");
-	if (!empty($script)) {
-	foreach ($script as $key => $scriptdata) {
-		if (wp_is_mobile() && in_array($script[0]->device_type, array('mobile', 'both'))) {
-		if ('All' === $scriptdata->display_on) {
-			echo $scriptdata->snippet;
-		} elseif ('latest_posts' === $scriptdata->display_on && is_single()) {
-			$args = array(
-			'public' => true,
-			'_builtin' => false,
-			);
-			$output = 'names'; // names or objects, note names is the default
-			$operator = 'and'; // 'and' or 'or'
-			$c_posttypes = get_post_types($args, $output, $operator);
-			$posttypes = array('post');
-			foreach ($c_posttypes as $cpkey => $cpdata) {
-			$posttypes[] = $cpdata;
-			}
-			if (!empty($scriptdata->lp_count)) {
-			$latestposts = wp_get_recent_posts(array('numberposts' => $scriptdata->lp_count, 'post_type' => $posttypes));
-			} else {
-			$latestposts = wp_get_recent_posts(array('post_type' => $posttypes));
-			}
-			$islatest = false;
-			foreach ($latestposts as $key => $lpostdata) {
-			if (get_the_ID() === $lpostdata['ID']) {
-				$islatest = true;
-			}
-			}
-			if ($islatest) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-			}
-		} elseif ('s_categories' === $scriptdata->display_on && !empty($scriptdata->s_categories) && in_category(json_decode($scriptdata->s_categories))) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		} elseif ('s_custom_posts' === $scriptdata->display_on && is_singular(json_decode($scriptdata->s_custom_posts)) && !empty($scriptdata->s_custom_posts)) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		} elseif ('s_posts' === $scriptdata->display_on && !empty($scriptdata->s_posts) && is_single(json_decode($scriptdata->s_posts))) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		} elseif ('s_pages' === $scriptdata->display_on && !empty($scriptdata->s_pages) && is_page(json_decode($scriptdata->s_pages))) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		} elseif ('s_tags' === $scriptdata->display_on && !empty($scriptdata->s_tags) && is_tag(json_decode($scriptdata->s_tags))) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		}
-		} elseif (!wp_is_mobile() && in_array($script[0]->device_type, array('desktop', 'both'))) {
-		if ('All' === $scriptdata->display_on) {
-			echo $scriptdata->snippet;
-		} elseif ('latest_posts' === $scriptdata->display_on && is_single()) {
-			$args = array(
-			'public' => true,
-			'_builtin' => false,
-			);
-			$output = 'names'; // names or objects, note names is the default
-			$operator = 'and'; // 'and' or 'or'
-			$c_posttypes = get_post_types($args, $output, $operator);
-			$posttypes = array('post');
-			foreach ($c_posttypes as $cpkey => $cpdata) {
-			$posttypes[] = $cpdata;
-			}
-			if (!empty($scriptdata->lp_count)) {
-			$latestposts = wp_get_recent_posts(array('numberposts' => $scriptdata->lp_count, 'post_type' => $posttypes));
-			} else {
-			$latestposts = wp_get_recent_posts(array('post_type' => $posttypes));
-			}
-			$islatest = false;
-			foreach ($latestposts as $key => $lpostdata) {
-			if (get_the_ID() == $lpostdata['ID']) {
-				$islatest = true;
-			}
-			}
-			if ($islatest) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-			}
-		} elseif ('s_categories' === $scriptdata->display_on && !empty($scriptdata->s_categories) && in_category(json_decode($scriptdata->s_categories))) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		} elseif ('s_custom_posts' === $scriptdata->display_on && is_singular(json_decode($scriptdata->s_custom_posts)) && !empty($scriptdata->s_custom_posts)) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		} elseif ('s_posts' === $scriptdata->display_on && !empty($scriptdata->s_posts) && is_single(json_decode($scriptdata->s_posts))) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		} elseif ('s_pages' === $scriptdata->display_on && !empty($scriptdata->s_pages) && is_page(json_decode($scriptdata->s_pages))) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		} elseif ('s_tags' === $scriptdata->display_on && !empty($scriptdata->s_tags) && is_tag(json_decode($scriptdata->s_tags))) {
-			echo '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-		}
-		}
-	}
-	}
+	hfcm_add_snippets( 'footer' );
 }
 
-add_action('the_content', 'hfcm_content_scripts');
+add_action( 'the_content', 'hfcm_content_scripts' );
 
 // function to add snippets before/after the content
-function hfcm_content_scripts($content) {
-	global $wpdb;
-
-	$beforecontent = '';
-	$aftercontent = '';
-
-	$table_name = $wpdb->prefix . 'hfcm_scripts';
-	$script = $wpdb->get_results("SELECT * from $table_name where location NOT IN ('footer', 'header') AND status='active'");
-	if (!empty($script)) {
-		foreach ($script as $key => $scriptdata) {
-			if (wp_is_mobile() && in_array($script[0]->device_type, array('mobile', 'both'))) {
-				if ('s_custom_posts' === $scriptdata->display_on && !empty($scriptdata->s_custom_posts) && is_singular(json_decode($scriptdata->s_custom_posts))) {
-					if ('before_content' === $scriptdata->location) {
-						$beforecontent .= '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
-					} elseif ('after_content' === $scriptdata->location) {
-						$aftercontent .= '\n<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-					}
-				} elseif ('s_pages' === $scriptdata->display_on && !empty($scriptdata->s_pages) && is_page(json_decode($scriptdata->s_pages))) {
-					if ('before_content' === $scriptdata->location) {
-						$beforecontent .= '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
-					} elseif ('after_content' === $scriptdata->location) {
-						$aftercontent .= '\n<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-					}
-				} elseif ('s_posts' === $scriptdata->display_on && !empty($scriptdata->s_posts) && is_single(json_decode($scriptdata->s_posts))) {
-					if ('before_content' === $scriptdata->location) {
-						$beforecontent .= '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
-					} elseif ('after_content' === $scriptdata->location) {
-						$aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-					}
-				}
-			} elseif (!wp_is_mobile() && in_array($script[0]->device_type, array('desktop', 'both'))) {
-				if ('s_custom_posts' === $scriptdata->display_on && !empty($scriptdata->s_custom_posts) && is_singular(json_decode($scriptdata->s_custom_posts))) {
-					if ('before_content' === $scriptdata->location) {
-						$beforecontent .= '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
-					} elseif ('after_content' === $scriptdata->location) {
-						$aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-					}
-				} elseif ('s_pages' === $scriptdata->display_on && !empty($scriptdata->s_pages) && is_page(json_decode($scriptdata->s_pages))) {
-					if ('before_content' === $scriptdata->location) {
-						$beforecontent .= '<!-- HFCM by 99robots - Snippet #' . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->\n";
-					} elseif ('after_content' === $scriptdata->location) {
-						$aftercontent .= "\n<!-- HFCM by 99robots - Snippet #" . $scriptdata->script_id . ': ' . $scriptdata->name . " -->\n" . $scriptdata->snippet . "\n<!-- /end HFCM by 99robots -->";
-					}
-				}
-			}
-		}
-	}
-
-	return $beforecontent . $content . $aftercontent;
+function hfcm_content_scripts( $content ) {
+	return hfcm_add_snippets( false, $content );
 }
 
 // Load redirection Javascript code
 function hfcm_redirect( $url = '' ) {
 	// Register the script
 	wp_register_script( 'hfcm_redirection', plugins_url( 'js/location.js', __FILE__ ) );
-
+	
 	// Localize the script with new data
 	$translation_array = array(
-		'url' => $url
+		'url' => $url 
 	);
 	wp_localize_script( 'hfcm_redirection', 'hfcm_location', $translation_array );
-
+	
 	// Enqueued script with localized data.
 	wp_enqueue_script( 'hfcm_redirection' );
 }
