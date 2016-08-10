@@ -6,7 +6,6 @@ function hfcm_create() {
 	// check user capabilities
 	current_user_can('administrator');
 
-
 	global $wpdb;
 
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
