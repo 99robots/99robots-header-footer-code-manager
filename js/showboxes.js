@@ -1,4 +1,5 @@
 // function to show dependent dropdowns for "Site Display" field.
+
 function hfcm_showotherboxes( type ) {
 	var header = '<option value="header">'+ hfcm_localize.header +'</option>',
 		before_content = '<option value="before_content">'+ hfcm_localize.before_content +'</option>',
@@ -16,7 +17,7 @@ function hfcm_showotherboxes( type ) {
 		jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count').hide();
 	} else if (type == 's_categories') {
 		jQuery('#s_categories, #locationtr').show();
-		hfcm_remember_loc( header + footer );
+		hfcm_remember_loc( all_options );
 		jQuery('#s_pages, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
 	} else if (type == 's_custom_posts') {
 		jQuery('#c_posttype, #locationtr').show();
@@ -27,7 +28,7 @@ function hfcm_showotherboxes( type ) {
 		jQuery('#s_tags, #locationtr').show();
 		jQuery('#s_categories, #s_pages, #c_posttype, #lp_count, #s_posts').hide();
 	} else if (type == 'latest_posts') {
-		hfcm_remember_loc( header + footer );
+		hfcm_remember_loc( all_options );
 		jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #s_posts').hide();
 		jQuery('#lp_count, #locationtr').show();
 	} else if (type == 'manual') {
