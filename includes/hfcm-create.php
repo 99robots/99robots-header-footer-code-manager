@@ -9,15 +9,6 @@ function hfcm_create() {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
 
-	//Get Last inserted ID
-	$lastinsertedid = $wpdb->get_results("SELECT script_id from $table_name ORDER BY script_id DESC LIMIT 0,1");
-	if (empty($lastinsertedid)) {
-		$shortcode = '[hfcm id="1"]';
-	} else {
-		$shortcode = '[hfcm id="' . ($lastinsertedid[0]->script_id + 1) . '"]';
-	}
-	$display_on = '';
-
 	// Register the script
 	wp_register_script('hfcm_showboxes', plugins_url('../js/showboxes.js', __FILE__));
 

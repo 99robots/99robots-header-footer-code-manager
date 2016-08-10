@@ -7,6 +7,35 @@ function hfcm_request_handler() {
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
 	// check user capabilities
 	current_user_can( 'administrator' );
+	
+	// 'insert' doesn't requiere an ID
+	if ( !isset( $_POST['insert'] ) ) {
+		if ( !isset( $_GET['id'] ) ) die('Missing ID parameter.');
+		$id = (int) $_GET['id'];
+	}
+	
+	// handle AJAX on/off toggle for snippets
+	if ( isset( $_REQUEST['toggle'] ) && !empty( $_REQUEST['togvalue'] ) ) {
+		// check nonce
+		check_ajax_referer( 'toggle-snippet', 'security' );
+
+		if ( 'on' === $_REQUEST['togvalue'] ) {
+			$status = 'active';
+		} else {
+			$status = 'inactive';
+		}
+		$wpdb->update(
+				$table_name, //table
+				array(
+			'status' => $status,
+				), //data
+				array('script_id' => $id), //where
+				array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
+				array('%s') //where format
+		);
+		die;
+	}
+	
 	//insert
 	if ( isset( $_POST['insert'] ) ) {
 		// check nonce
@@ -129,7 +158,6 @@ function hfcm_request_handler() {
 		$lastid = $wpdb->insert_id;
 		hfcm_redirect( admin_url( 'admin.php?page=hfcm-update&created=1&id=' . $lastid ) );
 	} else if ( isset( $_POST['update'] ) ) {
-		$id = $_GET['id'];
 		// check nonce
 		check_admin_referer( 'update-snippet_' . $id );
 		if ( !empty( $_POST['data']['name'] ) ) {

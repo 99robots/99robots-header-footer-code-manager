@@ -6,7 +6,7 @@ jQuery('.nnr-switch input').click( function()  {
 	jQuery.ajax({
 		url: hfcm_ajax.url, 
 		data: {
-			page: 'hfcm-update',
+			page: 'hfcm-request-handler',
 			toggle: true,
 			id: scriptid,
 			togvalue: togvalue,
