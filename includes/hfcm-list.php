@@ -331,7 +331,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 			if ( !wp_verify_nonce($nonce, 'hfcm_delete_snippet') ) {
 				die('Go get a life script kiddies');
 			} else {
-				self::delete_snippet(absint($_GET['snippet']));
+				self::delete_snippet( absint( $_GET['snippet'] ) );
 
 				hfcm_redirect( admin_url('admin.php?page=hfcm-list') );
 				return;

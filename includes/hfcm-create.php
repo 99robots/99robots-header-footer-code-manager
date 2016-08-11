@@ -24,15 +24,20 @@ function hfcm_create() {
 	// Enqueued script with localized data.
 	wp_enqueue_script('hfcm_showboxes');
 	
-	// escape for html output
-	$name        = '';
-	$snippet     = '';
-	$device_type = '';
-	$location    = '';
-	$display_on  = '';
-	$status      = '';
-	$lp_count    = '';
-	$update       = false;
-	
+	// prepare variables for includes/hfcm-add-edit.php
+	$name           = '';
+	$snippet        = '';
+	$device_type    = '';
+	$location       = '';
+	$display_on     = '';
+	$status         = '';
+	$lp_count       = 5;
+	$s_pages        = array();
+	$s_posts        = array();
+	$s_custom_posts = array();
+	$s_categories   = array();
+	$s_tags         = array();
+	$update         = false;
+
 	require_once( plugin_dir_path( __FILE__ ) . 'hfcm-add-edit.php' );
 }

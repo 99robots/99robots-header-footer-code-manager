@@ -3,14 +3,14 @@
 		<?php if( $update ) :?><a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action"><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></a><?php endif; ?>
 	</h1>
 	<?php 
-		if (!empty($_GET['updated'])) : 
+		if ( !empty( $_GET['updated'] ) ) : 
 	?>
 		<div class="updated">
 			<p><?php _e('Script updated', '99robots-header-footer-code-manager'); ?></p>
 		</div>
 		<a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
 	<?php 
-		elseif (!empty($_GET['created'])) : 
+		elseif ( !empty( $_GET['created'] ) ) : 
 	?>
 		<div class="updated">
 			<p><?php _e('Script Added Successfully', '99robots-header-footer-code-manager'); ?></p>
@@ -42,7 +42,7 @@
 					<select name="data[display_on]" onchange="hfcm_showotherboxes(this.value);">
 					<?php
 						foreach ($darray as $dkey => $statusv) {
-							if ($display_on == $dkey) {
+							if ($display_on === $dkey) {
 								echo "<option value='$dkey' selected='selected'>" . __($statusv, '99robots-header-footer-code-manager') . '</option>';
 							} else {
 								echo "<option value='$dkey'>" . __($statusv, '99robots-header-footer-code-manager') . '</option>';
