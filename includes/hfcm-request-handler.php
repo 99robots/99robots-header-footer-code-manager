@@ -77,12 +77,12 @@ function hfcm_request_handler() {
 			$lp_count = '';
 		}
 		if ( !empty( $_POST['data']['s_pages'] ) ) {
-			$s_pages = hfcm_arr2int( $_POST['data']['s_pages'] );
+			$s_pages = $_POST['data']['s_pages'];
 		} else {
 			$s_pages = '';
 		}
 		if ( !empty( $_POST['data']['s_posts'] ) ) {
-			$s_posts = hfcm_arr2int( $_POST['data']['s_posts'] );
+			$s_posts = $_POST['data']['s_posts'];
 		} else {
 			$s_posts = '';
 		}
@@ -95,7 +95,7 @@ function hfcm_request_handler() {
 		}
 		array_map( 'absint', $s_posts );
 		if ( !empty( $_POST['data']['s_custom_posts'] ) ) {
-			$s_custom_posts = hfcm_arr2int( $_POST['data']['s_custom_posts'] );
+			$s_custom_posts = $_POST['data']['s_custom_posts'];
 		} else {
 			$s_custom_posts = '';
 		}
@@ -104,7 +104,7 @@ function hfcm_request_handler() {
 		}
 		array_map( 'absint', $s_custom_posts );
 		if ( !empty( $_POST['data']['s_categories'] ) ) {
-			$s_categories = hfcm_arr2int( $_POST['data']['s_categories'] );
+			$s_categories = $_POST['data']['s_categories'];
 		} else {
 			$s_categories = '';
 		}
@@ -113,7 +113,7 @@ function hfcm_request_handler() {
 		}
 		array_map( 'absint', $s_categories );
 		if ( !empty( $_POST['data']['s_tags'] ) ) {
-			$s_tags = hfcm_arr2int( $_POST['data']['s_tags'] );
+			$s_tags = $_POST['data']['s_tags'];
 		} else {
 			$s_tags = '';
 		}
@@ -197,12 +197,12 @@ function hfcm_request_handler() {
 			$status = '';
 		}
 		if ( !empty( $_POST['data']['s_pages'] ) ) {
-			$s_pages = hfcm_arr2int( $_POST['data']['s_pages'] );
+			$s_pages = $_POST['data']['s_pages'];
 		} else {
 			$s_pages = '';
 		}
 		if ( !empty( $_POST['data']['s_posts'] ) ) {
-			$s_posts = hfcm_arr2int( $_POST['data']['s_posts'] );
+			$s_posts = $_POST['data']['s_posts'];
 		} else {
 			$s_posts = '';
 		}
@@ -215,7 +215,7 @@ function hfcm_request_handler() {
 		}
 		array_map( 'absint', $s_posts );
 		if ( !empty( $_POST['data']['s_custom_posts'] ) ) {
-			$s_custom_posts = hfcm_arr2int( $_POST['data']['s_custom_posts'] );
+			$s_custom_posts = $_POST['data']['s_custom_posts'];
 		} else {
 			$s_custom_posts = '';
 		}
@@ -224,7 +224,7 @@ function hfcm_request_handler() {
 		}
 		array_map( 'absint', $s_custom_posts );
 		if ( !empty( $_POST['data']['s_categories'] ) ) {
-			$s_categories = hfcm_arr2int( $_POST['data']['s_categories'] );
+			$s_categories = $_POST['data']['s_categories'];
 		} else {
 			$s_categories = '';
 		}
@@ -233,7 +233,7 @@ function hfcm_request_handler() {
 		}
 		array_map( 'absint', $s_categories );
 		if ( !empty( $_POST['data']['s_tags'] ) ) {
-			$s_tags = hfcm_arr2int( $_POST['data']['s_tags'] );
+			$s_tags = $_POST['data']['s_tags'];
 		} else {
 			$s_tags = '';
 		}

@@ -157,24 +157,6 @@ function hfcm_not_empty( $scriptdata, $prop_name ) {
 	return true;
 }
 
-// force array values into integer
-function hfcm_arr2int( $arr ) {
-	if ( !is_array( $arr ) )
-		return '';
-	
-	$newarr = array();
-	
-	foreach ( $arr as $val ) {
-		$newval = (int) $val;
-		
-		if ( $newval || 0 === $val || '0' === $val ) {
-			$newarr[] = $newval;
-		}
-	}
-	
-	return $newarr;
-}
-
 add_shortcode( 'hfcm', 'hfcm_shortcode' );
 
 // decide which snippets to show - triggered by hooks
@@ -232,7 +214,7 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 							if ( get_the_ID() == $lpostdata['ID'] ) {
 								$islatest = true;
 							}
-						}
+							}
 						if ( $islatest ) {
 							$out = hfcm_render_snippet( $scriptdata );
 						}
