@@ -10,7 +10,8 @@
 	padding: 20px 20px 0 !important;
 }
 .hfcm-field-width,
-.hfcm-form-width select {
+.hfcm-form-width select,
+.selectize-control {
 	width: 400px;
 }
 #newcontent {

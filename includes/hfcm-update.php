@@ -2,16 +2,19 @@
 
 // function for submenu "Update snippet" page
 function hfcm_update() {
+	
+	add_action( 'wp_enqueue_scripts', 'hfcm_selectize_enqueue' );
 
 	// check user capabilities
 	current_user_can('administrator');
-	
-	if ( !isset( $_GET['id'] ) ) die( 'Missing ID parameter.' );
+
+	if ( !isset( $_GET['id'] ) ) {
+		die( 'Missing ID parameter.' );
+	}
 	$id = $_GET['id'];
-	
+
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
-
 
 	//selecting value to update	
 	$script = $wpdb->get_results( $wpdb->prepare( "SELECT * from $table_name where script_id=%s", $id ) );
@@ -49,21 +52,6 @@ function hfcm_update() {
 		$lastrevisiondate = esc_html( $s->last_revision_date );
 	}
 
-	// Register the script
-	wp_register_script( 'hfcm_showboxes', plugins_url('../js/showboxes.js', __FILE__ ) );
-
-	// Localize the script with new data
-	$translation_array = array(
-		'header' => __('Header', '99robots-header-footer-code-manager'),
-		'before_content' => __('Before Content', '99robots-header-footer-code-manager'),
-		'after_content' => __('After Content', '99robots-header-footer-code-manager'),
-		'footer' => __('Footer', '99robots-header-footer-code-manager')
-	);
-	wp_localize_script( 'hfcm_showboxes', 'hfcm_localize', $translation_array );
-
-	// Enqueued script with localized data.
-	wp_enqueue_script('hfcm_showboxes');
-
 	// escape for html output
 	$name        = esc_textarea( $name );
 	$snippet     = esc_textarea( $snippet );
@@ -73,6 +61,7 @@ function hfcm_update() {
 	$status      = esc_html( $status );
 	$lp_count    = esc_html( $lp_count );
 	$update      = true;
-	
+
 	require_once( plugin_dir_path( __FILE__ ) . 'hfcm-add-edit.php' );
+
 }

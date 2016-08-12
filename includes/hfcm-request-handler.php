@@ -1,21 +1,23 @@
 <?php
 
 function hfcm_request_handler() {
-	global $wpdb;
-	global $current_user;
-	
-	$table_name = $wpdb->prefix . 'hfcm_scripts';
+
 	// check user capabilities
 	current_user_can( 'administrator' );
-	
-	// 'insert' doesn't requiere an ID
+
 	if ( !isset( $_POST['insert'] ) ) {
-		if ( !isset( $_GET['id'] ) ) die('Missing ID parameter.');
-		$id = (int) $_GET['id'];
+		if ( !isset( $_REQUEST['id'] ) ) {
+			die('Missing ID parameter.');
+		}
+		$id = (int) $_REQUEST['id'];
 	}
-	
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'hfcm_scripts';
+
 	// handle AJAX on/off toggle for snippets
 	if ( isset( $_REQUEST['toggle'] ) && !empty( $_REQUEST['togvalue'] ) ) {
+
 		// check nonce
 		check_ajax_referer( 'toggle-snippet', 'security' );
 
@@ -26,21 +28,18 @@ function hfcm_request_handler() {
 		}
 		$wpdb->update(
 				$table_name, //table
-				array(
-			'status' => $status,
-				), //data
-				array('script_id' => $id), //where
-				array('%s', '%s', '%s', '%s', '%s', '%s'), //data format
-				array('%s') //where format
+				array( 'status' => $status ), //data
+				array( 'script_id' => $id ), //where
+				array( '%s', '%s', '%s', '%s', '%s', '%s' ), //data format
+				array( '%s' ) //where format
 		);
-		die;
-	}
-	
-	//insert
-	if ( isset( $_POST['insert'] ) ) {
+
+	// create new snippet
+	} elseif ( isset( $_POST['insert'] ) ) {
+
 		// check nonce
 		check_admin_referer( 'create-snippet' );
-		
+
 		if ( !empty( $_POST['data']['name'] ) ) {
 			$name = sanitize_text_field( $_POST['data']['name'] );
 		} else {
@@ -59,7 +58,7 @@ function hfcm_request_handler() {
 		if ( !empty( $_POST['data']['display_on'] ) ) {
 			$display_on = sanitize_text_field( $_POST['data']['display_on'] );
 		} else {
-			$display_on = '';
+		$display_on = '';
 		}
 		if ( !empty( $_POST['data']['location'] ) && $display_on != 'manual' ) {
 			$location = sanitize_text_field( $_POST['data']['location'] );
@@ -122,6 +121,8 @@ function hfcm_request_handler() {
 		}
 		array_map( 'absint', $s_tags );
 		
+		global $current_user;
+
 		$wpdb->insert( $table_name, //table
 			array(
 				'name' => $name,
@@ -157,9 +158,13 @@ function hfcm_request_handler() {
 		);
 		$lastid = $wpdb->insert_id;
 		hfcm_redirect( admin_url( 'admin.php?page=hfcm-update&message=6&id=' . $lastid ) );
-	} else if ( isset( $_POST['update'] ) ) {
+		
+	// update snippet
+	} elseif ( isset( $_POST['update'] ) ) {
+
 		// check nonce
 		check_admin_referer( 'update-snippet_' . $id );
+
 		if ( !empty( $_POST['data']['name'] ) ) {
 			$name = sanitize_text_field( $_POST['data']['name'] );
 		} else {
@@ -185,7 +190,6 @@ function hfcm_request_handler() {
 		} else {
 			$location = '';
 		}
-		
 		if ( !empty( $_POST['data']['lp_count'] ) ) {
 			$lp_count = max( 1, (int) $_POST['data']['lp_count'] );
 		} else {
@@ -241,9 +245,11 @@ function hfcm_request_handler() {
 			$s_tags = array();
 		}
 		array_map( 'absint', $s_tags );
-		
+
+		global $current_user;
+
 		$wpdb->update( $table_name, //table
-			array(
+			array( // data
 				'name' => $name,
 				'snippet' => $snippet,
 				'device_type' => $device_type,
@@ -258,22 +264,91 @@ function hfcm_request_handler() {
 				's_tags' => wp_json_encode( $s_tags ),
 				'last_revision_date' => current_time( 'Y-m-d H:i:s' ),
 				'last_modified_by' => sanitize_text_field( $current_user->display_name ) 
-			), //data
-			array(
+			),
+			array( // where
 				'script_id' => $id 
-			), //where
-			array(
+			), 
+			array( // data format
 				'%s',
 				'%s',
 				'%s',
 				'%s',
 				'%s',
 				'%s' 
-			), //data format
-			array(
+			), 
+			array( // where format
 				'%s' 
-			) //where format
+			) 
 		);
 		hfcm_redirect( admin_url( 'admin.php?page=hfcm-update&message=1&id=' . $id ) );
+
+	// JSON return posts for AJAX
+	} elseif ( isset( $_POST['get_posts'] ) ) {
+
+		// check nonce
+		//check_admin_referer( 'hfcm-get-posts' );
+
+		// get all selected posts
+		
+		if ( id===-1 ) {
+			$s_posts = array();
+		} else {
+
+			//selecting value to update	
+			$script = $wpdb->get_results( $wpdb->prepare( "SELECT s_posts from $table_name where script_id=%s", $id ) );
+			foreach ($script as $s) {
+				$s_posts = json_decode( $s->s_posts );
+				if ( !is_array( $s_posts ) ) {
+					$s_posts = array();
+				}
+			}
+
+		}
+		
+		
+		
+		// get all posts
+		$args = array(
+			'public' => true,
+			'_builtin' => false,
+		);
+		
+		$output = 'names'; // names or objects, note names is the default
+		$operator = 'and'; // 'and' or 'or'
+		
+		$c_posttypes = get_post_types($args, $output, $operator);
+		$posttypes = array('post');
+		foreach ($c_posttypes as $cpdata) {
+			$posttypes[] = $cpdata;
+		}
+		$posts = get_posts(array('post_type' => $posttypes, 'posts_per_page' => -1, 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC'));
+		
+		$json_output = array( 
+				'selected' => array(),
+				'posts' => array()
+			);
+		
+		foreach ($posts as $pdata) {
+			
+			if ( in_array( $pdata->ID, $s_posts ) ) {
+				$json_output['selected'][] = $pdata->ID;
+			}
+			$json_output['posts'][] = array(
+				'text'  => sanitize_text_field( $pdata->post_title ),
+				'value' => $pdata->ID,
+			);
+		
+		
+			/*// old
+			if (in_array($pdata->ID, $s_posts)) {
+				echo "<option value='{$pdata->ID}' selected>{$pdata->post_title}</option>";
+			} else {
+				echo "<option value='{$pdata->ID}'>{$pdata->post_title}</option>";
+			}*/
+		}
+		
+		echo wp_json_encode( $json_output );
+		wp_die();
+
 	}
 }

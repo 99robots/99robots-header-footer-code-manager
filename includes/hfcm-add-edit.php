@@ -1,30 +1,58 @@
+<?php
+
+// Register the script
+wp_register_script( 'hfcm_showboxes', plugins_url('js/showboxes.js', dirname( __FILE__ ) ), array( 'jquery' ) );
+
+// prepare ID (for AJAX)
+if ( !isset($id) ) {
+	$id = -1;
+}
+
+// Localize the script with new data
+$translation_array = array(
+	'header'         => __( 'Header', '99robots-header-footer-code-manager' ),
+	'before_content' => __( 'Before Content', '99robots-header-footer-code-manager' ),
+	'after_content'  => __( 'After Content', '99robots-header-footer-code-manager' ),
+	'footer'         => __( 'Footer', '99robots-header-footer-code-manager' ),
+	'id'             => $id,
+);
+wp_localize_script( 'hfcm_showboxes', 'hfcm_localize', $translation_array );
+
+// Enqueued script with localized data.
+wp_enqueue_script( 'hfcm_showboxes' );
+
+?>
+
 <div class="wrap">
 	<h1><?php _e( ( $update ? 'Edit Snippet' : 'Add New Snippet' ), '99robots-header-footer-code-manager'); ?>
 		<?php if( $update ) :?><a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action"><?php _e('Add New Snippet', '99robots-header-footer-code-manager'); ?></a><?php endif; ?>
 	</h1>
 	<?php 
-		if ( !empty( $_GET['message'] ) &&  $_GET['message'] == 1 ) : 
-	?>
-		<div class="updated">
-			<p><?php _e('Script updated', '99robots-header-footer-code-manager'); ?></p>
-		</div>
-		<a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
-	<?php 
-		elseif ( !empty( $_GET['message'] ) &&  $_GET['message'] == 6 ) : 
-	?>
-		<div class="updated">
-			<p><?php _e('Script Added Successfully', '99robots-header-footer-code-manager'); ?></p>
-		</div>
-		<a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
-	<?php
-		endif;	
+		if ( !empty( $_GET['message'] ) ) :
+			if ( $_GET['message'] == 1 ) : 
+				?>
+				<div class="updated">
+					<p><?php _e('Script updated', '99robots-header-footer-code-manager'); ?></p>
+				</div>
+				<a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
+				<?php 
+			elseif ( $_GET['message'] == 6 ) : 
+				?>
+				<div class="updated">
+					<p><?php _e('Script Added Successfully', '99robots-header-footer-code-manager'); ?></p>
+				</div>
+				<a href="<?php echo admin_url('admin.php?page=hfcm-list') ?>">&laquo; <?php _e('Back to list', '99robots-header-footer-code-manager'); ?></a>
+				<?php
+			endif;
+		endif;
+		
 		if( $update ) :
-		?>
+			?>
 			<form method="post" action="<?php echo admin_url('admin.php?page=hfcm-request-handler&id=' . $id); ?>">
-		<?php 
+			<?php 
 			wp_nonce_field('update-snippet_' . $id); 
 		else :
-		?>
+			?>
 			<form method="post" action="<?php echo admin_url('admin.php?page=hfcm-request-handler'); ?>">
 		<?php
 			wp_nonce_field('create-snippet'); 
@@ -77,40 +105,16 @@
 				</td>
 			</tr>
 			<?php
-				$args = array(
-					'public' => true,
-					'_builtin' => false,
-				);
-				
-				$output = 'names'; // names or objects, note names is the default
-				$operator = 'and'; // 'and' or 'or'
-				
-				$c_posttypes = get_post_types($args, $output, $operator);
-				$posttypes = array('post');
-				foreach ($c_posttypes as $cpkey => $cpdata) {
-					$posttypes[] = $cpdata;
-				}
-				$posts = get_posts(array('post_type' => $posttypes, 'posts_per_page' => -1, 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC'));
-				if ('s_posts' == $display_on) {
+				if ('s_posts' === $display_on) {
 					$spostsstyle = '';
 				} else {
 					$spostsstyle = 'display:none;';
 				}
-				?>
+			?>
 			<tr id="s_posts" style="<?php echo $spostsstyle; ?>">
 				<th class="hfcm-th-width"><?php _e('Post List', '99robots-header-footer-code-manager'); ?></th>
 				<td>
-					<select class="nnr-wraptext" name="data[s_posts][]" multiple>
-					<?php
-						foreach ($posts as $pkey => $pdata) {
-							if (in_array($pdata->ID, $s_posts)) {
-								echo "<option value='{$pdata->ID}' selected>{$pdata->post_title}</option>";
-							} else {
-								echo "<option value='{$pdata->ID}'>{$pdata->post_title}</option>";
-							}
-						}
-						?>
-					</select>
+					<select class="nnr-wraptext" name="data[s_posts][]" multiple></select>
 				</td>
 			</tr>
 			<?php
@@ -129,7 +133,6 @@
 				} else {
 					$stagsstyle = 'display:none;';
 				}
-				
 				if ('s_custom_posts' === $display_on) {
 					$cpostssstyle = '';
 				} else {

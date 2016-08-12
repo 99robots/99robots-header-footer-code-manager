@@ -45,3 +45,30 @@ function hfcm_remember_loc( new_html ) {
 	jQuery('#data_location').html( new_html );
 	jQuery('#data_location option[value="' + tmp + '"]').prop( 'selected', true );
 }
+
+// init selectize.js
+
+jQuery(function($) {
+
+	var data = {
+		action: 'hfcm-request',
+		id: hfcm_localize.id,
+		get_posts: true 
+		// security: ...
+	};
+	
+	$.post(
+		ajaxurl,
+		data,
+		function(new_data) {
+			var options = {
+				plugins: ['remove_button'],
+				options: new_data.posts,
+				items: new_data.selected
+			};
+			
+			$('#s_posts select').selectize( options );
+		},
+		'json' // ajax result format
+	);	
+});

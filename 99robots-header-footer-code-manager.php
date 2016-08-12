@@ -64,6 +64,15 @@ add_action( 'admin_print_styles', 'hfcm_enqueue_assets' );
  */
 
 function hfcm_enqueue_assets() {
+
+	// selectize.js plugin
+	wp_register_style( 'selectize-css', plugins_url( 'css/selectize.bootstrap3.css', __FILE__ ) );
+	wp_enqueue_style( 'selectize-css' );
+
+	wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array('jquery') );
+	wp_enqueue_script( 'selectize-js' );
+
+	// hfcm's CSS
 	wp_register_style( 'hfcm_assets', plugins_url( 'css/style-admin.css', __FILE__ ) );
 	wp_enqueue_style( 'hfcm_assets' );
 }
@@ -298,3 +307,6 @@ function hfcm_redirect( $url = '' ) {
 	// Enqueued script with localized data.
 	wp_enqueue_script( 'hfcm_redirection' );
 }
+
+// Handle AJAX requests
+add_action( 'wp_ajax_hfcm-request', 'hfcm_request_handler' );
