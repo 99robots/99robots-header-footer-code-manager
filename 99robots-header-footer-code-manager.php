@@ -72,7 +72,7 @@ function hfcm_enqueue_assets() {
 	wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array('jquery') );
 	wp_enqueue_script( 'selectize-js' );
 
-	// hfcm's CSS
+	// Plugin's CSS
 	wp_register_style( 'hfcm_assets', plugins_url( 'css/style-admin.css', __FILE__ ) );
 	wp_enqueue_style( 'hfcm_assets' );
 }
@@ -80,14 +80,14 @@ function hfcm_enqueue_assets() {
 add_action( 'admin_menu', 'hfcm_modifymenu' );
 
 /*
- * this function loads plugins translation files
+ * This function loads plugins translation files
  */
 
 function hfcm_load_translation_files() {
 	load_plugin_textdomain( '99robots-header-footer-code-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 
-//add action to load plugin files
+// Add action to load plugin files
 add_action( 'plugins_loaded', 'hfcm_load_translation_files' );
 
 // function to create menu page, and submenu pages.
@@ -130,20 +130,20 @@ function hfcm_modifymenu() {
 		'hfcm_request_handler' ); //function
 }
 
-// files containing submenu functions
+// Files containing submenu functions
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-list.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-create.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-update.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-request-handler.php' );
 
-// function to render the snippet
+// Function to render the snippet
 function hfcm_render_snippet( $scriptdata ) {
 	$output = "<!-- HFCM by 99 Robots - Snippet # {$scriptdata->script_id}: {$scriptdata->name} -->\n{$scriptdata->snippet}\n<!-- /end HFCM by 99 Robots -->\n";
 	
 	return $output;
 }
 
-// function to implement shortcode
+// Function to implement shortcode
 function hfcm_shortcode( $atts ) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
@@ -157,7 +157,7 @@ function hfcm_shortcode( $atts ) {
 	}
 }
 
-// function to json_decode array and check if empty
+// Function to json_decode array and check if empty
 function hfcm_not_empty( $scriptdata, $prop_name ) {
 	$data = json_decode( $scriptdata->{$prop_name} );
 	if ( empty( $data ) ) {
@@ -168,7 +168,7 @@ function hfcm_not_empty( $scriptdata, $prop_name ) {
 
 add_shortcode( 'hfcm', 'hfcm_shortcode' );
 
-// decide which snippets to show - triggered by hooks
+// Function to decide which snippets to show - triggered by hooks
 function hfcm_add_snippets( $location = '', $content = '' ) {
 	global $wpdb;
 	
@@ -267,28 +267,28 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 			}
 		}
 		
-		// return results after the loop finishes
+		// Return results after the loop finishes
 		return $beforecontent . $content . $aftercontent;
 	}
 }
 
 add_action( 'wp_head', 'hfcm_header_scripts' );
 
-// function to add snippets in the header
+// Function to add snippets in the header
 function hfcm_header_scripts() {
 	hfcm_add_snippets( 'header' );
 }
 
 add_action( 'wp_footer', 'hfcm_footer_scripts' );
 
-// function to add snippets in the footer
+// Function to add snippets in the footer
 function hfcm_footer_scripts() {
 	hfcm_add_snippets( 'footer' );
 }
 
 add_action( 'the_content', 'hfcm_content_scripts' );
 
-// function to add snippets before/after the content
+// Function to add snippets before/after the content
 function hfcm_content_scripts( $content ) {
 	return hfcm_add_snippets( false, $content );
 }
@@ -310,3 +310,35 @@ function hfcm_redirect( $url = '' ) {
 
 // Handle AJAX requests
 add_action( 'wp_ajax_hfcm-request', 'hfcm_request_handler' );
+
+// Function to sanitize POST data
+function hfcm_sanitize_text( $key, $sanitize = true ) {
+	if ( !empty( $_POST['data'][$key] ) ) {
+		$out = stripslashes_deep( $_POST['data'][$key] );
+		if ($sanitize) {
+			$out = sanitize_text_field( $out );
+		}
+		return $out;
+	}
+	return '';
+}
+
+// Function to sanitize strings within POST data arrays
+function hfcm_sanitize_array( $key, $type = 'integer' ) {
+	if ( !empty( $_POST['data'][$key] ) ) {
+		$arr = $_POST['data'][$key];
+		if ( !is_array( $arr ) ) {
+			return array();
+		}
+		if ( 'integer' === $type ) {
+			return array_map( 'absint', $arr );
+		} else { // strings
+			$new_array = array();
+			foreach ($arr as $val) {
+				$new_array[] = sanitize_text_field( $val );
+			}
+		}
+		return $new_array;
+	}
+	return array();
+}
