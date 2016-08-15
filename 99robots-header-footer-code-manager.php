@@ -266,10 +266,9 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 					echo $out;
 			}
 		}
-		
-		// Return results after the loop finishes
-		return $beforecontent . $content . $aftercontent;
 	}
+	// Return results after the loop finishes
+	return $beforecontent . $content . $aftercontent;
 }
 
 add_action( 'wp_head', 'hfcm_header_scripts' );
