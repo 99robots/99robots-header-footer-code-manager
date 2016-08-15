@@ -157,7 +157,7 @@ function hfcm_request_handler() {
 		$table_name = $wpdb->prefix . 'hfcm_scripts';
 		
 		// Get all selected posts
-		if ( id===-1 ) {
+		if ( -1 === $id ) {
 			$s_posts = array();
 		} else {
 
