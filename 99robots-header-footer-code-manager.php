@@ -60,7 +60,7 @@ register_activation_hook( __FILE__, 'hfcm_options_install' );
 add_action( 'admin_print_styles', 'hfcm_enqueue_assets' );
 
 /*
- * Enqueue style-file, if it exists.
+	* Enqueue style-file, if it exists.
  */
 
 function hfcm_enqueue_assets() {
@@ -250,7 +250,7 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 					}
 					break;
 				case 's_tags':
-					if ( hfcm_not_empty( $scriptdata, 's_tags' ) && is_page( json_decode( $scriptdata->s_tags ) ) ) {
+					if ( hfcm_not_empty( $scriptdata, 's_tags' ) && has_tag( json_decode( $scriptdata->s_tags ) ) ) {
 						$out = hfcm_render_snippet( $scriptdata );
 					}
 			}

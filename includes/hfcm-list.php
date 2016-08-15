@@ -424,7 +424,7 @@ function hfcm_list() {
 	// Localize the script with new data
 	$translation_array = array(
 		'url' => admin_url('admin.php'),
-		'security' => wp_create_nonce( 'toggle-snippet' )
+		'security' => wp_create_nonce( 'hfcm-toggle-snippet' )
 	);
 	wp_localize_script( 'hfcm_toggle', 'hfcm_ajax', $translation_array );
 

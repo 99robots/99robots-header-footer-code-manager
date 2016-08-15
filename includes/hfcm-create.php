@@ -13,13 +13,15 @@ function hfcm_create() {
 	$location       = '';
 	$display_on     = '';
 	$status         = '';
-	$lp_count       = 5;
+	$lp_count       = 5; // Default value
 	$s_pages        = array();
 	$s_posts        = array();
 	$s_custom_posts = array();
 	$s_categories   = array();
 	$s_tags         = array();
-	$update         = false;
+
+	// Notify hfcm-add-edit.php NOT to make changes for update
+	$update = false;
 
 	require_once( plugin_dir_path( __FILE__ ) . 'hfcm-add-edit.php' );
 

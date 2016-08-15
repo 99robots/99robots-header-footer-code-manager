@@ -15,6 +15,7 @@ $translation_array = array(
 	'after_content'  => __( 'After Content', '99robots-header-footer-code-manager' ),
 	'footer'         => __( 'Footer', '99robots-header-footer-code-manager' ),
 	'id'             => $id,
+	'security'       => wp_create_nonce( 'hfcm-get-posts' )
 );
 wp_localize_script( 'hfcm_showboxes', 'hfcm_localize', $translation_array );
 
@@ -93,7 +94,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
 				<td>
 					<select name="data[s_pages][]" multiple>
 					<?php
-						foreach ($pages as $pkey => $pdata) {
+						foreach ($pages as $pdata) {
 							if (in_array($pdata->ID, $s_pages)) {
 								echo "<option value='{$pdata->ID}' selected>{$pdata->post_title}</option>";
 							} else {
@@ -114,7 +115,9 @@ wp_enqueue_script( 'hfcm_showboxes' );
 			<tr id="s_posts" style="<?php echo $spostsstyle; ?>">
 				<th class="hfcm-th-width"><?php _e('Post List', '99robots-header-footer-code-manager'); ?></th>
 				<td>
-					<select class="nnr-wraptext" name="data[s_posts][]" multiple></select>
+					<select class="nnr-wraptext" name="data[s_posts][]" multiple>
+							<option disabled>...</option>
+					</select>
 				</td>
 			</tr>
 			<?php
@@ -148,13 +151,28 @@ wp_enqueue_script( 'hfcm_showboxes' );
 				} else {
 					$locationstyle = '';
 				}
+				
+				// Get all names of Custom Post Types
+				$args = array(
+					'public' => true,
+					'_builtin' => false,
+				);
+				
+				$output = 'names'; // names or objects, note names is the default
+				$operator = 'and'; // 'and' or 'or'
+				
+				$c_posttypes = get_post_types($args, $output, $operator);
+				$posttypes = array('post');
+				foreach ($c_posttypes as $cpdata) {
+					$posttypes[] = $cpdata;
+				}
 				?>
 			<tr id="s_categories" style="<?php echo $scategoriesstyle; ?>">
 				<th class="hfcm-th-width"><?php _e('Category List', '99robots-header-footer-code-manager'); ?></th>
 				<td>
 					<select name="data[s_categories][]" multiple>
 					<?php
-						foreach ($categories as $ckey => $cdata) {
+						foreach ($categories as $cdata) {
 							if (in_array($cdata->term_id, $s_categories)) {
 								echo "<option value='{$cdata->term_id}' selected>{$cdata->name}</option>";
 							} else {
@@ -170,11 +188,11 @@ wp_enqueue_script( 'hfcm_showboxes' );
 				<td>
 					<select name="data[s_tags][]" multiple>
 					<?php
-						foreach ($tags as $tkey => $tdata) {
-							if (in_array($tdata->slug, $s_tags)) {
-								echo "<option value='{$tdata->slug}' selected>{$tdata->name}</option>";
+						foreach ($tags as $tdata) {
+							if (in_array($tdata->term_id, $s_tags)) {
+								echo "<option value='{$tdata->term_id}' selected>{$tdata->name}</option>";
 							} else {
-								echo "<option value='{$tdata->slug}'>{$tdata->name}</option>";
+								echo "<option value='{$tdata->term_id}'>{$tdata->name}</option>";
 							}
 						}
 						?>

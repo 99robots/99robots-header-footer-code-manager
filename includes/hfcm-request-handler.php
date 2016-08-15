@@ -19,12 +19,11 @@ function hfcm_request_handler() {
 		check_admin_referer( 'update-snippet_' . $id );
 	}
 
-
 	// Handle AJAX on/off toggle for snippets
 	if ( isset( $_REQUEST['toggle'] ) && !empty( $_REQUEST['togvalue'] ) ) {
 
 		// Check nonce
-		check_ajax_referer( 'toggle-snippet', 'security' );
+		check_ajax_referer( 'hfcm-toggle-snippet', 'security' );
 
 		if ( 'on' === $_REQUEST['togvalue'] ) {
 			$status = 'active';
@@ -44,7 +43,7 @@ function hfcm_request_handler() {
 				array( '%s' ) //where format
 		);
 
-	// Create new snippet
+	// Create / update snippet
 	} elseif ( isset( $_POST['insert'] ) || isset( $_POST['update'] ) ) {
 	
 		// Sanitize fields
@@ -59,20 +58,20 @@ function hfcm_request_handler() {
 		$s_posts        = hfcm_sanitize_array( 's_posts' );
 		$s_custom_posts = hfcm_sanitize_array( 's_custom_posts', 'string' );
 		$s_categories   = hfcm_sanitize_array( 's_categories' );
-		$s_tags         = hfcm_sanitize_array( 's_tags', 'string' );
+		$s_tags         = hfcm_sanitize_array( 's_tags' );
 		
 		if ( 'manual' === $display_on ) {
 			$location = '';
 		}
 		$lp_count = max( 1, (int) $lp_count );
 
-		// global vars
+		// Global vars
 		global $wpdb;
 		global $current_user;
 		$table_name = $wpdb->prefix . 'hfcm_scripts';
 
+		// Update snippet
 		if ( isset( $id ) ) {
-			// Update snippet
 
 			$wpdb->update( $table_name, //table
 				array( // data
@@ -151,7 +150,7 @@ function hfcm_request_handler() {
 	} elseif ( isset( $_POST['get_posts'] ) ) {
 
 		// Check nonce
-		//check_admin_referer( 'hfcm-get-posts' );
+		check_ajax_referer( 'hfcm-get-posts', 'security' );
 		
 		// Global vars
 		global $wpdb;
@@ -172,32 +171,30 @@ function hfcm_request_handler() {
 			}
 
 		}
-		
-		
-		
+
 		// Get all posts
 		$args = array(
 			'public' => true,
 			'_builtin' => false,
 		);
-		
+
 		$output = 'names'; // names or objects, note names is the default
 		$operator = 'and'; // 'and' or 'or'
-		
+
 		$c_posttypes = get_post_types($args, $output, $operator);
 		$posttypes = array('post');
 		foreach ($c_posttypes as $cpdata) {
 			$posttypes[] = $cpdata;
 		}
 		$posts = get_posts(array('post_type' => $posttypes, 'posts_per_page' => -1, 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC'));
-		
+
 		$json_output = array( 
 				'selected' => array(),
 				'posts' => array()
 			);
-		
+
 		foreach ($posts as $pdata) {
-			
+
 			if ( in_array( $pdata->ID, $s_posts ) ) {
 				$json_output['selected'][] = $pdata->ID;
 			}
@@ -205,14 +202,7 @@ function hfcm_request_handler() {
 				'text'  => sanitize_text_field( $pdata->post_title ),
 				'value' => $pdata->ID,
 			);
-		
-		
-			/*// old
-			if (in_array($pdata->ID, $s_posts)) {
-				echo "<option value='{$pdata->ID}' selected>{$pdata->post_title}</option>";
-			} else {
-				echo "<option value='{$pdata->ID}'>{$pdata->post_title}</option>";
-			}*/
+
 		}
 		
 		echo wp_json_encode( $json_output );

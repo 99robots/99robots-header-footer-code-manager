@@ -53,8 +53,8 @@ jQuery(function($) {
 	var data = {
 		action: 'hfcm-request',
 		id: hfcm_localize.id,
-		get_posts: true 
-		// security: ...
+		get_posts: true,
+		security: hfcm_localize.security
 	};
 	
 	$.post(
@@ -70,5 +70,8 @@ jQuery(function($) {
 			$('#s_posts select').selectize( options );
 		},
 		'json' // ajax result format
-	);	
+	);
+
+	// selectize all <select multiple> elements
+	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select').selectize();
 });

@@ -60,7 +60,9 @@ function hfcm_update() {
 	$display_on  = esc_html( $display_on );
 	$status      = esc_html( $status );
 	$lp_count    = esc_html( $lp_count );
-	$update      = true;
+
+	// Notify hfcm-add-edit.php to make necesary changes for update
+	$update = true;
 
 	require_once( plugin_dir_path( __FILE__ ) . 'hfcm-add-edit.php' );
 
