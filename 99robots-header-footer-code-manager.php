@@ -57,24 +57,36 @@ register_activation_hook( __FILE__, 'hfcm_options_install' );
 /*
  * register with hook 'admin_print_styles'
  */
-add_action( 'admin_print_styles', 'hfcm_enqueue_assets' );
+add_action( 'admin_enqueue_scripts', 'hfcm_enqueue_assets' );
 
 /*
 	* Enqueue style-file, if it exists.
  */
 
-function hfcm_enqueue_assets() {
+function hfcm_enqueue_assets( $hook ) {
+	$allowed_pages = array(
+		'toplevel_page_hfcm-list',
+		'header-footer-code-manager_page_hfcm-create',
+		'admin_page_hfcm-update',
+	);
 
-	// selectize.js plugin
-	wp_register_style( 'selectize-css', plugins_url( 'css/selectize.bootstrap3.css', __FILE__ ) );
-	wp_enqueue_style( 'selectize-css' );
+	if ( in_array( $hook, $allowed_pages ) ) {
+		// Plugin's CSS
+		wp_register_style( 'hfcm_assets', plugins_url( 'css/style-admin.css', __FILE__ ) );
+		wp_enqueue_style( 'hfcm_assets' );
+	}
 
-	wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array('jquery') );
-	wp_enqueue_script( 'selectize-js' );
+	// Remove hfcm-list from $allowed_pages
+	array_shift( $allowed_pages );
 
-	// Plugin's CSS
-	wp_register_style( 'hfcm_assets', plugins_url( 'css/style-admin.css', __FILE__ ) );
-	wp_enqueue_style( 'hfcm_assets' );
+	if ( in_array( $hook, $allowed_pages ) ) {
+		// selectize.js plugin CSS and JS files
+		wp_register_style( 'selectize-css', plugins_url( 'css/selectize.bootstrap3.css', __FILE__ ) );
+		wp_enqueue_style( 'selectize-css' );
+
+		wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array('jquery') );
+		wp_enqueue_script( 'selectize-js' );
+	}
 }
 
 add_action( 'admin_menu', 'hfcm_modifymenu' );
