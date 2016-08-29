@@ -14,7 +14,6 @@ Easily add tracking code snippets, conversion pixels, or other scripts required 
 Header Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer or above or below the content of your page. 
 
 = BENEFITS =
-Here are some of the problems this plugin solves:
 * Never have to worry about inadvertently breaking your site by adding code
 * Avoid inadvertently placing snippets in the wrong place
 * Eliminate the need for a dozen or more silly plugins just to add a small code snippet - Less plugins is always better!
@@ -54,7 +53,6 @@ Here are some of the problems this plugin solves:
 * Only Mobile Devices
 
 = SUPPORTED SERVICES =
-Here are a handful of the supported services, however the plugin can accept almost ANY code snippet (HTML / Javascript / CSS) from any service.
 * Google Analytics
 * Google Adsense
 * Google Tag Manager
@@ -65,6 +63,7 @@ Here are a handful of the supported services, however the plugin can accept almo
 * Google Conversion Pixels
 * Twitter
 * Heatmaps from Crazy Egg, notification bars Hello Bar, etc.
+* It can accept ANY code snippet (HTML / Javascript / CSS) from any service
 * and the list goes on and on...
 
 > #### Plugin Information
@@ -82,8 +81,9 @@ Here are a handful of the supported services, however the plugin can accept almo
 == Screenshots ==
 
 1. Dashboard - All Snippets
-2. Add New Snippet - Read the documentation at: 
+2. Add New Snippet - Read the documentation at:
 http://www.99robots.com/docs/header-footer-code-manager
+3. Choose where you want your snippet to be displayed
 
 == Frequently Asked Questions ==
 
