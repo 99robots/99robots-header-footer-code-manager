@@ -3,7 +3,7 @@ Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
 Tested up to: 4.6.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -98,6 +98,8 @@ A. If your script is not supported, just let us know and we'll look into it imme
 
 == Changelog ==
 
-= 1.0.0 
-= 2016-07-20
+= 1.0.1 = 2016-9-20
+* FIXED: Updated code triggering a fatal error for sites with older PHP versions; now compatible.
+
+= 1.0.0 = 2016-7-20
 * Initial release - HFCM is born! :)

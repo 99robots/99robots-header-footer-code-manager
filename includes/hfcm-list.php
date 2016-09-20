@@ -8,11 +8,13 @@ class hfcm_Snippets_List extends WP_List_Table {
 	/** Class constructor */
 	public function __construct() {
 
-		parent::__construct([
-			'singular' => __('Snippet', '99robots-header-footer-code-manager'), //singular name of the listed records
-			'plural' => __('Snippets', '99robots-header-footer-code-manager'), //plural name of the listed records
-			'ajax' => false //does this table support ajax?
-		]);
+		parent::__construct(
+			array(
+				'singular' => __('Snippet', '99robots-header-footer-code-manager'), //singular name of the listed records
+				'plural' => __('Snippets', '99robots-header-footer-code-manager'), //plural name of the listed records
+				'ajax' => false //does this table support ajax?
+			)
+		);
 	}
 
 	/**
@@ -54,7 +56,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 		$table_name = "{$wpdb->prefix}hfcm_scripts";
 
 		$wpdb->delete(
-			$table_name, [ 'script_id' => $id], [ '%d']
+			$table_name, array( 'script_id' => $id ), array( '%d' )
 		);
 	}
 
@@ -70,7 +72,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 		$wpdb->update(
 			$table_name, array(
 				'status' => 'active',
-			), array('script_id' => $id), ['%s'], ['%d']
+			), array( 'script_id' => $id ), array( '%s' ), array( '%d' )
 		);
 	}
 
@@ -86,7 +88,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 		$wpdb->update(
 				$table_name, array(
 					'status' => 'inactive',
-				), array('script_id' => $id), ['%s'], ['%d']
+				), array( 'script_id' => $id ), array( '%s' ), array( '%d' )
 		);
 	}
 
@@ -119,7 +121,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 	 *
 	 * @return mixed
 	 */
-	public function column_default($item, $column_name) {
+	public function column_default( $item, $column_name ) {
 		switch ($column_name) {
 			case 'name':
 				return esc_html($item[$column_name]);
