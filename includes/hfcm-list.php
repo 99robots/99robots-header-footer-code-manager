@@ -215,10 +215,10 @@ class hfcm_Snippets_List extends WP_List_Table {
 
 		$title = '<strong>' . $item['name'] . '</strong>';
 
-		$actions = [
+		$actions = array(
 			'edit' => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . __('Edit', '99robots-header-footer-code-manager') . '</a>', esc_attr("hfcm-update"), 'edit', absint($item['script_id']), $edit_nonce),
 			'delete' => sprintf('<a href="?page=%s&action=%s&snippet=%s&_wpnonce=%s">' . __('Delete', '99robots-header-footer-code-manager') . '</a>', esc_attr($_REQUEST['page']), 'delete', absint($item['script_id']), $delete_nonce)
-		];
+		);
 
 		return $title . $this->row_actions($actions);
 	}
@@ -229,7 +229,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 	 * @return array
 	 */
 	function get_columns() {
-		$columns = [
+		$columns = array(
 			'cb' => '<input type="checkbox" />',
 			'script_id' => __('ID', '99robots-header-footer-code-manager'),
 			'status' => __('Status', '99robots-header-footer-code-manager'),
@@ -238,7 +238,7 @@ class hfcm_Snippets_List extends WP_List_Table {
 			'location' => __('Location', '99robots-header-footer-code-manager'),
 			'device_type' => __('Devices', '99robots-header-footer-code-manager'),
 			'shortcode' => __('Shortcode', '99robots-header-footer-code-manager')
-		];
+		);
 
 		return $columns;
 	}
@@ -263,11 +263,11 @@ class hfcm_Snippets_List extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_bulk_actions() {
-		$actions = [
+		$actions = array(
 			'bulk-activate' => __('Activate', '99robots-header-footer-code-manager'),
 			'bulk-deactivate' => __('Deactivate', '99robots-header-footer-code-manager'),
 			'bulk-delete' => __('Remove', '99robots-header-footer-code-manager'),
-		];
+		);
 
 		return $actions;
 	}
@@ -292,10 +292,10 @@ class hfcm_Snippets_List extends WP_List_Table {
 		$current_page = $this->get_pagenum();
 		$total_items = self::record_count();
 
-		$this->set_pagination_args([
+		$this->set_pagination_args(array(
 			'total_items' => $total_items, //WE have to calculate the total number of items
 			'per_page' => $per_page //WE have to determine how many items to show on a page
-		]);
+		));
 
 		$this->items = self::get_snippets($per_page, $current_page, $customvar);
 	}
