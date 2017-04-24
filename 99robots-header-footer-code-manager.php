@@ -107,7 +107,7 @@ function hfcm_modifymenu() {
 	
 	//this is the main item for the menu
 	add_menu_page( __( 'Header Footer Code Manager', '99robots-header-footer-code-manager' ), //page title
-		__( 'Header Footer Code Manager', '99robots-header-footer-code-manager' ), //menu title
+		__( 'HFCM', '99robots-header-footer-code-manager' ), //menu title
 		'manage_options', //capabilities
 		'hfcm-list', //menu slug
 		'hfcm_list', //function
