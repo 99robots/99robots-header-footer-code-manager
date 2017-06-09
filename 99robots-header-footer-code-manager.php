@@ -1,30 +1,34 @@
 <?php
+/**
+ * Plugin Name: Header Footer Code Manager
+ * Plugin URI: https://99robots.com/products
+ * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
+ * Version: 1.0.3
+ * Author: 99robots
+ * Author URI: https://99robots.com/
+ * Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
+ * Text Domain: 99robots-header-footer-code-manager
+ * Domain Path: /languages
+ */
 
-/*
-Plugin Name: Header Footer Code Manager
-Plugin URI: https://99robots.com/products
-Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
-Version: 1.0.2
-Author: 99robots
-Author URI: https://99robots.com/
-Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
-Text Domain: 99robots-header-footer-code-manager
-Domain Path: /languages
-*/
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 global $hfcm_db_version;
 $hfcm_db_version = '1.0';
 
-// function to create the DB / Options / Defaults					
+// function to create the DB / Options / Defaults
 function hfcm_options_install() {
-	
+
 	global $wpdb;
 	global $hfcm_db_version;
-	
+
 	$table_name      = $wpdb->prefix . 'hfcm_scripts';
 	$charset_collate = $wpdb->get_charset_collate();
-	$sql             = 
-		"CREATE TABLE IF NOT EXISTS $table_name( 
+	$sql =
+		"CREATE TABLE IF NOT EXISTS $table_name(
 			`script_id` int(10) NOT NULL AUTO_INCREMENT,
 			`name` varchar(100) DEFAULT NULL,
 			`snippet` text,
@@ -44,26 +48,19 @@ function hfcm_options_install() {
 			`last_revision_date` datetime DEFAULT NULL,
 			PRIMARY KEY (`script_id`)
 		) $charset_collate; ";
-	
+
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
-	
+
 	add_option( 'hfcm_db_version', $hfcm_db_version );
 }
-
-// run the install scripts upon plugin activation
 register_activation_hook( __FILE__, 'hfcm_options_install' );
 
 /*
- * register with hook 'admin_print_styles'
+ * Enqueue style-file, if it exists.
  */
-add_action( 'admin_enqueue_scripts', 'hfcm_enqueue_assets' );
-
-/*
-	* Enqueue style-file, if it exists.
- */
-
 function hfcm_enqueue_assets( $hook ) {
+
 	$allowed_pages = array(
 		'toplevel_page_hfcm-list',
 		'header-footer-code-manager_page_hfcm-create',
@@ -84,63 +81,74 @@ function hfcm_enqueue_assets( $hook ) {
 		wp_register_style( 'selectize-css', plugins_url( 'css/selectize.bootstrap3.css', __FILE__ ) );
 		wp_enqueue_style( 'selectize-css' );
 
-		wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array('jquery') );
+		wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array( 'jquery' ) );
 		wp_enqueue_script( 'selectize-js' );
 	}
 }
-
-add_action( 'admin_menu', 'hfcm_modifymenu' );
+add_action( 'admin_enqueue_scripts', 'hfcm_enqueue_assets' );
 
 /*
  * This function loads plugins translation files
  */
-
 function hfcm_load_translation_files() {
 	load_plugin_textdomain( '99robots-header-footer-code-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
-
-// Add action to load plugin files
 add_action( 'plugins_loaded', 'hfcm_load_translation_files' );
 
 // function to create menu page, and submenu pages.
 function hfcm_modifymenu() {
-	
-	//this is the main item for the menu
-	add_menu_page( __( 'Header Footer Code Manager', '99robots-header-footer-code-manager' ), //page title
-		__( 'HFCM', '99robots-header-footer-code-manager' ), //menu title
-		'manage_options', //capabilities
-		'hfcm-list', //menu slug
-		'hfcm_list', //function
-		plugins_url( 'images/', __FILE__ ) . '99robots.png' );
-	//this is a submenu
-	add_submenu_page( 'hfcm-list', //parent slug
-		__( 'All Snippets', '99robots-header-footer-code-manager' ), //page title
-		__( 'All Snippets', '99robots-header-footer-code-manager' ), //menu title
-		'manage_options', //capability
-		'hfcm-list', //menu slug
-		'hfcm_list' ); //function
-	//this is a submenu
-	add_submenu_page( 'hfcm-list', //parent slug
-		__( 'Add New Snippet', '99robots-header-footer-code-manager' ), //page title
-		__( 'Add New', '99robots-header-footer-code-manager' ), //menu title
-		'manage_options', //capability
-		'hfcm-create', //menu slug
-		'hfcm_create' ); //function
-	//this submenu is HIDDEN, however, we need to add it anyways
-	add_submenu_page( null, //parent slug
-		__( 'Update Script', '99robots-header-footer-code-manager' ), //page title
-		__( 'Update', '99robots-header-footer-code-manager' ), //menu title
-		'manage_options', //capability
-		'hfcm-update', //menu slug
-		'hfcm_update' ); //function
-	//this submenu is HIDDEN, however, we need to add it anyways
-	add_submenu_page( null, //parent slug
-		__( 'Request Handler Script', '99robots-header-footer-code-manager' ), //page title
-		__( 'Request Handler', '99robots-header-footer-code-manager' ), //menu title
-		'manage_options', //capability
-		'hfcm-request-handler', //menu slug
-		'hfcm_request_handler' ); //function
+
+	// This is the main item for the menu
+	add_menu_page(
+		__( 'Header Footer Code Manager', '99robots-header-footer-code-manager' ),
+		__( 'HFCM', '99robots-header-footer-code-manager' ),
+		'manage_options',
+		'hfcm-list',
+		'hfcm_list',
+		plugins_url( 'images/', __FILE__ ) . '99robots.png'
+	);
+
+	// This is a submenu
+	add_submenu_page(
+		'hfcm-list',
+		__( 'All Snippets', '99robots-header-footer-code-manager' ),
+		__( 'All Snippets', '99robots-header-footer-code-manager' ),
+		'manage_options',
+		'hfcm-list',
+		'hfcm_list'
+	);
+
+	// This is a submenu
+	add_submenu_page(
+		'hfcm-list',
+		__( 'Add New Snippet', '99robots-header-footer-code-manager' ),
+		__( 'Add New', '99robots-header-footer-code-manager' ),
+		'manage_options',
+		'hfcm-create',
+		'hfcm_create'
+	);
+
+	// This submenu is HIDDEN, however, we need to add it anyways
+	add_submenu_page(
+		null,
+		__( 'Update Script', '99robots-header-footer-code-manager' ),
+		__( 'Update', '99robots-header-footer-code-manager' ),
+		'manage_options',
+		'hfcm-update',
+		'hfcm_update'
+	);
+
+	// This submenu is HIDDEN, however, we need to add it anyways
+	add_submenu_page(
+		null,
+		__( 'Request Handler Script', '99robots-header-footer-code-manager' ),
+		__( 'Request Handler', '99robots-header-footer-code-manager' ),
+		'manage_options',
+		'hfcm-request-handler',
+		'hfcm_request_handler'
+	);
 }
+add_action( 'admin_menu', 'hfcm_modifymenu' );
 
 // Files containing submenu functions
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-list.php' );
@@ -151,7 +159,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-request-handler.php' 
 // Function to render the snippet
 function hfcm_render_snippet( $scriptdata ) {
 	$output = "<!-- HFCM by 99 Robots - Snippet # {$scriptdata->script_id}: {$scriptdata->name} -->\n{$scriptdata->snippet}\n<!-- /end HFCM by 99 Robots -->\n";
-	
+
 	return $output;
 }
 
@@ -159,15 +167,16 @@ function hfcm_render_snippet( $scriptdata ) {
 function hfcm_shortcode( $atts ) {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
-	if ( !empty( $atts['id'] ) ) {
+	if ( ! empty( $atts['id'] ) ) {
 		$id          = (int) $atts['id'];
 		$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
 		$script      = $wpdb->get_results( $wpdb->prepare( "SELECT * from $table_name where status='active' AND device_type!='$hide_device' AND script_id=%s", $id ) );
-		if ( !empty( $script ) ) {
+		if ( ! empty( $script ) ) {
 			return hfcm_render_snippet( $script[0] );
 		}
 	}
 }
+add_shortcode( 'hfcm', 'hfcm_shortcode' );
 
 // Function to json_decode array and check if empty
 function hfcm_not_empty( $scriptdata, $prop_name ) {
@@ -178,12 +187,10 @@ function hfcm_not_empty( $scriptdata, $prop_name ) {
 	return true;
 }
 
-add_shortcode( 'hfcm', 'hfcm_shortcode' );
-
 // Function to decide which snippets to show - triggered by hooks
 function hfcm_add_snippets( $location = '', $content = '' ) {
 	global $wpdb;
-	
+
 	$beforecontent = '';
 	$aftercontent  = '';
 
@@ -192,12 +199,12 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 	} else {
 		$display_location = "location NOT IN ( 'header', 'footer' )";
 	}
-	
-	$table_name  = $wpdb->prefix . "hfcm_scripts";
+
+	$table_name  = $wpdb->prefix . 'hfcm_scripts';
 	$hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
 	$script      = $wpdb->get_results( "SELECT * from $table_name where $display_location AND status='active' AND device_type!='$hide_device'" );
 
-	if ( !empty( $script ) ) {
+	if ( ! empty( $script ) ) {
 		foreach ( $script as $key => $scriptdata ) {
 			$out = '';
 			switch ( $scriptdata->display_on ) {
@@ -208,34 +215,31 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 					if ( is_single() ) {
 						$args        = array(
 							'public' => true,
-							'_builtin' => false 
+							'_builtin' => false,
 						);
 						$output      = 'names'; // names or objects, note names is the default
 						$operator    = 'and'; // 'and' or 'or'
 						$c_posttypes = get_post_types( $args, $output, $operator );
-						$posttypes   = array(
-							"post" 
-						);
+						$posttypes   = array( 'post' );
 						foreach ( $c_posttypes as $cpkey => $cpdata ) {
 							$posttypes[] = $cpdata;
 						}
-						if ( !empty( $scriptdata->lp_count ) ) {
+						if ( ! empty( $scriptdata->lp_count ) ) {
 							$latestposts = wp_get_recent_posts( array(
-								"numberposts" => $scriptdata->lp_count,
-								"post_type" => $posttypes 
+								'numberposts' => $scriptdata->lp_count,
+								'post_type' => $posttypes,
 							) );
 						} else {
-							$latestposts = wp_get_recent_posts( array(
-								"post_type" => $posttypes 
-							) );
+							$latestposts = wp_get_recent_posts( array( 'post_type' => $posttypes ) );
 						}
-						
+
 						$islatest = false;
 						foreach ( $latestposts as $key => $lpostdata ) {
 							if ( get_the_ID() == $lpostdata['ID'] ) {
 								$islatest = true;
 							}
-							}
+						}
+
 						if ( $islatest ) {
 							$out = hfcm_render_snippet( $scriptdata );
 						}
@@ -266,7 +270,7 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 						$out = hfcm_render_snippet( $scriptdata );
 					}
 			}
-			
+
 			switch ( $scriptdata->location ) {
 				case 'before_content':
 					$beforecontent .= $out;
@@ -283,38 +287,34 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 	return $beforecontent . $content . $aftercontent;
 }
 
-add_action( 'wp_head', 'hfcm_header_scripts' );
-
 // Function to add snippets in the header
 function hfcm_header_scripts() {
 	hfcm_add_snippets( 'header' );
 }
-
-add_action( 'wp_footer', 'hfcm_footer_scripts' );
+add_action( 'wp_head', 'hfcm_header_scripts' );
 
 // Function to add snippets in the footer
 function hfcm_footer_scripts() {
 	hfcm_add_snippets( 'footer' );
 }
+add_action( 'wp_footer', 'hfcm_footer_scripts' );
 
-add_action( 'the_content', 'hfcm_content_scripts' );
 
 // Function to add snippets before/after the content
 function hfcm_content_scripts( $content ) {
 	return hfcm_add_snippets( false, $content );
 }
+add_action( 'the_content', 'hfcm_content_scripts' );
 
 // Load redirection Javascript code
 function hfcm_redirect( $url = '' ) {
 	// Register the script
 	wp_register_script( 'hfcm_redirection', plugins_url( 'js/location.js', __FILE__ ) );
-	
+
 	// Localize the script with new data
-	$translation_array = array(
-		'url' => $url 
-	);
+	$translation_array = array( 'url' => $url );
 	wp_localize_script( 'hfcm_redirection', 'hfcm_location', $translation_array );
-	
+
 	// Enqueued script with localized data.
 	wp_enqueue_script( 'hfcm_redirection' );
 }
@@ -324,32 +324,39 @@ add_action( 'wp_ajax_hfcm-request', 'hfcm_request_handler' );
 
 // Function to sanitize POST data
 function hfcm_sanitize_text( $key, $sanitize = true ) {
-	if ( !empty( $_POST['data'][$key] ) ) {
-		$out = stripslashes_deep( $_POST['data'][$key] );
-		if ($sanitize) {
+
+	if ( ! empty( $_POST['data'][ $key ] ) ) {
+		$out = stripslashes_deep( $_POST['data'][ $key ] );
+		if ( $sanitize ) {
 			$out = sanitize_text_field( $out );
 		}
 		return $out;
 	}
+
 	return '';
 }
 
 // Function to sanitize strings within POST data arrays
 function hfcm_sanitize_array( $key, $type = 'integer' ) {
-	if ( !empty( $_POST['data'][$key] ) ) {
-		$arr = $_POST['data'][$key];
-		if ( !is_array( $arr ) ) {
+	if ( ! empty( $_POST['data'][ $key ] ) ) {
+
+		$arr = $_POST['data'][ $key ];
+
+		if ( ! is_array( $arr ) ) {
 			return array();
 		}
+
 		if ( 'integer' === $type ) {
 			return array_map( 'absint', $arr );
 		} else { // strings
 			$new_array = array();
-			foreach ($arr as $val) {
+			foreach ( $arr as $val ) {
 				$new_array[] = sanitize_text_field( $val );
 			}
 		}
+
 		return $new_array;
 	}
+
 	return array();
 }

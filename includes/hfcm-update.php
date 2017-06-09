@@ -1,14 +1,14 @@
 <?php
 
-// function for submenu "Update snippet" page
+// Function for submenu "Update snippet" page
 function hfcm_update() {
-	
+
 	add_action( 'wp_enqueue_scripts', 'hfcm_selectize_enqueue' );
 
 	// check user capabilities
-	current_user_can('administrator');
+	current_user_can( 'administrator' );
 
-	if ( !isset( $_GET['id'] ) ) {
+	if ( ! isset( $_GET['id'] ) ) {
 		die( 'Missing ID parameter.' );
 	}
 	$id = $_GET['id'];
@@ -16,9 +16,9 @@ function hfcm_update() {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
 
-	//selecting value to update	
+	//selecting value to update
 	$script = $wpdb->get_results( $wpdb->prepare( "SELECT * from $table_name where script_id=%s", $id ) );
-	foreach ($script as $s) {
+	foreach ( $script as $s ) {
 		$name = $s->name;
 		$snippet = $s->snippet;
 		$device_type = $s->device_type;
@@ -27,25 +27,31 @@ function hfcm_update() {
 		$status = $s->status;
 		$lp_count = $s->lp_count;
 		$s_pages = json_decode( $s->s_pages );
-		if ( !is_array( $s_pages ) ) {
+
+		if ( ! is_array( $s_pages ) ) {
 			$s_pages = array();
 		}
+
 		$s_posts = json_decode( $s->s_posts );
-		if ( !is_array( $s_posts ) ) {
+		if ( ! is_array( $s_posts ) ) {
 			$s_posts = array();
 		}
+
 		$s_custom_posts = json_decode( $s->s_custom_posts );
-		if ( !is_array( $s_custom_posts ) ) {
+		if ( ! is_array( $s_custom_posts ) ) {
 			$s_custom_posts = array();
 		}
+
 		$s_categories = json_decode( $s->s_categories );
-		if ( !is_array( $s_categories ) ) {
+		if ( ! is_array( $s_categories ) ) {
 			$s_categories = array();
 		}
+
 		$s_tags = json_decode( $s->s_tags );
-		if ( !is_array( $s_tags ) ) {
+		if ( ! is_array( $s_tags ) ) {
 			$s_tags = array();
 		}
+
 		$createdby = esc_html( $s->created_by );
 		$lastmodifiedby = esc_html( $s->last_modified_by );
 		$createdon = esc_html( $s->created );
@@ -65,5 +71,4 @@ function hfcm_update() {
 	$update = true;
 
 	require_once( plugin_dir_path( __FILE__ ) . 'hfcm-add-edit.php' );
-
 }

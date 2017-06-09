@@ -4,7 +4,7 @@
 function hfcm_create() {
 
 	// check user capabilities
-	current_user_can('administrator');
+	current_user_can( 'administrator' );
 
 	// prepare variables for includes/hfcm-add-edit.php
 	$name           = '';
@@ -24,5 +24,4 @@ function hfcm_create() {
 	$update = false;
 
 	require_once( plugin_dir_path( __FILE__ ) . 'hfcm-add-edit.php' );
-
 }

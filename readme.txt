@@ -2,8 +2,8 @@
 Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 4.6.1
-Stable tag: 1.0.2
+Tested up to: 4.8.0
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -11,7 +11,7 @@ Donate link: https://99robots.com
 Easily add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat features.
 
 == Description ==
-Header Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer or above or below the content of your page. 
+Header Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer or above or below the content of your page.
 
 = BENEFITS =
 * Never have to worry about inadvertently breaking your site by adding code
@@ -26,7 +26,7 @@ Header Footer Code Manager by 99 Robots is a easy interface to add snippets to t
 * Supports custom post types
 * Supports ability to load only on a specific post or page, or latest posts
 * Control where exactly on the page the script is loaded - head, footer, before content, or after content
-* Script can load only on desktops or mobile. Enable or disable one or the other. 
+* Script can load only on desktops or mobile. Enable or disable one or the other.
 * Use shortcodes to manually place the code anywhere
 * Label every snippet for easy reference
 * Plugin logs which user added and last edited the snippet, and when
@@ -57,7 +57,7 @@ Header Footer Code Manager by 99 Robots is a easy interface to add snippets to t
 * Google Adsense
 * Google Tag Manager
 * Clicky Web Analytics or other analytics tracking scripts
-* Chat modules such as Olark, Drip, or 
+* Chat modules such as Olark, Drip, or
 * Pinterest site verification
 * Facebook Pixels, Facebook Scripts, Facebook og:image Tag
 * Google Conversion Pixels
@@ -88,7 +88,7 @@ http://www.99robots.com/docs/header-footer-code-manager
 == Frequently Asked Questions ==
 
 = Q. I have a question =
-A. Since this is a free plugin, please ask all questions on the support forum here on WordPress.org. We will try to respond to every question within 48 hours. 
+A. Since this is a free plugin, please ask all questions on the support forum here on WordPress.org. We will try to respond to every question within 48 hours.
 
 = Q. How can I request a feature or encourage future development? =
 A. Free plugins rely on user feedback. Therefore, the best thing you can do for us is to leave a review to encourage others to try the plugin. The more users, the more likely newer features will be added. That's a very small thing to ask for in exchange for a FREE plugin.
@@ -97,6 +97,9 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+
+= 1.0.3 = 2017-06-09
+* Compatible with WordPress 4.8
 
 = 1.0.2 = 2016-9-22
 * FIXED: Updated code triggering a fatal error for sites with older PHP versions.
