@@ -2,8 +2,8 @@
 Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 4.8.0
-Stable tag: 1.0.3
+Tested up to: 4.9.6
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -97,6 +97,10 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+
+= 1.0.4 = 2018-05-23
+* FIXED: style-admin.css not loading on "Add New Snippet" page.
+* FIXED: Post List not loading when selecting "Specific Posts" in "Site Display" under Add New Snippet.
 
 = 1.0.3 = 2017-06-09
 * Compatible with WordPress 4.8
