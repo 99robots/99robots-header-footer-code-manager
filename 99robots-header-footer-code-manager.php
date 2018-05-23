@@ -63,7 +63,7 @@ function hfcm_enqueue_assets( $hook ) {
 
 	$allowed_pages = array(
 		'toplevel_page_hfcm-list',
-		'header-footer-code-manager_page_hfcm-create',
+		'hfcm_page_hfcm-create',
 		'admin_page_hfcm-update',
 	);
 
@@ -100,8 +100,8 @@ function hfcm_modifymenu() {
 
 	// This is the main item for the menu
 	add_menu_page(
-		__( 'Header Footer Code Manager', '99robots-header-footer-code-manager' ),
-		__( 'HFCM', '99robots-header-footer-code-manager' ),
+		__( 'Header Footer Code Manager', '99robots-header-footer-code-manager'),
+		__( 'HFCM', '99robots-header-footer-code-manager'),
 		'manage_options',
 		'hfcm-list',
 		'hfcm_list',
