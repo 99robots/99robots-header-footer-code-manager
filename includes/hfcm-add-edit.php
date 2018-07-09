@@ -199,6 +199,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
 			<th class="hfcm-th-width"><?php esc_html_e( 'Post Count', '99robots-header-footer-code-manager' ); ?></th>
 			<td>
 				<select name="data[lp_count]">
+					<?php echo "<option value='{$i}'>{$i}</option>"; ?>
 				<?php
 				for ( $i = 1; $i <= 20; $i++ ) {
 					if ( $i === $lp_count ) {

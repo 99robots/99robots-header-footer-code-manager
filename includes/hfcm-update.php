@@ -66,7 +66,7 @@ function hfcm_update() {
 	$display_on  = esc_html( $display_on );
 	$status      = esc_html( $status );
 	$lp_count    = esc_html( $lp_count );
-
+	$i    = esc_html( $lp_count );
 	// Notify hfcm-add-edit.php to make necesary changes for update
 	$update = true;
 

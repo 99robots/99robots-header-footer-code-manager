@@ -2,8 +2,8 @@
 Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 4.9.6
-Stable tag: 1.0.5
+Tested up to: 4.9.7
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -11,7 +11,7 @@ Donate link: https://99robots.com
 Easily add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat features.
 
 == Description ==
-Header Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer or above or below the content of your page.
+Header Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer or above or below the content of your page. For Multisite, please make sure that the plugin is activated on a subsite level.
 
 = BENEFITS =
 * Never have to worry about inadvertently breaking your site by adding code
@@ -77,6 +77,7 @@ Header Footer Code Manager by 99 Robots is a easy interface to add snippets to t
 1. Upload `99robots-header-footer-code-manager` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Go to plugins page to see instructions for shortcode and php template tags
+1. Activate the plugin on SUBSITES ONLY. If activated on Network level, the snippets will not be saved.
 
 == Screenshots ==
 
@@ -97,6 +98,9 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+
+= 1.0.6 = 2018-07-10
+* FIXED: Latest Posts dropdown selection always resets to 1 on save / update.
 
 = 1.0.5 = 2018-06-14
 * UPDATED: "All Snippets" page to show 10 snippets before pagination starts.
