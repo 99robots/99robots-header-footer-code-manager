@@ -11,7 +11,7 @@ Donate link: https://99robots.com
 Easily add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat features.
 
 == Description ==
-Header Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer or above or below the content of your page. For Multisite, please make sure that the plugin is activated on a subsite level.
+Header Footer Code Manager by 99 Robots is a easy interface to add snippets to the header or footer or above or below the content of your page.
 
 = BENEFITS =
 * Never have to worry about inadvertently breaking your site by adding code
@@ -66,6 +66,8 @@ Header Footer Code Manager by 99 Robots is a easy interface to add snippets to t
 * It can accept ANY code snippet (HTML / Javascript / CSS) from any service
 * and the list goes on and on...
 
+== MULTISITE NOTE== If using this plugin on a multisite network, please make sure that the plugin is activated on a subsite level only.
+
 > #### Plugin Information
 > * [Plugin Site](https://www.99robots.com/header-footer-code-manager)
 > * [Plugin Documentation](https://www.99robots.com/docs/header-footer-code-manager)
@@ -77,7 +79,7 @@ Header Footer Code Manager by 99 Robots is a easy interface to add snippets to t
 1. Upload `99robots-header-footer-code-manager` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Go to plugins page to see instructions for shortcode and php template tags
-1. Activate the plugin on SUBSITES ONLY. If activated on Network level, the snippets will not be saved.
+1. NOTE: If using this plugin on a multisite network, please make sure that the plugin is activated on a subsite level only. 
 
 == Screenshots ==
 
