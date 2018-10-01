@@ -94,6 +94,54 @@ wp_enqueue_script( 'hfcm_showboxes' );
 		</tr>
 		<?php
 		$pages = get_pages();
+		$expagesstyle = ( 's_pages' === $display_on ) ? 'display:none;' : '';
+		$expostsstyle = ( 's_posts' === $display_on ) ? 'display:none;' : '';
+		$excategoriesstyle = 's_categories' === $display_on ? 'display:none;' : '';
+		$extagsstyle = 's_tags' === $display_on ? 'display:none;' : '';
+		$excpostssstyle = 's_custom_posts' === $display_on ? 'display:none;' : '';
+		$exlpcountstyle = 'latest_posts' === $display_on ? 'display:none;' : '';
+		?>
+		<tr id="ex_pages" style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle; ?>">
+			<th class="hfcm-th-width"><?php esc_html_e( 'Exclude Pages', '99robots-header-footer-code-manager' ); ?></th>
+			<td>
+				<select name="data[ex_pages][]" multiple>
+				<?php
+				foreach ( $pages as $pdata ) {
+					if ( in_array( $pdata->ID, $ex_pages ) ) {
+						printf( '<option value="%1$s" selected="selected">%2$s</option>', $pdata->ID, $pdata->post_title );
+					} else {
+						printf( '<option value="%1$s">%2$s</option>', $pdata->ID, $pdata->post_title );
+					}
+				}
+				?>
+				</select>
+			</td>
+		</tr>
+		<?php
+			$exposts = get_posts(array(
+    'orderby'    => 'menu_order',
+    'sort_order' => 'asc',
+		'numberposts'=>-1
+) );
+		?>
+		<tr id="ex_posts" style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle; ?>">
+			<th class="hfcm-th-width"><?php esc_html_e( 'Exclude Posts', '99robots-header-footer-code-manager' ); ?></th>
+			<td>
+				<select name="data[ex_posts][]" multiple>
+				<?php
+				foreach ( $exposts as $pdata ) {
+					if ( in_array( $pdata->ID, $ex_posts ) ) {
+						printf( '<option value="%1$s" selected="selected">%2$s</option>', $pdata->ID, $pdata->post_title );
+					} else {
+						printf( '<option value="%1$s">%2$s</option>', $pdata->ID, $pdata->post_title );
+					}
+				}
+				?>
+				</select>
+			</td>
+		</tr>
+		<?php
+		$pages = get_pages();
 		$spagesstyle = ( 's_pages' === $display_on ) ? '' : 'display:none;';
 		?>
 		<tr id="s_pages" style="<?php echo $spagesstyle; ?>">

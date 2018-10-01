@@ -27,14 +27,25 @@ function hfcm_update() {
 		$status = $s->status;
 		$lp_count = $s->lp_count;
 		$s_pages = json_decode( $s->s_pages );
+		$ex_pages = json_decode( $s->ex_pages );
+		$ex_posts = json_decode( $s->ex_posts );
 
 		if ( ! is_array( $s_pages ) ) {
 			$s_pages = array();
 		}
 
+		if ( ! is_array( $ex_pages ) ) {
+			$ex_pages = array();
+		}
+
 		$s_posts = json_decode( $s->s_posts );
 		if ( ! is_array( $s_posts ) ) {
 			$s_posts = array();
+		}
+
+		$ex_posts = json_decode( $s->ex_posts );
+		if ( ! is_array( $ex_posts ) ) {
+			$ex_posts = array();
 		}
 
 		$s_custom_posts = json_decode( $s->s_custom_posts );

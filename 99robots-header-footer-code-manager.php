@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://99robots.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
- * Version: 1.0.6
+ * Version: 1.0.7
  * Author: 99robots
  * Author URI: https://99robots.com/
  * Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
@@ -37,7 +37,9 @@ function hfcm_options_install() {
 			`display_on` enum('All','s_pages', 's_posts','s_categories','s_custom_posts','s_tags','latest_posts','manual') NOT NULL DEFAULT 'All',
 			`lp_count` int(10) DEFAULT NULL,
 			`s_pages` varchar(300) DEFAULT NULL,
+			`ex_pages` varchar(300) DEFAULT NULL,
 			`s_posts` varchar(1000) DEFAULT NULL,
+			`ex_posts` varchar(300) DEFAULT NULL,
 			`s_custom_posts` varchar(300) DEFAULT NULL,
 			`s_categories` varchar(300) DEFAULT NULL,
 			`s_tags` varchar(300) DEFAULT NULL,
@@ -47,10 +49,32 @@ function hfcm_options_install() {
 			`created` datetime DEFAULT NULL,
 			`last_revision_date` datetime DEFAULT NULL,
 			PRIMARY KEY (`script_id`)
-		) $charset_collate; ";
+		)	$charset_collate; ";
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
+	$wpdb->show_errors();
+	//Check for Exclude Pages
+	$column_name = 'ex_pages';
+	$checkcolumn = $wpdb->prepare(
+		"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
+		DB_NAME, $table_name, $column_name
+	) ;
+	if ( ! empty( $checkcolumn ) ) {
+		$altersql = "ALTER TABLE `$table_name` ADD `ex_pages` varchar(300) DEFAULT 0 AFTER `s_pages`";
+		$wpdb->query($wpdb->prepare($altersql));
+	}
+
+	//Check for Exclude Posts
+	$column_name1 = 'ex_posts';
+	$checkcolumn2 =  $wpdb->prepare(
+		"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
+		DB_NAME, $table_name, $column_name1
+	);
+	if ( ! empty( $checkcolumn2 ) ) {
+		$altersql = "ALTER TABLE `$table_name` ADD `ex_posts` varchar(300) DEFAULT 0 AFTER `s_posts`";
+		$wpdb->query($wpdb->prepare($altersql));
+	}
 
 	add_option( 'hfcm_db_version', $hfcm_db_version );
 }
@@ -209,8 +233,13 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 			$out = '';
 			switch ( $scriptdata->display_on ) {
 				case 'All':
-					$out = hfcm_render_snippet( $scriptdata );
-					break;
+
+				if (  (hfcm_not_empty( $scriptdata, 'ex_pages' ) && is_page( json_decode( $scriptdata->ex_pages ) )) || (hfcm_not_empty( $scriptdata, 'ex_posts' ) && is_single( json_decode( $scriptdata->ex_posts ) )) ){
+					$out = '';
+				}else{
+						$out = hfcm_render_snippet( $scriptdata );
+				}
+				break;
 				case 'latest_posts':
 					if ( is_single() ) {
 						$args        = array(

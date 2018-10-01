@@ -39,7 +39,7 @@ function hfcm_request_handler() {
 			$table_name, //table
 			array( 'status' => $status ), //data
 			array( 'script_id' => $id ), //where
-			array( '%s', '%s', '%s', '%s', '%s', '%s' ), //data format
+			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ), //data format
 			array( '%s' ) //where format
 		);
 
@@ -56,7 +56,9 @@ function hfcm_request_handler() {
 		$lp_count       = hfcm_sanitize_text( 'lp_count' );
 		$status         = hfcm_sanitize_text( 'status' );
 		$s_pages        = hfcm_sanitize_array( 's_pages' );
+		$ex_pages        = hfcm_sanitize_array( 'ex_pages' );
 		$s_posts        = hfcm_sanitize_array( 's_posts' );
+		$ex_posts        = hfcm_sanitize_array( 'ex_posts' );
 		$s_custom_posts = hfcm_sanitize_array( 's_custom_posts', 'string' );
 		$s_categories   = hfcm_sanitize_array( 's_categories' );
 		$s_tags         = hfcm_sanitize_array( 's_tags' );
@@ -85,7 +87,9 @@ function hfcm_request_handler() {
 					'status' => $status,
 					'lp_count' => $lp_count,
 					's_pages' => wp_json_encode( $s_pages ),
+					'ex_pages' => wp_json_encode( $ex_pages ),
 					's_posts' => wp_json_encode( $s_posts ),
+					'ex_posts' => wp_json_encode( $ex_posts ),
 					's_custom_posts' => wp_json_encode( $s_custom_posts ),
 					's_categories' => wp_json_encode( $s_categories ),
 					's_tags' => wp_json_encode( $s_tags ),
@@ -96,6 +100,8 @@ function hfcm_request_handler() {
 				array( 'script_id' => $id ),
 				// Data format
 				array(
+					'%s',
+					'%s',
 					'%s',
 					'%s',
 					'%s',
@@ -120,7 +126,9 @@ function hfcm_request_handler() {
 					'status' => $status,
 					'lp_count' => $lp_count,
 					's_pages' => wp_json_encode( $s_pages ),
+					'ex_pages' => wp_json_encode( $ex_pages ),
 					's_posts' => wp_json_encode( $s_posts ),
+					'ex_posts' => wp_json_encode( $ex_posts ),
 					's_custom_posts' => wp_json_encode( $s_custom_posts ),
 					's_categories' => wp_json_encode( $s_categories ),
 					's_tags' => wp_json_encode( $s_tags ),
@@ -134,6 +142,8 @@ function hfcm_request_handler() {
 					'%s',
 					'%s',
 					'%d',
+					'%s',
+					'%s',
 					'%s',
 					'%s',
 					'%s',
@@ -160,6 +170,7 @@ function hfcm_request_handler() {
 		// Get all selected posts
 		if ( -1 === $id ) {
 			$s_posts = array();
+			$ex_posts = array();
 		} else {
 
 			// Select value to update
@@ -200,6 +211,10 @@ function hfcm_request_handler() {
 		);
 
 		foreach ( $posts as $pdata ) {
+
+			if ( in_array( $pdata->ID, $ex_posts ) ) {
+				$json_output['selected'][] = $pdata->ID;
+			}
 
 			if ( in_array( $pdata->ID, $s_posts ) ) {
 				$json_output['selected'][] = $pdata->ID;

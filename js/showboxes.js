@@ -6,38 +6,42 @@ function hfcm_showotherboxes( type ) {
 		after_content = '<option value="after_content">'+ hfcm_localize.after_content +'</option>',
 		footer = '<option value="footer">'+ hfcm_localize.footer +'</option>',
 		all_options = header + before_content + after_content + footer;
-	
-	if (type == 's_pages') {
+
+	if (type == 'All') {
+		jQuery('#ex_pages, #ex_posts,  #locationtr').show();
+		hfcm_remember_loc( all_options );
+		jQuery('#s_categories, #s_pages, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
+	}else if (type == 's_pages') {
 		jQuery('#s_pages, #locationtr').show();
 		hfcm_remember_loc( all_options );
-		jQuery('#s_categories, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
+		jQuery('#s_categories, #s_tags, #ex_pages, #ex_posts,  #c_posttype, #lp_count, #s_posts').hide();
 	} else if (type == 's_posts') {
 		jQuery('#s_posts, #locationtr').show();
 		hfcm_remember_loc( all_options );
-		jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count').hide();
+		jQuery('#s_pages, #s_categories, #ex_pages, #ex_posts,  #s_tags, #c_posttype, #lp_count').hide();
 	} else if (type == 's_categories') {
 		jQuery('#s_categories, #locationtr').show();
 		hfcm_remember_loc( all_options );
-		jQuery('#s_pages, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
+		jQuery('#s_pages, #s_tags, #c_posttype, #ex_pages, #ex_posts,  #lp_count, #s_posts').hide();
 	} else if (type == 's_custom_posts') {
 		jQuery('#c_posttype, #locationtr').show();
 		hfcm_remember_loc( all_options );
-		jQuery('#s_categories, #s_tags, #s_pages, #lp_count, #s_posts').hide();
+		jQuery('#s_categories, #s_tags, #s_pages, #ex_pages, #ex_posts,  #lp_count, #s_posts').hide();
 	} else if (type == 's_tags') {
 		hfcm_remember_loc( all_options );
 		jQuery('#s_tags, #locationtr').show();
-		jQuery('#s_categories, #s_pages, #c_posttype, #lp_count, #s_posts').hide();
+		jQuery('#s_categories, #s_pages, #c_posttype, #ex_pages, #ex_posts,  #lp_count, #s_posts').hide();
 	} else if (type == 'latest_posts') {
 		hfcm_remember_loc( all_options );
-		jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #s_posts').hide();
+		jQuery('#s_pages, #s_categories, #s_tags, #ex_pages, #ex_posts,  #c_posttype, #s_posts').hide();
 		jQuery('#lp_count, #locationtr').show();
 	} else if (type == 'manual') {
-		jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #locationtr, #s_posts').hide();
+		jQuery('#s_pages, #s_categories, #s_tags,#ex_pages, #ex_posts,  #c_posttype, #lp_count, #locationtr, #s_posts').hide();
 	} else {
 		hfcm_remember_loc( header + footer );
 		jQuery('#s_pages, #s_categories, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
 		jQuery('#locationtr').show();
-	} 
+	}
 }
 
 function hfcm_remember_loc( new_html ) {
@@ -56,7 +60,7 @@ jQuery(function($) {
 		get_posts: true,
 		security: hfcm_localize.security
 	};
-	
+
 	$.post(
 		ajaxurl,
 		data,
@@ -66,12 +70,12 @@ jQuery(function($) {
 				options: new_data.posts,
 				items: new_data.selected
 			};
-			
+
 			$('#s_posts select').selectize( options );
 		},
 		'json' // ajax result format
 	);
 
 	// selectize all <select multiple> elements
-	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select').selectize();
+	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select, #ex_posts select').selectize();
 });

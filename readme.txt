@@ -3,7 +3,7 @@ Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
 Tested up to: 4.9.7
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -66,7 +66,7 @@ Header Footer Code Manager by 99 Robots is a easy interface to add snippets to t
 * It can accept ANY code snippet (HTML / Javascript / CSS) from any service
 * and the list goes on and on...
 
-== MULTISITE NOTE == 
+== MULTISITE NOTE ==
 If using this plugin on a multisite network, please make sure that the plugin is activated on a subsite level only.
 
 > #### Plugin Information
@@ -81,7 +81,7 @@ If using this plugin on a multisite network, please make sure that the plugin is
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Go to plugins page to see instructions for shortcode and php template tags
 
-NOTE: If using this plugin on a multisite network, please make sure that the plugin is activated on a subsite level only. 
+NOTE: If using this plugin on a multisite network, please make sure that the plugin is activated on a subsite level only.
 
 == Screenshots ==
 
@@ -102,6 +102,9 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+
+= 1.0.7 = 2018-10-01
+* ADDED: Functionality to Exclude Posts and Pages from the Site Wide option.
 
 = 1.0.6 = 2018-07-10
 * FIXED: Latest Posts dropdown selection always resets to 1 on save / update.

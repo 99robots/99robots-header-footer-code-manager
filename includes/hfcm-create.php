@@ -15,7 +15,9 @@ function hfcm_create() {
 	$status         = '';
 	$lp_count       = 5; // Default value
 	$s_pages        = array();
+	$ex_pages        = array();
 	$s_posts        = array();
+	$ex_posts        = array();
 	$s_custom_posts = array();
 	$s_categories   = array();
 	$s_tags         = array();
