@@ -17,7 +17,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 global $hfcm_db_version;
-$hfcm_db_version = '1.0';
+$hfcm_db_version = '1.1';
 
 // function to create the DB / Options / Defaults
 function hfcm_options_install() {
@@ -80,6 +80,14 @@ function hfcm_options_install() {
 }
 register_activation_hook( __FILE__, 'hfcm_options_install' );
 
+function myplugin_update_db_check() {
+    global $hfcm_db_version;
+    if ( get_site_option( 'hfcm_db_version' ) != $hfcm_db_version ) {
+        hfcm_options_install();
+    }
+	update_option( 'hfcm_db_version', $hfcm_db_version );
+}
+add_action( 'plugins_loaded', 'myplugin_update_db_check' );
 /*
  * Enqueue style-file, if it exists.
  */
