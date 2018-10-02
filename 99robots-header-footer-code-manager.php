@@ -62,7 +62,7 @@ function hfcm_options_install() {
 	) ;
 	if ( ! empty( $checkcolumn ) ) {
 		$altersql = "ALTER TABLE `$table_name` ADD `ex_pages` varchar(300) DEFAULT 0 AFTER `s_pages`";
-		$wpdb->query($wpdb->prepare($altersql));
+		$wpdb->query($altersql);
 	}
 
 	//Check for Exclude Posts
@@ -73,9 +73,8 @@ function hfcm_options_install() {
 	);
 	if ( ! empty( $checkcolumn2 ) ) {
 		$altersql = "ALTER TABLE `$table_name` ADD `ex_posts` varchar(300) DEFAULT 0 AFTER `s_posts`";
-		$wpdb->query($wpdb->prepare($altersql));
+		$wpdb->query($altersql);
 	}
-
 	add_option( 'hfcm_db_version', $hfcm_db_version );
 }
 register_activation_hook( __FILE__, 'hfcm_options_install' );
@@ -88,6 +87,7 @@ function myplugin_update_db_check() {
 	update_option( 'hfcm_db_version', $hfcm_db_version );
 }
 add_action( 'plugins_loaded', 'myplugin_update_db_check' );
+
 /*
  * Enqueue style-file, if it exists.
  */
