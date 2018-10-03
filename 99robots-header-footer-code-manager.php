@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://99robots.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
- * Version: 1.0.7
+ * Version: 1.0.8
  * Author: 99robots
  * Author URI: https://99robots.com/
  * Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
@@ -53,35 +53,37 @@ function hfcm_options_install() {
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
-	$wpdb->show_errors();
-	//Check for Exclude Pages
-	$column_name = 'ex_pages';
-	$checkcolumn = $wpdb->prepare(
-		"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
-		DB_NAME, $table_name, $column_name
-	) ;
-	if ( ! empty( $checkcolumn ) ) {
-		$altersql = "ALTER TABLE `$table_name` ADD `ex_pages` varchar(300) DEFAULT 0 AFTER `s_pages`";
-		$wpdb->query($altersql);
-	}
-
-	//Check for Exclude Posts
-	$column_name1 = 'ex_posts';
-	$checkcolumn2 =  $wpdb->prepare(
-		"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
-		DB_NAME, $table_name, $column_name1
-	);
-	if ( ! empty( $checkcolumn2 ) ) {
-		$altersql = "ALTER TABLE `$table_name` ADD `ex_posts` varchar(300) DEFAULT 0 AFTER `s_posts`";
-		$wpdb->query($altersql);
-	}
 	add_option( 'hfcm_db_version', $hfcm_db_version );
 }
 register_activation_hook( __FILE__, 'hfcm_options_install' );
 
 function myplugin_update_db_check() {
     global $hfcm_db_version;
+	global $wpdb;
+	$table_name      = $wpdb->prefix . 'hfcm_scripts';
     if ( get_site_option( 'hfcm_db_version' ) != $hfcm_db_version ) {
+    $wpdb->show_errors();
+	//Check for Exclude Pages
+	$column_name = 'ex_pages';
+	$checkcolumn = $wpdb->get_results($wpdb->prepare(
+		"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
+		DB_NAME, $table_name, $column_name
+	)) ;
+	if ( empty( $checkcolumn ) ) {
+		$altersql = "ALTER TABLE `$table_name` ADD `ex_pages` varchar(300) DEFAULT 0 AFTER `s_pages`";
+		$wpdb->query($altersql);
+	}
+
+	//Check for Exclude Posts
+	$column_name1 = 'ex_posts';
+	$checkcolumn2 =  $wpdb->get_results($wpdb->prepare(
+		"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
+		DB_NAME, $table_name, $column_name1
+	));
+	if ( empty( $checkcolumn2 ) ) {
+		$altersql = "ALTER TABLE `$table_name` ADD `ex_posts` varchar(300) DEFAULT 0 AFTER `s_posts`";
+		$wpdb->query($altersql);
+	}
         hfcm_options_install();
     }
 	update_option( 'hfcm_db_version', $hfcm_db_version );
