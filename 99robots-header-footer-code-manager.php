@@ -57,7 +57,7 @@ function hfcm_options_install() {
 }
 register_activation_hook( __FILE__, 'hfcm_options_install' );
 
-function myplugin_update_db_check() {
+function hfcm_db_update_check() {
     global $hfcm_db_version;
 	global $wpdb;
 	$table_name      = $wpdb->prefix . 'hfcm_scripts';
@@ -88,7 +88,7 @@ function myplugin_update_db_check() {
     }
 	update_option( 'hfcm_db_version', $hfcm_db_version );
 }
-add_action( 'plugins_loaded', 'myplugin_update_db_check' );
+add_action( 'plugins_loaded', 'hfcm_db_update_check' );
 
 /*
  * Enqueue style-file, if it exists.

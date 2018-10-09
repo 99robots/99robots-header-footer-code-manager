@@ -181,6 +181,14 @@ function hfcm_request_handler() {
 					$s_posts = array();
 				}
 			}
+
+			$script_ex = $wpdb->get_results( $wpdb->prepare( "SELECT ex_posts from $table_name where script_id=%s", $id ) );
+			foreach ( $script_ex as $s ) {
+				$ex_posts = json_decode( $s->ex_posts );
+				if ( ! is_array( $ex_posts ) ) {
+					$ex_posts = array();
+				}
+			}
 		}
 
 		// Get all posts
@@ -208,12 +216,13 @@ function hfcm_request_handler() {
 		$json_output = array(
 			'selected' => array(),
 			'posts' => array(),
+			'excluded' => array(),
 		);
 
 		foreach ( $posts as $pdata ) {
 
 			if ( in_array( $pdata->ID, $ex_posts ) ) {
-				$json_output['selected'][] = $pdata->ID;
+				$json_output['excluded'][] = $pdata->ID;
 			}
 
 			if ( in_array( $pdata->ID, $s_posts ) ) {

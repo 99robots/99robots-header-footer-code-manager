@@ -51,7 +51,7 @@ function hfcm_remember_loc( new_html ) {
 }
 
 // init selectize.js
-
+jQuery('#loader').show();
 jQuery(function($) {
 
 	var data = {
@@ -68,14 +68,20 @@ jQuery(function($) {
 			var options = {
 				plugins: ['remove_button'],
 				options: new_data.posts,
-				items: new_data.selected
+				items: new_data.selected,
 			};
-
+			$('#loader').hide();
 			$('#s_posts select').selectize( options );
+			var options = {
+				plugins: ['remove_button'],
+				options: new_data.posts,
+				items: new_data.excluded
+			};
+			$('#loader').hide();
+			$('#ex_posts select').selectize( options );
 		},
-		'json' // ajax result format
+		'json', // ajax result format
 	);
-
 	// selectize all <select multiple> elements
-	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select, #ex_posts select').selectize();
+	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize();
 });
