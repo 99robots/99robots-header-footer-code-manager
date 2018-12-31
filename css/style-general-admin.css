@@ -1,0 +1,28 @@
+.hfcm-review-stars{
+  text-decoration: none;
+}
+.hfcm-review-stars span{
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+.hfcm-dismiss-alert{
+  position: static !important;
+  float: right;
+  top: 0 !important;
+  right: 0 !important;
+  padding: 0 15px 10px 28px !important;
+  margin-top: -10px !important;
+  font-size: 13px;
+  line-height: 1.23076923;
+  text-decoration: none;
+}
+.hfcm-dismiss-alert:before{
+  position: relative;
+  top: 18px;
+  left: -20px;
+}
+#hfcm-message{
+  position: relative;
+}
