@@ -2,8 +2,8 @@
 Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 4.9.8
-Stable tag: 1.0.9
+Tested up to: 5.0.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -85,12 +85,16 @@ NOTE: If using this plugin on a multisite network, please make sure that the plu
 
 == Screenshots ==
 
-1. Dashboard - All Snippets
-2. Add New Snippet - Read the documentation at:
+1. HFCM Settings
+2. Dashboard - All Snippets
+3. Add New Snippet - Read the documentation at:
 http://www.99robots.com/docs/header-footer-code-manager
-3. Choose where you want your snippet to be displayed
+4. Choose where you want your snippet to be displayed
 
 == Frequently Asked Questions ==
+
+= Q. Where are this plugin’s Settings located? =
+A. After activating the plugin, you can click on settings link under the plugin name OR you can click the HFCM tab on the left side navigation. From there, you can add, edit, remove, and review code snippets.
 
 = Q. I have a question =
 A. Since this is a free plugin, please ask all questions on the support forum here on WordPress.org. We will try to respond to every question within 48 hours.
@@ -102,6 +106,11 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+
+= 1.1.0 = 2018-12-31
+* UPDATED: Code Optimization
+* UPDATED: Added plugin settings link, and update documentation.
+* Compatible with WordPress 5.0.2
 
 = 1.0.9 = 2018-10-09
 * UPDATED: Code Optimization

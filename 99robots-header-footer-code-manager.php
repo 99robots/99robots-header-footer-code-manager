@@ -3,21 +3,87 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://99robots.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
- * Version: 1.0.9
+ * Version: 1.1.0
  * Author: 99robots
  * Author URI: https://99robots.com/
  * Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
  * Text Domain: 99robots-header-footer-code-manager
  * Domain Path: /languages
  */
-
+?>
+<style media="screen">
+	.hfcm-review-stars{
+		text-decoration: none;
+	}
+	.hfcm-review-stars span{
+		font-size: 16px;
+		width: 16px;
+		height: 16px;
+		margin-top: 2px;
+	}
+	.hfcm-dismiss-alert{
+		position: static !important;
+		float: right;
+		top: 0 !important;
+		right: 0 !important;
+		padding: 0 15px 10px 28px !important;
+		margin-top: -10px !important;
+		font-size: 13px;
+		line-height: 1.23076923;
+		text-decoration: none;
+	}
+	.hfcm-dismiss-alert:before{
+		position: relative;
+		top: 18px;
+		left: -20px;
+	}
+	#hfcm-message{
+		position: relative;
+	}
+</style>
+<?php
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Create the Admin Notice
+function hfcm_review_push_notice() {
+	$user_id = get_current_user_id();
+	// Check if current user has already dismissed it
+  if ( !get_user_meta( $user_id, 'hfcm_plugin_notice_dismissed' ) ) {
+    ?>
+    <div id="hfcm-message" class="notice notice-success">
+				<a class="hfcm-dismiss-alert notice-dismiss" href="?hfcm-admin-notice-dismissed">Dismiss</a>
+        <p><?php _e( 'Hey there! You’ve been using the <strong>Header Footer Code Manager</strong> plugin for a while now. If you like the plugin, please support our awesome development and support team by leaving a <a class="hfcm-review-stars" href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></a> rating. <a href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/">Rate it!</a> It’ll mean the world to us and keep this plugin free and constantly updated. <a href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/">Leave A Review</a>', '99robots-header-footer-code-manager' ); ?></p>
+    </div>
+    <?php
+	}
+}
+add_action( 'admin_notices', 'hfcm_review_push_notice' );
+
+// Check if current user has already dismissed it
+function hfcm_plugin_notice_dismissed() {
+    $user_id = get_current_user_id();
+		// Checking if user clicked on the Dismiss button
+    if ( isset( $_GET['hfcm-admin-notice-dismissed'] ) ){
+				add_user_meta( $user_id, 'hfcm_plugin_notice_dismissed', 'true', true );
+		}
+}
+add_action( 'admin_init', 'hfcm_plugin_notice_dismissed' );
+
+/*****/
 global $hfcm_db_version;
 $hfcm_db_version = '1.1';
+
+// Adding A settings link for the plugin on the Settings Page
+add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'hfcm_add_plugin_page_settings_link');
+function hfcm_add_plugin_page_settings_link( $links ) {
+	$links = array_merge(array('<a href="' .
+		admin_url( 'admin.php?page=hfcm-create' ) .
+		'">' . __('Settings') . '</a>'), $links);
+	return $links;
+}
 
 // function to create the DB / Options / Defaults
 function hfcm_options_install() {
