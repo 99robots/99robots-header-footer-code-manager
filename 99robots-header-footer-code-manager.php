@@ -199,9 +199,18 @@ function hfcm_add_plugin_page_settings_link( $links ) {
 
 // Create the Admin Notice
 function hfcm_review_push_notice() {
+
+	$allowed_pages_notices = array(
+		'toplevel_page_hfcm-list',
+		'hfcm_page_hfcm-create',
+		'admin_page_hfcm-update',
+	);
+	$screen = get_current_screen()->id;
+
 	$user_id = get_current_user_id();
 	// Check if current user has already dismissed it
-  if ( !get_user_meta( $user_id, 'hfcm_plugin_notice_dismissed' ) ) {
+
+  if ( !get_user_meta( $user_id, 'hfcm_plugin_notice_dismissed') && in_array($screen, $allowed_pages_notices)) {
     ?>
     <div id="hfcm-message" class="notice notice-success">
 				<a class="hfcm-dismiss-alert notice-dismiss" href="?hfcm-admin-notice-dismissed">Dismiss</a>
@@ -218,6 +227,10 @@ function hfcm_plugin_notice_dismissed() {
 		// Checking if user clicked on the Dismiss button
     if ( isset( $_GET['hfcm-admin-notice-dismissed'] ) ){
 				add_user_meta( $user_id, 'hfcm_plugin_notice_dismissed', 'true', true );
+				// Redirect to original page the user was on
+				$current_url = wp_get_referer();
+				wp_redirect($current_url);
+				exit;
 		}
 }
 add_action( 'admin_init', 'hfcm_plugin_notice_dismissed' );
