@@ -2,8 +2,8 @@
 Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 5.0.2
-Stable tag: 1.1.2
+Tested up to: 5.1.1
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -107,8 +107,12 @@ A. If your script is not supported, just let us know and we'll look into it imme
 
 == Changelog ==
 
+= 1.1.3 = 2019-05-03
+* UPDATED: Compatibility with WordPress 5.1.1
+
 = 1.1.2 = 2019-01-07
-* FIXED: Warning - Unexpected Output - headers already sent
+* FIXED: Blank page on dismissing notice when on a few admin pages
+* UPDATED: Admin notice will now only show on the HFCM plugin admin pages
 
 = 1.1.1 = 2018-12-31
 * FIXED: Warning - Unexpected Output - headers already sent
