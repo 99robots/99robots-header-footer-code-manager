@@ -25,7 +25,7 @@ class Hfcm_Snippets_List extends WP_List_Table {
 	 *
 	 * @return mixed
 	 */
-	public static function get_snippets( $per_page = 10, $page_number = 1, $customvar = 'all' ) {
+	public static function get_snippets( $per_page = 20, $page_number = 1, $customvar = 'all' ) {
 
 		global $wpdb;
 		$table_name = "{$wpdb->prefix}hfcm_scripts";
@@ -320,7 +320,7 @@ class Hfcm_Snippets_List extends WP_List_Table {
 		/** Process bulk action */
 		$this->process_bulk_action();
 		$this->views();
-		$per_page = $this->get_items_per_page( 'snippets_per_page', 10 );
+		$per_page = $this->get_items_per_page( 'snippets_per_page', 20 );
 		$current_page = $this->get_pagenum();
 		$total_items = self::record_count();
 

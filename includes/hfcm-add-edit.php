@@ -71,7 +71,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
 			's_posts'        => esc_html__( 'Specific Posts', '99robots-header-footer-code-manager' ),
 			's_pages'        => esc_html__( 'Specific Pages', '99robots-header-footer-code-manager' ),
 			's_categories'   => esc_html__( 'Specific Categories', '99robots-header-footer-code-manager' ),
-			's_custom_posts' => esc_html__( 'Specific Custom Post Types', '99robots-header-footer-code-manager' ),
+			's_custom_posts' => esc_html__( 'Specific Post Types', '99robots-header-footer-code-manager' ),
 			's_tags'         => esc_html__( 'Specific Tags', '99robots-header-footer-code-manager' ),
 			'latest_posts'   => esc_html__( 'Latest Posts', '99robots-header-footer-code-manager' ),
 			'manual'         => esc_html__( 'Shortcode Only', '99robots-header-footer-code-manager' ),
@@ -165,10 +165,9 @@ wp_enqueue_script( 'hfcm_showboxes' );
 		$lpcountstyle = 'latest_posts' === $display_on ? '' : 'display:none;';
 		$locationstyle = 'manual' === $display_on ? 'display:none;' : '';
 
-		// Get all names of Custom Post Types
+		// Get all names of Post Types
 		$args = array(
 			'public' => true,
-			'_builtin' => false,
 		);
 
 		$output = 'names';
@@ -213,7 +212,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
 			</td>
 		</tr>
 		<tr id="c_posttype" style="<?php echo $cpostssstyle; ?>">
-			<th class="hfcm-th-width"><?php esc_html_e( 'Custom Post Types', '99robots-header-footer-code-manager' ); ?></th>
+			<th class="hfcm-th-width"><?php esc_html_e( 'Post Types', '99robots-header-footer-code-manager' ); ?></th>
 			<td>
 				<select name="data[s_custom_posts][]" multiple>
 				<?php
