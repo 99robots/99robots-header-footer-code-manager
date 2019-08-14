@@ -2,8 +2,8 @@
 Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 5.1.1
-Stable tag: 1.1.3
+Tested up to: 5.2.2
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -106,6 +106,11 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+
+= 1.1.4 = 2019-05-03
+* UPDATED: All snippets page now shows 20 snippets instead of 10
+* ADDED: Functionality to add code snippets to all post types, including posts, pages, custom post types & attachments
+* UPDATED: Compatibility with WordPress 5.2.2
 
 = 1.1.3 = 2019-05-03
 * UPDATED: Compatibility with WordPress 5.1.1

@@ -23,6 +23,10 @@ $hfcm_db_version = '1.1';
 // function to create the DB / Options / Defaults
 function hfcm_options_install() {
 
+	$hfcm_now = strtotime( "now" );
+  add_option( 'hfcm_activation_date', $hfcm_now );
+	update_option( 'hfcm_activation_date', $hfcm_now );
+
 	global $wpdb;
 	global $hfcm_db_version;
 
@@ -55,6 +59,7 @@ function hfcm_options_install() {
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 	add_option( 'hfcm_db_version', $hfcm_db_version );
+
 }
 register_activation_hook( __FILE__, 'hfcm_options_install' );
 
@@ -197,6 +202,21 @@ function hfcm_add_plugin_page_settings_link( $links ) {
 	return $links;
 }
 
+//Check Installation Date
+function hfcm_check_installation_date() {
+
+    $install_date = get_option( 'hfcm_activation_date' );
+    $past_date = strtotime( '-7 days' );
+
+    if ( $past_date >= $install_date ) {
+
+        add_action( 'admin_notices', 'hfcm_review_push_notice' );
+
+    }
+
+}
+add_action( 'admin_init', 'hfcm_check_installation_date' );
+
 // Create the Admin Notice
 function hfcm_review_push_notice() {
 
@@ -209,7 +229,7 @@ function hfcm_review_push_notice() {
 
 	$user_id = get_current_user_id();
 	// Check if current user has already dismissed it
-
+	$install_date = get_option( 'hfcm_activation_date' );
   if ( !get_user_meta( $user_id, 'hfcm_plugin_notice_dismissed') && in_array($screen, $allowed_pages_notices)) {
     ?>
     <div id="hfcm-message" class="notice notice-success">
@@ -219,7 +239,6 @@ function hfcm_review_push_notice() {
     <?php
 	}
 }
-add_action( 'admin_notices', 'hfcm_review_push_notice' );
 
 // Check if current user has already dismissed it
 function hfcm_plugin_notice_dismissed() {
