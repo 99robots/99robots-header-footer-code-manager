@@ -379,11 +379,9 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 						if (in_array($blog_page, json_decode($scriptdata->s_pages))){
 							if( is_page(json_decode($scriptdata->s_pages)) || (!is_front_page() && is_home())  ){
 									$out = hfcm_render_snippet( $scriptdata );
-									echo $blog_page;
 							}
 						}elseif(is_page(json_decode($scriptdata->s_pages))) {
 								$out = hfcm_render_snippet( $scriptdata );
-								echo $blog_page;
 						}
 					}
 					break;
