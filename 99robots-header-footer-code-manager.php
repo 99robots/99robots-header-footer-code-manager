@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://99robots.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://99robots.com/"> official page</a>.
- * Version: 1.1.5
+ * Version: 1.1.6
  * Author: 99robots
  * Author URI: https://99robots.com/
  * Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
@@ -372,8 +372,15 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 					}
 					break;
 				case 's_pages':
-					if ( hfcm_not_empty( $scriptdata, 's_pages' ) && is_page( json_decode( $scriptdata->s_pages ) ) || (!is_front_page() && is_home())) {
-						$out = hfcm_render_snippet( $scriptdata );
+					if ( hfcm_not_empty( $scriptdata, 's_pages' ) ) {
+						$blog_page = get_option('page_for_posts');
+						if (in_array($blog_page, json_decode($scriptdata->s_pages))){
+							if( is_page(json_decode($scriptdata->s_pages)) || (!is_front_page() && is_home())  ){
+									$out = hfcm_render_snippet( $scriptdata );
+							}
+						}elseif(is_page(json_decode($scriptdata->s_pages))) {
+								$out = hfcm_render_snippet( $scriptdata );
+						}
 					}
 					break;
 				case 's_tags':
