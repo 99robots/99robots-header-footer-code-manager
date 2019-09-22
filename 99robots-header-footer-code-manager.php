@@ -373,13 +373,17 @@ function hfcm_add_snippets( $location = '', $content = '' ) {
 					break;
 				case 's_pages':
 					if ( hfcm_not_empty( $scriptdata, 's_pages' ) ) {
+						// Gets the page ID of the blog page
 						$blog_page = get_option('page_for_posts');
+						// Checks if the blog page is present in the array of selected pages
 						if (in_array($blog_page, json_decode($scriptdata->s_pages))){
 							if( is_page(json_decode($scriptdata->s_pages)) || (!is_front_page() && is_home())  ){
 									$out = hfcm_render_snippet( $scriptdata );
+									echo $blog_page;
 							}
 						}elseif(is_page(json_decode($scriptdata->s_pages))) {
 								$out = hfcm_render_snippet( $scriptdata );
+								echo $blog_page;
 						}
 					}
 					break;
