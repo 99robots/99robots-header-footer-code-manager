@@ -100,8 +100,9 @@ wp_enqueue_script( 'hfcm_showboxes' );
 		$extagsstyle = 's_tags' === $display_on ? 'display:none;' : '';
 		$excpostssstyle = 's_custom_posts' === $display_on ? 'display:none;' : '';
 		$exlpcountstyle = 'latest_posts' === $display_on ? 'display:none;' : '';
+		$exmanualstyle = 'manual' === $display_on ? 'display:none;' : '';
 		?>
-		<tr id="ex_pages" style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle; ?>">
+		<tr id="ex_pages" style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle . $exmanualstyle; ?>">
 			<th class="hfcm-th-width"><?php esc_html_e( 'Exclude Pages', '99robots-header-footer-code-manager' ); ?></th>
 			<td>
 				<select name="data[ex_pages][]" multiple>
@@ -117,7 +118,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
 				</select>
 			</td>
 		</tr>
-		<tr id="ex_posts" style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle; ?>">
+		<tr id="ex_posts" style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle . $exmanualstyle; ?>">
 			<th class="hfcm-th-width"><?php esc_html_e( 'Exclude Posts', '99robots-header-footer-code-manager' ); ?></th>
 			<td>
 				<select class="nnr-wraptext" name="data[ex_posts][]" multiple>

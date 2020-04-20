@@ -2,8 +2,8 @@
 Contributors: 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 5.2.3
-Stable tag: 1.1.6
+Tested up to: 5.4.0
+Stable tag: 1.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://99robots.com
@@ -93,6 +93,9 @@ http://www.99robots.com/docs/header-footer-code-manager
 
 == Frequently Asked Questions ==
 
+= Q. Why do my scripts appear as text on the website? =
+A. Please make sure to enclose your script within script tags - <<script>> Insert Script Here <</script>>.
+
 = Q. Where are this plugin’s Settings located? =
 A. After activating the plugin, you can click on settings link under the plugin name OR you can click the HFCM tab on the left side navigation. From there, you can add, edit, remove, and review code snippets.
 
@@ -109,6 +112,10 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+
+= 1.1.7 = 2020-04-20
+* UPDATED: Compatibility with WordPress 5.4.0
+* FIXED: Warnings and Exclude Pages/Posts showing up on Shortcode Only screen
 
 = 1.1.6 = 2019-09-22
 * FIXED: Specific Pages targeting Blog index page, even when it is not selected.
