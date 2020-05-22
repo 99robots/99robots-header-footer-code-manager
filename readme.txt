@@ -1,12 +1,12 @@
 === Header Footer Code Manager ===
-Contributors: 99robots, charliepatel
+Contributors: 99robots, charliepatel, DraftPress
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 5.4.0
-Stable tag: 1.1.7
+Tested up to: 5.4.1
+Stable tag: 1.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Donate link: https://99robots.com
+Donate link: https://draftpress.com
 
 Easily add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, marketing, or chat features.
 
@@ -70,10 +70,10 @@ Header Footer Code Manager by 99 Robots is a easy interface to add snippets to t
 If using this plugin on a multisite network, please make sure that the plugin is activated on a subsite level only.
 
 > #### Plugin Information
-> * [Plugin Site](https://www.99robots.com/header-footer-code-manager)
-> * [Plugin Documentation](https://www.99robots.com/docs/header-footer-code-manager)
+> * [Plugin Site](https://www.draftpress.com/header-footer-code-manager)
+> * [Plugin Documentation](https://www.draftpress.com/docs/header-footer-code-manager)
 > * [Free Plugins on WordPress.org](https://profiles.wordpress.org/99robots#content-plugins)
-> * [Premium Plugins](https://www.99robots.com/products)
+> * [Premium Plugins](https://www.draftpress.com/products)
 
 == Installation ==
 
@@ -88,7 +88,7 @@ NOTE: If using this plugin on a multisite network, please make sure that the plu
 1. HFCM Settings
 2. Dashboard - All Snippets
 3. Add New Snippet - Read the documentation at:
-http://www.99robots.com/docs/header-footer-code-manager
+http://www.draftpress.com/docs/header-footer-code-manager
 4. Choose where you want your snippet to be displayed
 
 == Frequently Asked Questions ==
@@ -112,6 +112,9 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+= 1.1.8 = 2020-05-22
+* UPDATED: Compatibility with WordPress 5.4.1
+* ADDED: Contributor DraftPress to plugin
 
 = 1.1.7 = 2020-04-20
 * UPDATED: Compatibility with WordPress 5.4.0
