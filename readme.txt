@@ -2,8 +2,8 @@
 Contributors: 99robots, charliepatel, DraftPress
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.0
-Tested up to: 5.4.1
-Stable tag: 1.1.8
+Tested up to: 5.5.0
+Stable tag: 1.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -112,6 +112,11 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+
+= 1.1.9 = 2020-09-01
+* FIXED: Specific Taxonomy Snippets showing on archives with at least one instance.
+* UPDATED: Compatibility with WordPress 5.5.0
+
 = 1.1.8 = 2020-05-22
 * UPDATED: Compatibility with WordPress 5.4.1
 * ADDED: Contributor DraftPress to plugin
