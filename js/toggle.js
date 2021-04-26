@@ -1,5 +1,5 @@
 // Toggle switch
-jQuery('.nnr-switch input').click( function() {
+jQuery('.nnr-switch input').on('click', function() {
 	var t = jQuery( this ),
 		togvalue = t.is( ':checked' ) ? 'on' : 'off',
 		scriptid = t.data( 'id' ),
@@ -18,7 +18,7 @@ jQuery('.nnr-switch input').click( function() {
 });
 
 // Delete confirmation
-jQuery('.snippets .delete > a').click( function() {
+jQuery('.snippets .delete > a').on('click', function() {
 	var name = jQuery(this).parents('.name').find('> strong').text();
 	return confirm( 'Snippet name: ' + name + '\n\nAre you sure you want to delete this snippet?');
 });

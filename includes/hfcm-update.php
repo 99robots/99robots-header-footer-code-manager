@@ -8,10 +8,10 @@ function hfcm_update() {
 	// check user capabilities
 	current_user_can( 'administrator' );
 
-	if ( ! isset( $_GET['id'] ) ) {
+	if ( empty( $_GET['id'] ) ) {
 		die( 'Missing ID parameter.' );
 	}
-	$id = $_GET['id'];
+	$id = (int) $_GET['id'];
 
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'hfcm_scripts';
