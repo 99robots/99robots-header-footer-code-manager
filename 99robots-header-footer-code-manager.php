@@ -296,7 +296,8 @@ require_once(plugin_dir_path(__FILE__) . 'includes/hfcm-request-handler.php');
  */
 function hfcm_render_snippet($scriptdata)
 {
-    $output = "<!-- HFCM by 99 Robots - Snippet # {$scriptdata->script_id}: {$scriptdata->name} -->\n{$scriptdata->snippet}\n<!-- /end HFCM by 99 Robots -->\n";
+	$snippet = do_shortcode($scriptdata->snippet); // enable short codes
+	$output = "<!-- HFCM by 99 Robots - Snippet # {$scriptdata->script_id}: {$scriptdata->name} -->\n{$snippet}\n<!-- /end HFCM by 99 Robots -->\n";
 
     return $output;
 }
