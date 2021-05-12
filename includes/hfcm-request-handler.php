@@ -221,6 +221,10 @@ function hfcm_request_handler() {
 
 		foreach ( $posts as $pdata ) {
 
+            if(empty($pdata->post_title)) {
+                continue;
+            }
+
 			if ( in_array( $pdata->ID, $ex_posts ) ) {
 				$json_output['excluded'][] = $pdata->ID;
 			}

@@ -65,9 +65,11 @@ jQuery(function($) {
 		ajaxurl,
 		data,
 		function(new_data) {
+			var s_posts_options = [{text: "", value: ""}];
+			s_posts_options = s_posts_options.concat(new_data.posts);
 			var options = {
 				plugins: ['remove_button'],
-				options: new_data.posts,
+				options: s_posts_options,
 				items: new_data.selected,
 			};
 			$('#loader').hide();
