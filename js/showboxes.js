@@ -85,5 +85,7 @@ jQuery(function($) {
 		'json', // ajax result format
 	);
 	// selectize all <select multiple> elements
-	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize();
+	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize({
+		plugins: ['remove_button']
+	});
 });
