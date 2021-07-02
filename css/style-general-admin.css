@@ -58,3 +58,33 @@
 .hfcm-meta-box-wrap.hfcm-grid .postbox:nth-child(odd) {
   margin-left: -8px;
 }
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-notice {
+  margin: 5px 0 15px;
+  background: #fff;
+  border: 1px solid #c3c4c7;
+  border-left-width: 4px;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+  padding: 1px 12px;
+  border-left-color: #dba617;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-fields {
+  border: #ebebeb solid 1px;
+  background: #fafafa;
+  border-radius: 3px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-fields>.hfcm-field {
+  position: relative;
+  margin: 0;
+  padding: 15px 12px;
+  border-top: #EEEEEE solid 1px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-checkbox-list {
+  column-width: 200px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-label {
+  vertical-align: top;
+  margin: 0 0 10px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-label label {
+  font-weight: bold;
+}

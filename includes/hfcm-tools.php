@@ -33,6 +33,9 @@ wp_enqueue_script('hfcm_showboxes');
                         <p>Select the snippets you would like to export and then select your export method. Use the
                             download button to export to a .json file which you can then import to another HFCM
                             installation.</p>
+                        <div class="hfcm-notice notice-warning">
+                            <p><?php _e('NOTE: Import/Export Functionality is only intended to operate within the same website.  Using the export/import to move snippets from one website to a different site, may result in inconsistent behavior, particularly if you have specific elements as criteria such as pages, posts, categories, or tags.', '99robots-header-footer-code-manager'); ?></p>
+                        </div>
                         <div class="hfcm-fields">
                             <div class="hfcm-field hfcm-field-checkbox" data-name="keys" data-type="checkbox">
                                 <div class="hfcm-label">
