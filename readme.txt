@@ -114,6 +114,7 @@ A. If your script is not supported, just let us know and we'll look into it imme
 == Changelog ==
 = 1.1.11 = 2021-07-02
 * FIXED: Warnings - Undefined Variables
+* FIXED: Selectize issue of not able to select first option from the dropdown
 * ADDED: Code Editor in place of textarea
 * ADDED: Import/Export Snippets
 * UPDATED: Compatibility with WordPress 5.7.2
