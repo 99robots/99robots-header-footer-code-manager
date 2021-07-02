@@ -1,7 +1,7 @@
 <?php
 
 // Register the script
-wp_register_script('hfcm_showboxes', plugins_url('js/showboxes.js', dirname(__FILE__)), array('jquery'));
+wp_register_script('hfcm_showboxes', plugins_url('js/nnr-hfcm-showboxes.js', dirname(__FILE__)), array('jquery'));
 
 // prepare ID (for AJAX)
 if (!isset($id)) {
