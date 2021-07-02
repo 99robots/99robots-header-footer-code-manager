@@ -367,7 +367,7 @@ class Hfcm_Snippets_List extends WP_List_Table {
 			} else {
 				self::delete_snippet( absint( $_GET['snippet'] ) );
 
-				hfcm_redirect( admin_url( 'admin.php?page=hfcm-list' ) );
+				NNR_HFCM::hfcm_redirect( admin_url( 'admin.php?page=hfcm-list' ) );
 				return;
 			}
 		}
@@ -384,7 +384,7 @@ class Hfcm_Snippets_List extends WP_List_Table {
 				self::delete_snippet( $id );
 			}
 
-			hfcm_redirect( admin_url( 'admin.php?page=hfcm-list' ) );
+			NNR_HFCM::hfcm_redirect( admin_url( 'admin.php?page=hfcm-list' ) );
 			return;
 		} elseif (
 			( isset( $_POST['action'] ) && 'bulk-activate' === $_POST['action'] ) ||
@@ -398,7 +398,7 @@ class Hfcm_Snippets_List extends WP_List_Table {
 				self::activate_snippet( $id );
 			}
 
-			hfcm_redirect( admin_url( 'admin.php?page=hfcm-list' ) );
+            NNR_HFCM::hfcm_redirect( admin_url( 'admin.php?page=hfcm-list' ) );
 			return;
 		} elseif (
 			( isset( $_POST['action'] ) && 'bulk-deactivate' === $_POST['action'] ) ||
@@ -412,58 +412,10 @@ class Hfcm_Snippets_List extends WP_List_Table {
 				self::deactivate_snippet( $id );
 			}
 
-			hfcm_redirect( admin_url( 'admin.php?page=hfcm-list' ) );
+            NNR_HFCM::hfcm_redirect( admin_url( 'admin.php?page=hfcm-list' ) );
 
 			return;
 		}
 	}
 }
 
-/** Generate list of all snippets */
-function hfcm_list() {
-
-	global $wpdb;
-	$table_name = $wpdb->prefix . 'hfcm_scripts';
-	$activeclass = '';
-	$inactiveclass = '';
-	$allclass = 'current';
-	$snippet_obj = new Hfcm_Snippets_List();
-
-	if ( ! empty( $_GET['script_status'] ) && in_array( $_GET['script_status'], array( 'active', 'inactive' ) ) ) {
-		$allclass = '';
-		if ( 'active' === $_GET['script_status'] ) {
-			$activeclass = 'current';
-		}
-		if ( 'inactive' === $_GET['script_status'] ) {
-			$inactiveclass = 'current';
-		}
-	}
-	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'Snippets', '99robots-header-footer-code-manager' ) ?>
-			<a href="<?php echo admin_url( 'admin.php?page=hfcm-create' ) ?>" class="page-title-action"><?php esc_html_e( 'Add New Snippet', '99robots-header-footer-code-manager' ) ?></a>
-		</h1>
-
-		<form method="post">
-		<?php
-			$snippet_obj->prepare_items();
-			$snippet_obj->display();
-		?>
-		</form>
-
-	</div>
-	<?php
-
-	// Register the script
-	wp_register_script( 'hfcm_toggle', plugins_url( '../js/toggle.js', __FILE__ ) );
-
-	// Localize the script with new data
-	$translation_array = array(
-		'url'      => admin_url( 'admin.php' ),
-		'security' => wp_create_nonce( 'hfcm-toggle-snippet' ),
-	);
-	wp_localize_script( 'hfcm_toggle', 'hfcm_ajax', $translation_array );
-
-	// Enqueued script with localized data.
-	wp_enqueue_script( 'hfcm_toggle' );
-}

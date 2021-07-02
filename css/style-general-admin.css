@@ -26,3 +26,35 @@
 #hfcm-message{
   position: relative;
 }
+.hfcm-meta-box-wrap.hfcm-grid .postbox {
+  float: left;
+  clear: left;
+  width: 50%;
+  margin: 0 0 16px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .postbox:nth-child(even) {
+  float: right;
+  clear: right;
+  margin-right: -8px;
+}
+.hfcm-meta-box-wrap.hfcm-grid {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.hfcm-meta-box-wrap .postbox {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.hfcm-meta-box-wrap .postbox .hndle {
+  font-size: 14px;
+  padding: 8px 12px;
+  margin: 0;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+  cursor: default;
+}
+.hfcm-meta-box-wrap.hfcm-grid .postbox:nth-child(odd) {
+  margin-left: -8px;
+}

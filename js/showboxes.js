@@ -84,4 +84,18 @@ jQuery(function($) {
 	);
 	// selectize all <select multiple> elements
 	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize();
+
+	if( $('#nnr_newcontent').length ) {
+		var editorSettings = wp.codeEditor.defaultSettings ? _.clone( wp.codeEditor.defaultSettings ) : {};
+		editorSettings.codemirror = _.extend(
+			{},
+			editorSettings.codemirror,
+			{
+				indentUnit: 2,
+				tabSize: 2,
+				//mode: 'javascript',
+			}
+		);
+		var editor = wp.codeEditor.initialize( $('#nnr_newcontent'), editorSettings );
+	}
 });

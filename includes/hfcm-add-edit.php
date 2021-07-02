@@ -49,18 +49,21 @@ wp_enqueue_script('hfcm_showboxes');
         endif;
     endif;
 
-    if ($update) : ?>
-    <form method="post" action="<?php echo admin_url('admin.php?page=hfcm-request-handler&id=' . $id) ?>">
+    if ($update) :
+        $hfcm_form_action = admin_url('admin.php?page=hfcm-request-handler&id=' . $id);
+    else :
+        $hfcm_form_action = admin_url('admin.php?page=hfcm-request-handler');
+    endif;
+    ?>
+    <form method="post" action="<?php echo $hfcm_form_action ?>">
         <?php
-        wp_nonce_field('update-snippet_' . $id);
+        if ($update) :
+            wp_nonce_field('update-snippet_' . $id);
         else :
-        ?>
-        <form method="post" action="<?php echo admin_url('admin.php?page=hfcm-request-handler') ?>">
-            <?php
             wp_nonce_field('create-snippet');
-            endif;
-            ?>
-            <table class="wp-list-table widefat fixed hfcm-form-width form-table">
+        endif;
+        ?>
+        <table class="wp-list-table widefat fixed hfcm-form-width form-table">
                 <tr>
                     <th class="hfcm-th-width"><?php esc_html_e('Snippet Name', '99robots-header-footer-code-manager'); ?></th>
                     <td><input type="text" name="data[name]" value="<?php echo $name; ?>" class="hfcm-field-width"/>
@@ -333,8 +336,8 @@ wp_enqueue_script('hfcm_showboxes');
                 <h1><?php esc_html_e('Snippet', '99robots-header-footer-code-manager'); ?>
                     / <?php esc_html_e('Code', '99robots-header-footer-code-manager') ?></h1>
                 <div class="wrap">
-                    <textarea name="data[snippet]" aria-describedby="newcontent-description" id="newcontent"
-                              name="newcontent" rows="10"><?php echo $snippet; ?></textarea>
+                    <textarea name="data[snippet]" aria-describedby="nnr-newcontent-description" id="nnr_newcontent"
+                              rows="10"><?php echo $snippet; ?></textarea>
                     <div class="wp-core-ui">
                         <input type="submit"
                                name="<?php echo $update ? 'update' : 'insert'; ?>"

@@ -14,7 +14,7 @@
 .selectize-control {
 	width: 400px;
 }
-#newcontent {
+#nnr_newcontent {
 	width: 75%;
 }
 .nnr-btnsave {
@@ -93,7 +93,7 @@ input.round-toggle-round-flat:checked + label:hover {
 	.hfcm-form-width select {
 		min-width: auto;
 	}
-	#newcontent {
+	#nnr_newcontent {
 		width: 103%;
 		width: calc(100% + 24px);
 	}
