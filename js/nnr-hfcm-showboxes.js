@@ -9,7 +9,7 @@ function hfcm_showotherboxes( type ) {
 
 	if (type == 'All') {
 		jQuery('#ex_pages, #ex_posts,  #locationtr').show();
-		hfcm_remember_loc( all_options );
+		hfcm_remember_loc( header + footer );
 		jQuery('#s_categories, #s_pages, #s_tags, #c_posttype, #lp_count, #s_posts').hide();
 	}else if (type == 's_pages') {
 		jQuery('#s_pages, #locationtr').show();

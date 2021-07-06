@@ -169,13 +169,13 @@ class Hfcm_Snippets_List extends WP_List_Table {
 					return esc_html__( 'N/A', '99robots-header-footer-code-manager' );
 				}
 
-				$larray = array(
+				$nnr_hfcm_locations = array(
 					'header'         => esc_html__( 'Header', '99robots-header-footer-code-manager' ),
 					'before_content' => esc_html__( 'Before Content', '99robots-header-footer-code-manager' ),
 					'after_content'  => esc_html__( 'After Content', '99robots-header-footer-code-manager' ),
 					'footer'         => esc_html__( 'Footer', '99robots-header-footer-code-manager' ),
 				);
-				return esc_html( $larray[ $item[ $column_name ] ] );
+				return esc_html( $nnr_hfcm_locations[ $item[ $column_name ] ] );
 
 			case 'device_type':
 

@@ -254,9 +254,9 @@ wp_enqueue_script('hfcm_showboxes');
                 </tr>
                 <?php
                 if (in_array($display_on, array('s_posts', 's_pages', 's_categories', 's_custom_posts', 's_tags', 'latest_posts'))) {
-                    $larray = array('header' => 'Header', 'before_content' => 'Before Content', 'after_content' => 'After Content', 'footer' => 'Footer');
+                    $nnr_hfcm_locations = array('header' => 'Header', 'before_content' => 'Before Content', 'after_content' => 'After Content', 'footer' => 'Footer');
                 } else {
-                    $larray = array('header' => 'Header', 'footer' => 'Footer');
+                    $nnr_hfcm_locations = array('header' => 'Header', 'footer' => 'Footer');
                 }
                 ?>
                 <tr id="locationtr" style="<?php echo $locationstyle; ?>">
@@ -264,7 +264,7 @@ wp_enqueue_script('hfcm_showboxes');
                     <td>
                         <select name="data[location]" id="data_location">
                             <?php
-                            foreach ($larray as $lkey => $statusv) {
+                            foreach ($nnr_hfcm_locations as $lkey => $statusv) {
                                 if ($location === $lkey) {
                                     echo "<option value='" . $lkey . "' selected='selected'>" . $statusv . '</option>';
                                 } else {
