@@ -134,7 +134,7 @@ class Hfcm_Snippets_List extends WP_List_Table {
 				return esc_html( $item[ $column_name ] );
 
 			case 'display_on':
-				$darray = array(
+                $nnr_hfcm_display_array = array(
 					'All'            => esc_html__( 'Site Wide', '99robots-header-footer-code-manager' ),
 					's_posts'        => esc_html__( 'Specific Posts', '99robots-header-footer-code-manager' ),
 					's_pages'        => esc_html__( 'Specific Pages', '99robots-header-footer-code-manager' ),
@@ -161,7 +161,7 @@ class Hfcm_Snippets_List extends WP_List_Table {
 					}
 				}
 
-				return esc_html( $darray[ $item[ $column_name ] ] );
+				return esc_html( $nnr_hfcm_display_array[ $item[ $column_name ] ] );
 
 			case 'location':
 

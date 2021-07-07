@@ -865,8 +865,8 @@ if (!class_exists('NNR_HFCM')) :
             $table_name = $wpdb->prefix . 'hfcm_scripts';
 
             //selecting value to update
-            $script = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where script_id=%s", $id));
-            foreach ($script as $s) {
+            $nnr_hfcm_snippets = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where script_id=%s", $id));
+            foreach ($nnr_hfcm_snippets as $s) {
                 $name = $s->name;
                 $snippet = $s->snippet;
                 $device_type = $s->device_type;
@@ -874,6 +874,9 @@ if (!class_exists('NNR_HFCM')) :
                 $display_on = $s->display_on;
                 $status = $s->status;
                 $lp_count = $s->lp_count;
+                if(empty($lp_count)) {
+                    $lp_count = 5;
+                }
                 $s_pages = json_decode($s->s_pages);
                 $ex_pages = json_decode($s->ex_pages);
                 $ex_posts = json_decode($s->ex_posts);
