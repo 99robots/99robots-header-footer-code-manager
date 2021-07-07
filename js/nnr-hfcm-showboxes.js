@@ -54,7 +54,7 @@ function hfcm_remember_loc( new_html ) {
 jQuery('#loader').show();
 jQuery(function($) {
 
-	var data = {
+	var nnr_hfcm_data = {
 		action: 'hfcm-request',
 		id: hfcm_localize.id,
 		get_posts: true,
@@ -63,7 +63,7 @@ jQuery(function($) {
 
 	$.post(
 		ajaxurl,
-		data,
+		nnr_hfcm_data,
 		function(new_data) {
 			var options = {
 				plugins: ['remove_button'],
@@ -83,7 +83,9 @@ jQuery(function($) {
 		'json', // ajax result format
 	);
 	// selectize all <select multiple> elements
-	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize();
+	$('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize({
+		plugins: ['remove_button']
+	});
 
 	if( $('#nnr_newcontent').length ) {
 		var editorSettings = wp.codeEditor.defaultSettings ? _.clone( wp.codeEditor.defaultSettings ) : {};

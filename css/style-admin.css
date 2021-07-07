@@ -76,6 +76,9 @@ input.round-toggle-round-flat:checked + label:after {
 .nnr-switch label:hover {
 	color: #40B000;
 }
+.nnr-switch label:first-child:hover {
+	color: #ff2525;
+}
 input.round-toggle-round-flat:checked + label {
 	color: #4aaeee;
 	background: #4aaeee;

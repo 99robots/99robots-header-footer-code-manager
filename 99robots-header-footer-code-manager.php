@@ -975,7 +975,7 @@ if (!class_exists('NNR_HFCM')) :
             <?php
 
             // Register the script
-            wp_register_script('hfcm_toggle', plugins_url('../js/toggle.js', __FILE__));
+            wp_register_script('hfcm_toggle', plugins_url('js/toggle.js', __FILE__));
 
             // Localize the script with new data
             $translation_array = array(
@@ -1043,10 +1043,10 @@ if (!class_exists('NNR_HFCM')) :
          * function to import snippets
          */
         public static function hfcm_import_snippets() {
-            global $wpdb;
-            $nnr_hfcm_table_name = $wpdb->prefix . 'hfcm_scripts';
+            if(!empty($_FILES['nnr_hfcm_import_file']['tmp_name']) && check_admin_referer('hfcm-nonce')) {
+                global $wpdb;
+                $nnr_hfcm_table_name = $wpdb->prefix . 'hfcm_scripts';
 
-            if(!empty($_FILES['nnr_hfcm_import_file'])) {
                 $nnr_hfcm_snippets_json = file_get_contents($_FILES['nnr_hfcm_import_file']['tmp_name']);
                 $nnr_hfcm_snippets = json_decode($nnr_hfcm_snippets_json);
 
