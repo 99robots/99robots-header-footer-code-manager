@@ -21,7 +21,7 @@ function hfcm_showotherboxes(type) {
         jQuery('#s_pages, #s_categories, #ex_pages, #ex_posts,  #s_tags, #c_posttype, #lp_count').hide();
     } else if (type == 's_categories') {
         jQuery('#s_categories, #locationtr').show();
-        hfcm_remember_loc(all_options);
+        hfcm_remember_loc(header + footer);
         jQuery('#s_pages, #s_tags, #c_posttype, #ex_pages, #ex_posts,  #lp_count, #s_posts').hide();
     } else if (type == 's_custom_posts') {
         jQuery('#c_posttype, #locationtr').show();
