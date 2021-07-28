@@ -19,7 +19,7 @@ if (!defined('WPINC')) {
 }
 
 global $hfcm_db_version;
-$hfcm_db_version = '1.1';
+$hfcm_db_version = '1.2';
 
 register_activation_hook(__FILE__, array('NNR_HFCM', 'hfcm_options_install'));
 add_action('plugins_loaded', array('NNR_HFCM', 'hfcm_db_update_check'));
@@ -63,6 +63,7 @@ if (!class_exists('NNR_HFCM')) :
 			`script_id` int(10) NOT NULL AUTO_INCREMENT,
 			`name` varchar(100) DEFAULT NULL,
 			`snippet` text,
+			`snippet_type` enum('script','php') DEFAULT 'script',
 			`device_type` enum('mobile','desktop', 'both') DEFAULT 'both',
 			`location` varchar(100) NOT NULL,
 			`display_on` enum('All','s_pages', 's_posts','s_categories','s_custom_posts','s_tags','latest_posts','manual') NOT NULL DEFAULT 'All',
@@ -100,31 +101,44 @@ if (!class_exists('NNR_HFCM')) :
             if (get_site_option('hfcm_db_version') != $hfcm_db_version) {
                 $wpdb->show_errors();
 
-                // Check for Exclude Pages
-                $column_name = 'ex_pages';
                 if (!empty($wpdb->dbname)) {
-                    $checkcolumn = $wpdb->get_results($wpdb->prepare(
+                    // Check for Exclude Pages
+                    $nnr_column_ex_pages = 'ex_pages';
+                    $nnr_check_column_ex_pages = $wpdb->get_results($wpdb->prepare(
                         "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
                         $wpdb->dbname,
                         $table_name,
-                        $column_name
+                        $nnr_column_ex_pages
                     ));
-                    if (empty($checkcolumn)) {
-                        $altersql = "ALTER TABLE `$table_name` ADD `ex_pages` varchar(300) DEFAULT 0 AFTER `s_pages`";
-                        $wpdb->query($altersql);
+                    if (empty($nnr_check_column_ex_pages)) {
+                        $nnr_alter_sql = "ALTER TABLE `$table_name` ADD `ex_pages` varchar(300) DEFAULT 0 AFTER `s_pages`";
+                        $wpdb->query($nnr_alter_sql);
                     }
 
-                    //Check for Exclude Posts
-                    $column_name1 = 'ex_posts';
-                    $checkcolumn2 = $wpdb->get_results($wpdb->prepare(
+                    // Check for Exclude Posts
+                    $nnr_column_ex_posts = 'ex_posts';
+                    $nnr_check_column_ex_posts = $wpdb->get_results($wpdb->prepare(
                         "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
                         $wpdb->dbname,
                         $table_name,
-                        $column_name1
+                        $nnr_column_ex_posts
                     ));
-                    if (empty($checkcolumn2)) {
-                        $altersql = "ALTER TABLE `$table_name` ADD `ex_posts` varchar(300) DEFAULT 0 AFTER `s_posts`";
-                        $wpdb->query($altersql);
+                    if (empty($nnr_check_column_ex_posts)) {
+                        $nnr_alter_sql = "ALTER TABLE `$table_name` ADD `ex_posts` varchar(300) DEFAULT 0 AFTER `s_posts`";
+                        $wpdb->query($nnr_alter_sql);
+                    }
+
+                    // Check for Snippet Type
+                    $nnr_column_snippet_type = 'snippet_type';
+                    $nnr_check_column_snippet_type = $wpdb->get_results($wpdb->prepare(
+                        "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ",
+                        $wpdb->dbname,
+                        $table_name,
+                        $nnr_column_snippet_type
+                    ));
+                    if (empty($nnr_check_column_snippet_type)) {
+                        $nnr_alter_sql = "ALTER TABLE `$table_name` ADD `snippet_type` enum('script') DEFAULT 'script' AFTER `snippet`";
+                        $wpdb->query($nnr_alter_sql);
                     }
                 }
                 self::hfcm_options_install();
@@ -948,6 +962,22 @@ if (!class_exists('NNR_HFCM')) :
             $allclass = 'current';
             $snippet_obj = new Hfcm_Snippets_List();
 
+            if (!empty($_GET['import'])) {
+                if($_GET['import'] == 2) {
+                    $message = "Header Footer Code Manager has imported the snippets successfully. Some of the snippets may have been skipped. All the imported snippets are inactive.
+                     Please check them before activating.";
+                } else {
+                    $message = "Header Footer Code Manager has imported all the snippets successfully. All the imported snippets are inactive.
+                     Please check them before activating.";
+                }
+                ?>
+                <div id="hfcm-message" class="notice notice-success is-dismissible">
+                    <p>
+                        <?php _e($message, '99robots-header-footer-code-manager'); ?>
+                    </p>
+                </div>
+                <?php
+            }
             if (!empty($_GET['script_status']) && in_array($_GET['script_status'], array('active', 'inactive'))) {
                 $allclass = '';
                 if ('active' === $_GET['script_status']) {
@@ -1050,12 +1080,21 @@ if (!class_exists('NNR_HFCM')) :
                 $nnr_hfcm_snippets_json = file_get_contents($_FILES['nnr_hfcm_import_file']['tmp_name']);
                 $nnr_hfcm_snippets = json_decode($nnr_hfcm_snippets_json);
 
+                $nnr_non_script_snippets = 1;
                 foreach($nnr_hfcm_snippets as $nnr_hfcm_key => $nnr_hfcm_snippet) {
                     $nnr_hfcm_snippet = (array) $nnr_hfcm_snippet;
+                    if($nnr_hfcm_snippet['snippet_type'] != "script") {
+                        $nnr_non_script_snippets = 2;
+                        continue;
+                    }
+                    if(!empty($nnr_hfcm_snippet['display_to'])) {
+                        unset($nnr_hfcm_snippet['display_to']);
+                    }
+                    $nnr_hfcm_snippet['status'] = 'inactive';
                     $wpdb->insert($nnr_hfcm_table_name, $nnr_hfcm_snippet);
                 }
 
-                self::hfcm_redirect(admin_url('admin.php?page=hfcm-list'));
+                self::hfcm_redirect(admin_url('admin.php?page=hfcm-list&import='.$nnr_non_script_snippets));
             }
         }
     }
