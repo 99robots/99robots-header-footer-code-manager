@@ -1083,7 +1083,7 @@ if (!class_exists('NNR_HFCM')) :
                 $nnr_non_script_snippets = 1;
                 foreach($nnr_hfcm_snippets as $nnr_hfcm_key => $nnr_hfcm_snippet) {
                     $nnr_hfcm_snippet = (array) $nnr_hfcm_snippet;
-                    if($nnr_hfcm_snippet['snippet_type'] != "script") {
+                    if(!empty($nnr_hfcm_snippet['snippet_type']) && ($nnr_hfcm_snippet['snippet_type'] != "script")) {
                         $nnr_non_script_snippets = 2;
                         continue;
                     }
