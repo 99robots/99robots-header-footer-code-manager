@@ -63,7 +63,7 @@ if (!class_exists('NNR_HFCM')) :
 			`script_id` int(10) NOT NULL AUTO_INCREMENT,
 			`name` varchar(100) DEFAULT NULL,
 			`snippet` text,
-			`snippet_type` enum('script','php') DEFAULT 'script',
+			`snippet_type` enum('html', 'js', 'css') DEFAULT 'html',
 			`device_type` enum('mobile','desktop', 'both') DEFAULT 'both',
 			`location` varchar(100) NOT NULL,
 			`display_on` enum('All','s_pages', 's_posts','s_categories','s_custom_posts','s_tags','latest_posts','manual') NOT NULL DEFAULT 'All',
@@ -137,7 +137,7 @@ if (!class_exists('NNR_HFCM')) :
                         $nnr_column_snippet_type
                     ));
                     if (empty($nnr_check_column_snippet_type)) {
-                        $nnr_alter_sql = "ALTER TABLE `$table_name` ADD `snippet_type` enum('script') DEFAULT 'script' AFTER `snippet`";
+                        $nnr_alter_sql = "ALTER TABLE `$table_name` ADD `snippet_type` enum('html', 'js', 'css') DEFAULT 'html' AFTER `snippet`";
                         $wpdb->query($nnr_alter_sql);
                     }
                 }
@@ -596,6 +596,7 @@ if (!class_exists('NNR_HFCM')) :
             // prepare variables for includes/hfcm-add-edit.php
             $name = '';
             $snippet = '';
+            $nnr_snippet_type = 'html';
             $device_type = '';
             $location = '';
             $display_on = '';
@@ -669,6 +670,7 @@ if (!class_exists('NNR_HFCM')) :
                 // Sanitize fields
                 $name = self::hfcm_sanitize_text('name');
                 $snippet = self::hfcm_sanitize_text('snippet', false);
+                $nnr_snippet_type = self::hfcm_sanitize_text('snippet_type', false);
                 $device_type = self::hfcm_sanitize_text('device_type');
                 $display_on = self::hfcm_sanitize_text('display_on');
                 $location = self::hfcm_sanitize_text('location');
@@ -700,6 +702,7 @@ if (!class_exists('NNR_HFCM')) :
                         array(
                             'name' => $name,
                             'snippet' => $snippet,
+                            'snippet_type' => $nnr_snippet_type,
                             'device_type' => $device_type,
                             'location' => $location,
                             'display_on' => $display_on,
@@ -727,6 +730,7 @@ if (!class_exists('NNR_HFCM')) :
                             '%s',
                             '%s',
                             '%s',
+                            '%s',
                         ),
                         // Where format
                         array('%s')
@@ -739,6 +743,7 @@ if (!class_exists('NNR_HFCM')) :
                         array(
                             'name' => $name,
                             'snippet' => $snippet,
+                            'snippet_type' => $nnr_snippet_type,
                             'device_type' => $device_type,
                             'location' => $location,
                             'display_on' => $display_on,
@@ -754,6 +759,7 @@ if (!class_exists('NNR_HFCM')) :
                             'created' => current_time('Y-m-d H:i:s'),
                             'created_by' => sanitize_text_field($current_user->display_name),
                         ), array(
+                            '%s',
                             '%s',
                             '%s',
                             '%s',
@@ -883,6 +889,7 @@ if (!class_exists('NNR_HFCM')) :
             foreach ($nnr_hfcm_snippets as $s) {
                 $name = $s->name;
                 $snippet = $s->snippet;
+                $nnr_snippet_type = $s->snippet_type;
                 $device_type = $s->device_type;
                 $location = $s->location;
                 $display_on = $s->display_on;
@@ -937,6 +944,7 @@ if (!class_exists('NNR_HFCM')) :
             // escape for html output
             $name = esc_textarea($name);
             $snippet = esc_textarea($snippet);
+            $nnr_snippet_type = esc_textarea($nnr_snippet_type);
             $device_type = esc_html($device_type);
             $location = esc_html($location);
             $display_on = esc_html($display_on);
@@ -964,11 +972,9 @@ if (!class_exists('NNR_HFCM')) :
 
             if (!empty($_GET['import'])) {
                 if($_GET['import'] == 2) {
-                    $message = "Header Footer Code Manager has imported the snippets successfully. Some of the snippets may have been skipped. All the imported snippets are inactive.
-                     Please check them before activating.";
+                    $message = "Header Footer Code Manager has successfully imported all snippets and set them as INACTIVE. Please review each snippet individually and ACTIVATE those that are needed for this site. Snippet types that are only available in the PRO version are skipped";
                 } else {
-                    $message = "Header Footer Code Manager has imported all the snippets successfully. All the imported snippets are inactive.
-                     Please check them before activating.";
+                    $message = "Header Footer Code Manager has successfully imported all snippets and set them as INACTIVE. Please review each snippet individually and ACTIVATE those that are needed for this site.";
                 }
                 ?>
                 <div id="hfcm-message" class="notice notice-success is-dismissible">
@@ -1083,7 +1089,7 @@ if (!class_exists('NNR_HFCM')) :
                 $nnr_non_script_snippets = 1;
                 foreach($nnr_hfcm_snippets as $nnr_hfcm_key => $nnr_hfcm_snippet) {
                     $nnr_hfcm_snippet = (array) $nnr_hfcm_snippet;
-                    if(!empty($nnr_hfcm_snippet['snippet_type']) && ($nnr_hfcm_snippet['snippet_type'] != "script")) {
+                    if(!empty($nnr_hfcm_snippet['snippet_type']) && !in_array($nnr_hfcm_snippet['snippet_type'], array("html", "css", "js"))) {
                         $nnr_non_script_snippets = 2;
                         continue;
                     }

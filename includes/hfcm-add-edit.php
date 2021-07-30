@@ -70,6 +70,28 @@ wp_enqueue_script('hfcm_showboxes');
                 </td>
             </tr>
             <?php
+            $nnr_hfcm_snippet_type_array = array(
+                'html' => esc_html__('HTML', '99robots-header-footer-code-manager'),
+                'css' => esc_html__('CSS', '99robots-header-footer-code-manager'),
+                'js' => esc_html__('Javascript', '99robots-header-footer-code-manager')
+            ); ?>
+            <tr id="snippet_type">
+                <th class="hfcm-th-width"><?php esc_html_e('Snippet Type', '99robots-header-footer-code-manager'); ?></th>
+                <td>
+                    <select name="data[snippet_type]">
+                        <?php
+                        foreach ($nnr_hfcm_snippet_type_array as $nnr_key =>  $nnr_item) {
+                            if ($nnr_key === $nnr_snippet_type) {
+                                echo "<option value='{$nnr_key}' selected>{$nnr_item}</option>";
+                            } else {
+                                echo "<option value='{$nnr_key}'>{$nnr_item}</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </td>
+            </tr>
+            <?php
             $nnr_hfcm_display_array = array(
                 'All' => esc_html__('Site Wide', '99robots-header-footer-code-manager'),
                 's_posts' => esc_html__('Specific Posts', '99robots-header-footer-code-manager'),

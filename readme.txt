@@ -112,12 +112,12 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
-= 1.1.11 = 2021-07-02
+= 1.1.11 = 2021-07-30
 * FIXED: Warnings - Undefined Variables
 * FIXED: Selectize issue of not able to select first option from the dropdown
 * ADDED: Code Editor in place of textarea
 * ADDED: Import/Export Snippets
-* UPDATED: Compatibility with WordPress 5.7.2
+* UPDATED: Compatibility with WordPress 5.8
 
 = 1.1.10 = 2021-04-23
 * FIXED: Warnings - Undefined Variables
