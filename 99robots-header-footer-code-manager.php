@@ -403,35 +403,24 @@ if (!class_exists('NNR_HFCM')) :
                             break;
                         case 'latest_posts':
                             if (is_single()) {
-                                $args = array(
-                                    'public' => true,
-                                    '_builtin' => false,
-                                );
-                                $output = 'names'; // names or objects, note names is the default
-                                $operator = 'and'; // 'and' or 'or'
-                                $c_posttypes = get_post_types($args, $output, $operator);
-                                $posttypes = array('post');
-                                foreach ($c_posttypes as $cpkey => $cpdata) {
-                                    $posttypes[] = $cpdata;
-                                }
                                 if (!empty($scriptdata->lp_count)) {
-                                    $latestposts = wp_get_recent_posts(array(
-                                        'numberposts' => $scriptdata->lp_count,
-                                        'post_type' => $posttypes,
-                                    ));
+                                    $nnr_hfcm_latest_posts = wp_get_recent_posts(
+                                        array(
+                                            'numberposts' => $scriptdata->lp_count,
+                                        )
+                                    );
                                 } else {
-                                    $latestposts = wp_get_recent_posts(array('post_type' => $posttypes));
+                                    $nnr_hfcm_latest_posts = wp_get_recent_posts(
+                                        array(
+                                            'numberposts' => 5
+                                        )
+                                    );
                                 }
 
-                                $islatest = false;
-                                foreach ($latestposts as $key => $lpostdata) {
+                                foreach ($nnr_hfcm_latest_posts as $key => $lpostdata) {
                                     if (get_the_ID() == $lpostdata['ID']) {
-                                        $islatest = true;
+                                        $out = self::hfcm_render_snippet($scriptdata);
                                     }
-                                }
-
-                                if ($islatest) {
-                                    $out = self::hfcm_render_snippet($scriptdata);
                                 }
                             }
                             break;
@@ -895,7 +884,7 @@ if (!class_exists('NNR_HFCM')) :
                 $display_on = $s->display_on;
                 $status = $s->status;
                 $lp_count = $s->lp_count;
-                if(empty($lp_count)) {
+                if (empty($lp_count)) {
                     $lp_count = 5;
                 }
                 $s_pages = json_decode($s->s_pages);
@@ -971,7 +960,7 @@ if (!class_exists('NNR_HFCM')) :
             $snippet_obj = new Hfcm_Snippets_List();
 
             if (!empty($_GET['import'])) {
-                if($_GET['import'] == 2) {
+                if ($_GET['import'] == 2) {
                     $message = "Header Footer Code Manager has successfully imported all snippets and set them as INACTIVE. Please review each snippet individually and ACTIVATE those that are needed for this site. Snippet types that are only available in the PRO version are skipped";
                 } else {
                     $message = "Header Footer Code Manager has successfully imported all snippets and set them as INACTIVE. Please review each snippet individually and ACTIVATE those that are needed for this site.";
@@ -1058,9 +1047,9 @@ if (!class_exists('NNR_HFCM')) :
                 if (!empty($nnr_hfcm_snippets_comma_separated)) {
                     $nnr_hfcm_snippets = $wpdb->get_results("SELECT * from $nnr_hfcm_table_name where script_id IN (" . $nnr_hfcm_snippets_comma_separated . ")");
 
-                    if(!empty($nnr_hfcm_snippets)) {
+                    if (!empty($nnr_hfcm_snippets)) {
                         $nnr_hfcm_export_snippets = array();
-                        foreach($nnr_hfcm_snippets as $nnr_hfcm_snippet_key => $nnr_hfcm_snippet_item) {
+                        foreach ($nnr_hfcm_snippets as $nnr_hfcm_snippet_key => $nnr_hfcm_snippet_item) {
                             unset($nnr_hfcm_snippet_item->script_id);
                             $nnr_hfcm_export_snippets[$nnr_hfcm_snippet_key] = $nnr_hfcm_snippet_item;
                         }
@@ -1078,8 +1067,9 @@ if (!class_exists('NNR_HFCM')) :
         /*
          * function to import snippets
          */
-        public static function hfcm_import_snippets() {
-            if(!empty($_FILES['nnr_hfcm_import_file']['tmp_name']) && check_admin_referer('hfcm-nonce')) {
+        public static function hfcm_import_snippets()
+        {
+            if (!empty($_FILES['nnr_hfcm_import_file']['tmp_name']) && check_admin_referer('hfcm-nonce')) {
                 global $wpdb;
                 $nnr_hfcm_table_name = $wpdb->prefix . 'hfcm_scripts';
 
@@ -1087,20 +1077,20 @@ if (!class_exists('NNR_HFCM')) :
                 $nnr_hfcm_snippets = json_decode($nnr_hfcm_snippets_json);
 
                 $nnr_non_script_snippets = 1;
-                foreach($nnr_hfcm_snippets as $nnr_hfcm_key => $nnr_hfcm_snippet) {
-                    $nnr_hfcm_snippet = (array) $nnr_hfcm_snippet;
-                    if(!empty($nnr_hfcm_snippet['snippet_type']) && !in_array($nnr_hfcm_snippet['snippet_type'], array("html", "css", "js"))) {
+                foreach ($nnr_hfcm_snippets as $nnr_hfcm_key => $nnr_hfcm_snippet) {
+                    $nnr_hfcm_snippet = (array)$nnr_hfcm_snippet;
+                    if (!empty($nnr_hfcm_snippet['snippet_type']) && !in_array($nnr_hfcm_snippet['snippet_type'], array("html", "css", "js"))) {
                         $nnr_non_script_snippets = 2;
                         continue;
                     }
-                    if(!empty($nnr_hfcm_snippet['display_to'])) {
+                    if (!empty($nnr_hfcm_snippet['display_to'])) {
                         unset($nnr_hfcm_snippet['display_to']);
                     }
                     $nnr_hfcm_snippet['status'] = 'inactive';
                     $wpdb->insert($nnr_hfcm_table_name, $nnr_hfcm_snippet);
                 }
 
-                self::hfcm_redirect(admin_url('admin.php?page=hfcm-list&import='.$nnr_non_script_snippets));
+                self::hfcm_redirect(admin_url('admin.php?page=hfcm-list&import=' . $nnr_non_script_snippets));
             }
         }
     }

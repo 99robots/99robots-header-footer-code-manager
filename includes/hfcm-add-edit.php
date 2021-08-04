@@ -263,7 +263,7 @@ wp_enqueue_script('hfcm_showboxes');
                     <select name="data[lp_count]">
                         <?php
                         for ($i = 1; $i <= 20; $i++) {
-                            if ($i === $lp_count) {
+                            if ($i == $lp_count) {
                                 echo "<option value='{$i}' selected>{$i}</option>";
                             } else {
                                 echo "<option value='{$i}'>{$i}</option>";
