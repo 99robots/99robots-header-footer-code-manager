@@ -18,19 +18,13 @@ if (!defined('WPINC')) {
     die;
 }
 
-global $hfcm_db_version;
-$hfcm_db_version = '1.2';
-
 register_activation_hook(__FILE__, array('NNR_HFCM', 'hfcm_options_install'));
 add_action('plugins_loaded', array('NNR_HFCM', 'hfcm_db_update_check'));
 add_action('admin_enqueue_scripts', array('NNR_HFCM', 'hfcm_enqueue_assets'));
 add_action('plugins_loaded', array('NNR_HFCM', 'hfcm_load_translation_files'));
 add_action('admin_menu', array('NNR_HFCM', 'hfcm_modifymenu'));
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), array('NNR_HFCM', 'hfcm_add_plugin_page_settings_link'));
-add_action('admin_init', array('NNR_HFCM', 'hfcm_check_installation_date'));
-add_action('admin_init', array('NNR_HFCM', 'hfcm_plugin_notice_dismissed'));
-add_action('admin_init', array('NNR_HFCM', 'hfcm_export_snippets'));
-add_action('admin_init', array('NNR_HFCM', 'hfcm_import_snippets'));
+add_action('admin_init', array('NNR_HFCM', 'hfcm_init'));
 add_shortcode('hfcm', array('NNR_HFCM', 'hfcm_shortcode'));
 add_action('wp_head', array('NNR_HFCM', 'hfcm_header_scripts'));
 add_action('wp_footer', array('NNR_HFCM', 'hfcm_footer_scripts'));
@@ -44,6 +38,18 @@ if (!class_exists('NNR_HFCM')) :
 
     class NNR_HFCM
     {
+        public static $nnr_hfcm_db_version = "1.2";
+
+        /*
+         * hfcm init function
+         */
+        public static function hfcm_init() {
+            self::hfcm_check_installation_date();
+            self::hfcm_plugin_notice_dismissed();
+            self::hfcm_import_snippets();
+            self::hfcm_export_snippets();
+        }
+
         /*
          * function to create the DB / Options / Defaults
          */
@@ -54,7 +60,6 @@ if (!class_exists('NNR_HFCM')) :
             update_option('hfcm_activation_date', $hfcm_now);
 
             global $wpdb;
-            global $hfcm_db_version;
 
             $table_name = $wpdb->prefix . 'hfcm_scripts';
             $charset_collate = $wpdb->get_charset_collate();
@@ -85,7 +90,7 @@ if (!class_exists('NNR_HFCM')) :
 
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
-            add_option('hfcm_db_version', $hfcm_db_version);
+            add_option('hfcm_db_version', self::$nnr_hfcm_db_version);
         }
 
 
@@ -94,11 +99,10 @@ if (!class_exists('NNR_HFCM')) :
          */
         public static function hfcm_db_update_check()
         {
-            global $hfcm_db_version;
             global $wpdb;
 
             $table_name = $wpdb->prefix . 'hfcm_scripts';
-            if (get_site_option('hfcm_db_version') != $hfcm_db_version) {
+            if (get_site_option('hfcm_db_version') != self::$nnr_hfcm_db_version) {
                 $wpdb->show_errors();
 
                 if (!empty($wpdb->dbname)) {
@@ -143,7 +147,7 @@ if (!class_exists('NNR_HFCM')) :
                 }
                 self::hfcm_options_install();
             }
-            update_option('hfcm_db_version', $hfcm_db_version);
+            update_option('hfcm_db_version', self::$nnr_hfcm_db_version);
         }
 
 
