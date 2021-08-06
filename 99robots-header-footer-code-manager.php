@@ -39,6 +39,8 @@ if (!class_exists('NNR_HFCM')) :
     class NNR_HFCM
     {
         public static $nnr_hfcm_db_version = "1.2";
+        public static $nnr_hfcm_table = "hfcm_scripts";
+
 
         /*
          * hfcm init function
@@ -61,7 +63,7 @@ if (!class_exists('NNR_HFCM')) :
 
             global $wpdb;
 
-            $table_name = $wpdb->prefix . 'hfcm_scripts';
+            $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
             $charset_collate = $wpdb->get_charset_collate();
             $sql =
                 "CREATE TABLE IF NOT EXISTS $table_name(
@@ -101,7 +103,7 @@ if (!class_exists('NNR_HFCM')) :
         {
             global $wpdb;
 
-            $table_name = $wpdb->prefix . 'hfcm_scripts';
+            $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
             if (get_site_option('hfcm_db_version') != self::$nnr_hfcm_db_version) {
                 $wpdb->show_errors();
 
@@ -347,7 +349,7 @@ if (!class_exists('NNR_HFCM')) :
         public static function hfcm_shortcode($atts)
         {
             global $wpdb;
-            $table_name = $wpdb->prefix . 'hfcm_scripts';
+            $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
             if (!empty($atts['id'])) {
                 $id = (int)$atts['id'];
                 $hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
@@ -387,7 +389,7 @@ if (!class_exists('NNR_HFCM')) :
                 $display_location = "location NOT IN ( 'header', 'footer' )";
             }
 
-            $table_name = $wpdb->prefix . 'hfcm_scripts';
+            $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
             $hide_device = wp_is_mobile() ? 'desktop' : 'mobile';
             $script = $wpdb->get_results("SELECT * from $table_name where $display_location AND status='active' AND device_type!='$hide_device'");
 
@@ -646,7 +648,7 @@ if (!class_exists('NNR_HFCM')) :
 
                 // Global vars
                 global $wpdb;
-                $table_name = $wpdb->prefix . 'hfcm_scripts';
+                $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
                 $wpdb->update(
                     $table_name, //table
@@ -685,7 +687,7 @@ if (!class_exists('NNR_HFCM')) :
                 // Global vars
                 global $wpdb;
                 global $current_user;
-                $table_name = $wpdb->prefix . 'hfcm_scripts';
+                $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
                 // Update snippet
                 if (isset($id)) {
@@ -783,7 +785,7 @@ if (!class_exists('NNR_HFCM')) :
 
                 // Global vars
                 global $wpdb;
-                $table_name = $wpdb->prefix . 'hfcm_scripts';
+                $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
                 // Get all selected posts
                 if (-1 === $id) {
@@ -875,7 +877,7 @@ if (!class_exists('NNR_HFCM')) :
             $id = (int)$_GET['id'];
 
             global $wpdb;
-            $table_name = $wpdb->prefix . 'hfcm_scripts';
+            $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
             //selecting value to update
             $nnr_hfcm_snippets = $wpdb->get_results($wpdb->prepare("SELECT * from $table_name where script_id=%s", $id));
@@ -957,7 +959,7 @@ if (!class_exists('NNR_HFCM')) :
         {
 
             global $wpdb;
-            $table_name = $wpdb->prefix . 'hfcm_scripts';
+            $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
             $activeclass = '';
             $inactiveclass = '';
             $allclass = 'current';
@@ -1023,7 +1025,7 @@ if (!class_exists('NNR_HFCM')) :
         public static function hfcm_tools()
         {
             global $wpdb;
-            $nnr_hfcm_table_name = $wpdb->prefix . 'hfcm_scripts';
+            $nnr_hfcm_table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
             $nnr_hfcm_snippets = $wpdb->get_results("SELECT * from $nnr_hfcm_table_name");
 
@@ -1036,7 +1038,7 @@ if (!class_exists('NNR_HFCM')) :
         public static function hfcm_export_snippets()
         {
             global $wpdb;
-            $nnr_hfcm_table_name = $wpdb->prefix . 'hfcm_scripts';
+            $nnr_hfcm_table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
             if (!empty($_POST['nnr_hfcm_snippets']) && !empty($_POST['action']) && ($_POST['action'] == "download") && check_admin_referer('hfcm-nonce')) {
                 $nnr_hfcm_snippets_comma_separated = "";
@@ -1075,7 +1077,7 @@ if (!class_exists('NNR_HFCM')) :
         {
             if (!empty($_FILES['nnr_hfcm_import_file']['tmp_name']) && check_admin_referer('hfcm-nonce')) {
                 global $wpdb;
-                $nnr_hfcm_table_name = $wpdb->prefix . 'hfcm_scripts';
+                $nnr_hfcm_table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
                 $nnr_hfcm_snippets_json = file_get_contents($_FILES['nnr_hfcm_import_file']['tmp_name']);
                 $nnr_hfcm_snippets = json_decode($nnr_hfcm_snippets_json);
