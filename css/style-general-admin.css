@@ -88,3 +88,6 @@
 .hfcm-meta-box-wrap.hfcm-grid .hfcm-label label {
   font-weight: bold;
 }
+.hfcm-warning-notice {
+  padding: 10px;
+}

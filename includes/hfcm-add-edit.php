@@ -96,9 +96,9 @@ wp_enqueue_script('hfcm_showboxes');
                 'All' => esc_html__('Site Wide', '99robots-header-footer-code-manager'),
                 's_posts' => esc_html__('Specific Posts', '99robots-header-footer-code-manager'),
                 's_pages' => esc_html__('Specific Pages', '99robots-header-footer-code-manager'),
-                's_categories' => esc_html__('Specific Categories', '99robots-header-footer-code-manager'),
-                's_custom_posts' => esc_html__('Specific Post Types', '99robots-header-footer-code-manager'),
-                's_tags' => esc_html__('Specific Tags', '99robots-header-footer-code-manager'),
+                's_categories' => esc_html__('Specific Categories (Archive & Posts)', '99robots-header-footer-code-manager'),
+                's_custom_posts' => esc_html__('Specific Post Types (Archive & Posts)', '99robots-header-footer-code-manager'),
+                's_tags' => esc_html__('Specific Tags (Archive & Posts)', '99robots-header-footer-code-manager'),
                 'latest_posts' => esc_html__('Latest Posts', '99robots-header-footer-code-manager'),
                 'manual' => esc_html__('Shortcode Only', '99robots-header-footer-code-manager'),
             ); ?>
@@ -294,6 +294,7 @@ wp_enqueue_script('hfcm_showboxes');
                         }
                         ?>
                     </select>
+                    <p><b>Note</b>: Snippet will only execute if the placement hook exists on the page.</p>
                 </td>
             </tr>
             <?php $devicetypearray = array('both' => 'Show on All Devices', 'desktop' => 'Only Desktop', 'mobile' => 'Only Mobile Devices') ?>
