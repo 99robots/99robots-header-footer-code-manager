@@ -106,7 +106,7 @@ if (!class_exists('NNR_HFCM')) :
             global $wpdb;
 
             $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
-            if (get_site_option('hfcm_db_version') != self::$nnr_hfcm_db_version) {
+            if (get_option('hfcm_db_version') != self::$nnr_hfcm_db_version) {
                 $wpdb->show_errors();
 
                 if (!empty($wpdb->dbname)) {

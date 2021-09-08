@@ -7,9 +7,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 $option_name = 'hfcm_db_version';
 delete_option( $option_name );
 
-// For site options in Multisite
-delete_site_option( $option_name );
-
 // Drop a custom db table
 global $wpdb;
 $table_name = $wpdb->prefix . 'hfcm_scripts';
