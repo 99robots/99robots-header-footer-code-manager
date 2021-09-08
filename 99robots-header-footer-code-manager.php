@@ -68,7 +68,7 @@ if (!class_exists('NNR_HFCM')) :
             $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
             $charset_collate = $wpdb->get_charset_collate();
             $sql =
-                "CREATE TABLE IF NOT EXISTS $table_name(
+                "CREATE TABLE $table_name (
 			`script_id` int(10) NOT NULL AUTO_INCREMENT,
 			`name` varchar(100) DEFAULT NULL,
 			`snippet` text,
