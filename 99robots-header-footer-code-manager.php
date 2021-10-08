@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.13
+ * Version: 1.1.14
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -68,7 +68,7 @@ if (!class_exists('NNR_HFCM')) :
             $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
             $charset_collate = $wpdb->get_charset_collate();
             $sql =
-                "CREATE TABLE IF NOT EXISTS $table_name(
+                "CREATE TABLE $table_name (
 			`script_id` int(10) NOT NULL AUTO_INCREMENT,
 			`name` varchar(100) DEFAULT NULL,
 			`snippet` text,
@@ -626,10 +626,10 @@ if (!class_exists('NNR_HFCM')) :
                 // Check nonce
                 check_admin_referer('create-snippet');
             } else {
-                if (!isset($_REQUEST['id'])) {
+                if (empty($_REQUEST['id'])) {
                     die('Missing ID parameter.');
                 }
-                $id = (int)$_REQUEST['id'];
+                $id = (int) $_REQUEST['id'];
             }
             if (isset($_POST['update'])) {
                 // Check nonce
@@ -880,7 +880,7 @@ if (!class_exists('NNR_HFCM')) :
             if (empty($_GET['id'])) {
                 die('Missing ID parameter.');
             }
-            $id = (int)$_GET['id'];
+            $id = (int) $_GET['id'];
 
             global $wpdb;
             $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
