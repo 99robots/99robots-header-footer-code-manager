@@ -24,7 +24,7 @@ msgstr ""
 "X-Loco-Target-Locale: es_AR\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#: ../hfcm-create.php:397 ../hfcm-list.php:239 ../hfcm-update.php:467
+#: ../hfcm-create.php:397 ../class-hfcm-snippets-list.php:239 ../hfcm-update.php:467
 msgid "Shortcode"
 msgstr "C&oacute;digo Corto"
 
@@ -75,7 +75,7 @@ msgstr "Actualizar"
 msgid "Back to list"
 msgstr "Volver al listado"
 
-#: ../hfcm-create.php:172 ../hfcm-list.php:235 ../hfcm-update.php:230
+#: ../hfcm-create.php:172 ../class-hfcm-snippets-list.php:235 ../hfcm-update.php:230
 msgid "Snippet Name"
 msgstr "Nombre"
 
@@ -107,7 +107,7 @@ msgstr "Entradas Personalizadas"
 msgid "Post Count"
 msgstr "Cantidad de Entradas"
 
-#: ../hfcm-create.php:347 ../hfcm-list.php:237 ../hfcm-update.php:416
+#: ../hfcm-create.php:347 ../class-hfcm-snippets-list.php:237 ../hfcm-update.php:416
 msgid "Location"
 msgstr "Ubicaci&oacute;n"
 
@@ -115,7 +115,7 @@ msgstr "Ubicaci&oacute;n"
 msgid "Device Display"
 msgstr "Mostrar en Dispositivo"
 
-#: ../hfcm-create.php:381 ../hfcm-list.php:234 ../hfcm-update.php:451
+#: ../hfcm-create.php:381 ../class-hfcm-snippets-list.php:234 ../hfcm-update.php:451
 msgid "Status"
 msgstr "Estado"
 
@@ -127,35 +127,35 @@ msgstr "C&oacute;digo"
 msgid "Save"
 msgstr "Guardar"
 
-#: ../hfcm-list.php:111
+#: ../class-hfcm-snippets-list.php:111
 msgid "No Snippets avaliable."
 msgstr "No Hay Snippets Disponibles."
 
-#: ../hfcm-list.php:218
+#: ../class-hfcm-snippets-list.php:218
 msgid "Edit"
 msgstr "Editar"
 
-#: ../hfcm-list.php:219
+#: ../class-hfcm-snippets-list.php:219
 msgid "Delete"
 msgstr "Borrar"
 
-#: ../hfcm-list.php:236
+#: ../class-hfcm-snippets-list.php:236
 msgid "Display On"
 msgstr "Mostrar en"
 
-#: ../hfcm-list.php:238
+#: ../class-hfcm-snippets-list.php:238
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: ../hfcm-list.php:266
+#: ../class-hfcm-snippets-list.php:266
 msgid "Activate"
 msgstr "Activar"
 
-#: ../hfcm-list.php:267
+#: ../class-hfcm-snippets-list.php:267
 msgid "Deactivate"
 msgstr "Desactivar"
 
-#: ../hfcm-list.php:268
+#: ../class-hfcm-snippets-list.php:268
 msgid "Remove"
 msgstr "Borrar"
 

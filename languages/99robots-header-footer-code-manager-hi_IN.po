@@ -28,19 +28,19 @@ msgstr ""
 msgid "Header Footer Code Manager"
 msgstr "हैडर और पाद संहिता प्रबंधक"
 
-#: ../hfcm-create.php:404 ../hfcm-list.php:12 ../hfcm-update.php:486
+#: ../hfcm-create.php:404 ../class-hfcm-snippets-list.php:12 ../hfcm-update.php:486
 msgid "Snippet"
 msgstr "स्निपेट"
 
-#: ../hfcm-list.php:13 ../hfcm-list.php:416
+#: ../class-hfcm-snippets-list.php:13 ../class-hfcm-snippets-list.php:416
 msgid "Snippets"
 msgstr "स्निपेट्स"
 
-#: ../hfcm-list.php:233
+#: ../class-hfcm-snippets-list.php:233
 msgid "ID"
 msgstr "आईडी"
 
-#: ../hfcm-create.php:397 ../hfcm-list.php:239 ../hfcm-update.php:467
+#: ../hfcm-create.php:397 ../class-hfcm-snippets-list.php:239 ../hfcm-update.php:467
 msgid "Shortcode"
 msgstr "छोटे संकेत"
 
@@ -90,7 +90,7 @@ msgstr "अद्यतन"
 msgid "Back to list"
 msgstr "दोबारा सूची पर जाएं"
 
-#: ../hfcm-create.php:172 ../hfcm-list.php:235 ../hfcm-update.php:230
+#: ../hfcm-create.php:172 ../class-hfcm-snippets-list.php:235 ../hfcm-update.php:230
 msgid "Snippet Name"
 msgstr "स्निपेट नाम"
 
@@ -122,7 +122,7 @@ msgstr "कस्टम पोस्ट प्रकार"
 msgid "Post Count"
 msgstr "पोस्ट गिनती "
 
-#: ../hfcm-create.php:347 ../hfcm-list.php:237 ../hfcm-update.php:416
+#: ../hfcm-create.php:347 ../class-hfcm-snippets-list.php:237 ../hfcm-update.php:416
 msgid "Location"
 msgstr "स्थान"
 
@@ -130,7 +130,7 @@ msgstr "स्थान"
 msgid "Device Display"
 msgstr "यंत्र प्रदर्शन"
 
-#: ../hfcm-create.php:381 ../hfcm-list.php:234 ../hfcm-update.php:451
+#: ../hfcm-create.php:381 ../class-hfcm-snippets-list.php:234 ../hfcm-update.php:451
 msgid "Status"
 msgstr "स्थिति"
 
@@ -142,35 +142,35 @@ msgstr "कोड"
 msgid "Save"
 msgstr "जमा करें"
 
-#: ../hfcm-list.php:111
+#: ../class-hfcm-snippets-list.php:111
 msgid "No Snippets avaliable."
 msgstr "कोई स्निपेट्स उपलब्ध नहीं"
 
-#: ../hfcm-list.php:218
+#: ../class-hfcm-snippets-list.php:218
 msgid "Edit"
 msgstr "सम्पादन"
 
-#: ../hfcm-list.php:219
+#: ../class-hfcm-snippets-list.php:219
 msgid "Delete"
 msgstr "मिटाएं"
 
-#: ../hfcm-list.php:236
+#: ../class-hfcm-snippets-list.php:236
 msgid "Display On"
 msgstr "पर प्रदर्शन"
 
-#: ../hfcm-list.php:238
+#: ../class-hfcm-snippets-list.php:238
 msgid "Devices"
 msgstr "उपकरण"
 
-#: ../hfcm-list.php:266
+#: ../class-hfcm-snippets-list.php:266
 msgid "Activate"
 msgstr "सक्रिय करें"
 
-#: ../hfcm-list.php:267
+#: ../class-hfcm-snippets-list.php:267
 msgid "Deactivate"
 msgstr "निष्क्रिय करें"
 
-#: ../hfcm-list.php:268
+#: ../class-hfcm-snippets-list.php:268
 msgid "Remove"
 msgstr "हटा दें"
 
