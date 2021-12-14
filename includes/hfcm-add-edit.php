@@ -352,11 +352,11 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <td>
                         <p>
                             <?php esc_html_e( 'Snippet created by', '99robots-header-footer-code-manager' ); ?>
-                            <b><?php echo esc_html( $createdby ); ?></b> <?php _e( 'on', '99robots-header-footer-code-manager' ) . ' ' . date_i18n( get_option( 'date_format' ), strtotime( $createdon ) ) . ' ' . __( 'at', '99robots-header-footer-code-manager' ) . ' ' . date_i18n( get_option( 'time_format' ), strtotime( $createdon ) ) ?>
+                            <b><?php echo esc_html( $createdby ); ?></b> <?php echo _e( 'on', '99robots-header-footer-code-manager' ) . ' ' . date_i18n( get_option( 'date_format' ), strtotime( $createdon ) ) . ' ' . __( 'at', '99robots-header-footer-code-manager' ) . ' ' . date_i18n( get_option( 'time_format' ), strtotime( $createdon ) ) ?>
                             <br/>
                             <?php if ( !empty( $lastmodifiedby ) ) : ?>
                                 <?php esc_html_e( 'Last edited by', '99robots-header-footer-code-manager' ); ?>
-                                <b><?php echo esc_html( $lastmodifiedby ); ?></b> <?php _e( 'on', '99robots-header-footer-code-manager' ) . ' ' . date_i18n( get_option( 'date_format' ), strtotime( $lastrevisiondate ) ) . ' ' . __( 'at', '99robots-header-footer-code-manager' ) . ' ' . date_i18n( get_option( 'time_format' ), strtotime( $lastrevisiondate ) ) ?>
+                                <b><?php echo esc_html( $lastmodifiedby ); ?></b> <?php echo _e( 'on', '99robots-header-footer-code-manager' ) . ' ' . date_i18n( get_option( 'date_format' ), strtotime( $lastrevisiondate ) ) . ' ' . __( 'at', '99robots-header-footer-code-manager' ) . ' ' . date_i18n( get_option( 'time_format' ), strtotime( $lastrevisiondate ) ) ?>
                             <?php endif; ?>
                         </p>
                     </td>

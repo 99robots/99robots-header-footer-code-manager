@@ -92,6 +92,12 @@ input.round-toggle-round-flat:checked + label:hover {
 .nnr-wraptext {
 	width: -moz-available;
 }
+.dashicons-hfcm {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 20px auto;
+	background-image: url("../images/99robots-logo-avatar.svg");
+}
 @media (max-width: 782px) {
 	.hfcm-form-width select {
 		min-width: auto;

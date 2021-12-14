@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.15
+ * Version: 1.1.16
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -25,7 +25,8 @@ add_action( 'plugins_loaded', array( 'NNR_HFCM', 'hfcm_db_update_check' ) );
 add_action( 'admin_enqueue_scripts', array( 'NNR_HFCM', 'hfcm_enqueue_assets' ) );
 add_action( 'plugins_loaded', array( 'NNR_HFCM', 'hfcm_load_translation_files' ) );
 add_action( 'admin_menu', array( 'NNR_HFCM', 'hfcm_modifymenu' ) );
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( 'NNR_HFCM', 'hfcm_add_plugin_page_settings_link' ) );
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( 'NNR_HFCM',
+                                                                         'hfcm_add_plugin_page_settings_link' ) );
 add_action( 'admin_init', array( 'NNR_HFCM', 'hfcm_init' ) );
 add_shortcode( 'hfcm', array( 'NNR_HFCM', 'hfcm_shortcode' ) );
 add_action( 'wp_head', array( 'NNR_HFCM', 'hfcm_header_scripts' ) );
@@ -214,7 +215,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 'manage_options',
                 'hfcm-list',
                 array( 'NNR_HFCM', 'hfcm_list' ),
-                plugins_url( 'images/', __FILE__ ) . '99robots.png'
+                'dashicons-hfcm'
             );
 
             // This is a submenu
@@ -291,6 +292,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             if ( $past_date >= $install_date ) {
                 add_action( 'admin_notices', array( 'NNR_HFCM', 'hfcm_review_push_notice' ) );
             }
+            add_action( 'admin_notices', array( 'NNR_HFCM', 'hfcm_static_notices' ) );
         }
 
 
@@ -309,11 +311,36 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             $user_id = get_current_user_id();
             // Check if current user has already dismissed it
             $install_date = get_option( 'hfcm_activation_date' );
+
             if ( !get_user_meta( $user_id, 'hfcm_plugin_notice_dismissed' ) && in_array( $screen, $allowed_pages_notices ) ) {
                 ?>
                 <div id="hfcm-message" class="notice notice-success">
                     <a class="hfcm-dismiss-alert notice-dismiss" href="?hfcm-admin-notice-dismissed">Dismiss</a>
                     <p><?php _e( 'Hey there! You’ve been using the <strong>Header Footer Code Manager</strong> plugin for a while now. If you like the plugin, please support our awesome development and support team by leaving a <a class="hfcm-review-stars" href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></a> rating. <a href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/">Rate it!</a> It’ll mean the world to us and keep this plugin free and constantly updated. <a href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/">Leave A Review</a>', '99robots-header-footer-code-manager' ); ?>
+                    </p>
+                </div>
+                <?php
+            }
+        }
+
+        /*
+         * function to add the static Admin Notice
+         */
+        public static function hfcm_static_notices()
+        {
+            $allowed_pages_notices = array(
+                'toplevel_page_hfcm-list',
+                'hfcm_page_hfcm-create',
+                'admin_page_hfcm-update',
+            );
+            $screen = get_current_screen()->id;
+
+            if ( in_array( $screen, $allowed_pages_notices ) ) {
+                ?>
+                <div id="hfcm-message" class="notice notice-success">
+                    <p>
+                        🔥 LIFETIME DEAL ALERT: The PRO version of this plugin is released and and available for a limited time as a one-time, exclusive lifetime deal.
+                        Want it? <b><i><a href="http://www.rockethub.com/deal/header-footer-code-manager-pro-wordpress-plugin" target="_blank">Click here</a> to get HFCM Pro for the lowest price ever</i></b>
                     </p>
                 </div>
                 <?php
@@ -885,7 +912,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             if ( empty( $_GET['id'] ) ) {
                 die( 'Missing ID parameter.' );
             }
-            $id = absint($_GET['id']);
+            $id = absint( $_GET['id'] );
 
             global $wpdb;
             $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
@@ -981,8 +1008,8 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             if ( $is_pro_version_active ) {
                 ?>
                 <div class="notice hfcm-warning-notice notice-warning">
-                    <?php _e('Please deactivate the pro version of this plugin in order to avoid duplication of the snippets.
-                    You can use our tools to import all the snippets from the pro version of this plugin.', '99robots-header-footer-code-manager'); ?>
+                    <?php _e( 'Please deactivate the pro version of this plugin in order to avoid duplication of the snippets.
+                    You can use our tools to import all the snippets from the pro version of this plugin.', '99robots-header-footer-code-manager' ); ?>
                 </div>
                 <?php
             }
@@ -1106,7 +1133,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 if ( !empty( $_FILES['nnr_hfcm_pro_import_file']['type'] ) && $_FILES['nnr_hfcm_pro_import_file']['type'] != "application/json" ) {
                     ?>
                     <div class="notice hfcm-warning-notice notice-warning">
-                        <?php _e('Please upload a valid import file', '99robots-header-footer-code-manager'); ?>
+                        <?php _e( 'Please upload a valid import file', '99robots-header-footer-code-manager' ); ?>
                     </div>
                     <?php
                     return;
@@ -1121,7 +1148,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 if ( empty( $nnr_hfcm_snippets->title ) || (!empty( $nnr_hfcm_snippets->title ) && $nnr_hfcm_snippets->title != "Header Footer Code Manager") ) {
                     ?>
                     <div class="notice hfcm-warning-notice notice-warning">
-                        <?php _e('Please upload a valid import file', '99robots-header-footer-code-manager'); ?>
+                        <?php _e( 'Please upload a valid import file', '99robots-header-footer-code-manager' ); ?>
                     </div>
                     <?php
                     return;

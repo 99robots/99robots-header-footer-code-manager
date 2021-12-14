@@ -110,7 +110,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
                             </div>
                         </div>
                         <p class="hfcm-submit">
-                            <input type="submit" class="button button-primary" value="import">
+                            <input type="submit" class="button button-primary" value="Import">
                         </p>
                         <?php wp_nonce_field( 'hfcm-nonce' ); ?>
                     </form>
