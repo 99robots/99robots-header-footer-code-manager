@@ -91,3 +91,9 @@
 .hfcm-warning-notice {
   padding: 10px;
 }
+.dashicons-hfcm {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px auto;
+  background-image: url("../images/99robots-logo-avatar.svg");
+}
