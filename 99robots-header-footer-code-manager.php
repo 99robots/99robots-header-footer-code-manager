@@ -73,7 +73,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 "CREATE TABLE $table_name (
                     `script_id` int(10) NOT NULL AUTO_INCREMENT,
                     `name` varchar(100) DEFAULT NULL,
-                    `snippet` text,
+                    `snippet` LONGTEXT,
                     `snippet_type` enum('html', 'js', 'css') DEFAULT 'html',
                     `device_type` enum('mobile','desktop', 'both') DEFAULT 'both',
                     `location` varchar(100) NOT NULL,
