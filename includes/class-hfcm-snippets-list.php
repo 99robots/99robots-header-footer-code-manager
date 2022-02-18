@@ -38,14 +38,14 @@ class Hfcm_Snippets_List extends WP_List_Table
         $orderby     = 'script_id';
         $order       = 'ASC';
 
-        if ( !empty( $_REQUEST['orderby'] ) ) {
-            $orderby = sanitize_sql_orderby( $_REQUEST['orderby'] );
+        if ( !empty( $_GET['orderby'] ) ) {
+            $orderby = sanitize_sql_orderby( $_GET['orderby'] );
             if ( empty( $orderby ) || !in_array( $orderby, array( 'script_id', 'name' ) ) ) {
                 $orderby = 'script_id';
             }
         }
-        if ( !empty( $_REQUEST['order'] ) ) {
-            $order = strtolower( sanitize_sql_orderby( $_REQUEST['order'] ) );
+        if ( !empty( $_GET['order'] ) ) {
+            $order = strtolower( sanitize_sql_orderby( $_GET['order'] ) );
             if ( empty( $order ) || !in_array( $order, array( 'desc', 'asc' ) ) ) {
                 $order = 'ASC';
             }
@@ -287,7 +287,13 @@ class Hfcm_Snippets_List extends WP_List_Table
 
         $title = '<strong>' . $item['name'] . '</strong>';
 
-        $page    = sanitize_text_field( $_REQUEST['page'] );
+        $nnr_current_screen = get_current_screen();
+
+        if(!empty($nnr_current_screen->parent_base)) {
+            $page    = $nnr_current_screen->parent_base;
+        } else {
+            $page    = sanitize_text_field( $_GET['page'] );
+        }
         $actions = array(
             'edit'   => sprintf( '<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . esc_html__( 'Edit', '99robots-header-footer-code-manager' ) . '</a>', esc_attr( 'hfcm-update' ), 'edit', absint( $item['script_id'] ), $edit_nonce ),
             'delete' => sprintf( '<a href="?page=%s&action=%s&snippet=%s&_wpnonce=%s">' . esc_html__( 'Delete', '99robots-header-footer-code-manager' ) . '</a>', $page, 'delete', absint( $item['script_id'] ), $delete_nonce ),
@@ -358,8 +364,8 @@ class Hfcm_Snippets_List extends WP_List_Table
 
         // Retrieve $customvar for use in query to get items.
         $customvar = 'all';
-        if ( !empty( $_REQUEST['customvar'] ) ) {
-            $customvar = sanitize_text_field( $_REQUEST['customvar'] );
+        if ( !empty( $_GET['customvar'] ) ) {
+            $customvar = sanitize_text_field( $_GET['customvar'] );
             if ( empty( $customvar ) || !in_array( $customvar, [ 'inactive', 'active', 'all' ] ) ) {
                 $customvar = 'all';
             }
@@ -385,8 +391,8 @@ class Hfcm_Snippets_List extends WP_List_Table
     {
         $views   = array();
         $current = 'all';
-        if ( !empty( $_REQUEST['customvar'] ) ) {
-            $current = sanitize_text_field( $_REQUEST['customvar'] );
+        if ( !empty( $_GET['customvar'] ) ) {
+            $current = sanitize_text_field( $_GET['customvar'] );
         }
 
         //All link

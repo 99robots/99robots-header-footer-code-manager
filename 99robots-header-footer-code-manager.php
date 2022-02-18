@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.16
+ * Version: 1.1.17
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -41,7 +41,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
     class NNR_HFCM
     {
-        public static $nnr_hfcm_db_version = "1.2";
+        public static $nnr_hfcm_db_version = "1.3";
         public static $nnr_hfcm_table = "hfcm_scripts";
 
 
@@ -150,6 +150,9 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                         $nnr_alter_sql = "ALTER TABLE `$table_name` ADD `snippet_type` enum('html', 'js', 'css') DEFAULT 'html' AFTER `snippet`";
                         $wpdb->query( $nnr_alter_sql );
                     }
+
+                    $nnr_alter_sql = "ALTER TABLE `$table_name` CHANGE `snippet` `snippet` LONGTEXT NULL";
+                    $wpdb->query( $nnr_alter_sql );
                 }
                 self::hfcm_options_install();
             }
@@ -340,7 +343,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 <div id="hfcm-message" class="notice notice-success">
                     <p>
                         🔥 LIFETIME DEAL ALERT: The PRO version of this plugin is released and and available for a limited time as a one-time, exclusive lifetime deal.
-                        Want it? <b><i><a href="http://www.rockethub.com/deal/header-footer-code-manager-pro-wordpress-plugin" target="_blank">Click here</a> to get HFCM Pro for the lowest price ever</i></b>
+                        Want it? <b><i><a href="http://www.rockethub.com/deal/header-footer-code-manager-pro-wordpress-plugin?utm_source=freehfcm&utm_medium=banner&utm_campaign=rhltd" target="_blank">Click here</a> to get HFCM Pro for the lowest price ever</i></b>
                     </p>
                 </div>
                 <?php
@@ -686,7 +689,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     $table_name, //table
                     array( 'status' => $status ), //data
                     array( 'script_id' => $id ), //where
-                    array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ), //data format
+                    array( '%s' ), //data format
                     array( '%s' ) //where format
                 );
 
@@ -1157,24 +1160,31 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 $nnr_non_script_snippets = 1;
                 foreach ( $nnr_hfcm_snippets->snippets as $nnr_hfcm_key => $nnr_hfcm_snippet ) {
                     $nnr_hfcm_snippet = (array) $nnr_hfcm_snippet;
-                    if ( !empty( $nnr_hfcm_snippet['snippet_type'] ) && !in_array( $nnr_hfcm_snippet['snippet_type'], array( "html",
-                                                                                                                             "css",
-                                                                                                                             "js" ) ) ) {
+                    if ( !empty( $nnr_hfcm_snippet['snippet_type'] ) && !in_array( $nnr_hfcm_snippet['snippet_type'], array( "html", "css", "js" ) ) ) {
+                        $nnr_non_script_snippets = 2;
+                        continue;
+                    }
+                    if ( !empty( $nnr_hfcm_snippet['location'] ) && !in_array( $nnr_hfcm_snippet['location'], array( 'header', 'before_content', 'after_content', 'footer' ) ) ) {
                         $nnr_non_script_snippets = 2;
                         continue;
                     }
                     $nnr_hfcm_sanitizes_snippet = [];
+                    $nnr_hfcm_keys = array(
+                            "name", "snippet", "snippet_type", "device_type", "location",
+                            "display_on", "lp_count", "s_pages", "ex_pages", "s_posts",
+                            "ex_posts", "s_custom_posts", "s_categories", "s_tags", "status",
+                            "created_by", "last_modified_by", "created", "last_revision_date"
+                    );
                     foreach ( $nnr_hfcm_snippet as $nnr_key => $nnr_item ) {
                         $nnr_key = sanitize_text_field( $nnr_key );
-                        if ( $nnr_key == "lp_count" ) {
-                            $nnr_item = absint( $nnr_item );
-                        } else {
-                            $nnr_item = sanitize_text_field( $nnr_item );
+                        if( in_array( $nnr_key, $nnr_hfcm_keys ) ) {
+                            if ( $nnr_key == "lp_count" ) {
+                                $nnr_item = absint( $nnr_item );
+                            } elseif ( $nnr_key != "snippet" ) {
+                                $nnr_item = sanitize_text_field( $nnr_item );
+                            }
+                            $nnr_hfcm_sanitizes_snippet[ $nnr_key ] = $nnr_item;
                         }
-                        $nnr_hfcm_sanitizes_snippet[ $nnr_key ] = $nnr_item;
-                    }
-                    if ( !empty( $nnr_hfcm_sanitizes_snippet['display_to'] ) ) {
-                        unset( $nnr_hfcm_sanitizes_snippet['display_to'] );
                     }
                     $nnr_hfcm_sanitizes_snippet['status'] = 'inactive';
 

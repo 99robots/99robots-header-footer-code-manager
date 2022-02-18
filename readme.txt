@@ -1,10 +1,10 @@
 === Header Footer Code Manager ===
-Contributors: 99robots, charliepatel, DraftPress
+Contributors: DraftPress, 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.9
 Requires PHP: 5.6.20
-Tested up to: 5.8.2
-Stable tag: 1.1.16
+Tested up to: 5.9
+Stable tag: 1.1.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -71,7 +71,7 @@ Header Footer Code Manager by 99 Robots is a easy interface to add snippets to t
 If using this plugin on a multisite network, please make sure that the plugin is activated on a subsite level only.
 
 > #### Plugin Information
-> * [Plugin Site](https://www.draftpress.com/header-footer-code-manager)
+> * [Plugin Site](https://draftpress.com/products/header-footer-code-manager/)
 > * [Plugin Documentation](https://www.draftpress.com/docs/header-footer-code-manager)
 > * [Free Plugins on WordPress.org](https://profiles.wordpress.org/99robots#content-plugins)
 > * [Premium Plugins](https://www.draftpress.com/products)
@@ -91,6 +91,7 @@ NOTE: If using this plugin on a multisite network, please make sure that the plu
 3. Add New Snippet - Read the documentation at:
 http://www.draftpress.com/docs/header-footer-code-manager
 4. Choose where you want your snippet to be displayed
+5. HFCM PRO vs. FREE
 
 == Frequently Asked Questions ==
 
@@ -113,6 +114,12 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+= 1.1.17 = 2022-02-17
+* FIXED: XSS vulnerability with request parameter page in the HFCM snippet listing screen
+* UPDATED: Compatibility with WordPress 5.9
+* UPDATED: Text & Plugin assets
+* UPDATED: Snippet column length
+
 = 1.1.16 = 2021-12-13
 * FIXED: Author not showing on Add/Edit snippet screen
 * ADDED: PRO banner
