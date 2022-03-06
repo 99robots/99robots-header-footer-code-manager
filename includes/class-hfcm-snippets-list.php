@@ -40,7 +40,7 @@ class Hfcm_Snippets_List extends WP_List_Table
 
         if ( !empty( $_GET['orderby'] ) ) {
             $orderby = sanitize_sql_orderby( $_GET['orderby'] );
-            if ( empty( $orderby ) || !in_array( $orderby, array( 'script_id', 'name' ) ) ) {
+            if ( empty( $orderby ) || !in_array( $orderby, array( 'script_id', 'name', 'location' ) ) ) {
                 $orderby = 'script_id';
             }
         }
@@ -51,10 +51,22 @@ class Hfcm_Snippets_List extends WP_List_Table
             }
         }
 
-        $sql = "SELECT * FROM $table_name";
+        $sql = "SELECT * FROM $table_name WHERE 1";
         if ( in_array( $customvar, array( 'inactive', 'active' ) ) ) {
-            $sql .= " WHERE status = '$customvar'";
+            $sql .= " AND status = '$customvar'";
+
         }
+        if ( !empty( $_POST['snippet_type'] ) ) {
+            $snippet_type = addslashes( sanitize_text_field( $_POST['snippet_type'] ) );
+            if ( in_array( $snippet_type, array( 'html', 'css', 'js' ) ) ) {
+                $sql .= " AND snippet_type = '$snippet_type'";
+            }
+        }
+        if ( !empty( $_POST['s'] ) ) {
+            $search_query = addslashes( sanitize_text_field( $_POST['s'] ) );
+            $sql          .= " AND name LIKE '%$search_query%'";
+        }
+
         $sql .= ' ORDER BY ' . $orderby . ' ' . $order . ' LIMIT ' . $per_page . ' OFFSET ' . ($page_number - 1) * $per_page;
 
         $result = $wpdb->get_results( $sql, 'ARRAY_A' );
@@ -177,6 +189,9 @@ class Hfcm_Snippets_List extends WP_List_Table
                     's_categories'   => esc_html__( 'Specific Categories', '99robots-header-footer-code-manager' ),
                     's_custom_posts' => esc_html__( 'Specific Custom Post Types', '99robots-header-footer-code-manager' ),
                     's_tags'         => esc_html__( 'Specific Tags', '99robots-header-footer-code-manager' ),
+                    's_is_home'      => esc_html__( 'Home Page', '99robots-header-footer-code-manager' ),
+                    's_is_search'    => esc_html__( 'Search Page', '99robots-header-footer-code-manager' ),
+                    's_is_archive'   => esc_html__( 'Archive Page', '99robots-header-footer-code-manager' ),
                     'latest_posts'   => esc_html__( 'Latest Posts', '99robots-header-footer-code-manager' ),
                     'manual'         => esc_html__( 'Shortcode Only', '99robots-header-footer-code-manager' ),
                 );
@@ -224,6 +239,13 @@ class Hfcm_Snippets_List extends WP_List_Table
                 } else {
                     return esc_html( $item[ $column_name ] );
                 }
+            case 'snippet_type':
+                $snippet_types = array(
+                    'html' => esc_html__( 'HTML', '99robots-header-footer-code-manager' ),
+                    'css'  => esc_html__( 'CSS', '99robots-header-footer-code-manager' ),
+                    'js'   => esc_html__( 'Javascript', '99robots-header-footer-code-manager' )
+                );
+                return esc_html( $snippet_types[ $item[ $column_name ] ] );
 
             case 'status':
 
@@ -289,10 +311,10 @@ class Hfcm_Snippets_List extends WP_List_Table
 
         $nnr_current_screen = get_current_screen();
 
-        if(!empty($nnr_current_screen->parent_base)) {
-            $page    = $nnr_current_screen->parent_base;
+        if ( !empty( $nnr_current_screen->parent_base ) ) {
+            $page = $nnr_current_screen->parent_base;
         } else {
-            $page    = sanitize_text_field( $_GET['page'] );
+            $page = sanitize_text_field( $_GET['page'] );
         }
         $actions = array(
             'edit'   => sprintf( '<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . esc_html__( 'Edit', '99robots-header-footer-code-manager' ) . '</a>', esc_attr( 'hfcm-update' ), 'edit', absint( $item['script_id'] ), $edit_nonce ),
@@ -310,14 +332,15 @@ class Hfcm_Snippets_List extends WP_List_Table
     function get_columns()
     {
         $columns = array(
-            'cb'          => '<input type="checkbox" />',
-            'script_id'   => esc_html__( 'ID', '99robots-header-footer-code-manager' ),
-            'status'      => esc_html__( 'Status', '99robots-header-footer-code-manager' ),
-            'name'        => esc_html__( 'Snippet Name', '99robots-header-footer-code-manager' ),
-            'display_on'  => esc_html__( 'Display On', '99robots-header-footer-code-manager' ),
-            'location'    => esc_html__( 'Location', '99robots-header-footer-code-manager' ),
-            'device_type' => esc_html__( 'Devices', '99robots-header-footer-code-manager' ),
-            'shortcode'   => esc_html__( 'Shortcode', '99robots-header-footer-code-manager' ),
+            'cb'           => '<input type="checkbox" />',
+            'script_id'    => esc_html__( 'ID', '99robots-header-footer-code-manager' ),
+            'status'       => esc_html__( 'Status', '99robots-header-footer-code-manager' ),
+            'name'         => esc_html__( 'Snippet Name', '99robots-header-footer-code-manager' ),
+            'display_on'   => esc_html__( 'Display On', '99robots-header-footer-code-manager' ),
+            'location'     => esc_html__( 'Location', '99robots-header-footer-code-manager' ),
+            'snippet_type' => esc_html__( 'Snippet Type', '99robots-header-footer-code-manager' ),
+            'device_type'  => esc_html__( 'Devices', '99robots-header-footer-code-manager' ),
+            'shortcode'    => esc_html__( 'Shortcode', '99robots-header-footer-code-manager' ),
         );
 
         return $columns;
@@ -333,6 +356,7 @@ class Hfcm_Snippets_List extends WP_List_Table
 
         return array(
             'name'      => array( 'name', true ),
+            'location'  => array( 'location', true ),
             'script_id' => array( 'script_id', false ),
         );
     }
@@ -350,6 +374,44 @@ class Hfcm_Snippets_List extends WP_List_Table
             'bulk-deactivate' => esc_html__( 'Deactivate', '99robots-header-footer-code-manager' ),
             'bulk-delete'     => esc_html__( 'Remove', '99robots-header-footer-code-manager' ),
         );
+    }
+
+    /**
+     * Add filters and extra actions above and below the table
+     *
+     * @param string $which Are the actions displayed on the table top or bottom
+     */
+    public function extra_tablenav( $which )
+    {
+        if ( 'top' === $which ) {
+            $query        = isset( $_POST['snippet_type'] ) ? sanitize_text_field( $_POST['snippet_type'] ) : '';
+            $snippet_type = array(
+                'html' => esc_html__( 'HTML', '99robots-header-footer-code-manager' ),
+                'css'  => esc_html__( 'CSS', '99robots-header-footer-code-manager' ),
+                'js'   => esc_html__( 'Javascript', '99robots-header-footer-code-manager' )
+            );
+
+            echo '<div class="alignleft actions">';
+            echo '<select name="snippet_type">';
+            echo '<option value="">' . esc_html__( 'All Snippet Types', '99robots-header-footer-code-manager' ) . '</option>';
+
+            foreach ( $snippet_type as $key_type => $type ) {
+                if ( $key_type == $query ) {
+                    echo '<option value="' . $key_type . '" selected>' . $type . '</option>';
+                } else {
+                    echo '<option value="' . $key_type . '">' . $type . '</option>';
+                }
+            }
+
+            echo '</select>';
+            submit_button( __( 'Filter', '99robots-header-footer-code-manager' ), 'button', 'filter_action', false );
+            echo '</div>';
+        }
+
+        echo '<div class="alignleft actions">';
+
+
+        echo '</div>';
     }
 
     /**
@@ -489,6 +551,30 @@ class Hfcm_Snippets_List extends WP_List_Table
 
             return;
         }
+    }
+
+    /**
+     * Displays the search box.
+     *
+     * @param string $text The 'submit' button label.
+     * @param string $input_id ID attribute value for the search input field.
+     * @since 3.1.0
+     *
+     */
+    public function search_box( $text, $input_id )
+    {
+        if ( empty( $_REQUEST['s'] ) && !$this->has_items() ) {
+            return;
+        }
+        $input_id = $input_id . '-search-input';
+        ?>
+        <p class="search-box">
+            <label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo $text; ?>:</label>
+            <input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s"
+                   value="<?php _admin_search_query(); ?>"/>
+            <?php submit_button( $text, '', '', false, array( 'id' => 'search-submit' ) ); ?>
+        </p>
+        <?php
     }
 }
 

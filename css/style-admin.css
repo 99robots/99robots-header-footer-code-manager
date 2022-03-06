@@ -17,7 +17,7 @@
 #nnr_newcontent {
 	width: 75%;
 }
-.nnr-btnsave {
+.nnr-btnsave, .nnr-btndelete {
 	margin-top: 10px !important;
 }
 .padding20 {

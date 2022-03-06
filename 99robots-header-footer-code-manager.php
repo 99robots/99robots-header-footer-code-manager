@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.17
+ * Version: 1.1.18
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -41,7 +41,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
     class NNR_HFCM
     {
-        public static $nnr_hfcm_db_version = "1.3";
+        public static $nnr_hfcm_db_version = "1.4";
         public static $nnr_hfcm_table = "hfcm_scripts";
 
 
@@ -77,7 +77,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     `snippet_type` enum('html', 'js', 'css') DEFAULT 'html',
                     `device_type` enum('mobile','desktop', 'both') DEFAULT 'both',
                     `location` varchar(100) NOT NULL,
-                    `display_on` enum('All','s_pages', 's_posts','s_categories','s_custom_posts','s_tags','latest_posts','manual') NOT NULL DEFAULT 'All',
+                    `display_on` enum('All','s_pages', 's_posts','s_categories','s_custom_posts','s_tags', 's_is_home', 's_is_search', 's_is_archive','latest_posts','manual') NOT NULL DEFAULT 'All',
                     `lp_count` int(10) DEFAULT NULL,
                     `s_pages` varchar(300) DEFAULT NULL,
                     `ex_pages` varchar(300) DEFAULT NULL,
@@ -152,6 +152,9 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     }
 
                     $nnr_alter_sql = "ALTER TABLE `$table_name` CHANGE `snippet` `snippet` LONGTEXT NULL";
+                    $wpdb->query( $nnr_alter_sql );
+
+                    $nnr_alter_sql = "ALTER TABLE `$table_name` CHANGE `display_on` `display_on` ENUM('All','s_pages','s_posts','s_categories','s_custom_posts','s_tags','s_is_home','s_is_archive','s_is_search','latest_posts','manual') DEFAULT 'All' NOT NULL";
                     $wpdb->query( $nnr_alter_sql );
                 }
                 self::hfcm_options_install();
@@ -483,6 +486,21 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                         case 's_posts':
                             $is_not_empty_s_posts = self::hfcm_not_empty( $scriptdata, 's_posts' );
                             if ( $is_not_empty_s_posts && is_single( json_decode( $scriptdata->s_posts ) ) ) {
+                                $out = self::hfcm_render_snippet( $scriptdata );
+                            }
+                            break;
+                        case 's_is_home':
+                            if ( is_home() ) {
+                                $out = self::hfcm_render_snippet( $scriptdata );
+                            }
+                            break;
+                        case 's_is_archive':
+                            if ( is_archive() ) {
+                                $out = self::hfcm_render_snippet( $scriptdata );
+                            }
+                            break;
+                        case 's_is_search':
+                            if ( is_search() ) {
                                 $out = self::hfcm_render_snippet( $scriptdata );
                             }
                             break;
@@ -1011,8 +1029,8 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             if ( $is_pro_version_active ) {
                 ?>
                 <div class="notice hfcm-warning-notice notice-warning">
-                    <?php _e( 'Please deactivate the pro version of this plugin in order to avoid duplication of the snippets.
-                    You can use our tools to import all the snippets from the pro version of this plugin.', '99robots-header-footer-code-manager' ); ?>
+                    <?php _e( 'Please deactivate the free version of this plugin in order to avoid duplication of the snippets.
+                    You can use our tools to import all the snippets from the free version of this plugin.', '99robots-header-footer-code-manager' ); ?>
                 </div>
                 <?php
             }
@@ -1051,6 +1069,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 <form method="post">
                     <?php
                     $snippet_obj->prepare_items();
+                    $snippet_obj->search_box( 'Search Snippets', 'search_id' );
                     $snippet_obj->display();
                     ?>
                 </form>

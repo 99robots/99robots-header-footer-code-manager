@@ -100,6 +100,9 @@ wp_enqueue_script( 'hfcm_showboxes' );
                 's_categories'   => esc_html__( 'Specific Categories (Archive & Posts)', '99robots-header-footer-code-manager' ),
                 's_custom_posts' => esc_html__( 'Specific Post Types (Archive & Posts)', '99robots-header-footer-code-manager' ),
                 's_tags'         => esc_html__( 'Specific Tags (Archive & Posts)', '99robots-header-footer-code-manager' ),
+                's_is_home'      => esc_html__( 'Home Page', '99robots-header-footer-code-manager' ),
+                's_is_search'    => esc_html__( 'Search Page', '99robots-header-footer-code-manager' ),
+                's_is_archive'   => esc_html__( 'Archive Page', '99robots-header-footer-code-manager' ),
                 'latest_posts'   => esc_html__( 'Latest Posts', '99robots-header-footer-code-manager' ),
                 'manual'         => esc_html__( 'Shortcode Only', '99robots-header-footer-code-manager' ),
             ); ?>
@@ -296,17 +299,19 @@ wp_enqueue_script( 'hfcm_showboxes' );
                         }
                         ?>
                     </select>
-                    <p><b><?php _e("Note", '99robots-header-footer-code-manager'); ?></b>: <?php _e("Snippet will only execute if the placement hook exists on the page", '99robots-header-footer-code-manager'); ?>.</p>
+                    <p>
+                        <b><?php _e( "Note", '99robots-header-footer-code-manager' ); ?></b>: <?php _e( "Snippet will only execute if the placement hook exists on the page", '99robots-header-footer-code-manager' ); ?>
+                        .</p>
                 </td>
             </tr>
             <?php $nnr_hfcm_device_type_array = array(
-                    'both'   => __('Show on All Devices', '99robots-header-footer-code-manager'),
-                    'desktop' => __('Only Desktop', '99robots-header-footer-code-manager'),
-                    'mobile' => __('Only Mobile Devices', '99robots-header-footer-code-manager')
+                'both'    => __( 'Show on All Devices', '99robots-header-footer-code-manager' ),
+                'desktop' => __( 'Only Desktop', '99robots-header-footer-code-manager' ),
+                'mobile'  => __( 'Only Mobile Devices', '99robots-header-footer-code-manager' )
             ) ?>
             <?php $nnr_hfcm_status_array = array(
-                    'active' => __('Active', '99robots-header-footer-code-manager'),
-                    'inactive' => __('Inactive', '99robots-header-footer-code-manager')
+                'active'   => __( 'Active', '99robots-header-footer-code-manager' ),
+                'inactive' => __( 'Inactive', '99robots-header-footer-code-manager' )
             ) ?>
             <tr>
                 <th class="hfcm-th-width"><?php esc_html_e( 'Device Display', '99robots-header-footer-code-manager' ); ?></th>
@@ -374,6 +379,12 @@ wp_enqueue_script( 'hfcm_showboxes' );
                            name="<?php echo $update ? 'update' : 'insert'; ?>"
                            value="<?php echo $update ? esc_html__( 'Update', '99robots-header-footer-code-manager' ) : esc_html__( 'Save', '99robots-header-footer-code-manager' ) ?>"
                            class="button button-primary button-large nnr-btnsave">
+                    <?php if ( $update ) :
+                        $delete_nonce = wp_create_nonce( 'hfcm_delete_snippet' );
+                        ?>
+                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=hfcm-list&action=delete&_wpnonce=' . $delete_nonce . '&snippet=' . $id ) ); ?>"
+                           class="button button-secondary button-large nnr-btndelete"><?php esc_html_e( 'Delete', '99robots-header-footer-code-manager' ); ?></a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
