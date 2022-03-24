@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.18
+ * Version: 1.1.19
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -96,7 +96,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta( $sql );
-            add_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
+            add_site_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
         }
 
 
@@ -159,7 +159,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 }
                 self::hfcm_options_install();
             }
-            update_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
+            update_site_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
         }
 
 
@@ -1189,10 +1189,10 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     }
                     $nnr_hfcm_sanitizes_snippet = [];
                     $nnr_hfcm_keys = array(
-                            "name", "snippet", "snippet_type", "device_type", "location",
-                            "display_on", "lp_count", "s_pages", "ex_pages", "s_posts",
-                            "ex_posts", "s_custom_posts", "s_categories", "s_tags", "status",
-                            "created_by", "last_modified_by", "created", "last_revision_date"
+                        "name", "snippet", "snippet_type", "device_type", "location",
+                        "display_on", "lp_count", "s_pages", "ex_pages", "s_posts",
+                        "ex_posts", "s_custom_posts", "s_categories", "s_tags", "status",
+                        "created_by", "last_modified_by", "created", "last_revision_date"
                     );
                     foreach ( $nnr_hfcm_snippet as $nnr_key => $nnr_item ) {
                         $nnr_key = sanitize_text_field( $nnr_key );
