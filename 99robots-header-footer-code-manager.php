@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.19
+ * Version: 1.1.20
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -96,7 +96,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta( $sql );
-            add_site_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
+            add_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
         }
 
 
@@ -108,7 +108,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             global $wpdb;
 
             $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
-            if ( get_site_option( 'hfcm_db_version' ) != self::$nnr_hfcm_db_version ) {
+            if ( get_option( 'hfcm_db_version' ) != self::$nnr_hfcm_db_version ) {
                 $wpdb->show_errors();
 
                 if ( !empty( $wpdb->dbname ) ) {
@@ -159,7 +159,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 }
                 self::hfcm_options_install();
             }
-            update_site_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
+            update_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
         }
 
 
