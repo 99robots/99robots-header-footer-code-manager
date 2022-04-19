@@ -156,7 +156,7 @@ function hfcm_request_handler() {
 			$lastid = $wpdb->insert_id;
 			hfcm_redirect( admin_url( 'admin.php?page=hfcm-update&message=6&id=' . $lastid ) );
 		}
-	} elseif ( isset( $_POST['get_posts'] ) ) {
+	} elseif ( isset( $_POST['getPosts'] ) ) {
 
 		// JSON return posts for AJAX
 
@@ -197,43 +197,61 @@ function hfcm_request_handler() {
 			'_builtin' => false,
 		);
 
-		$output = 'names'; // names or objects, note names is the default
-		$operator = 'and'; // 'and' or 'or'
+		$offset = 0;
+        if(!empty($_POST['page'])) {
+            $offset = 100 * sanitize_text_field($_POST['page']);
+        }
+        if(!empty($_POST['postType'])) {
+            $postTypes = array(sanitize_text_field($_POST['postType']));
+        } else {
+            $postTypes = array_diff(
+                array_merge(array( 'post' ), get_post_types( $args, 'names', 'and' )), array('page')
+            );
+        }
 
-		$c_posttypes = get_post_types( $args, $output, $operator );
-		$posttypes = array( 'post' );
-		foreach ( $c_posttypes as $cpdata ) {
-			$posttypes[] = $cpdata;
-		}
-		$posts = get_posts( array(
-			'post_type' => $posttypes,
-			'posts_per_page' => -1,
-			'numberposts' => -1,
-			'orderby' => 'title',
-			'order' => 'ASC',
-		) );
+        $argsPost = array(
+            'post_type' => $postTypes,
+            'posts_per_page' => 100,
+            'orderby' => 'title',
+            'order' => 'ASC',
+            'offset' => $offset,
+            'post_status' => ['publish']
+        );
+
+        $searchQuery = "";
+        if(!empty($_POST['s'])) {
+            $argsPost['s'] = sanitize_text_field($_POST['s']);
+        }
+
+        if(!empty($_POST['taxonomy'])) {
+            $taxonomySearch =  sanitize_text_field($_POST['taxonomy']);
+            $taxonomySearch =  explode(':', $taxonomySearch);
+            if(!empty($taxonomySearch)) {
+                $argsPost['tax_query'] = array(
+                    array(
+                        'taxonomy' => $taxonomySearch[0],
+                        'field' => 'slug',
+                        'terms' => $taxonomySearch[1],
+                    )
+                );
+            }
+        }
+
+		$posts = get_posts($argsPost);
 
 		$json_output = array(
 			'selected' => array(),
-			'posts' => array(),
+			'posts' => '',
 			'excluded' => array(),
 		);
 
+        $selectOptions = "";
 		foreach ( $posts as $pdata ) {
-
-			if ( in_array( $pdata->ID, $ex_posts ) ) {
-				$json_output['excluded'][] = $pdata->ID;
-			}
-
-			if ( in_array( $pdata->ID, $s_posts ) ) {
-				$json_output['selected'][] = $pdata->ID;
-			}
-
-			$json_output['posts'][] = array(
-				'text'  => sanitize_text_field( $pdata->post_title ),
-				'value' => $pdata->ID,
-			);
+		    $post_title = sanitize_text_field( $pdata->post_title );
+            $selectOptions .= '<option value="'.$pdata->ID.'">'.sanitize_text_field( $pdata->post_title ).'</option>';
 		}
+        $json_output['posts'] = $selectOptions;
+		$json_output['count'] = count($posts);
 
 		echo wp_json_encode( $json_output );
 		wp_die();
