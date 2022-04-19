@@ -189,9 +189,8 @@ wp_enqueue_script( 'hfcm_showboxes' );
                 </td>
             </tr>
             <?php
-            $args                = array( 'hide_empty' => 0 );
-            $nnr_hfcm_categories = get_categories( $args );
-            $nnr_hfcm_tags       = get_tags( $args );
+            $nnr_hfcm_categories = NNR_HFCM::hfcm_get_categories();
+            $nnr_hfcm_tags       = NNR_HFCM::hfcm_get_tags();
 
             $nnr_hfcm_categories_style   = 's_categories' === $display_on ? '' : 'display:none;';
             $nnr_hfcm_tags_style         = 's_tags' === $display_on ? '' : 'display:none;';
@@ -218,11 +217,13 @@ wp_enqueue_script( 'hfcm_showboxes' );
                 <td>
                     <select name="data[s_categories][]" multiple>
                         <?php
-                        foreach ( $nnr_hfcm_categories as $cdata ) {
-                            if ( in_array( $cdata->term_id, $s_categories ) ) {
-                                echo "<option value='" . esc_attr( $cdata->term_id ) . "' selected>" . esc_attr( $cdata->name ) . "</option>";
-                            } else {
-                                echo "<option value='" . esc_attr( $cdata->term_id ) . "'>" . esc_attr( $cdata->name ) . "</option>";
+                        foreach ( $nnr_hfcm_categories as $nnr_key_cat => $nnr_item_cat ) {
+                            foreach($nnr_item_cat['terms'] as $nnr_item_cat_key => $nnr_item_cat_term) {
+                                if ( in_array( $nnr_item_cat_term->term_id, $s_categories ) ) {
+                                    echo "<option value='" . esc_attr( $nnr_item_cat_term->term_id ) . "' selected>" . esc_attr( $nnr_item_cat['name'] ) . " - " . esc_attr( $nnr_item_cat_term->name ) . "</option>";
+                                } else {
+                                    echo "<option value='" . esc_attr( $nnr_item_cat_term->term_id ) . "'>" . esc_attr( $nnr_item_cat['name'] ) . " - " . esc_attr( $nnr_item_cat_term->name ) . "</option>";
+                                }
                             }
                         }
                         ?>
@@ -234,11 +235,14 @@ wp_enqueue_script( 'hfcm_showboxes' );
                 <td>
                     <select name="data[s_tags][]" multiple>
                         <?php
-                        foreach ( $nnr_hfcm_tags as $tdata ) {
-                            if ( in_array( $tdata->term_id, $s_tags ) ) {
-                                echo "<option value='" . esc_attr( $tdata->term_id ) . "' selected>" . esc_attr( $tdata->name ) . "</option>";
-                            } else {
-                                echo "<option value='" . esc_attr( $tdata->term_id ) . "'>" . esc_attr( $tdata->name ) . "</option>";
+
+                        foreach ($nnr_hfcm_tags as $nnr_key_cat => $nnr_item_tag) {
+                            foreach ( $nnr_item_tag['terms'] as $nnr_item_tag_key => $nnr_item_tag_term ) {
+                                if ( in_array( $nnr_item_tag_term->term_id, $s_tags ) ) {
+                                    echo "<option value='" . esc_attr( $nnr_item_tag_term->term_id ) . "' selected>" . esc_attr( $nnr_item_tag['name'] ) . " - " . esc_attr( $nnr_item_tag_term->name ) . "</option>";
+                                } else {
+                                    echo "<option value='" . esc_attr( $nnr_item_tag_term->term_id ) . "'>" . esc_attr( $nnr_item_tag['name'] ) . " - " . esc_attr( $nnr_item_tag_term->name ) . "</option>";
+                                }
                             }
                         }
                         ?>
