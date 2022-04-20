@@ -92,6 +92,12 @@ input.round-toggle-round-flat:checked + label:hover {
 .nnr-wraptext {
 	width: -moz-available;
 }
+.nnr-hfcm-codeeditor-box .CodeMirror.CodeMirror-wrap {
+	height: 500px !important;
+}
+.nnr-mt-20 {
+	margin-top: 20px;
+}
 @media (max-width: 782px) {
 	.hfcm-form-width select {
 		min-width: auto;

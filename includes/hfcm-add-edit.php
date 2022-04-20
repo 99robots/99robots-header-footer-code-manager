@@ -372,12 +372,12 @@ wp_enqueue_script( 'hfcm_showboxes' );
                 </tr>
             <?php endif; ?>
         </table>
-        <div class="wrap">
+        <div class="nnr-mt-20">
             <h1><?php esc_html_e( 'Snippet', '99robots-header-footer-code-manager' ); ?>
                 / <?php esc_html_e( 'Code', '99robots-header-footer-code-manager' ) ?></h1>
-            <div class="wrap">
+            <div class="nnr-mt-20 nnr-hfcm-codeeditor-box">
                     <textarea name="data[snippet]" aria-describedby="nnr-newcontent-description" id="nnr_newcontent"
-                              rows="10"><?php echo html_entity_decode( $snippet ); ?></textarea>
+                              rows="20"><?php echo html_entity_decode( $snippet ); ?></textarea>
                 <div class="wp-core-ui">
                     <input type="submit"
                            name="<?php echo $update ? 'update' : 'insert'; ?>"
