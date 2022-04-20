@@ -41,7 +41,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
     class NNR_HFCM
     {
-        public static $nnr_hfcm_db_version = "1.4";
+        public static $nnr_hfcm_db_version = "1.5";
         public static $nnr_hfcm_table = "hfcm_scripts";
 
         /*
@@ -79,9 +79,9 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     `display_on` enum('All','s_pages', 's_posts','s_categories','s_custom_posts','s_tags', 's_is_home', 's_is_search', 's_is_archive','latest_posts','manual') NOT NULL DEFAULT 'All',
                     `lp_count` int(10) DEFAULT NULL,
                     `s_pages` varchar(300) DEFAULT NULL,
-                    `ex_pages` varchar(300) DEFAULT NULL,
+                    `ex_pages` MEDIUMTEXT DEFAULT NULL,
                     `s_posts` varchar(1000) DEFAULT NULL,
-                    `ex_posts` varchar(300) DEFAULT NULL,
+                    `ex_posts` MEDIUMTEXT DEFAULT NULL,
                     `s_custom_posts` varchar(300) DEFAULT NULL,
                     `s_categories` varchar(300) DEFAULT NULL,
                     `s_tags` varchar(300) DEFAULT NULL,
@@ -153,6 +153,9 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     $wpdb->query( $nnr_alter_sql );
 
                     $nnr_alter_sql = "ALTER TABLE `$table_name` CHANGE `display_on` `display_on` ENUM('All','s_pages','s_posts','s_categories','s_custom_posts','s_tags','s_is_home','s_is_archive','s_is_search','latest_posts','manual') DEFAULT 'All' NOT NULL";
+                    $wpdb->query( $nnr_alter_sql );
+
+                    $nnr_alter_sql = "ALTER TABLE `$table_name` CHANGE `ex_pages` `ex_pages` MEDIUMTEXT NULL, CHANGE `ex_posts` `ex_posts` MEDIUMTEXT NULL";
                     $wpdb->query( $nnr_alter_sql );
                 }
                 self::hfcm_options_install();
