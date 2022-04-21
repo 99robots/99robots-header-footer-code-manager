@@ -318,6 +318,7 @@ class Hfcm_Snippets_List extends WP_List_Table
         }
         $actions = array(
             'edit'   => sprintf( '<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . esc_html__( 'Edit', '99robots-header-footer-code-manager' ) . '</a>', esc_attr( 'hfcm-update' ), 'edit', absint( $item['script_id'] ), $edit_nonce ),
+            'copy'   => sprintf( '<a href="javascript:void(0);" data-shortcode=\'[hfcm id="%s"]\'  class="hfcm_copy_shortcode" id="hfcm_copy_shortcode_%s">' . esc_html__( 'Copy Shortcode', '99robots-header-footer-code-manager' ) . '</a>', absint( $item['script_id'] ), absint( $item['script_id'] ) ),
             'delete' => sprintf( '<a href="?page=%s&action=%s&snippet=%s&_wpnonce=%s">' . esc_html__( 'Delete', '99robots-header-footer-code-manager' ) . '</a>', $page, 'delete', absint( $item['script_id'] ), $delete_nonce ),
         );
 
