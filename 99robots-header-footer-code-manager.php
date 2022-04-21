@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.20
+ * Version: 1.1.21
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -41,9 +41,8 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
     class NNR_HFCM
     {
-        public static $nnr_hfcm_db_version = "1.4";
+        public static $nnr_hfcm_db_version = "1.5";
         public static $nnr_hfcm_table = "hfcm_scripts";
-
 
         /*
          * hfcm init function
@@ -79,10 +78,10 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     `location` varchar(100) NOT NULL,
                     `display_on` enum('All','s_pages', 's_posts','s_categories','s_custom_posts','s_tags', 's_is_home', 's_is_search', 's_is_archive','latest_posts','manual') NOT NULL DEFAULT 'All',
                     `lp_count` int(10) DEFAULT NULL,
-                    `s_pages` varchar(300) DEFAULT NULL,
-                    `ex_pages` varchar(300) DEFAULT NULL,
-                    `s_posts` varchar(1000) DEFAULT NULL,
-                    `ex_posts` varchar(300) DEFAULT NULL,
+                    `s_pages` MEDIUMTEXT DEFAULT NULL,
+                    `ex_pages` MEDIUMTEXT DEFAULT NULL,
+                    `s_posts` MEDIUMTEXT DEFAULT NULL,
+                    `ex_posts` MEDIUMTEXT DEFAULT NULL,
                     `s_custom_posts` varchar(300) DEFAULT NULL,
                     `s_categories` varchar(300) DEFAULT NULL,
                     `s_tags` varchar(300) DEFAULT NULL,
@@ -98,7 +97,6 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             dbDelta( $sql );
             add_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
         }
-
 
         /*
          * function to check if plugin is being updated
@@ -156,12 +154,14 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
                     $nnr_alter_sql = "ALTER TABLE `$table_name` CHANGE `display_on` `display_on` ENUM('All','s_pages','s_posts','s_categories','s_custom_posts','s_tags','s_is_home','s_is_archive','s_is_search','latest_posts','manual') DEFAULT 'All' NOT NULL";
                     $wpdb->query( $nnr_alter_sql );
+
+                    $nnr_alter_sql = "ALTER TABLE `$table_name` CHANGE `s_pages` `s_pages` MEDIUMTEXT NULL, CHANGE `ex_pages` `ex_pages` MEDIUMTEXT NULL, CHANGE `s_posts` `s_posts` MEDIUMTEXT NULL, CHANGE `ex_posts` `ex_posts` MEDIUMTEXT NULL";
+                    $wpdb->query( $nnr_alter_sql );
                 }
                 self::hfcm_options_install();
             }
             update_option( 'hfcm_db_version', self::$nnr_hfcm_db_version );
         }
-
 
         /*
          * Enqueue style-file, if it exists.
@@ -206,7 +206,6 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
         {
             load_plugin_textdomain( '99robots-header-footer-code-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
         }
-
 
         /*
          * function to create menu page, and submenu pages.
@@ -301,7 +300,6 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             add_action( 'admin_notices', array( 'NNR_HFCM', 'hfcm_static_notices' ) );
         }
 
-
         /*
          * function to create the Admin Notice
          */
@@ -339,7 +337,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 'hfcm_page_hfcm-create',
                 'admin_page_hfcm-update',
             );
-            $screen = get_current_screen()->id;
+            $screen                = get_current_screen()->id;
 
             if ( in_array( $screen, $allowed_pages_notices ) ) {
                 ?>
@@ -395,7 +393,6 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 }
             }
         }
-
 
         /*
          * Function to json_decode array and check if empty
@@ -1188,7 +1185,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                         continue;
                     }
                     $nnr_hfcm_sanitizes_snippet = [];
-                    $nnr_hfcm_keys = array(
+                    $nnr_hfcm_keys              = array(
                         "name", "snippet", "snippet_type", "device_type", "location",
                         "display_on", "lp_count", "s_pages", "ex_pages", "s_posts",
                         "ex_posts", "s_custom_posts", "s_categories", "s_tags", "status",
@@ -1196,7 +1193,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     );
                     foreach ( $nnr_hfcm_snippet as $nnr_key => $nnr_item ) {
                         $nnr_key = sanitize_text_field( $nnr_key );
-                        if( in_array( $nnr_key, $nnr_hfcm_keys ) ) {
+                        if ( in_array( $nnr_key, $nnr_hfcm_keys ) ) {
                             if ( $nnr_key == "lp_count" ) {
                                 $nnr_item = absint( $nnr_item );
                             } elseif ( $nnr_key != "snippet" ) {
@@ -1246,6 +1243,61 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             }
 
             return false;
+        }
+
+        public static function hfcm_get_categories()
+        {
+            $args                = array(
+                'public'       => true,
+                'hierarchical' => true
+            );
+            $output              = 'objects'; // or objects
+            $operator            = 'and'; // 'and' or 'or'
+            $taxonomies          = get_taxonomies( $args, $output, $operator );
+
+            $nnr_hfcm_categories = [];
+
+            foreach ( $taxonomies as $taxonomy ) {
+                $nnr_hfcm_taxonomy_categories = get_categories( [
+                    'taxonomy'   => $taxonomy->name,
+                    'hide_empty' => 0
+                ] );
+                $nnr_hfcm_taxonomy_categories = [
+                    'name'  => $taxonomy->label,
+                    'terms' => $nnr_hfcm_taxonomy_categories
+                ];
+                $nnr_hfcm_categories[]          = $nnr_hfcm_taxonomy_categories;
+            }
+
+            return $nnr_hfcm_categories;
+        }
+
+        public static function hfcm_get_tags()
+        {
+            $args                = array( 'hide_empty' => 0 );
+            $args                = array(
+                'public'       => true,
+                'hierarchical' => false
+            );
+            $output              = 'objects'; // or objects
+            $operator            = 'and'; // 'and' or 'or'
+            $taxonomies          = get_taxonomies( $args, $output, $operator );
+
+            $nnr_hfcm_tags = [];
+
+            foreach ( $taxonomies as $taxonomy ) {
+                $nnr_hfcm_taxonomy_tags = get_tags( [
+                    'taxonomy'   => $taxonomy->name,
+                    'hide_empty' => 0
+                ] );
+                $nnr_hfcm_taxonomy_tags = [
+                    'name'  => $taxonomy->label,
+                    'terms' => $nnr_hfcm_taxonomy_tags
+                ];
+                $nnr_hfcm_tags[]          = $nnr_hfcm_taxonomy_tags;
+            }
+
+            return $nnr_hfcm_tags;
         }
     }
 
