@@ -352,7 +352,16 @@ wp_enqueue_script( 'hfcm_showboxes' );
                 <tr>
                     <th class="hfcm-th-width"><?php esc_html_e( 'Shortcode', '99robots-header-footer-code-manager' ); ?></th>
                     <td>
-                        <p>[hfcm id="<?php echo esc_html( $id ); ?>"]</p>
+                        <p>
+                            [hfcm id="<?php echo esc_html( $id ); ?>"]
+                            <?php if ( $update ) :
+                                ?>
+                                <a data-shortcode='[hfcm id="<?php echo esc_html( $id ); ?>"]' href="javascript:void(0);" class="nnr-btn-click-to-copy nnr-btn-copy-inline" id="hfcm_copy_shortcode">
+                                    <?php esc_html_e( 'Copy', '99robots-header-footer-code-manager' ); ?>
+                                </a>
+                            <?php endif; ?>
+                        </p>
+
                     </td>
                 </tr>
                 <tr>
@@ -385,11 +394,8 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <?php if ( $update ) :
                         $delete_nonce = wp_create_nonce( 'hfcm_delete_snippet' );
                         ?>
-                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=hfcm-list&action=delete&_wpnonce=' . $delete_nonce . '&snippet=' . $id ) ); ?>"
+                        <a onclick="return nnr_confirm_delete_snippet();" href="<?php echo esc_url( admin_url( 'admin.php?page=hfcm-list&action=delete&_wpnonce=' . $delete_nonce . '&snippet=' . $id ) ); ?>"
                            class="button button-secondary button-large nnr-btndelete"><?php esc_html_e( 'Delete', '99robots-header-footer-code-manager' ); ?></a>
-                        <a data-shortcode='[hfcm id="<?php echo esc_html( $id ); ?>"]' href="javascript:void(0);" class="button button-secondary button-large nnr-btn-click-to-copy" id="hfcm_copy_shortcode">
-                            <?php esc_html_e( 'Copy Shortcode', '99robots-header-footer-code-manager' ); ?>
-                        </a>
                     <?php endif; ?>
                 </div>
             </div>

@@ -50,7 +50,7 @@ function hfcm_remember_loc(new_html) {
     jQuery('#data_location option[value="' + tmp + '"]').prop('selected', true);
 }
 
-function hfmcCopyToClipboard(elem) {
+function hfcmCopyToClipboard(elem) {
     // create hidden text element, if it doesn't already exist
     var targetId = "_hiddenCopyText_";
     var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
@@ -67,6 +67,11 @@ function hfmcCopyToClipboard(elem) {
         document.body.appendChild(target);
     }
     target.textContent = elem.getAttribute('data-shortcode');
+    elem.textContent = "Copied!";
+
+    setTimeout(function () {
+        elem.textContent = "Copy";
+    }, 2000);
     // select the content
     var currentFocus = document.activeElement;
     target.focus();
@@ -93,6 +98,10 @@ function hfmcCopyToClipboard(elem) {
     }
     target.remove();
     return succeed;
+}
+
+function nnr_confirm_delete_snippet() {
+    return confirm("Are you sure you want to delete this snippet?");
 }
 
 // init selectize.js
@@ -148,6 +157,6 @@ jQuery(function ($) {
     }
 
     document.getElementById("hfcm_copy_shortcode").addEventListener("click", function() {
-        hfmcCopyToClipboard(document.getElementById("hfcm_copy_shortcode"));
+        hfcmCopyToClipboard(document.getElementById("hfcm_copy_shortcode"));
     });
 });

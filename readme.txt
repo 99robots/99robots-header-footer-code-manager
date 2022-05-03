@@ -114,8 +114,10 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
-= 1.1.22 = 2022-04-29
+= 1.1.22 = 2022-05-03
 * FIXED: PHP warnings when adding/editing snippets
+* UPDATED: Add confirmation before deleting snippets
+* UPDATED: Copy shortcode button
 
 = 1.1.21 = 2022-04-21
 * ADDED: Copy shortcode to clipboard buttons on edit snippet page and on snippet list page
