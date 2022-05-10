@@ -17,8 +17,17 @@
 #nnr_newcontent {
 	width: 75%;
 }
+.nnr-btndelete {
+	color: #cc1818 !important;
+	box-shadow: inset 0 0 0 1px #cc1818 !important;
+	border: #cc1818 !important;
+}
 .nnr-btnsave, .nnr-btndelete, .nnr-btn-click-to-copy {
 	margin-top: 10px !important;
+}
+.nnr-btn-copy-inline {
+	text-decoration: underline !important;
+	margin-left: 10px;
 }
 .padding20 {
 	padding: 20px !important;

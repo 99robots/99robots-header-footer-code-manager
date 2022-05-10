@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.21
+ * Version: 1.1.22
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -343,8 +343,11 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 ?>
                 <div id="hfcm-message" class="notice notice-success">
                     <p>
-                        🔥 LIFETIME DEAL ALERT: The PRO version of this plugin is released and and available for a limited time as a one-time, exclusive lifetime deal.
-                        Want it? <b><i><a href="http://www.rockethub.com/deal/header-footer-code-manager-pro-wordpress-plugin?utm_source=freehfcm&utm_medium=banner&utm_campaign=rhltd" target="_blank">Click here</a> to get HFCM Pro for the lowest price ever</i></b>
+                        🔥 LIFETIME DEAL ALERT: The PRO version of this plugin is released and and available for a
+                        limited time as a one-time, exclusive lifetime deal.
+                        Want it? <b><i><a
+                                        href="http://www.rockethub.com/deal/header-footer-code-manager-pro-wordpress-plugin?utm_source=freehfcm&utm_medium=banner&utm_campaign=rhltd"
+                                        target="_blank">Click here</a> to get HFCM Pro for the lowest price ever</i></b>
                     </p>
                 </div>
                 <?php
@@ -836,27 +839,31 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 // Global vars
                 global $wpdb;
                 $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
-
                 // Get all selected posts
                 if ( -1 === $id ) {
                     $s_posts  = array();
                     $ex_posts = array();
                 } else {
-
                     // Select value to update
-                    $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_posts FROM $table_name WHERE script_id=%s", $id ) );
-                    foreach ( $script as $s ) {
-                        $s_posts = json_decode( $s->s_posts );
-                        if ( !is_array( $s_posts ) ) {
-                            $s_posts = array();
+                    $script  = $wpdb->get_results( $wpdb->prepare( "SELECT s_posts FROM $table_name WHERE script_id=%s", $id ) );
+                    $s_posts = array();
+                    if ( !empty( $script ) ) {
+                        foreach ( $script as $s ) {
+                            $s_posts = json_decode( $s->s_posts );
+                            if ( !is_array( $s_posts ) ) {
+                                $s_posts = array();
+                            }
                         }
                     }
 
+                    $ex_posts  = array();
                     $script_ex = $wpdb->get_results( $wpdb->prepare( "SELECT ex_posts FROM $table_name WHERE script_id=%s", $id ) );
-                    foreach ( $script_ex as $s ) {
-                        $ex_posts = json_decode( $s->ex_posts );
-                        if ( !is_array( $ex_posts ) ) {
-                            $ex_posts = array();
+                    if ( !empty( $script_ex ) ) {
+                        foreach ( $script_ex as $s ) {
+                            $ex_posts = json_decode( $s->ex_posts );
+                            if ( !is_array( $ex_posts ) ) {
+                                $ex_posts = array();
+                            }
                         }
                     }
                 }
@@ -891,24 +898,26 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     'excluded' => array(),
                 );
 
-                foreach ( $posts as $pdata ) {
-                    $nnr_hfcm_post_title = trim( $pdata->post_title );
+                if ( !empty( $posts ) ) {
+                    foreach ( $posts as $pdata ) {
+                        $nnr_hfcm_post_title = trim( $pdata->post_title );
 
-                    if ( empty( $nnr_hfcm_post_title ) ) {
-                        $nnr_hfcm_post_title = "(no title)";
-                    }
-                    if ( in_array( $pdata->ID, $ex_posts ) ) {
-                        $json_output['excluded'][] = $pdata->ID;
-                    }
+                        if ( empty( $nnr_hfcm_post_title ) ) {
+                            $nnr_hfcm_post_title = "(no title)";
+                        }
+                        if ( !empty( $ex_posts ) && in_array( $pdata->ID, $ex_posts ) ) {
+                            $json_output['excluded'][] = $pdata->ID;
+                        }
 
-                    if ( in_array( $pdata->ID, $s_posts ) ) {
-                        $json_output['selected'][] = $pdata->ID;
-                    }
+                        if ( !empty( $s_posts ) && in_array( $pdata->ID, $s_posts ) ) {
+                            $json_output['selected'][] = $pdata->ID;
+                        }
 
-                    $json_output['posts'][] = array(
-                        'text'  => sanitize_text_field( $nnr_hfcm_post_title ),
-                        'value' => $pdata->ID,
-                    );
+                        $json_output['posts'][] = array(
+                            'text'  => sanitize_text_field( $nnr_hfcm_post_title ),
+                            'value' => $pdata->ID,
+                        );
+                    }
                 }
 
                 echo wp_json_encode( $json_output );
@@ -1176,11 +1185,16 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 $nnr_non_script_snippets = 1;
                 foreach ( $nnr_hfcm_snippets->snippets as $nnr_hfcm_key => $nnr_hfcm_snippet ) {
                     $nnr_hfcm_snippet = (array) $nnr_hfcm_snippet;
-                    if ( !empty( $nnr_hfcm_snippet['snippet_type'] ) && !in_array( $nnr_hfcm_snippet['snippet_type'], array( "html", "css", "js" ) ) ) {
+                    if ( !empty( $nnr_hfcm_snippet['snippet_type'] ) && !in_array( $nnr_hfcm_snippet['snippet_type'], array( "html",
+                                                                                                                             "css",
+                                                                                                                             "js" ) ) ) {
                         $nnr_non_script_snippets = 2;
                         continue;
                     }
-                    if ( !empty( $nnr_hfcm_snippet['location'] ) && !in_array( $nnr_hfcm_snippet['location'], array( 'header', 'before_content', 'after_content', 'footer' ) ) ) {
+                    if ( !empty( $nnr_hfcm_snippet['location'] ) && !in_array( $nnr_hfcm_snippet['location'], array( 'header',
+                                                                                                                     'before_content',
+                                                                                                                     'after_content',
+                                                                                                                     'footer' ) ) ) {
                         $nnr_non_script_snippets = 2;
                         continue;
                     }
@@ -1247,13 +1261,13 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
         public static function hfcm_get_categories()
         {
-            $args                = array(
+            $args       = array(
                 'public'       => true,
                 'hierarchical' => true
             );
-            $output              = 'objects'; // or objects
-            $operator            = 'and'; // 'and' or 'or'
-            $taxonomies          = get_taxonomies( $args, $output, $operator );
+            $output     = 'objects'; // or objects
+            $operator   = 'and'; // 'and' or 'or'
+            $taxonomies = get_taxonomies( $args, $output, $operator );
 
             $nnr_hfcm_categories = [];
 
@@ -1266,7 +1280,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     'name'  => $taxonomy->label,
                     'terms' => $nnr_hfcm_taxonomy_categories
                 ];
-                $nnr_hfcm_categories[]          = $nnr_hfcm_taxonomy_categories;
+                $nnr_hfcm_categories[]        = $nnr_hfcm_taxonomy_categories;
             }
 
             return $nnr_hfcm_categories;
@@ -1274,14 +1288,14 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
         public static function hfcm_get_tags()
         {
-            $args                = array( 'hide_empty' => 0 );
-            $args                = array(
+            $args       = array( 'hide_empty' => 0 );
+            $args       = array(
                 'public'       => true,
                 'hierarchical' => false
             );
-            $output              = 'objects'; // or objects
-            $operator            = 'and'; // 'and' or 'or'
-            $taxonomies          = get_taxonomies( $args, $output, $operator );
+            $output     = 'objects'; // or objects
+            $operator   = 'and'; // 'and' or 'or'
+            $taxonomies = get_taxonomies( $args, $output, $operator );
 
             $nnr_hfcm_tags = [];
 
@@ -1294,7 +1308,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                     'name'  => $taxonomy->label,
                     'terms' => $nnr_hfcm_taxonomy_tags
                 ];
-                $nnr_hfcm_tags[]          = $nnr_hfcm_taxonomy_tags;
+                $nnr_hfcm_tags[]        = $nnr_hfcm_taxonomy_tags;
             }
 
             return $nnr_hfcm_tags;

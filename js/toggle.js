@@ -23,7 +23,7 @@ jQuery('.snippets .delete > a').on('click', function () {
     return confirm('Snippet name: ' + name + '\n\nAre you sure you want to delete this snippet?');
 });
 
-function hfmcCopyToClipboard(elem) {
+function hfcmCopyToClipboard(elem) {
     // create hidden text element, if it doesn't already exist
     var targetId = "_hiddenCopyText_";
     var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
@@ -40,6 +40,11 @@ function hfmcCopyToClipboard(elem) {
         document.body.appendChild(target);
     }
     target.textContent = elem.getAttribute('data-shortcode');
+    elem.textContent = "Copied!";
+
+    setTimeout(function () {
+        elem.textContent = "Copy Shortcode";
+    }, 2000);
     // select the content
     var currentFocus = document.activeElement;
     target.focus();
@@ -73,7 +78,7 @@ jQuery(function ($) {
 
     for (var i = 0; i < elemsCopyBtn.length; i++) {
         elemsCopyBtn[i].addEventListener("click", function () {
-            hfmcCopyToClipboard(document.getElementById(this.id));
+            hfcmCopyToClipboard(document.getElementById(this.id));
         });
     }
 });
