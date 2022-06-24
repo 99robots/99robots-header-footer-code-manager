@@ -50,7 +50,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
     endif;
 
     if ( $update ) :
-        $hfcm_form_action = admin_url( 'admin.php?page=hfcm-request-handler&id=' . $id );
+        $hfcm_form_action = admin_url( 'admin.php?page=hfcm-request-handler&id=' . absint($id) );
     else :
         $hfcm_form_action = admin_url( 'admin.php?page=hfcm-request-handler' );
     endif;
@@ -394,7 +394,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <?php if ( $update ) :
                         $delete_nonce = wp_create_nonce( 'hfcm_delete_snippet' );
                         ?>
-                        <a onclick="return nnr_confirm_delete_snippet();" href="<?php echo esc_url( admin_url( 'admin.php?page=hfcm-list&action=delete&_wpnonce=' . $delete_nonce . '&snippet=' . $id ) ); ?>"
+                        <a onclick="return nnr_confirm_delete_snippet();" href="<?php echo esc_url( admin_url( 'admin.php?page=hfcm-list&action=delete&_wpnonce=' . $delete_nonce . '&snippet=' . absint($id) ) ); ?>"
                            class="button button-secondary button-large nnr-btndelete"><?php esc_html_e( 'Delete', '99robots-header-footer-code-manager' ); ?></a>
                     <?php endif; ?>
                 </div>
