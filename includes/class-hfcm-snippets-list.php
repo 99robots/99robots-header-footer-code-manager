@@ -459,19 +459,19 @@ class Hfcm_Snippets_List extends WP_List_Table
         }
 
         //All link
-        $class        = 'all' === $current ? ' class="current"' : '';
+        $class        = 'all' === $current ? 'current' : '';
         $all_url      = remove_query_arg( 'customvar' );
-        $views['all'] = "<a href='{$all_url }' {$class} >" . esc_html__( 'All', '99robots-header-footer-code-manager' ) . ' (' . $this->record_count() . ')</a>';
+        $views['all'] = '<a href="'. esc_html($all_url).'" class="'. esc_html($class).'">' . esc_html__( 'All', '99robots-header-footer-code-manager' ) . ' (' .esc_html__($this->record_count()) . ')</a>';
 
         //Foo link
         $foo_url         = add_query_arg( 'customvar', 'active' );
-        $class           = ('active' === $current ? ' class="current"' : '');
-        $views['active'] = "<a href='{$foo_url}' {$class} >" . esc_html__( 'Active', '99robots-header-footer-code-manager' ) . ' (' . $this->record_count( 'active' ) . ')</a>';
+        $class           = ('active' === $current ? 'current' : '');
+        $views['active'] = '<a href="'. esc_html($foo_url).'" class="'. esc_html($class).'">' . esc_html__( 'Active', '99robots-header-footer-code-manager' ) . ' (' . esc_html__($this->record_count( 'active' )) . ')</a>';
 
         //Bar link
         $bar_url           = add_query_arg( 'customvar', 'inactive' );
-        $class             = ('inactive' === $current ? ' class="current"' : '');
-        $views['inactive'] = "<a href='{$bar_url}' {$class} >" . esc_html__( 'Inactive', '99robots-header-footer-code-manager' ) . ' (' . $this->record_count( 'inactive' ) . ')</a>';
+        $class             = ('inactive' === $current ? 'current' : '');
+        $views['inactive'] = '<a href="'. esc_html($bar_url).'" class="'. esc_html($class).'">' . esc_html__( 'Inactive', '99robots-header-footer-code-manager' ) . ' (' . esc_html__($this->record_count( 'inactive' )) . ')</a>';
 
         return $views;
     }
@@ -570,7 +570,7 @@ class Hfcm_Snippets_List extends WP_List_Table
         $input_id = $input_id . '-search-input';
         ?>
         <p class="search-box">
-            <label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo $text; ?>:</label>
+            <label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html($text); ?>:</label>
             <input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s"
                    value="<?php _admin_search_query(); ?>"/>
             <?php submit_button( $text, '', '', false, array( 'id' => 'search-submit' ) ); ?>

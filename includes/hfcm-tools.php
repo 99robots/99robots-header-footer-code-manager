@@ -56,9 +56,9 @@ wp_enqueue_script( 'hfcm_showboxes' );
                                                 <li>
                                                     <label>
                                                         <input type="checkbox"
-                                                               id="keys-snippet_<?php echo $nnr_hfcm_snippet->script_id; ?>"
+                                                               id="keys-snippet_<?php echo absint($nnr_hfcm_snippet->script_id); ?>"
                                                                name="nnr_hfcm_snippets[]"
-                                                               value="snippet_<?php echo $nnr_hfcm_snippet->script_id; ?>"> <?php echo $nnr_hfcm_snippet->name; ?>
+                                                               value="snippet_<?php echo absint($nnr_hfcm_snippet->script_id); ?>"> <?php echo esc_html($nnr_hfcm_snippet->name); ?>
                                                     </label>
                                                 </li>
                                                 <?php
