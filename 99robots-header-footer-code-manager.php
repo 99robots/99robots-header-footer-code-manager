@@ -514,7 +514,7 @@ if (!class_exists('NNR_HFCM') ) :
                         }
                         break;
                     case 's_is_home':
-                        if (is_home() ) {
+                        if (is_home() || is_front_page() ) {
                             $out = self::hfcm_render_snippet($scriptdata);
                         }
                         break;
