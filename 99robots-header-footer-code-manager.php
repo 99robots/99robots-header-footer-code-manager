@@ -72,8 +72,7 @@ if (!class_exists('NNR_HFCM') ) :
 
             $table_name      = $wpdb->prefix . self::$nnr_hfcm_table;
             $charset_collate = $wpdb->get_charset_collate();
-            $sql             = $wpdb->prepare(
-                "CREATE TABLE `{$table_name}` (
+            $sql             = "CREATE TABLE `{$table_name}` (
                     `script_id` int(10) NOT NULL AUTO_INCREMENT,
                     `name` varchar(100) DEFAULT NULL,
                     `snippet` LONGTEXT,
@@ -95,8 +94,7 @@ if (!class_exists('NNR_HFCM') ) :
                     `created` datetime DEFAULT NULL,
                     `last_revision_date` datetime DEFAULT NULL,
                     PRIMARY KEY (`script_id`)
-                )	%s", $charset_collate
-            );
+                )	$charset_collate";
 
             include_once ABSPATH . 'wp-admin/includes/upgrade.php';
             dbDelta($sql);
