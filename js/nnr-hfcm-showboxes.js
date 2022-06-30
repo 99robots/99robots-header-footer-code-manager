@@ -1,6 +1,7 @@
 // function to show dependent dropdowns for "Site Display" field.
 
-function hfcm_showotherboxes(type) {
+function hfcm_showotherboxes(type)
+{
     var header = '<option value="header">' + hfcm_localize.header + '</option>',
         before_content = '<option value="before_content">' + hfcm_localize.before_content + '</option>',
         after_content = '<option value="after_content">' + hfcm_localize.after_content + '</option>',
@@ -44,13 +45,15 @@ function hfcm_showotherboxes(type) {
     }
 }
 
-function hfcm_remember_loc(new_html) {
+function hfcm_remember_loc(new_html)
+{
     var tmp = jQuery('#data_location option:selected').val();
     jQuery('#data_location').html(new_html);
     jQuery('#data_location option[value="' + tmp + '"]').prop('selected', true);
 }
 
-function hfcmCopyToClipboard(elem) {
+function hfcmCopyToClipboard(elem)
+{
     // create hidden text element, if it doesn't already exist
     var targetId = "_hiddenCopyText_";
     var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
@@ -69,9 +72,11 @@ function hfcmCopyToClipboard(elem) {
     target.textContent = elem.getAttribute('data-shortcode');
     elem.textContent = "Copied!";
 
-    setTimeout(function () {
-        elem.textContent = "Copy";
-    }, 2000);
+    setTimeout(
+        function () {
+            elem.textContent = "Copy";
+        }, 2000
+    );
     // select the content
     var currentFocus = document.activeElement;
     target.focus();
@@ -100,63 +105,70 @@ function hfcmCopyToClipboard(elem) {
     return succeed;
 }
 
-function nnr_confirm_delete_snippet() {
+function nnr_confirm_delete_snippet()
+{
     return confirm("Are you sure you want to delete this snippet?");
 }
 
 // init selectize.js
 jQuery('#loader').show();
-jQuery(function ($) {
+jQuery(
+    function ($) {
 
-    var nnr_hfcm_data = {
-        action: 'hfcm-request',
-        id: hfcm_localize.id,
-        get_posts: true,
-        security: hfcm_localize.security
-    };
+        var nnr_hfcm_data = {
+            action: 'hfcm-request',
+            id: hfcm_localize.id,
+            get_posts: true,
+            security: hfcm_localize.security
+        };
 
-    $.post(
-        ajaxurl,
-        nnr_hfcm_data,
-        function (new_data) {
-            var all_posts = $.merge([{text: "", value:""}], new_data.posts );
-            var options = {
-                plugins: ['remove_button'],
-                options: all_posts,
-                items: new_data.selected
-            };
-            $('#loader').hide();
-            $('#s_posts select').selectize(options);
-            var options = {
-                plugins: ['remove_button'],
-                options: new_data.posts,
-                items: new_data.excluded
-            };
-            $('#loader').hide();
-            $('#ex_posts select').selectize(options);
-        },
-        'json', // ajax result format
-    );
-    // selectize all <select multiple> elements
-    $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize({
-        plugins: ['remove_button']
-    });
-
-    if ($('#nnr_newcontent').length) {
-        var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
-        editorSettings.codemirror = _.extend(
-            {},
-            editorSettings.codemirror,
+        $.post(
+            ajaxurl,
+            nnr_hfcm_data,
+            function (new_data) {
+                var all_posts = $.merge([{text: "", value:""}], new_data.posts);
+                var options = {
+                    plugins: ['remove_button'],
+                    options: all_posts,
+                    items: new_data.selected
+                };
+                $('#loader').hide();
+                $('#s_posts select').selectize(options);
+                var options = {
+                    plugins: ['remove_button'],
+                    options: new_data.posts,
+                    items: new_data.excluded
+                };
+                $('#loader').hide();
+                $('#ex_posts select').selectize(options);
+            },
+            'json', // ajax result format
+        );
+        // selectize all <select multiple> elements
+        $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize(
             {
-                indentUnit: 2,
-                tabSize: 2,
-                //mode: 'javascript',
+                plugins: ['remove_button']
             }
         );
-        var editor = wp.codeEditor.initialize($('#nnr_newcontent'), editorSettings);
-    }
 
-    document.getElementById("hfcm_copy_shortcode").addEventListener("click", function() {
-        hfcmCopyToClipboard(document.getElementById("hfcm_copy_shortcode"));
-    });
-});
+        if ($('#nnr_newcontent').length) {
+            var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
+            editorSettings.codemirror = _.extend(
+                {},
+                editorSettings.codemirror,
+                {
+                    indentUnit: 2,
+                    tabSize: 2,
+                    //mode: 'javascript',
+                }
+            );
+            var editor = wp.codeEditor.initialize($('#nnr_newcontent'), editorSettings);
+        }
+
+        document.getElementById("hfcm_copy_shortcode").addEventListener(
+            "click", function () {
+                hfcmCopyToClipboard(document.getElementById("hfcm_copy_shortcode"));
+            }
+        );
+    }
+);
