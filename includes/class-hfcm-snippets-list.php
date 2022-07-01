@@ -299,7 +299,7 @@ class Hfcm_Snippets_List extends WP_List_Table
             return '[hfcm id="' . absint($item['script_id']) . '"]';
 
         default:
-            return esc_html(print_r($item, true)); // Show the whole array for troubleshooting purposes
+            return print_r($item, true); // Show the whole array for troubleshooting purposes
         }
     }
 

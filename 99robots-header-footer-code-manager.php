@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.25
+ * Version: 1.1.26
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -384,8 +384,7 @@ if (!class_exists('NNR_HFCM') ) :
          */
         public static function hfcm_render_snippet( $scriptdata )
         {
-            $nnr_hfcm_allowed_tags = self::hfcm_allowed_tags();
-            $output = "<!-- HFCM by 99 Robots - Snippet # " . absint($scriptdata->script_id) . ": " . esc_html($scriptdata->name) . " -->\n" . wp_kses(html_entity_decode($scriptdata->snippet), $nnr_hfcm_allowed_tags) . "\n<!-- /end HFCM by 99 Robots -->\n";
+            $output = "<!-- HFCM by 99 Robots - Snippet # " . absint($scriptdata->script_id) . ": " . esc_html($scriptdata->name) . " -->\n" . html_entity_decode($scriptdata->snippet) . "\n<!-- /end HFCM by 99 Robots -->\n";
 
             return $output;
         }
@@ -563,67 +562,12 @@ if (!class_exists('NNR_HFCM') ) :
                         $aftercontent .= $out;
                         break;
                     default:
-                        $nnr_hfcm_allowed_tags = self::hfcm_allowed_tags();
-                        echo wp_kses($out, $nnr_hfcm_allowed_tags);
+                        echo $out;
                     }
                 }
             }
             // Return results after the loop finishes
             return $beforecontent . $content . $aftercontent;
-        }
-
-        /*
-         * function to return allowed html tags
-         */
-
-        public static function hfcm_allowed_tags()
-        {
-            $nnr_hfcm_allowed_tags = [];
-
-            // allows all most inline elements
-            $nnr_hfcm_allowed_tags = array_merge($nnr_hfcm_allowed_tags, wp_kses_allowed_html('data'));
-
-            // very permissive: allows pretty much all HTML to pass - same as what's normally applied to the_content by default
-            $nnr_hfcm_allowed_tags = array_merge($nnr_hfcm_allowed_tags, wp_kses_allowed_html('post'));
-
-            if (empty($nnr_hfcm_allowed_tags['script']) ) {
-                $nnr_hfcm_allowed_tags['script'] = [
-                    "src"            => true,
-                    "async"          => true,
-                    "height"         => true,
-                    "width"          => true,
-                    "type"           => true,
-                    "crossorigin"    => true,
-                    "defer"          => true,
-                    "integrity"      => true,
-                    "nomodule"       => true,
-                    "referrerpolicy" => true
-                ];
-            }
-            if (empty($nnr_hfcm_allowed_tags['style']) ) {
-                $nnr_hfcm_allowed_tags['style'] = [ "type" => true, "media" => true ];
-            }
-            if (empty($nnr_hfcm_allowed_tags['iframe']) ) {
-                $nnr_hfcm_allowed_tags['iframe'] = [
-                    "src"             => true,
-                    "allow"           => true,
-                    "height"          => true,
-                    "width"           => true,
-                    "type"            => true,
-                    "style"           => true,
-                    "allowfullscreen" => true,
-                    "loading"         => true,
-                    "autoplay"        => true,
-                    "loop"            => true,
-                    "controls"        => true
-                ];
-            }
-            $nnr_hfcm_allowed_tags['span']['itemprop'] = true;
-            $nnr_hfcm_allowed_tags['div']['itemprop'] = true;
-            $nnr_hfcm_allowed_tags['div']['itemscope'] = true;
-            $nnr_hfcm_allowed_tags['div']['itemtype'] = true;
-
-            return $nnr_hfcm_allowed_tags;
         }
 
         /*
@@ -676,8 +620,7 @@ if (!class_exists('NNR_HFCM') ) :
                 if ($is_not_snippet ) {
                     $post_data = sanitize_text_field($post_data);
                 } else {
-                    $nnr_hfcm_allowed_tags = self::hfcm_allowed_tags();
-                    $post_data = wp_kses(htmlentities($post_data), $nnr_hfcm_allowed_tags);
+                    $post_data = htmlentities($post_data);
                 }
                 return $post_data;
             }
