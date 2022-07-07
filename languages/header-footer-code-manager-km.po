@@ -1,0 +1,519 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Header Footer Code Manager\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-07 17:48+0530\n"
+"PO-Revision-Date: 2022-07-07 17:48+0530\n"
+"Last-Translator: Abhishek <abhij89@gmail.com>\n"
+"Language-Team: \n"
+"Language: km\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
+"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
+"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
+"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
+"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Loco-Target-Locale: km\n"
+"X-Generator: Poedit 3.1\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../99robots-header-footer-code-manager.php:227
+msgid "Header Footer Code Manager"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:228
+msgid "HFCM"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:238
+#: ../99robots-header-footer-code-manager.php:239
+msgid "All Snippets"
+msgstr "Todos los Snippets"
+
+#: ../99robots-header-footer-code-manager.php:248
+#: ../99robots-header-footer-code-manager.php:1107
+#: ../includes/hfcm-add-edit.php:28 ../includes/hfcm-add-edit.php:31
+msgid "Add New Snippet"
+msgstr "A&ntilde;adir Nuevo Snippet"
+
+#: ../99robots-header-footer-code-manager.php:249
+msgid "Add New"
+msgstr "A&ntilde;adir Nuevo"
+
+#: ../99robots-header-footer-code-manager.php:258
+#: ../99robots-header-footer-code-manager.php:259 ../includes/hfcm-tools.php:23
+msgid "Tools"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:268
+msgid "Update Script"
+msgstr "Actualizar C&oacute;digo"
+
+#: ../99robots-header-footer-code-manager.php:269
+#: ../includes/hfcm-add-edit.php:409
+msgid "Update"
+msgstr "Actualizar"
+
+#: ../99robots-header-footer-code-manager.php:278
+msgid "Request Handler Script"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:279
+msgid "Request Handler"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:292
+msgid "Settings"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:332
+msgid ""
+"Hey there! You’ve been using the <strong>Header Footer Code Manager</strong> "
+"plugin for a while now. If you like the plugin, please support our awesome "
+"development and support team by leaving a <a class=\"hfcm-review-stars\" "
+"href=\"https://wordpress.org/support/plugin/header-footer-code-manager/"
+"reviews/\"><span class=\"dashicons dashicons-star-filled\"></span><span "
+"class=\"dashicons dashicons-star-filled\"></span><span class=\"dashicons "
+"dashicons-star-filled\"></span><span class=\"dashicons dashicons-star-filled"
+"\"></span><span class=\"dashicons dashicons-star-filled\"></span></a> "
+"rating. <a href=\"https://wordpress.org/support/plugin/header-footer-code-"
+"manager/reviews/\">Rate it!</a> It’ll mean the world to us and keep this "
+"plugin free and constantly updated. <a href=\"https://wordpress.org/support/"
+"plugin/header-footer-code-manager/reviews/\">Leave A Review</a>"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:1070
+msgid ""
+"Please deactivate the free version of this plugin in order to avoid "
+"duplication of the snippets.\n"
+"                    You can use our tools to import all the snippets from "
+"the free version of this plugin."
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:1105
+#: ../includes/class-hfcm-snippets-list.php:18
+#, fuzzy
+#| msgid "All Snippets"
+msgid "Snippets"
+msgstr "Todos los Snippets"
+
+#: ../99robots-header-footer-code-manager.php:1114
+#, fuzzy
+#| msgid "All Snippets"
+msgid "Search Snippets"
+msgstr "Todos los Snippets"
+
+#: ../99robots-header-footer-code-manager.php:1202
+#: ../99robots-header-footer-code-manager.php:1217
+msgid "Please upload a valid import file"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:17
+#: ../includes/hfcm-add-edit.php:401
+#, fuzzy
+#| msgid "All Snippets"
+msgid "Snippet"
+msgstr "Todos los Snippets"
+
+#: ../includes/class-hfcm-snippets-list.php:188
+#, fuzzy
+#| msgid "No Snippets avaliable."
+msgid "No Snippets available."
+msgstr "No Hay Snippets Disponibles."
+
+#: ../includes/class-hfcm-snippets-list.php:208
+#: ../includes/hfcm-add-edit.php:99
+msgid "Site Wide"
+msgstr "Todo el Sitio"
+
+#: ../includes/class-hfcm-snippets-list.php:209
+#: ../includes/hfcm-add-edit.php:100
+msgid "Specific Posts"
+msgstr "Entradas Espec&iacute;ficas"
+
+#: ../includes/class-hfcm-snippets-list.php:210
+#: ../includes/hfcm-add-edit.php:101
+msgid "Specific Pages"
+msgstr "P&aacute;ginas Espec&iacute;ficas"
+
+#: ../includes/class-hfcm-snippets-list.php:211
+msgid "Specific Categories"
+msgstr "Categor&iacute;as Espec&iacute;ficas"
+
+#: ../includes/class-hfcm-snippets-list.php:212
+msgid "Specific Custom Post Types"
+msgstr "Entradas Personalizadas Espec&iacute;ficas"
+
+#: ../includes/class-hfcm-snippets-list.php:213
+msgid "Specific Tags"
+msgstr "Etiquetas Espec&iacute;ficas"
+
+#: ../includes/class-hfcm-snippets-list.php:214
+#: ../includes/hfcm-add-edit.php:105
+msgid "Home Page"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:215
+#: ../includes/hfcm-add-edit.php:106
+#, fuzzy
+#| msgid "Specific Pages"
+msgid "Search Page"
+msgstr "P&aacute;ginas Espec&iacute;ficas"
+
+#: ../includes/class-hfcm-snippets-list.php:216
+#: ../includes/hfcm-add-edit.php:107
+msgid "Archive Page"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:217
+#: ../includes/hfcm-add-edit.php:108
+msgid "Latest Posts"
+msgstr "&Uacute;ltimas Entradas"
+
+#: ../includes/class-hfcm-snippets-list.php:218
+#: ../includes/hfcm-add-edit.php:109
+msgid "Shortcode Only"
+msgstr "S&oacute;lo C&oacute;digo Corto"
+
+#: ../includes/class-hfcm-snippets-list.php:234
+msgid "No post selected"
+msgstr "Ninguna entrada seleccionada"
+
+#: ../includes/class-hfcm-snippets-list.php:243
+msgid "N/A"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:247
+#: ../includes/hfcm-add-edit.php:13 ../includes/hfcm-add-edit.php:292
+#: ../includes/hfcm-add-edit.php:299 ../includes/hfcm-tools.php:9
+msgid "Header"
+msgstr "Cabecera"
+
+#: ../includes/class-hfcm-snippets-list.php:248
+#: ../includes/hfcm-add-edit.php:14 ../includes/hfcm-add-edit.php:293
+#: ../includes/hfcm-tools.php:10
+msgid "Before Content"
+msgstr "Antes del Contenido"
+
+#: ../includes/class-hfcm-snippets-list.php:249
+#: ../includes/hfcm-add-edit.php:15 ../includes/hfcm-add-edit.php:294
+#: ../includes/hfcm-tools.php:11
+msgid "After Content"
+msgstr "Despu&eacute;s del Contenido"
+
+#: ../includes/class-hfcm-snippets-list.php:250
+#: ../includes/hfcm-add-edit.php:16 ../includes/hfcm-add-edit.php:295
+#: ../includes/hfcm-add-edit.php:300 ../includes/hfcm-tools.php:12
+msgid "Footer"
+msgstr "Pie de P&aacute;gina"
+
+#: ../includes/class-hfcm-snippets-list.php:257
+#: ../includes/hfcm-add-edit.php:326
+msgid "Show on All Devices"
+msgstr "Mostrar en Todos"
+
+#: ../includes/class-hfcm-snippets-list.php:259
+#: ../includes/hfcm-add-edit.php:328
+msgid "Only Mobile Devices"
+msgstr "S&oacute;lo Moviles"
+
+#: ../includes/class-hfcm-snippets-list.php:261
+#: ../includes/hfcm-add-edit.php:327
+msgid "Only Desktop"
+msgstr "S&oacute;lo Ordenadores"
+
+#: ../includes/class-hfcm-snippets-list.php:267
+#: ../includes/class-hfcm-snippets-list.php:413
+#: ../includes/hfcm-add-edit.php:75
+msgid "HTML"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:268
+#: ../includes/class-hfcm-snippets-list.php:414
+#: ../includes/hfcm-add-edit.php:76
+msgid "CSS"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:269
+#: ../includes/class-hfcm-snippets-list.php:415
+#: ../includes/hfcm-add-edit.php:77
+msgid "Javascript"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:343
+msgid "Edit"
+msgstr "Editar"
+
+#: ../includes/class-hfcm-snippets-list.php:344
+#, fuzzy
+#| msgid "Shortcode"
+msgid "Copy Shortcode"
+msgstr "C&oacute;digo Corto"
+
+#: ../includes/class-hfcm-snippets-list.php:345
+#: ../includes/hfcm-add-edit.php:415
+msgid "Delete"
+msgstr "Borrar"
+
+#: ../includes/class-hfcm-snippets-list.php:360
+msgid "ID"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:361
+#: ../includes/hfcm-add-edit.php:351
+msgid "Status"
+msgstr "Estado"
+
+#: ../includes/class-hfcm-snippets-list.php:362
+#: ../includes/hfcm-add-edit.php:68
+msgid "Snippet Name"
+msgstr "Nombre"
+
+#: ../includes/class-hfcm-snippets-list.php:363
+msgid "Display On"
+msgstr "Mostrar en"
+
+#: ../includes/class-hfcm-snippets-list.php:364
+#: ../includes/hfcm-add-edit.php:306
+msgid "Location"
+msgstr "Ubicaci&oacute;n"
+
+#: ../includes/class-hfcm-snippets-list.php:365
+#: ../includes/hfcm-add-edit.php:81
+#, fuzzy
+#| msgid "Snippet Name"
+msgid "Snippet Type"
+msgstr "Nombre"
+
+#: ../includes/class-hfcm-snippets-list.php:366
+msgid "Devices"
+msgstr "Dispositivos"
+
+#: ../includes/class-hfcm-snippets-list.php:367
+#: ../includes/hfcm-add-edit.php:368
+msgid "Shortcode"
+msgstr "C&oacute;digo Corto"
+
+#: ../includes/class-hfcm-snippets-list.php:397
+msgid "Activate"
+msgstr "Activar"
+
+#: ../includes/class-hfcm-snippets-list.php:398
+msgid "Deactivate"
+msgstr "Desactivar"
+
+#: ../includes/class-hfcm-snippets-list.php:399
+msgid "Remove"
+msgstr "Borrar"
+
+#: ../includes/class-hfcm-snippets-list.php:420
+#, fuzzy
+#| msgid "All Snippets"
+msgid "All Snippet Types"
+msgstr "Todos los Snippets"
+
+#: ../includes/class-hfcm-snippets-list.php:431
+msgid "Filter"
+msgstr ""
+
+#: ../includes/class-hfcm-snippets-list.php:491
+msgid "All"
+msgstr "Todo"
+
+#: ../includes/class-hfcm-snippets-list.php:496
+#: ../includes/hfcm-add-edit.php:331
+msgid "Active"
+msgstr "Activo"
+
+#: ../includes/class-hfcm-snippets-list.php:501
+#: ../includes/hfcm-add-edit.php:332
+msgid "Inactive"
+msgstr "Inactivo"
+
+#: ../includes/hfcm-add-edit.php:28
+msgid "Edit Snippet"
+msgstr "Editar Snippet"
+
+#: ../includes/hfcm-add-edit.php:40
+msgid "Script updated"
+msgstr "C&oacute;digo actualizado"
+
+#: ../includes/hfcm-add-edit.php:42 ../includes/hfcm-add-edit.php:47
+msgid "Back to list"
+msgstr "Volver al listado"
+
+#: ../includes/hfcm-add-edit.php:45
+msgid "Script Added Successfully"
+msgstr "C&oacute;digo a&ntilde;adido exitosamente"
+
+#: ../includes/hfcm-add-edit.php:102
+#, fuzzy
+#| msgid "Specific Categories"
+msgid "Specific Categories (Archive & Posts)"
+msgstr "Categor&iacute;as Espec&iacute;ficas"
+
+#: ../includes/hfcm-add-edit.php:103
+#, fuzzy
+#| msgid "Specific Custom Post Types"
+msgid "Specific Post Types (Archive & Posts)"
+msgstr "Entradas Personalizadas Espec&iacute;ficas"
+
+#: ../includes/hfcm-add-edit.php:104
+#, fuzzy
+#| msgid "Specific Posts"
+msgid "Specific Tags (Archive & Posts)"
+msgstr "Entradas Espec&iacute;ficas"
+
+#: ../includes/hfcm-add-edit.php:112
+msgid "Site Display"
+msgstr "Mostrar en el Sitio"
+
+#: ../includes/hfcm-add-edit.php:139
+msgid "Exclude Pages"
+msgstr ""
+
+#: ../includes/hfcm-add-edit.php:156
+msgid "Exclude Posts"
+msgstr ""
+
+#: ../includes/hfcm-add-edit.php:170
+msgid "Page List"
+msgstr "Lista de P&aacute;ginas"
+
+#: ../includes/hfcm-add-edit.php:189
+msgid "Post List"
+msgstr "Lista de Entradas"
+
+#: ../includes/hfcm-add-edit.php:222
+msgid "Category List"
+msgstr "Lista de Categor&iacute;as"
+
+#: ../includes/hfcm-add-edit.php:240
+msgid "Tags List"
+msgstr "Lista de Etiquetas"
+
+#: ../includes/hfcm-add-edit.php:258
+#, fuzzy
+#| msgid "Custom Post Types"
+msgid "Post Types"
+msgstr "Entradas Personalizadas"
+
+#: ../includes/hfcm-add-edit.php:274
+msgid "Post Count"
+msgstr "Cantidad de Entradas"
+
+#: ../includes/hfcm-add-edit.php:321
+msgid "Note"
+msgstr ""
+
+#: ../includes/hfcm-add-edit.php:321
+msgid "Snippet will only execute if the placement hook exists on the page"
+msgstr ""
+
+#: ../includes/hfcm-add-edit.php:335
+msgid "Device Display"
+msgstr "Mostrar en Dispositivo"
+
+#: ../includes/hfcm-add-edit.php:375
+msgid "Copy"
+msgstr ""
+
+#: ../includes/hfcm-add-edit.php:384
+msgid "Changelog"
+msgstr "Registro de Cambios"
+
+#: ../includes/hfcm-add-edit.php:388
+msgid "Snippet created by"
+msgstr "Snippet creado por"
+
+#: ../includes/hfcm-add-edit.php:389 ../includes/hfcm-add-edit.php:393
+msgid "on"
+msgstr "el"
+
+#: ../includes/hfcm-add-edit.php:389 ../includes/hfcm-add-edit.php:393
+msgid "at"
+msgstr "a las"
+
+#: ../includes/hfcm-add-edit.php:392
+msgid "Last edited by"
+msgstr "&Uacute;ltima edici&oacute;n por"
+
+#: ../includes/hfcm-add-edit.php:402
+msgid "Code"
+msgstr "C&oacute;digo"
+
+#: ../includes/hfcm-add-edit.php:409
+msgid "Save"
+msgstr "Guardar"
+
+#: ../includes/hfcm-tools.php:30
+#, fuzzy
+#| msgid "Edit Snippet"
+msgid "Export Snippets"
+msgstr "Editar Snippet"
+
+#: ../includes/hfcm-tools.php:37
+msgid ""
+"Select the snippets you would like to export and then select your export "
+"method. Use the\n"
+"                                download button to export to a .json file "
+"which you can then import to another HFCM\n"
+"                                installation"
+msgstr ""
+
+#: ../includes/hfcm-tools.php:43
+msgid ""
+"NOTE: Import/Export Functionality is only intended to operate within the "
+"same website.  Using the export/import to move snippets from one website to "
+"a different site, may result in inconsistent behavior, particularly if you "
+"have specific elements as criteria such as pages, posts, categories, or tags."
+msgstr ""
+
+#: ../includes/hfcm-tools.php:49
+#, fuzzy
+#| msgid "All Snippets"
+msgid "Select Snippets"
+msgstr "Todos los Snippets"
+
+#: ../includes/hfcm-tools.php:75
+msgid "Export File"
+msgstr ""
+
+#: ../includes/hfcm-tools.php:85
+#, fuzzy
+#| msgid "All Snippets"
+msgid "Import Snippets"
+msgstr "Todos los Snippets"
+
+#: ../includes/hfcm-tools.php:92
+msgid ""
+"Select the HFCM JSON file you would like to import. When you click the "
+"import button below,\n"
+"                                HFCM will import the field groups."
+msgstr ""
+
+#: ../includes/hfcm-tools.php:100
+msgid "Select File"
+msgstr ""
+
+#~ msgid ""
+#~ "Header Footer Code Manager by 99 Robots is a quick and simple way for you "
+#~ "to add tracking code snippets, conversion pixels, or other scripts "
+#~ "required by third party services for analytics, tracking, marketing, or "
+#~ "chat functions. For detailed documentation, please visit the plugin's <a "
+#~ "href=\"https://99robots.com/\"> official page</a>."
+#~ msgstr ""
+#~ "Header Footer Code Manager de 99 Robots es una forma r&aacute;pida y "
+#~ "sencilla para a&ntilde;adir codigos de rastreo, p&iacute;xeles de "
+#~ "conversi&oacute;n, u otros c&oacute;digos requeridos por servicios de "
+#~ "terceros para realizar an&aacute;lisis, rastreo, marketing o funciones de "
+#~ "chat. Para una documentaci&oacute;n detallada, por favor visita la <a "
+#~ "href=\"https://99robots.com/\">p&aacute;gina oficial</a> del plugin."
+
+#~ msgid "Script deleted"
+#~ msgstr "C&oacute;digo borrado"
