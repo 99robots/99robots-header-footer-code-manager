@@ -114,9 +114,8 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
-= 1.1.27 = 2022-07-07
-* ADDED: Hindi Translation
-* FIXED: Internationalization text domain
+= 1.1.27 = 2022-07-11
+* ADDED: Implemented support for Internationalization with support of Hindi. Additional language will come next.
 
 = 1.1.26 = 2022-07-01
 * FIXED: Code snippet sanitization, removed due to incompatibility with functionality
