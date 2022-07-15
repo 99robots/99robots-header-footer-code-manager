@@ -117,6 +117,7 @@ A. If your script is not supported, just let us know and we'll look into it imme
 = 1.1.27 = 2022-07-15
 * FIXED: Internationalization support for PO Translation files. Plugin now supports translation to additional languages in addition to the base language, English.
 * ADDED: 1 Translation for Hindi.
+* UPDATED: Compatibility with WordPress 6.0.1
 
 = 1.1.26 = 2022-07-01
 * FIXED: Code snippet sanitization, removed due to incompatibility with functionality
