@@ -3,13 +3,13 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.26
+ * Version: 1.1.27
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
  * Author URI: https://draftpress.com/
  * Disclaimer: Use at your own risk. No warranty expressed or implied is provided.
- * Text Domain: 99robots-header-footer-code-manager
+ * Text Domain: header-footer-code-manager
  * Domain Path: /languages
  */
 
@@ -213,7 +213,7 @@ if (!class_exists('NNR_HFCM') ) :
 
         public static function hfcm_load_translation_files()
         {
-            load_plugin_textdomain('99robots-header-footer-code-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
+            load_plugin_textdomain('header-footer-code-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
         }
 
         /*
@@ -224,8 +224,8 @@ if (!class_exists('NNR_HFCM') ) :
 
             // This is the main item for the menu
             add_menu_page(
-                __('Header Footer Code Manager', '99robots-header-footer-code-manager'),
-                __('HFCM', '99robots-header-footer-code-manager'),
+                __('Header Footer Code Manager', 'header-footer-code-manager'),
+                __('HFCM', 'header-footer-code-manager'),
                 'manage_options',
                 'hfcm-list',
                 array( 'NNR_HFCM', 'hfcm_list' ),
@@ -235,8 +235,8 @@ if (!class_exists('NNR_HFCM') ) :
             // This is a submenu
             add_submenu_page(
                 'hfcm-list',
-                __('All Snippets', '99robots-header-footer-code-manager'),
-                __('All Snippets', '99robots-header-footer-code-manager'),
+                __('All Snippets', 'header-footer-code-manager'),
+                __('All Snippets', 'header-footer-code-manager'),
                 'manage_options',
                 'hfcm-list',
                 array( 'NNR_HFCM', 'hfcm_list' )
@@ -245,8 +245,8 @@ if (!class_exists('NNR_HFCM') ) :
             // This is a submenu
             add_submenu_page(
                 'hfcm-list',
-                __('Add New Snippet', '99robots-header-footer-code-manager'),
-                __('Add New', '99robots-header-footer-code-manager'),
+                __('Add New Snippet', 'header-footer-code-manager'),
+                __('Add New', 'header-footer-code-manager'),
                 'manage_options',
                 'hfcm-create',
                 array( 'NNR_HFCM', 'hfcm_create' )
@@ -255,8 +255,8 @@ if (!class_exists('NNR_HFCM') ) :
             // This is a submenu
             add_submenu_page(
                 'hfcm-list',
-                __('Tools', '99robots-header-footer-code-manager'),
-                __('Tools', '99robots-header-footer-code-manager'),
+                __('Tools', 'header-footer-code-manager'),
+                __('Tools', 'header-footer-code-manager'),
                 'manage_options',
                 'hfcm-tools',
                 array( 'NNR_HFCM', 'hfcm_tools' )
@@ -265,8 +265,8 @@ if (!class_exists('NNR_HFCM') ) :
             // This submenu is HIDDEN, however, we need to add it anyways
             add_submenu_page(
                 null,
-                __('Update Script', '99robots-header-footer-code-manager'),
-                __('Update', '99robots-header-footer-code-manager'),
+                __('Update Script', 'header-footer-code-manager'),
+                __('Update', 'header-footer-code-manager'),
                 'manage_options',
                 'hfcm-update',
                 array( 'NNR_HFCM', 'hfcm_update' )
@@ -275,8 +275,8 @@ if (!class_exists('NNR_HFCM') ) :
             // This submenu is HIDDEN, however, we need to add it anyways
             add_submenu_page(
                 null,
-                __('Request Handler Script', '99robots-header-footer-code-manager'),
-                __('Request Handler', '99robots-header-footer-code-manager'),
+                __('Request Handler Script', 'header-footer-code-manager'),
+                __('Request Handler', 'header-footer-code-manager'),
                 'manage_options',
                 'hfcm-request-handler',
                 array( 'NNR_HFCM', 'hfcm_request_handler' )
@@ -329,7 +329,7 @@ if (!class_exists('NNR_HFCM') ) :
                 ?>
                 <div id="hfcm-message" class="notice notice-success">
                     <a class="hfcm-dismiss-alert notice-dismiss" href="?hfcm-admin-notice-dismissed">Dismiss</a>
-                    <p><?php _e('Hey there! You’ve been using the <strong>Header Footer Code Manager</strong> plugin for a while now. If you like the plugin, please support our awesome development and support team by leaving a <a class="hfcm-review-stars" href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></a> rating. <a href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/">Rate it!</a> It’ll mean the world to us and keep this plugin free and constantly updated. <a href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/">Leave A Review</a>', '99robots-header-footer-code-manager'); ?>
+                    <p><?php _e('Hey there! You’ve been using the <strong>Header Footer Code Manager</strong> plugin for a while now. If you like the plugin, please support our awesome development and support team by leaving a <a class="hfcm-review-stars" href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/"><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span></a> rating. <a href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/">Rate it!</a> It’ll mean the world to us and keep this plugin free and constantly updated. <a href="https://wordpress.org/support/plugin/header-footer-code-manager/reviews/">Leave A Review</a>', 'header-footer-code-manager'); ?>
                     </p>
                 </div>
                 <?php
@@ -1068,7 +1068,7 @@ if (!class_exists('NNR_HFCM') ) :
                 <div class="notice hfcm-warning-notice notice-warning">
                     <?php _e(
                         'Please deactivate the free version of this plugin in order to avoid duplication of the snippets.
-                    You can use our tools to import all the snippets from the free version of this plugin.', '99robots-header-footer-code-manager'
+                    You can use our tools to import all the snippets from the free version of this plugin.', 'header-footer-code-manager'
                     ); ?>
                 </div>
                 <?php
@@ -1083,7 +1083,7 @@ if (!class_exists('NNR_HFCM') ) :
                 ?>
                 <div id="hfcm-message" class="notice notice-success is-dismissible">
                     <p>
-                        <?php _e($message, '99robots-header-footer-code-manager'); ?>
+                        <?php _e($message, 'header-footer-code-manager'); ?>
                     </p>
                 </div>
                 <?php
@@ -1102,16 +1102,16 @@ if (!class_exists('NNR_HFCM') ) :
             }
             ?>
             <div class="wrap">
-                <h1><?php esc_html_e('Snippets', '99robots-header-footer-code-manager') ?>
+                <h1><?php esc_html_e('Snippets', 'header-footer-code-manager') ?>
                     <a href="<?php echo admin_url('admin.php?page=hfcm-create') ?>" class="page-title-action">
-                        <?php esc_html_e('Add New Snippet', '99robots-header-footer-code-manager') ?>
+                        <?php esc_html_e('Add New Snippet', 'header-footer-code-manager') ?>
                     </a>
                 </h1>
 
                 <form method="post">
                     <?php
                     $snippet_obj->prepare_items();
-                    $snippet_obj->search_box('Search Snippets', 'search_id');
+                    $snippet_obj->search_box(__('Search Snippets', 'header-footer-code-manager'), 'search_id');
                     $snippet_obj->display();
                     ?>
                 </form>
@@ -1199,7 +1199,7 @@ if (!class_exists('NNR_HFCM') ) :
                 if (!empty($_FILES['nnr_hfcm_pro_import_file']['type']) && $_FILES['nnr_hfcm_pro_import_file']['type'] != "application/json" ) {
                     ?>
                     <div class="notice hfcm-warning-notice notice-warning">
-                        <?php _e('Please upload a valid import file', '99robots-header-footer-code-manager'); ?>
+                        <?php _e('Please upload a valid import file', 'header-footer-code-manager'); ?>
                     </div>
                     <?php
                     return;
@@ -1214,7 +1214,7 @@ if (!class_exists('NNR_HFCM') ) :
                 if (empty($nnr_hfcm_snippets->title) || (!empty($nnr_hfcm_snippets->title) && $nnr_hfcm_snippets->title != "Header Footer Code Manager") ) {
                     ?>
                     <div class="notice hfcm-warning-notice notice-warning">
-                        <?php _e('Please upload a valid import file', '99robots-header-footer-code-manager'); ?>
+                        <?php _e('Please upload a valid import file', 'header-footer-code-manager'); ?>
                     </div>
                     <?php
                     return;
@@ -1294,7 +1294,7 @@ if (!class_exists('NNR_HFCM') ) :
          */
         public static function is_hfcm_pro_active()
         {
-            if (is_plugin_active('99robots-header-footer-code-manager-pro/99robots-header-footer-code-manager-pro.php') ) {
+            if (is_plugin_active('header-footer-code-manager-pro/header-footer-code-manager-pro.php') ) {
                 return true;
             }
 

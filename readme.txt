@@ -3,8 +3,8 @@ Contributors: DraftPress, 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.9
 Requires PHP: 5.6.20
-Tested up to: 6.0
-Stable tag: 1.1.26
+Tested up to: 6.0.1
+Stable tag: 1.1.27
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -78,7 +78,7 @@ If using this plugin on a multisite network, please make sure that the plugin is
 
 == Installation ==
 
-1. Upload `99robots-header-footer-code-manager` to the `/wp-content/plugins/` directory
+1. Upload `header-footer-code-manager` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Go to plugins page to see instructions for shortcode and php template tags
 
@@ -114,6 +114,11 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+= 1.1.27 = 2022-07-15
+* FIXED: Internationalization support for PO Translation files. Plugin now supports translation to additional languages in addition to the base language, English.
+* ADDED: 1 Translation for Hindi.
+* UPDATED: Compatibility with WordPress 6.0.1
+
 = 1.1.26 = 2022-07-01
 * FIXED: Code snippet sanitization, removed due to incompatibility with functionality
 

@@ -14,8 +14,8 @@ class Hfcm_Snippets_List extends WP_List_Table
 
         parent::__construct(
             array(
-                'singular' => esc_html__('Snippet', '99robots-header-footer-code-manager'),
-                'plural'   => esc_html__('Snippets', '99robots-header-footer-code-manager'),
+                'singular' => esc_html__('Snippet', 'header-footer-code-manager'),
+                'plural'   => esc_html__('Snippets', 'header-footer-code-manager'),
                 'ajax'     => false,
             )
         );
@@ -185,7 +185,7 @@ class Hfcm_Snippets_List extends WP_List_Table
      */
     public function no_items()
     {
-        esc_html_e('No Snippets available.', '99robots-header-footer-code-manager');
+        esc_html_e('No Snippets available.', 'header-footer-code-manager');
     }
 
     /**
@@ -205,17 +205,17 @@ class Hfcm_Snippets_List extends WP_List_Table
 
         case 'display_on':
             $nnr_hfcm_display_array = array(
-                'All'            => esc_html__('Site Wide', '99robots-header-footer-code-manager'),
-                's_posts'        => esc_html__('Specific Posts', '99robots-header-footer-code-manager'),
-                's_pages'        => esc_html__('Specific Pages', '99robots-header-footer-code-manager'),
-                's_categories'   => esc_html__('Specific Categories', '99robots-header-footer-code-manager'),
-                's_custom_posts' => esc_html__('Specific Custom Post Types', '99robots-header-footer-code-manager'),
-                's_tags'         => esc_html__('Specific Tags', '99robots-header-footer-code-manager'),
-                's_is_home'      => esc_html__('Home Page', '99robots-header-footer-code-manager'),
-                's_is_search'    => esc_html__('Search Page', '99robots-header-footer-code-manager'),
-                's_is_archive'   => esc_html__('Archive Page', '99robots-header-footer-code-manager'),
-                'latest_posts'   => esc_html__('Latest Posts', '99robots-header-footer-code-manager'),
-                'manual'         => esc_html__('Shortcode Only', '99robots-header-footer-code-manager'),
+                'All'            => esc_html__('Site Wide', 'header-footer-code-manager'),
+                's_posts'        => esc_html__('Specific Posts', 'header-footer-code-manager'),
+                's_pages'        => esc_html__('Specific Pages', 'header-footer-code-manager'),
+                's_categories'   => esc_html__('Specific Categories', 'header-footer-code-manager'),
+                's_custom_posts' => esc_html__('Specific Custom Post Types', 'header-footer-code-manager'),
+                's_tags'         => esc_html__('Specific Tags', 'header-footer-code-manager'),
+                's_is_home'      => esc_html__('Home Page', 'header-footer-code-manager'),
+                's_is_search'    => esc_html__('Search Page', 'header-footer-code-manager'),
+                's_is_archive'   => esc_html__('Archive Page', 'header-footer-code-manager'),
+                'latest_posts'   => esc_html__('Latest Posts', 'header-footer-code-manager'),
+                'manual'         => esc_html__('Shortcode Only', 'header-footer-code-manager'),
             );
 
             if ('s_posts' === $item[ $column_name ] ) {
@@ -231,7 +231,7 @@ class Hfcm_Snippets_List extends WP_List_Table
                     }
                 }
                 if ($empty ) {
-                    return '<span class="hfcm-red">' . esc_html__('No post selected', '99robots-header-footer-code-manager') . '</span>';
+                    return '<span class="hfcm-red">' . esc_html__('No post selected', 'header-footer-code-manager') . '</span>';
                 }
             }
 
@@ -240,33 +240,33 @@ class Hfcm_Snippets_List extends WP_List_Table
         case 'location':
 
             if (!$item[ $column_name ] ) {
-                return esc_html__('N/A', '99robots-header-footer-code-manager');
+                return esc_html__('N/A', 'header-footer-code-manager');
             }
 
             $nnr_hfcm_locations = array(
-                'header'         => esc_html__('Header', '99robots-header-footer-code-manager'),
-                'before_content' => esc_html__('Before Content', '99robots-header-footer-code-manager'),
-                'after_content'  => esc_html__('After Content', '99robots-header-footer-code-manager'),
-                'footer'         => esc_html__('Footer', '99robots-header-footer-code-manager'),
+                'header'         => esc_html__('Header', 'header-footer-code-manager'),
+                'before_content' => esc_html__('Before Content', 'header-footer-code-manager'),
+                'after_content'  => esc_html__('After Content', 'header-footer-code-manager'),
+                'footer'         => esc_html__('Footer', 'header-footer-code-manager'),
             );
             return esc_html($nnr_hfcm_locations[ $item[ $column_name ] ]);
 
         case 'device_type':
 
             if ('both' === $item[ $column_name ] ) {
-                return esc_html__('Show on All Devices', '99robots-header-footer-code-manager');
+                return esc_html__('Show on All Devices', 'header-footer-code-manager');
             } elseif ('mobile' === $item[ $column_name ] ) {
-                return esc_html__('Only Mobile Devices', '99robots-header-footer-code-manager');
+                return esc_html__('Only Mobile Devices', 'header-footer-code-manager');
             } elseif ('desktop' === $item[ $column_name ] ) {
-                return esc_html__('Only Desktop', '99robots-header-footer-code-manager');
+                return esc_html__('Only Desktop', 'header-footer-code-manager');
             } else {
                 return esc_html($item[ $column_name ]);
             }
         case 'snippet_type':
             $snippet_types = array(
-                'html' => esc_html__('HTML', '99robots-header-footer-code-manager'),
-                'css'  => esc_html__('CSS', '99robots-header-footer-code-manager'),
-                'js'   => esc_html__('Javascript', '99robots-header-footer-code-manager')
+                'html' => esc_html__('HTML', 'header-footer-code-manager'),
+                'css'  => esc_html__('CSS', 'header-footer-code-manager'),
+                'js'   => esc_html__('Javascript', 'header-footer-code-manager')
             );
             return esc_html($snippet_types[ $item[ $column_name ] ]);
 
@@ -274,20 +274,20 @@ class Hfcm_Snippets_List extends WP_List_Table
 
             if ('inactive' === $item[ $column_name ] ) {
                 return '<div class="nnr-switch">
-								<label for="nnr-round-toggle' . esc_attr($item['script_id']) . '">OFF</label>
-								<input id="nnr-round-toggle' . esc_attr($item['script_id']) . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . esc_attr($item['script_id']) . '" />
-								<label for="nnr-round-toggle' . esc_attr($item['script_id']) . '"></label>
-								<label for="nnr-round-toggle' . esc_attr($item['script_id']) . '">ON</label>
-							</div>
-							';
+                        <label for="nnr-round-toggle' . esc_attr($item['script_id']) . '">OFF</label>
+                        <input id="nnr-round-toggle' . esc_attr($item['script_id']) . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . esc_attr($item['script_id']) . '" />
+                        <label for="nnr-round-toggle' . esc_attr($item['script_id']) . '"></label>
+                        <label for="nnr-round-toggle' . esc_attr($item['script_id']) . '">ON</label>
+                    </div>
+                    ';
             } elseif ('active' === $item[ $column_name ] ) {
                 return '<div class="nnr-switch">
-								<label for="nnr-round-toggle' . esc_attr($item['script_id']) . '">OFF</label>
-								<input id="nnr-round-toggle' . esc_attr($item['script_id']) . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . esc_attr($item['script_id']) . '" checked="checked" />
-								<label for="nnr-round-toggle' . esc_attr($item['script_id']) . '"></label>
-								<label for="nnr-round-toggle' . esc_attr($item['script_id']) . '">ON</label>
-							</div>
-							';
+                        <label for="nnr-round-toggle' . esc_attr($item['script_id']) . '">OFF</label>
+                        <input id="nnr-round-toggle' . esc_attr($item['script_id']) . '" class="round-toggle round-toggle-round-flat" type="checkbox" data-id="' . esc_attr($item['script_id']) . '" checked="checked" />
+                        <label for="nnr-round-toggle' . esc_attr($item['script_id']) . '"></label>
+                        <label for="nnr-round-toggle' . esc_attr($item['script_id']) . '">ON</label>
+                    </div>
+                    ';
             } else {
                 return esc_html($item[ $column_name ]);
             }
@@ -340,9 +340,9 @@ class Hfcm_Snippets_List extends WP_List_Table
             $page = sanitize_text_field($_GET['page']);
         }
         $actions = array(
-            'edit'   => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . esc_html__('Edit', '99robots-header-footer-code-manager') . '</a>', esc_attr('hfcm-update'), 'edit', absint($item['script_id']), $edit_nonce),
-            'copy'   => sprintf('<a href="javascript:void(0);" data-shortcode=\'[hfcm id="%s"]\'  class="hfcm_copy_shortcode" id="hfcm_copy_shortcode_%s">' . esc_html__('Copy Shortcode', '99robots-header-footer-code-manager') . '</a>', absint($item['script_id']), absint($item['script_id'])),
-            'delete' => sprintf('<a href="?page=%s&action=%s&snippet=%s&_wpnonce=%s">' . esc_html__('Delete', '99robots-header-footer-code-manager') . '</a>', $page, 'delete', absint($item['script_id']), $delete_nonce),
+            'edit'   => sprintf('<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . esc_html__('Edit', 'header-footer-code-manager') . '</a>', esc_attr('hfcm-update'), 'edit', absint($item['script_id']), $edit_nonce),
+            'copy'   => sprintf('<a href="javascript:void(0);" data-shortcode=\'[hfcm id="%s"]\'  class="hfcm_copy_shortcode" id="hfcm_copy_shortcode_%s">' . esc_html__('Copy Shortcode', 'header-footer-code-manager') . '</a>', absint($item['script_id']), absint($item['script_id'])),
+            'delete' => sprintf('<a href="?page=%s&action=%s&snippet=%s&_wpnonce=%s">' . esc_html__('Delete', 'header-footer-code-manager') . '</a>', $page, 'delete', absint($item['script_id']), $delete_nonce),
         );
 
         return $title . $this->row_actions($actions);
@@ -357,14 +357,14 @@ class Hfcm_Snippets_List extends WP_List_Table
     {
         $columns = array(
             'cb'           => '<input type="checkbox" />',
-            'script_id'    => esc_html__('ID', '99robots-header-footer-code-manager'),
-            'status'       => esc_html__('Status', '99robots-header-footer-code-manager'),
-            'name'         => esc_html__('Snippet Name', '99robots-header-footer-code-manager'),
-            'display_on'   => esc_html__('Display On', '99robots-header-footer-code-manager'),
-            'location'     => esc_html__('Location', '99robots-header-footer-code-manager'),
-            'snippet_type' => esc_html__('Snippet Type', '99robots-header-footer-code-manager'),
-            'device_type'  => esc_html__('Devices', '99robots-header-footer-code-manager'),
-            'shortcode'    => esc_html__('Shortcode', '99robots-header-footer-code-manager'),
+            'script_id'    => esc_html__('ID', 'header-footer-code-manager'),
+            'status'       => esc_html__('Status', 'header-footer-code-manager'),
+            'name'         => esc_html__('Snippet Name', 'header-footer-code-manager'),
+            'display_on'   => esc_html__('Display On', 'header-footer-code-manager'),
+            'location'     => esc_html__('Location', 'header-footer-code-manager'),
+            'snippet_type' => esc_html__('Snippet Type', 'header-footer-code-manager'),
+            'device_type'  => esc_html__('Devices', 'header-footer-code-manager'),
+            'shortcode'    => esc_html__('Shortcode', 'header-footer-code-manager'),
         );
 
         return $columns;
@@ -394,9 +394,9 @@ class Hfcm_Snippets_List extends WP_List_Table
     {
 
         return array(
-            'bulk-activate'   => esc_html__('Activate', '99robots-header-footer-code-manager'),
-            'bulk-deactivate' => esc_html__('Deactivate', '99robots-header-footer-code-manager'),
-            'bulk-delete'     => esc_html__('Remove', '99robots-header-footer-code-manager'),
+            'bulk-activate'   => esc_html__('Activate', 'header-footer-code-manager'),
+            'bulk-deactivate' => esc_html__('Deactivate', 'header-footer-code-manager'),
+            'bulk-delete'     => esc_html__('Remove', 'header-footer-code-manager'),
         );
     }
 
@@ -410,14 +410,14 @@ class Hfcm_Snippets_List extends WP_List_Table
         if ('top' === $which ) {
             $query        = isset($_POST['snippet_type']) ? sanitize_text_field($_POST['snippet_type']) : '';
             $snippet_type = array(
-                'html' => esc_html__('HTML', '99robots-header-footer-code-manager'),
-                'css'  => esc_html__('CSS', '99robots-header-footer-code-manager'),
-                'js'   => esc_html__('Javascript', '99robots-header-footer-code-manager')
+                'html' => esc_html__('HTML', 'header-footer-code-manager'),
+                'css'  => esc_html__('CSS', 'header-footer-code-manager'),
+                'js'   => esc_html__('Javascript', 'header-footer-code-manager')
             );
 
             echo '<div class="alignleft actions">';
             echo '<select name="snippet_type">';
-            echo '<option value="">' . esc_html__('All Snippet Types', '99robots-header-footer-code-manager') . '</option>';
+            echo '<option value="">' . esc_html__('All Snippet Types', 'header-footer-code-manager') . '</option>';
 
             foreach ( $snippet_type as $key_type => $type ) {
                 if ($key_type == $query ) {
@@ -428,7 +428,7 @@ class Hfcm_Snippets_List extends WP_List_Table
             }
 
             echo '</select>';
-            submit_button(__('Filter', '99robots-header-footer-code-manager'), 'button', 'filter_action', false);
+            submit_button(__('Filter', 'header-footer-code-manager'), 'button', 'filter_action', false);
             echo '</div>';
         }
 
@@ -488,17 +488,17 @@ class Hfcm_Snippets_List extends WP_List_Table
         //All link
         $class        = 'all' === $current ? 'current' : '';
         $all_url      = remove_query_arg('customvar');
-        $views['all'] = '<a href="' . esc_html($all_url) . '" class="' . esc_html($class) . '">' . esc_html__('All', '99robots-header-footer-code-manager') . ' (' . esc_html__($this->record_count()) . ')</a>';
+        $views['all'] = '<a href="' . esc_html($all_url) . '" class="' . esc_html($class) . '">' . esc_html__('All', 'header-footer-code-manager') . ' (' . esc_html__($this->record_count()) . ')</a>';
 
         //Foo link
         $foo_url         = add_query_arg('customvar', 'active');
         $class           = ('active' === $current ? 'current' : '');
-        $views['active'] = '<a href="' . esc_html($foo_url) . '" class="' . esc_html($class) . '">' . esc_html__('Active', '99robots-header-footer-code-manager') . ' (' . esc_html__($this->record_count('active')) . ')</a>';
+        $views['active'] = '<a href="' . esc_html($foo_url) . '" class="' . esc_html($class) . '">' . esc_html__('Active', 'header-footer-code-manager') . ' (' . esc_html__($this->record_count('active')) . ')</a>';
 
         //Bar link
         $bar_url           = add_query_arg('customvar', 'inactive');
         $class             = ('inactive' === $current ? 'current' : '');
-        $views['inactive'] = '<a href="' . esc_html($bar_url) . '" class="' . esc_html($class) . '">' . esc_html__('Inactive', '99robots-header-footer-code-manager') . ' (' . esc_html__($this->record_count('inactive')) . ')</a>';
+        $views['inactive'] = '<a href="' . esc_html($bar_url) . '" class="' . esc_html($class) . '">' . esc_html__('Inactive', 'header-footer-code-manager') . ' (' . esc_html__($this->record_count('inactive')) . ')</a>';
 
         return $views;
     }
