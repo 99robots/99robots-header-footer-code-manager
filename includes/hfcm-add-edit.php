@@ -319,7 +319,7 @@ wp_enqueue_script('hfcm_showboxes');
                     </select>
                     <p>
                         <b><?php _e("Note", 'header-footer-code-manager'); ?></b>: <?php _e("Not all locations (such as before content) exist on all page/post types. The location will only appear as an option if the appropriate hook exists on the page.", 'header-footer-code-manager'); ?>
-                        .</p>
+                    </p>
                 </td>
             </tr>
             <?php $nnr_hfcm_device_type_array = array(
