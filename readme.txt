@@ -3,7 +3,7 @@ Contributors: DraftPress, 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.9
 Requires PHP: 5.6.20
-Tested up to: 6.0.1
+Tested up to: 6.0.2
 Stable tag: 1.1.28
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -114,8 +114,9 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
-= 1.1.28 = 2022-09-06
+= 1.1.28 = 2022-09-16
 * FIXED: Check for not rendering the snippets on the RSS feed page
+* UPDATED: Compatibility with WordPress 6.0.2
 
 = 1.1.27 = 2022-07-15
 * FIXED: Internationalization support for PO Translation files. Plugin now supports translation to additional languages in addition to the base language, English.
