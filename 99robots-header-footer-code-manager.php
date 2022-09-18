@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.27
+ * Version: 1.1.28
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -575,7 +575,9 @@ if (!class_exists('NNR_HFCM') ) :
          */
         public static function hfcm_header_scripts()
         {
-            self::hfcm_add_snippets('header');
+            if(!is_feed()) {
+                self::hfcm_add_snippets('header');
+            }
         }
 
         /*
@@ -583,7 +585,9 @@ if (!class_exists('NNR_HFCM') ) :
          */
         public static function hfcm_footer_scripts()
         {
-            self::hfcm_add_snippets('footer');
+            if(!is_feed()) {
+                self::hfcm_add_snippets( 'footer' );
+            }
         }
 
         /*
@@ -591,7 +595,9 @@ if (!class_exists('NNR_HFCM') ) :
          */
         public static function hfcm_content_scripts( $content )
         {
-            return self::hfcm_add_snippets(false, $content);
+            if(!is_feed()) {
+                return self::hfcm_add_snippets( false, $content );
+            }
         }
 
         /*
