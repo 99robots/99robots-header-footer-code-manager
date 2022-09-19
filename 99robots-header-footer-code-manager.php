@@ -495,7 +495,7 @@ if (!class_exists('NNR_HFCM') ) :
                             if (is_category(json_decode($scriptdata->s_categories)) ) {
                                 $out = self::hfcm_render_snippet($scriptdata);
                             }
-                            if (!is_archive() && !is_home() ) {
+                            if (!is_archive() && !is_home() && !is_front_page() ) {
                                 $out = self::hfcm_render_snippet($scriptdata);
                             }
                         }
