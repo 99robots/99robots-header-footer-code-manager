@@ -115,7 +115,7 @@ A. If your script is not supported, just let us know and we'll look into it imme
 
 == Changelog ==
 = 1.1.31 = 2022-12-08
-* ADDED: Warning message to caution users of using improper code or untrusted sources code can break your site or create security risks.
+* ADDED: Warning message to caution users of using improper code or untrusted sources code that can break site or create security risks.
 * UPDATED: Compatibility with WordPress 6.1.1
 
 = 1.1.30 = 2022-11-09
