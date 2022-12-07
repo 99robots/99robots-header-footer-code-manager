@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Header Footer Code Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-15 14:48+0530\n"
-"PO-Revision-Date: 2022-07-15 14:49+0530\n"
+"POT-Creation-Date: 2022-12-08 01:02+0530\n"
+"PO-Revision-Date: 2022-12-08 01:03+0530\n"
 "Last-Translator: fran <franmejia0@gmail.com>\n"
 "Language-Team: \n"
 "Language: hi\n"
@@ -19,7 +19,7 @@ msgstr ""
 "esc_html_e:1;esc_attr_x:1,2c;esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;"
 "transChoice:1,2\n"
 "X-Loco-Target-Locale: hi_IN\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../99robots-header-footer-code-manager.php:227
@@ -40,9 +40,9 @@ msgid "All Snippets"
 msgstr "सभी स्निपेट"
 
 #: ../99robots-header-footer-code-manager.php:248
-#: ../99robots-header-footer-code-manager.php:1107
+#: ../99robots-header-footer-code-manager.php:1129
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:248
-#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1107
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1129
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:28
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:31
 #: ../includes/hfcm-add-edit.php:28 ../includes/hfcm-add-edit.php:31
@@ -70,7 +70,7 @@ msgstr "स्क्रिप्ट अपडेट करें"
 #: ../99robots-header-footer-code-manager.php:269
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:269
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:409
-#: ../includes/hfcm-add-edit.php:409
+#: ../includes/hfcm-add-edit.php:413
 msgid "Update"
 msgstr "अपडेट करें"
 
@@ -95,28 +95,28 @@ msgid ""
 "Hey there! You’ve been using the <strong>Header Footer Code Manager</strong> plugin for a "
 "while now. If you like the plugin, please support our awesome development and support "
 "team by leaving a <a class=\"hfcm-review-stars\" href=\"https://wordpress.org/support/"
-"plugin/header-footer-code-manager/reviews/\"><span class=\"dashicons dashicons-star-filled"
-"\"></span><span class=\"dashicons dashicons-star-filled\"></span><span class=\"dashicons "
-"dashicons-star-filled\"></span><span class=\"dashicons dashicons-star-filled\"></"
-"span><span class=\"dashicons dashicons-star-filled\"></span></a> rating. <a href="
-"\"https://wordpress.org/support/plugin/header-footer-code-manager/reviews/\">Rate it!</a> "
-"It’ll mean the world to us and keep this plugin free and constantly updated. <a href="
-"\"https://wordpress.org/support/plugin/header-footer-code-manager/reviews/\">Leave A "
+"plugin/header-footer-code-manager/reviews/\"><span class=\"dashicons dashicons-star-"
+"filled\"></span><span class=\"dashicons dashicons-star-filled\"></span><span "
+"class=\"dashicons dashicons-star-filled\"></span><span class=\"dashicons dashicons-star-"
+"filled\"></span><span class=\"dashicons dashicons-star-filled\"></span></a> rating. <a "
+"href=\"https://wordpress.org/support/plugin/header-footer-code-manager/reviews/\">Rate it!"
+"</a> It’ll mean the world to us and keep this plugin free and constantly updated. <a "
+"href=\"https://wordpress.org/support/plugin/header-footer-code-manager/reviews/\">Leave A "
 "Review</a>"
 msgstr ""
 "नमस्ते! आप पिछले कुछ समय से <strong>हैडर फूटर कोड मैनेजर</strong> प्लगइन का उपयोग कर रहे हैं। यदि आप "
 "प्लगइन पसंद करते हैं, तो कृपया <a class=\"hfcm-review-stars\" href=\"https://wordpress.org/"
 "support/plugin/header-footer-code-manager/reviews/\"><span class=\"dashicons dashicons-"
-"star-filled\"></span><span class=\"dashicons dashicons-star-filled\"></span><span class="
-"\"dashicons dashicons-star-filled\"></span><span class=\"dashicons dashicons-star-filled"
-"\"></span><span class=\"dashicons dashicons-star-filled\"></span></a>रेटिंग देकर हमारी "
+"star-filled\"></span><span class=\"dashicons dashicons-star-filled\"></span><span "
+"class=\"dashicons dashicons-star-filled\"></span><span class=\"dashicons dashicons-star-"
+"filled\"></span><span class=\"dashicons dashicons-star-filled\"></span></a>रेटिंग देकर हमारी "
 "शानदार विकास और सहायता टीम का समर्थन करें। <a href=\"https://wordpress.org/support/plugin/"
 "header-footer-code-manager/reviews/\">इसे रेट करें!</a> यह हमारे लिए दुनिया का मतलब होगा और इस "
 "प्लगइन को मुक्त और लगातार अपडेट रखेगा। <a href=\"https://wordpress.org/support/plugin/header-"
 "footer-code-manager/reviews/\">समीक्षा लिखें</a>"
 
-#: ../99robots-header-footer-code-manager.php:1070
-#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1070
+#: ../99robots-header-footer-code-manager.php:1092
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1092
 msgid ""
 "Please deactivate the free version of this plugin in order to avoid duplication of the "
 "snippets.\n"
@@ -127,22 +127,22 @@ msgstr ""
 "                     आप इस प्लगइन के मुफ्त संस्करण से सभी स्निपेट आयात करने के लिए हमारे टूल का उपयोग "
 "कर सकते हैं।"
 
-#: ../99robots-header-footer-code-manager.php:1105
-#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1105
+#: ../99robots-header-footer-code-manager.php:1127
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1127
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:18
 #: ../includes/class-hfcm-snippets-list.php:18
 msgid "Snippets"
 msgstr "स्निपेट्स"
 
-#: ../99robots-header-footer-code-manager.php:1114
-#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1114
+#: ../99robots-header-footer-code-manager.php:1136
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1136
 msgid "Search Snippets"
 msgstr "स्निपेट खोजें"
 
-#: ../99robots-header-footer-code-manager.php:1202
-#: ../99robots-header-footer-code-manager.php:1217
-#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1202
-#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1217
+#: ../99robots-header-footer-code-manager.php:1224
+#: ../99robots-header-footer-code-manager.php:1239
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1224
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1239
 msgid "Please upload a valid import file"
 msgstr "कृपया एक मान्य आयात फ़ाइल अपलोड करें"
 
@@ -324,7 +324,7 @@ msgstr "शोर्टकोड कॉपी करें"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:345
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:415
-#: ../includes/class-hfcm-snippets-list.php:345 ../includes/hfcm-add-edit.php:415
+#: ../includes/class-hfcm-snippets-list.php:345 ../includes/hfcm-add-edit.php:419
 msgid "Delete"
 msgstr "मिटाएं"
 
@@ -502,8 +502,11 @@ msgid "Note"
 msgstr "ध्यान दें"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:321
-msgid "Snippet will only execute if the placement hook exists on the page"
-msgstr "पृष्ठ पर प्लेसमेंट हुक मौजूद होने पर ही स्निपेट निष्पादित होगा"
+#: ../includes/hfcm-add-edit.php:321
+msgid ""
+"Not all locations (such as before content) exist on all page/post types. The location "
+"will only appear as an option if the appropriate hook exists on the page."
+msgstr "सभी पेज/पोस्ट प्रकारों पर सभी स्थान (जैसे कि प्रकरण से पहले) मौजूद नहीं हैं।"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:335
 #: ../includes/hfcm-add-edit.php:335
@@ -548,7 +551,7 @@ msgid "Code"
 msgstr "कोड"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:409
-#: ../includes/hfcm-add-edit.php:409
+#: ../includes/hfcm-add-edit.php:413
 msgid "Save"
 msgstr "जमा करें"
 
@@ -606,11 +609,18 @@ msgstr "फ़ाइल का चयन करें"
 msgid "Import"
 msgstr "आयात"
 
-#: ../includes/hfcm-add-edit.php:321
+#: ../includes/hfcm-add-edit.php:408
 msgid ""
-"Not all locations (such as before content) exist on all page/post types. The location "
-"will only appear as an option if the appropriate hook exists on the page."
-msgstr "सभी पेज/पोस्ट प्रकारों पर सभी स्थान (जैसे कि प्रकरण से पहले) मौजूद नहीं हैं।"
+"Warning: Using improper code or untrusted sources code can break your site or create "
+"security risks. <a href=\"https://draftpress.com/security-risks-of-wp-plugins-that-allow-"
+"code-editing-or-insertion\" target=\"_blank\">Learn more</a>."
+msgstr ""
+"चेतावनी: अनुचित कोड या अविश्वसनीय स्रोत कोड का उपयोग करने से आपकी साइट टूट सकती है या सुरक्षा जोखिम "
+"पैदा हो सकते हैं। <a href=\"https://draftpress.com/security-risks-of-wp-plugins-that-allow-"
+"code-editing-or-insertion\" target=\"_blank\">और जानें</a> ।"
+
+#~ msgid "Snippet will only execute if the placement hook exists on the page"
+#~ msgstr "पृष्ठ पर प्लेसमेंट हुक मौजूद होने पर ही स्निपेट निष्पादित होगा"
 
 #~ msgid ""
 #~ "Header Footer Code Manager by 99 Robots is a quick and simple way for you to add "

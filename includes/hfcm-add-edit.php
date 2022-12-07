@@ -403,6 +403,10 @@ wp_enqueue_script('hfcm_showboxes');
             <div class="nnr-mt-20 nnr-hfcm-codeeditor-box">
                     <textarea name="data[snippet]" aria-describedby="nnr-newcontent-description" id="nnr_newcontent"
                               rows="20"><?php echo html_entity_decode($snippet); ?></textarea>
+
+                <p class="notice notice-warning nnr-padding10" id="nnr-snippet-warning">
+                    <?php _e( 'Warning: Using improper code or untrusted sources code can break your site or create security risks. <a href="https://draftpress.com/security-risks-of-wp-plugins-that-allow-code-editing-or-insertion" target="_blank">Learn more</a>.', 'header-footer-code-manager' ); ?>
+                </p>
                 <div class="wp-core-ui">
                     <input type="submit"
                            name="<?php echo $update ? 'update' : 'insert'; ?>"
