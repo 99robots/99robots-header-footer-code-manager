@@ -430,7 +430,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
     </div>
 
 <?php
-if (defined( 'WP_DISALLOW_FILE_EDITS' ) && true === WP_DISALLOW_FILE_EDITS && !get_user_meta(get_current_user_id(),'hfcm_file_edit_plugin_notice_dismissed', true) ) {
+if (defined( 'DISALLOW_FILE_EDIT' ) && true === DISALLOW_FILE_EDIT && !get_user_meta(get_current_user_id(),'hfcm_file_edit_plugin_notice_dismissed', true) ) {
     ?>
     <div id="file-editor-warning" class="notification-dialog-wrap file-editor-warning hide-if-no-js">
         <div class="notification-dialog-background"></div>
@@ -439,11 +439,18 @@ if (defined( 'WP_DISALLOW_FILE_EDITS' ) && true === WP_DISALLOW_FILE_EDITS && !g
                 <div class="file-editor-warning-message">
                     <h1>Heads up!</h1>
                     <p>
-                        <?php _e('Your site has <a href="https://draftpress.com/disallow-file-edit-setting-wordpress" target="_blank">WP_DISALLOW_FILE_EDITS</a> setting enabled inside the wp-config file fo prevent file edits. By using this plugin, you acknowledge that you know what you’re doing and intend on adding code snippets only from trusted sources.', 'header-footer-code-manager'); ?>
+                        <?php _e('Your site has <a href="https://draftpress.com/disallow-file-edit-setting-wordpress" target="_blank">disallow_file_edit</a> setting enabled inside the wp-config file to prevent file edits. By using this plugin, you acknowledge that you know what you’re doing and intend on adding code snippets only from trusted sources.', 'header-footer-code-manager'); ?>
                     </p>
                 </div>
                 <p>
-                    <a href="<?php echo admin_url( 'admin.php?page=hfcm-create&hfcm-file-edit-notice-dismissed=1' ) ?>" class="file-editor-warning-dismiss button button-primary" id="nnr-dismiss-editor-warning">I understand</a>
+                    <?php
+                    if ( $update ) :
+                        $hfcm_file_edit_dismiss_action = admin_url( 'admin.php?page=hfcm-update&hfcm-file-edit-notice-dismissed=1&id=' . absint( $id ) );
+                    else :
+                        $hfcm_file_edit_dismiss_action = admin_url( 'admin.php?page=hfcm-create&hfcm-file-edit-notice-dismissed=1' );
+                    endif;
+                    ?>
+                    <a href="<?php echo $hfcm_file_edit_dismiss_action; ?>" class="file-editor-warning-dismiss button button-primary" id="nnr-dismiss-editor-warning">I understand</a>
                 </p>
             </div>
         </div>
