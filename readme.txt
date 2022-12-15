@@ -114,8 +114,9 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
-= 1.1.32 = 2022-12-10
+= 1.1.32 = 2022-12-16
 * ADDED: Warning message to caution about file editing
+* FIXED: Snippet including in case of rest api in some cases
 
 = 1.1.31 = 2022-12-09
 * ADDED: Warning message to caution users of using improper code or untrusted sources code that can break site or create security risks.

@@ -601,7 +601,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
          */
         public static function hfcm_content_scripts( $content )
         {
-            if ( !is_feed() ) {
+            if ( !is_feed() && !(defined( 'REST_REQUEST' ) && REST_REQUEST) ) {
                 return self::hfcm_add_snippets( false, $content );
             } else {
                 return $content;
