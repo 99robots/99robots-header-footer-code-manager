@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Header Footer Code Manager\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-08 01:02+0530\n"
-"PO-Revision-Date: 2022-12-08 01:03+0530\n"
+"POT-Creation-Date: 2022-12-10 02:42+0530\n"
+"PO-Revision-Date: 2022-12-10 02:42+0530\n"
 "Last-Translator: fran <franmejia0@gmail.com>\n"
 "Language-Team: \n"
 "Language: hi\n"
@@ -40,7 +40,7 @@ msgid "All Snippets"
 msgstr "सभी स्निपेट"
 
 #: ../99robots-header-footer-code-manager.php:248
-#: ../99robots-header-footer-code-manager.php:1129
+#: ../99robots-header-footer-code-manager.php:1135
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:248
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1129
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:28
@@ -69,8 +69,8 @@ msgstr "स्क्रिप्ट अपडेट करें"
 
 #: ../99robots-header-footer-code-manager.php:269
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:269
-#: ../header-footer-code-manager/includes/hfcm-add-edit.php:409
-#: ../includes/hfcm-add-edit.php:413
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:413
+#: ../includes/hfcm-add-edit.php:417
 msgid "Update"
 msgstr "अपडेट करें"
 
@@ -115,7 +115,7 @@ msgstr ""
 "प्लगइन को मुक्त और लगातार अपडेट रखेगा। <a href=\"https://wordpress.org/support/plugin/header-"
 "footer-code-manager/reviews/\">समीक्षा लिखें</a>"
 
-#: ../99robots-header-footer-code-manager.php:1092
+#: ../99robots-header-footer-code-manager.php:1098
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1092
 msgid ""
 "Please deactivate the free version of this plugin in order to avoid duplication of the "
@@ -127,20 +127,20 @@ msgstr ""
 "                     आप इस प्लगइन के मुफ्त संस्करण से सभी स्निपेट आयात करने के लिए हमारे टूल का उपयोग "
 "कर सकते हैं।"
 
-#: ../99robots-header-footer-code-manager.php:1127
+#: ../99robots-header-footer-code-manager.php:1133
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1127
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:18
 #: ../includes/class-hfcm-snippets-list.php:18
 msgid "Snippets"
 msgstr "स्निपेट्स"
 
-#: ../99robots-header-footer-code-manager.php:1136
+#: ../99robots-header-footer-code-manager.php:1142
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1136
 msgid "Search Snippets"
 msgstr "स्निपेट खोजें"
 
-#: ../99robots-header-footer-code-manager.php:1224
-#: ../99robots-header-footer-code-manager.php:1239
+#: ../99robots-header-footer-code-manager.php:1230
+#: ../99robots-header-footer-code-manager.php:1245
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1224
 #: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1239
 msgid "Please upload a valid import file"
@@ -148,7 +148,7 @@ msgstr "कृपया एक मान्य आयात फ़ाइल अ�
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:17
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:401
-#: ../includes/class-hfcm-snippets-list.php:17 ../includes/hfcm-add-edit.php:401
+#: ../includes/class-hfcm-snippets-list.php:17 ../includes/hfcm-add-edit.php:405
 msgid "Snippet"
 msgstr "स्निपेट"
 
@@ -159,19 +159,19 @@ msgstr "कोई स्निपेट्स उपलब्ध नहीं."
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:208
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:99
-#: ../includes/class-hfcm-snippets-list.php:208 ../includes/hfcm-add-edit.php:99
+#: ../includes/class-hfcm-snippets-list.php:208 ../includes/hfcm-add-edit.php:100
 msgid "Site Wide"
 msgstr "साइट व्यापक"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:209
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:100
-#: ../includes/class-hfcm-snippets-list.php:209 ../includes/hfcm-add-edit.php:100
+#: ../includes/class-hfcm-snippets-list.php:209 ../includes/hfcm-add-edit.php:101
 msgid "Specific Posts"
 msgstr "विशिष्ट पोस्ट्स"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:210
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:101
-#: ../includes/class-hfcm-snippets-list.php:210 ../includes/hfcm-add-edit.php:101
+#: ../includes/class-hfcm-snippets-list.php:210 ../includes/hfcm-add-edit.php:102
 msgid "Specific Pages"
 msgstr "विशिष्ट पृष्ठ"
 
@@ -192,31 +192,31 @@ msgstr "विशिष्ट टैग"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:214
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:105
-#: ../includes/class-hfcm-snippets-list.php:214 ../includes/hfcm-add-edit.php:105
+#: ../includes/class-hfcm-snippets-list.php:214 ../includes/hfcm-add-edit.php:106
 msgid "Home Page"
 msgstr "होम पेज"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:215
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:106
-#: ../includes/class-hfcm-snippets-list.php:215 ../includes/hfcm-add-edit.php:106
+#: ../includes/class-hfcm-snippets-list.php:215 ../includes/hfcm-add-edit.php:107
 msgid "Search Page"
 msgstr "खोज पृष्ठ"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:216
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:107
-#: ../includes/class-hfcm-snippets-list.php:216 ../includes/hfcm-add-edit.php:107
+#: ../includes/class-hfcm-snippets-list.php:216 ../includes/hfcm-add-edit.php:108
 msgid "Archive Page"
 msgstr "संग्रह पृष्ठ"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:217
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:108
-#: ../includes/class-hfcm-snippets-list.php:217 ../includes/hfcm-add-edit.php:108
+#: ../includes/class-hfcm-snippets-list.php:217 ../includes/hfcm-add-edit.php:109
 msgid "Latest Posts"
 msgstr "नवीनतम पोस्ट"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:218
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:109
-#: ../includes/class-hfcm-snippets-list.php:218 ../includes/hfcm-add-edit.php:109
+#: ../includes/class-hfcm-snippets-list.php:218 ../includes/hfcm-add-edit.php:110
 msgid "Shortcode Only"
 msgstr "केवल छोटे संकेत"
 
@@ -236,7 +236,7 @@ msgstr ""
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:299
 #: ../header-footer-code-manager/includes/hfcm-tools.php:9
 #: ../includes/class-hfcm-snippets-list.php:247 ../includes/hfcm-add-edit.php:13
-#: ../includes/hfcm-add-edit.php:292 ../includes/hfcm-add-edit.php:299
+#: ../includes/hfcm-add-edit.php:294 ../includes/hfcm-add-edit.php:301
 #: ../includes/hfcm-tools.php:9
 msgid "Header"
 msgstr "हैडर"
@@ -246,7 +246,7 @@ msgstr "हैडर"
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:293
 #: ../header-footer-code-manager/includes/hfcm-tools.php:10
 #: ../includes/class-hfcm-snippets-list.php:248 ../includes/hfcm-add-edit.php:14
-#: ../includes/hfcm-add-edit.php:293 ../includes/hfcm-tools.php:10
+#: ../includes/hfcm-add-edit.php:295 ../includes/hfcm-tools.php:10
 msgid "Before Content"
 msgstr "प्रकरण से पहले"
 
@@ -255,7 +255,7 @@ msgstr "प्रकरण से पहले"
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:294
 #: ../header-footer-code-manager/includes/hfcm-tools.php:11
 #: ../includes/class-hfcm-snippets-list.php:249 ../includes/hfcm-add-edit.php:15
-#: ../includes/hfcm-add-edit.php:294 ../includes/hfcm-tools.php:11
+#: ../includes/hfcm-add-edit.php:296 ../includes/hfcm-tools.php:11
 msgid "After Content"
 msgstr "प्रकरण के बाद"
 
@@ -265,26 +265,26 @@ msgstr "प्रकरण के बाद"
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:300
 #: ../header-footer-code-manager/includes/hfcm-tools.php:12
 #: ../includes/class-hfcm-snippets-list.php:250 ../includes/hfcm-add-edit.php:16
-#: ../includes/hfcm-add-edit.php:295 ../includes/hfcm-add-edit.php:300
+#: ../includes/hfcm-add-edit.php:297 ../includes/hfcm-add-edit.php:302
 #: ../includes/hfcm-tools.php:12
 msgid "Footer"
 msgstr "फूटर"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:257
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:326
-#: ../includes/class-hfcm-snippets-list.php:257 ../includes/hfcm-add-edit.php:326
+#: ../includes/class-hfcm-snippets-list.php:257 ../includes/hfcm-add-edit.php:328
 msgid "Show on All Devices"
 msgstr "सभी उपकरणों पर दिखाना"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:259
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:328
-#: ../includes/class-hfcm-snippets-list.php:259 ../includes/hfcm-add-edit.php:328
+#: ../includes/class-hfcm-snippets-list.php:259 ../includes/hfcm-add-edit.php:330
 msgid "Only Mobile Devices"
 msgstr "केवल मोबाइल उपकरणों"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:261
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:327
-#: ../includes/class-hfcm-snippets-list.php:261 ../includes/hfcm-add-edit.php:327
+#: ../includes/class-hfcm-snippets-list.php:261 ../includes/hfcm-add-edit.php:329
 msgid "Only Desktop"
 msgstr "केवल डेस्कटॉप"
 
@@ -292,7 +292,7 @@ msgstr "केवल डेस्कटॉप"
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:413
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:75
 #: ../includes/class-hfcm-snippets-list.php:267 ../includes/class-hfcm-snippets-list.php:413
-#: ../includes/hfcm-add-edit.php:75
+#: ../includes/hfcm-add-edit.php:76
 msgid "HTML"
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:414
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:76
 #: ../includes/class-hfcm-snippets-list.php:268 ../includes/class-hfcm-snippets-list.php:414
-#: ../includes/hfcm-add-edit.php:76
+#: ../includes/hfcm-add-edit.php:77
 msgid "CSS"
 msgstr ""
 
@@ -308,7 +308,7 @@ msgstr ""
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:415
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:77
 #: ../includes/class-hfcm-snippets-list.php:269 ../includes/class-hfcm-snippets-list.php:415
-#: ../includes/hfcm-add-edit.php:77
+#: ../includes/hfcm-add-edit.php:78
 msgid "Javascript"
 msgstr ""
 
@@ -323,8 +323,8 @@ msgid "Copy Shortcode"
 msgstr "शोर्टकोड कॉपी करें"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:345
-#: ../header-footer-code-manager/includes/hfcm-add-edit.php:415
-#: ../includes/class-hfcm-snippets-list.php:345 ../includes/hfcm-add-edit.php:419
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:419
+#: ../includes/class-hfcm-snippets-list.php:345 ../includes/hfcm-add-edit.php:424
 msgid "Delete"
 msgstr "मिटाएं"
 
@@ -335,7 +335,7 @@ msgstr "आईडी"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:361
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:351
-#: ../includes/class-hfcm-snippets-list.php:361 ../includes/hfcm-add-edit.php:351
+#: ../includes/class-hfcm-snippets-list.php:361 ../includes/hfcm-add-edit.php:353
 msgid "Status"
 msgstr "स्थिति"
 
@@ -352,13 +352,13 @@ msgstr "पर प्रदर्शन"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:364
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:306
-#: ../includes/class-hfcm-snippets-list.php:364 ../includes/hfcm-add-edit.php:306
+#: ../includes/class-hfcm-snippets-list.php:364 ../includes/hfcm-add-edit.php:308
 msgid "Location"
 msgstr "स्थान"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:365
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:81
-#: ../includes/class-hfcm-snippets-list.php:365 ../includes/hfcm-add-edit.php:81
+#: ../includes/class-hfcm-snippets-list.php:365 ../includes/hfcm-add-edit.php:82
 msgid "Snippet Type"
 msgstr "स्निपेट प्रकार"
 
@@ -369,7 +369,7 @@ msgstr "उपकरण"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:367
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:368
-#: ../includes/class-hfcm-snippets-list.php:367 ../includes/hfcm-add-edit.php:368
+#: ../includes/class-hfcm-snippets-list.php:367 ../includes/hfcm-add-edit.php:370
 msgid "Shortcode"
 msgstr "छोटे संकेत"
 
@@ -405,13 +405,13 @@ msgstr "सभी टुकड़े"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:496
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:331
-#: ../includes/class-hfcm-snippets-list.php:496 ../includes/hfcm-add-edit.php:331
+#: ../includes/class-hfcm-snippets-list.php:496 ../includes/hfcm-add-edit.php:333
 msgid "Active"
 msgstr "सक्रिय"
 
 #: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:501
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:332
-#: ../includes/class-hfcm-snippets-list.php:501 ../includes/hfcm-add-edit.php:332
+#: ../includes/class-hfcm-snippets-list.php:501 ../includes/hfcm-add-edit.php:334
 msgid "Inactive"
 msgstr "निष्क्रिय"
 
@@ -437,121 +437,132 @@ msgid "Script Added Successfully"
 msgstr "स्क्रिप्ट जोड़ा सफलतापूर्वक"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:102
-#: ../includes/hfcm-add-edit.php:102
+#: ../includes/hfcm-add-edit.php:103
 msgid "Specific Categories (Archive & Posts)"
 msgstr "विशिष्ट श्रेणियाँ (संग्रह और पोस्ट)"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:103
-#: ../includes/hfcm-add-edit.php:103
+#: ../includes/hfcm-add-edit.php:104
 msgid "Specific Post Types (Archive & Posts)"
 msgstr "विशिष्ट पोस्ट प्रकार (संग्रह और पोस्ट)"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:104
-#: ../includes/hfcm-add-edit.php:104
+#: ../includes/hfcm-add-edit.php:105
 msgid "Specific Tags (Archive & Posts)"
 msgstr "विशिष्ट टैग (संग्रह और पोस्ट)"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:112
-#: ../includes/hfcm-add-edit.php:112
+#: ../includes/hfcm-add-edit.php:113
 msgid "Site Display"
 msgstr "साइट प्रदर्शन"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:139
-#: ../includes/hfcm-add-edit.php:139
+#: ../includes/hfcm-add-edit.php:140
 msgid "Exclude Pages"
 msgstr "पृष्ठों को बाहर करें"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:156
-#: ../includes/hfcm-add-edit.php:156
+#: ../includes/hfcm-add-edit.php:157
 msgid "Exclude Posts"
 msgstr "पोस्ट को बाहर करें"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:170
-#: ../includes/hfcm-add-edit.php:170
+#: ../includes/hfcm-add-edit.php:171
 msgid "Page List"
 msgstr "पेज सूची"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:189
-#: ../includes/hfcm-add-edit.php:189
+#: ../includes/hfcm-add-edit.php:190
 msgid "Post List"
 msgstr "पोस्ट सूची"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:222
-#: ../includes/hfcm-add-edit.php:222
+#: ../includes/hfcm-add-edit.php:223
 msgid "Category List"
 msgstr "श्रेणी सूची"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:240
-#: ../includes/hfcm-add-edit.php:240
+#: ../includes/hfcm-add-edit.php:241
 msgid "Tags List"
 msgstr "टैग सूची"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:258
-#: ../includes/hfcm-add-edit.php:258
+#: ../includes/hfcm-add-edit.php:259
 msgid "Post Types"
 msgstr "पोस्ट प्रकार"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:274
-#: ../includes/hfcm-add-edit.php:274
+#: ../includes/hfcm-add-edit.php:275
 msgid "Post Count"
 msgstr "पोस्ट गिनती"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:321
-#: ../includes/hfcm-add-edit.php:321
+#: ../includes/hfcm-add-edit.php:323
 msgid "Note"
 msgstr "ध्यान दें"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:321
-#: ../includes/hfcm-add-edit.php:321
+#: ../includes/hfcm-add-edit.php:323
 msgid ""
 "Not all locations (such as before content) exist on all page/post types. The location "
 "will only appear as an option if the appropriate hook exists on the page."
 msgstr "सभी पेज/पोस्ट प्रकारों पर सभी स्थान (जैसे कि प्रकरण से पहले) मौजूद नहीं हैं।"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:335
-#: ../includes/hfcm-add-edit.php:335
+#: ../includes/hfcm-add-edit.php:337
 msgid "Device Display"
 msgstr "डिवाइस प्रदर्शन"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:375
-#: ../includes/hfcm-add-edit.php:375
+#: ../includes/hfcm-add-edit.php:379
 msgid "Copy"
 msgstr "कॉपी"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:384
-#: ../includes/hfcm-add-edit.php:384
+#: ../includes/hfcm-add-edit.php:388
 msgid "Changelog"
 msgstr "चैंज लॉग"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:388
-#: ../includes/hfcm-add-edit.php:388
+#: ../includes/hfcm-add-edit.php:392
 msgid "Snippet created by"
 msgstr "के द्वारा बनाई गई स्निपेट"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:389
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:393
-#: ../includes/hfcm-add-edit.php:389 ../includes/hfcm-add-edit.php:393
+#: ../includes/hfcm-add-edit.php:393 ../includes/hfcm-add-edit.php:397
 msgid "on"
 msgstr "पर"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:389
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:393
-#: ../includes/hfcm-add-edit.php:389 ../includes/hfcm-add-edit.php:393
+#: ../includes/hfcm-add-edit.php:393 ../includes/hfcm-add-edit.php:397
 msgid "at"
 msgstr "पर"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:392
-#: ../includes/hfcm-add-edit.php:392
+#: ../includes/hfcm-add-edit.php:396
 msgid "Last edited by"
 msgstr "अंतिम बार संपादित द्वारा"
 
 #: ../header-footer-code-manager/includes/hfcm-add-edit.php:402
-#: ../includes/hfcm-add-edit.php:402
+#: ../includes/hfcm-add-edit.php:406
 msgid "Code"
 msgstr "कोड"
 
-#: ../header-footer-code-manager/includes/hfcm-add-edit.php:409
-#: ../includes/hfcm-add-edit.php:413
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:408
+#: ../includes/hfcm-add-edit.php:412
+msgid ""
+"Warning: Using improper code or untrusted sources code can break your site or create "
+"security risks. <a href=\"https://draftpress.com/security-risks-of-wp-plugins-that-allow-"
+"code-editing-or-insertion\" target=\"_blank\">Learn more</a>."
+msgstr ""
+"चेतावनी: अनुचित कोड या अविश्वसनीय स्रोत कोड का उपयोग करने से आपकी साइट टूट सकती है या सुरक्षा जोखिम "
+"पैदा हो सकते हैं। <a href=\"https://draftpress.com/security-risks-of-wp-plugins-that-allow-"
+"code-editing-or-insertion\" target=\"_blank\">और जानें</a> ।"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:413
+#: ../includes/hfcm-add-edit.php:417
 msgid "Save"
 msgstr "जमा करें"
 
@@ -609,15 +620,17 @@ msgstr "फ़ाइल का चयन करें"
 msgid "Import"
 msgstr "आयात"
 
-#: ../includes/hfcm-add-edit.php:408
+#: ../includes/hfcm-add-edit.php:442
 msgid ""
-"Warning: Using improper code or untrusted sources code can break your site or create "
-"security risks. <a href=\"https://draftpress.com/security-risks-of-wp-plugins-that-allow-"
-"code-editing-or-insertion\" target=\"_blank\">Learn more</a>."
+"Your site has <a href=\"https://draftpress.com/disallow-file-edit-setting-wordpress\" "
+"target=\"_blank\">WP_DISALLOW_FILE_EDITS</a> setting enabled inside the wp-config file fo "
+"prevent file edits. By using this plugin, you acknowledge that you know what you’re doing "
+"and intend on adding code snippets only from trusted sources."
 msgstr ""
-"चेतावनी: अनुचित कोड या अविश्वसनीय स्रोत कोड का उपयोग करने से आपकी साइट टूट सकती है या सुरक्षा जोखिम "
-"पैदा हो सकते हैं। <a href=\"https://draftpress.com/security-risks-of-wp-plugins-that-allow-"
-"code-editing-or-insertion\" target=\"_blank\">और जानें</a> ।"
+"फ़ाइल संपादन को रोकने के लिए आपकी साइट में <a href=\"https://draftpress.com/disallow-file-edit-"
+"setting-wordpress\" target=\"_blank\">WP_DISALLOW_FILE_EDITS</a> सेटिंग wp-config फ़ाइल के "
+"अंदर सक्षम है। इस प्लगइन का उपयोग करके, आप स्वीकार करते हैं कि आप जानते हैं कि आप क्या कर रहे हैं और केवल "
+"विश्वसनीय स्रोतों से कोड स्निपेट जोड़ने का इरादा रखते हैं।"
 
 #~ msgid "Snippet will only execute if the placement hook exists on the page"
 #~ msgstr "पृष्ठ पर प्लेसमेंट हुक मौजूद होने पर ही स्निपेट निष्पादित होगा"

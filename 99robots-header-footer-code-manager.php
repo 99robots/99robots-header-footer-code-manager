@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.31
+ * Version: 1.1.32
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -369,6 +369,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
         public static function hfcm_plugin_notice_dismissed()
         {
             $user_id = get_current_user_id();
+
             // Checking if user clicked on the Dismiss button
             if ( isset( $_GET['hfcm-admin-notice-dismissed'] ) ) {
                 add_user_meta( $user_id, 'hfcm_plugin_notice_dismissed', 'true', true );
@@ -376,6 +377,11 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 $current_url = wp_get_referer();
                 wp_redirect( $current_url );
                 exit;
+            }
+
+            // Checking if user clicked on the 'I understand' button
+            if ( isset( $_GET['hfcm-file-edit-notice-dismissed'] ) ) {
+                add_user_meta( $user_id, 'hfcm_file_edit_plugin_notice_dismissed', 'true', true );
             }
         }
 
@@ -595,7 +601,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
          */
         public static function hfcm_content_scripts( $content )
         {
-            if ( !is_feed() ) {
+            if ( !is_feed() && !(defined( 'REST_REQUEST' ) && REST_REQUEST) ) {
                 return self::hfcm_add_snippets( false, $content );
             } else {
                 return $content;
