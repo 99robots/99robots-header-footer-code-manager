@@ -3,8 +3,8 @@ Contributors: DraftPress, 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.9
 Requires PHP: 5.6.20
-Tested up to: 6.1.1
-Stable tag: 1.1.32
+Tested up to: 6.2.2
+Stable tag: 1.1.33
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -114,6 +114,11 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+= 1.1.33 = 2023-06-22
+* FIXED: Snippets not showing up on Woocommerce product categories
+* UPDATED: Compatibility with WordPress 6.2.2
+* UPDATED: Compatibility with PHP 8.2
+
 = 1.1.32 = 2022-12-16
 * ADDED: Warning message to caution about file editing
 * FIXED: Snippet including in case of rest api in some cases

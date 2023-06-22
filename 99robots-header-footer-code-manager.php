@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.32
+ * Version: 1.1.33
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -264,7 +264,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
             // This submenu is HIDDEN, however, we need to add it anyways
             add_submenu_page(
-                null,
+                '',
                 __( 'Update Script', 'header-footer-code-manager' ),
                 __( 'Update', 'header-footer-code-manager' ),
                 'manage_options',
@@ -274,7 +274,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
             // This submenu is HIDDEN, however, we need to add it anyways
             add_submenu_page(
-                null,
+                '',
                 __( 'Request Handler Script', 'header-footer-code-manager' ),
                 __( 'Request Handler', 'header-footer-code-manager' ),
                 'manage_options',
@@ -497,12 +497,25 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                             break;
                         case 's_categories':
                             $is_not_empty_s_categories = self::hfcm_not_empty( $scriptdata, 's_categories' );
-                            if ( $is_not_empty_s_categories && in_category( json_decode( $scriptdata->s_categories ) ) ) {
-                                if ( is_category( json_decode( $scriptdata->s_categories ) ) ) {
+                            if($is_not_empty_s_categories) {
+                                if( is_product_category( json_decode( $scriptdata->s_categories ) ) ) {
                                     $out = self::hfcm_render_snippet( $scriptdata );
-                                }
-                                if ( !is_archive() && !is_home() ) {
-                                    $out = self::hfcm_render_snippet( $scriptdata );
+                                } else if ( in_category( json_decode( $scriptdata->s_categories ) ) ) {
+                                    if ( is_category( json_decode( $scriptdata->s_categories ) ) ) {
+                                        $out = self::hfcm_render_snippet( $scriptdata );
+                                    }
+                                    if ( !is_archive() && !is_home() ) {
+                                        $out = self::hfcm_render_snippet( $scriptdata );
+                                    }
+                                } else {
+                                    if(is_product()) {
+                                        foreach(json_decode( $scriptdata->s_categories ) as $key_c => $item_c) {
+                                            if ( has_term( $item_c, 'product_cat' ) ) {
+                                                $out = self::hfcm_render_snippet( $scriptdata );
+                                                break;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             break;
