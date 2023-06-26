@@ -497,8 +497,8 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                             break;
                         case 's_categories':
                             $is_not_empty_s_categories = self::hfcm_not_empty( $scriptdata, 's_categories' );
-                            if($is_not_empty_s_categories) {
-                                if( is_product_category( json_decode( $scriptdata->s_categories ) ) ) {
+                            if ( $is_not_empty_s_categories ) {
+                                if ( is_product_category( json_decode( $scriptdata->s_categories ) ) ) {
                                     $out = self::hfcm_render_snippet( $scriptdata );
                                 } else if ( in_category( json_decode( $scriptdata->s_categories ) ) ) {
                                     if ( is_category( json_decode( $scriptdata->s_categories ) ) ) {
@@ -508,8 +508,8 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                                         $out = self::hfcm_render_snippet( $scriptdata );
                                     }
                                 } else {
-                                    if(is_product()) {
-                                        foreach(json_decode( $scriptdata->s_categories ) as $key_c => $item_c) {
+                                    if ( is_product() ) {
+                                        foreach ( json_decode( $scriptdata->s_categories ) as $key_c => $item_c ) {
                                             if ( has_term( $item_c, 'product_cat' ) ) {
                                                 $out = self::hfcm_render_snippet( $scriptdata );
                                                 break;
@@ -563,12 +563,23 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                             break;
                         case 's_tags':
                             $is_not_empty_s_tags = self::hfcm_not_empty( $scriptdata, 's_tags' );
-                            if ( $is_not_empty_s_tags && has_tag( json_decode( $scriptdata->s_tags ) ) ) {
-                                if ( is_tag( json_decode( $scriptdata->s_tags ) ) ) {
+                            if ( $is_not_empty_s_tags ) {
+                                if ( has_tag( json_decode( $scriptdata->s_tags ) ) ) {
+                                    if ( is_tag( json_decode( $scriptdata->s_tags ) ) ) {
+                                        $out = self::hfcm_render_snippet( $scriptdata );
+                                    }
+                                    if ( !is_archive() && !is_home() ) {
+                                        $out = self::hfcm_render_snippet( $scriptdata );
+                                    }
+                                } elseif ( is_product_tag( json_decode( $scriptdata->s_tags ) ) ) {
                                     $out = self::hfcm_render_snippet( $scriptdata );
-                                }
-                                if ( !is_archive() && !is_home() ) {
-                                    $out = self::hfcm_render_snippet( $scriptdata );
+                                } elseif ( is_product() ) {
+                                    foreach ( json_decode( $scriptdata->s_tags ) as $key_t => $item_t ) {
+                                        if ( has_term( $item_t, 'product_tag' ) ) {
+                                            $out = self::hfcm_render_snippet( $scriptdata );
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                     }
