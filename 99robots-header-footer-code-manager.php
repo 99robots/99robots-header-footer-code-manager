@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.33
+ * Version: 1.1.34
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: 99robots
@@ -498,7 +498,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                         case 's_categories':
                             $is_not_empty_s_categories = self::hfcm_not_empty( $scriptdata, 's_categories' );
                             if ( $is_not_empty_s_categories ) {
-                                if ( is_product_category( json_decode( $scriptdata->s_categories ) ) ) {
+                                if ( class_exists( 'WooCommerce' ) && is_product_category( json_decode( $scriptdata->s_categories ) ) ) {
                                     $out = self::hfcm_render_snippet( $scriptdata );
                                 } else if ( in_category( json_decode( $scriptdata->s_categories ) ) ) {
                                     if ( is_category( json_decode( $scriptdata->s_categories ) ) ) {
@@ -508,7 +508,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                                         $out = self::hfcm_render_snippet( $scriptdata );
                                     }
                                 } else {
-                                    if ( is_product() ) {
+                                    if ( class_exists( 'WooCommerce' ) && is_product() ) {
                                         foreach ( json_decode( $scriptdata->s_categories ) as $key_c => $item_c ) {
                                             if ( has_term( $item_c, 'product_cat' ) ) {
                                                 $out = self::hfcm_render_snippet( $scriptdata );
@@ -571,9 +571,9 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                                     if ( !is_archive() && !is_home() ) {
                                         $out = self::hfcm_render_snippet( $scriptdata );
                                     }
-                                } elseif ( is_product_tag( json_decode( $scriptdata->s_tags ) ) ) {
+                                } elseif ( class_exists( 'WooCommerce' ) && is_product_tag( json_decode( $scriptdata->s_tags ) ) ) {
                                     $out = self::hfcm_render_snippet( $scriptdata );
-                                } elseif ( is_product() ) {
+                                } elseif ( class_exists( 'WooCommerce' ) && is_product() ) {
                                     foreach ( json_decode( $scriptdata->s_tags ) as $key_t => $item_t ) {
                                         if ( has_term( $item_t, 'product_tag' ) ) {
                                             $out = self::hfcm_render_snippet( $scriptdata );

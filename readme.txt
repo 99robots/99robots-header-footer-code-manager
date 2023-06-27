@@ -4,7 +4,7 @@ Tags: header, footer, code manager, snippet, functions.php, tracking, google ana
 Requires at least: 4.9
 Requires PHP: 5.6.20
 Tested up to: 6.2.2
-Stable tag: 1.1.33
+Stable tag: 1.1.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -114,6 +114,9 @@ A. Free plugins rely on user feedback. Therefore, the best thing you can do for 
 A. If your script is not supported, just let us know and we'll look into it immediately. We will do our best to ensure all reputable services are supported. When requesting support for a particular script, it would be nice to get a sample of the script so that we can see its structure.
 
 == Changelog ==
+= 1.1.34 = 2023-06-27
+* FIXED: Check if Woocommerce installed before using its functions
+
 = 1.1.33 = 2023-06-26
 * FIXED: Snippets not showing up on Woocommerce product categories and tags
 * UPDATED: Compatibility with WordPress 6.2.2
