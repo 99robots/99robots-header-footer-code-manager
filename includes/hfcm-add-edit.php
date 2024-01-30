@@ -405,39 +405,6 @@ wp_enqueue_script('hfcm_showboxes');
                                     <?php endif; ?>
                                 </div>
                             <?php endif; ?>
-
-                            <!--                            <div class="selection">-->
-                            <!--                                <div class="choices">-->
-                            <!--                                    <ul class="acf-bl list choices-list"></ul>-->
-                            <!--                                </div>-->
-                            <!--                                <div class="values">-->
-                            <!--                                    <ul class="acf-bl list values-list">-->
-                            <!--                                        --><?php //if (!empty($field['value'])):
-                            //
-                            //                                            // get posts
-                            //                                            $posts = acf_get_posts(array(
-                            //                                                'post__in' => $field['value'],
-                            //                                                'post_type' => $field['post_type']
-                            //                                            ));
-                            //
-                            //
-                            //                                            // loop
-                            //                                            foreach ($posts as $post): ?>
-                            <!--                                                <li>-->
-                            <!--                                                    --><?php //acf_hidden_input(array('name' => $field['name'] . '[]', 'value' => $post->ID)); ?>
-                            <!--                                                    <span data-id="-->
-                            <?php //echo esc_attr($post->ID); ?><!--"-->
-                            <!--                                                          class="acf-rel-item">-->
-                            <!--                                                        --><?php //echo acf_esc_html($this->get_post_title($post, $field)); ?>
-                            <!--                                                        <a href="#" class="acf-icon -minus small dark"-->
-                            <!--                                                           data-name="remove_item"></a>-->
-                            <!--                                                    </span>-->
-                            <!--                                                </li>-->
-                            <!--                                            --><?php //endforeach; ?>
-                            <!--                                        --><?php //endif; ?>
-                            <!--                                    </ul>-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
                         </div>
                         <select class="nnr-wraptext" name="data[s_posts][]" multiple>
                             <option disabled>...</option>
@@ -612,8 +579,92 @@ wp_enqueue_script('hfcm_showboxes');
                             </p>
                         </td>
                     </tr>
+                    
                 <?php endif; ?>
+                <tr>
+                    <th class="hfcm-th-width"><?php esc_html_e('Exclude Posts', '99robots-header-footer-code-manager'); ?></th>
+                    <td>
+                    <?php
+                        // Initialize CMB2.
+                
+                        $exclude_posts = new_cmb2_box( array(
+                            'id'           => 'cmb2_attached_posts_field',
+                            'title'        => __( 'Exclude Posts', '99robots-header-footer-code-manager' ),
+                            'object_types' => array( 'options-page' ),
+                            'option_key'    => 'hfcm-create',
+                            'context'      => 'normal',
+                            'priority'     => 'high',
+                            'show_names'   => false, // Show field names on the left.
+                        ) );
+                    
+                        $exclude_posts->add_field( array(
+                            'name'    => __( 'Exclude Posts', '99robots-header-footer-code-manager' ),
+                            'desc'    => __( 'Drag posts from the left column to the right column to attach them to this page.<br />You may rearrange the order of the posts in the right column by dragging and dropping.', '99robots-header-footer-code-manager' ),
+                            'default' => $ex_posts,
+                            'id'      => 'data[hfcm_attached_cmb2_attached_posts]',
+                            'type'    => 'custom_attached_posts',
+                            'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column.
+                            'options' => array(
+                                'show_thumbnails' => true, // Show thumbnails on the left.
+                                'filter_boxes'    => true, // Show a text box for filtering the results.
+                                'query_args'      => array(
+                                    'posts_per_page' => -1,
+                                    //'post_type'      => array('post', 'page', 'attachment'),
+                                    'post_type'      => array( 'post' ),
+                                    'post_status'    => array('publish', 'inherit'),
+
+                                ),
+                            ),
+                        ) );
+                    
+
+                        // Output CMB2 options page fields.
+                        $exclude_posts->show_form();
+                        ?>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <th class="hfcm-th-width"><?php esc_html_e('Exclude Pages', '99robots-header-footer-code-manager'); ?></th>
+                    <td>
+                    <?php
+                        $exclude_pages = new_cmb2_box( array(
+                            'id'           => 'cmb2_attached_pages_field',
+                            'title'        => __( 'Exclude Pages', '99robots-header-footer-code-manager' ),
+                            'object_types' => array( 'options-page' ),
+                            'option_key'    => 'hfcm-create',
+                            'context'      => 'normal',
+                            'priority'     => 'high',
+                            'show_names'   => false, // Show field names on the left.
+                        ) );
+                    
+                        $exclude_pages->add_field( array(
+                            'name'    => __( 'Exclude Pages', '99robots-header-footer-code-manager' ),
+                            'default' => $ex_pages,
+                            'id'      => 'data[hfcm_attached_cmb2_attached_pages]',
+                            'type'    => 'custom_attached_posts',
+                            'column'  => true,
+                            'options' => array(
+                                'show_thumbnails' => true, 
+                                'filter_boxes'    => true, 
+                                'query_args'      => array(
+                                    'posts_per_page' => -1,
+                                    'post_type'      => array( 'page' ),
+                                    'post_status'    => array( 'publish' ),
+            
+                                ),
+                            ),
+                        ) );
+            
+                        // Output CMB2 options page fields.
+                        $exclude_pages->show_form();
+                        
+                        ?>
+                        
+                    </td>
+                </tr>
             </table>
+
             <div class="wrap">
                 <h1><?php esc_html_e('Snippet', '99robots-header-footer-code-manager'); ?>
                     / <?php esc_html_e('Code', '99robots-header-footer-code-manager') ?></h1>

@@ -56,9 +56,11 @@ function hfcm_request_handler() {
 		$lp_count       = hfcm_sanitize_text( 'lp_count' );
 		$status         = hfcm_sanitize_text( 'status' );
 		$s_pages        = hfcm_sanitize_array( 's_pages' );
-		$ex_pages        = hfcm_sanitize_array( 'ex_pages' );
+		//$ex_pages        = hfcm_sanitize_array( 'ex_pages' );
+		$ex_pages        = hfcm_sanitize_array( 'hfcm_attached_cmb2_attached_pages' );
 		$s_posts        = hfcm_sanitize_array( 's_posts' );
-		$ex_posts        = hfcm_sanitize_array( 'ex_posts' );
+		//$ex_posts        = hfcm_sanitize_array( 'ex_posts' );
+		$ex_posts        = hfcm_sanitize_array( 'hfcm_attached_cmb2_attached_posts' );
 		$s_custom_posts = hfcm_sanitize_array( 's_custom_posts', 'string' );
 		$s_categories   = hfcm_sanitize_array( 's_categories' );
 		$s_tags         = hfcm_sanitize_array( 's_tags' );

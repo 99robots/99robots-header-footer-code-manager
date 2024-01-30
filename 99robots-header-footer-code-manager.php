@@ -256,13 +256,20 @@ add_action( 'admin_init', 'hfcm_plugin_notice_dismissed' );
 
 /*****/
 
+// including CMB2 library.
+require_once plugin_dir_path( __FILE__ ) . 'includes/lib/CMB2/init.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/lib/cmb2-attached-posts/cmb2-attached-posts-field.php';
+
+
 // Files containing submenu functions
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-list.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-create.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-update.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-request-handler.php' );
 
-// Function to render the snippet
+
+
+// Function to render the snippet.
 function hfcm_render_snippet( $scriptdata ) {
 	$output = "<!-- HFCM by 99 Robots - Snippet # {$scriptdata->script_id}: {$scriptdata->name} -->\n{$scriptdata->snippet}\n<!-- /end HFCM by 99 Robots -->\n";
 
@@ -472,6 +479,11 @@ function hfcm_sanitize_array( $key, $type = 'integer' ) {
 	if ( ! empty( $_POST['data'][ $key ] ) ) {
 
 		$arr = $_POST['data'][ $key ];
+
+		if( 'hfcm_attached_cmb2_attached_posts' === $key || 'hfcm_attached_cmb2_attached_pages' === $key ){
+			// convert string to array.
+			$arr = explode( ',', $arr );
+		}
 
 		if ( ! is_array( $arr ) ) {
 			return array();
