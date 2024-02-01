@@ -459,6 +459,7 @@ function hfcm_redirect( $url = '' ) {
 
 // Handle AJAX requests
 add_action( 'wp_ajax_hfcm-request', 'hfcm_request_handler' );
+add_action( 'wp_ajax_hfcm-request-example', 'hfcm_request_handler_example' );
 
 // Function to sanitize POST data
 function hfcm_sanitize_text( $key, $sanitize = true ) {
@@ -480,7 +481,7 @@ function hfcm_sanitize_array( $key, $type = 'integer' ) {
 
 		$arr = $_POST['data'][ $key ];
 
-		if( 'hfcm_attached_cmb2_attached_posts' === $key || 'hfcm_attached_cmb2_attached_pages' === $key ){
+		if( 'ex_posts_list' === $key && !empty( $arr ) ){
 			// convert string to array.
 			$arr = explode( ',', $arr );
 		}

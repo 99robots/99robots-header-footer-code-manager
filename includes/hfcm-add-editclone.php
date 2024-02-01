@@ -23,25 +23,6 @@ wp_localize_script('hfcm_showboxes', 'hfcm_localize', $translation_array);
 wp_enqueue_script('hfcm_showboxes');
 ?>
 
-<style>
-    .hfcm-field-width, .hfcm-form-width select, .selectize-control {
-        width: 320px;
-    }
-    textarea.nnr-wraptext.left-side {
-        /* width: 44%; */
-        height: 100px;
-        margin-top: 10px;
-        resize: none;
-    }
-    .filters-f3 {
-        display: flex;
-        gap: 25px;
-    }
-    select.nnr-wraptext.left-side {
-        width: 100%;
-    }
-</style>
-
 <div class="wrap">
     <h1>
         <?php echo $update ? esc_html__('Edit Snippet', '99robots-header-footer-code-manager') : esc_html__('Add New Snippet', '99robots-header-footer-code-manager') ?>
@@ -139,7 +120,209 @@ wp_enqueue_script('hfcm_showboxes');
                         </select>
                     </td>
                 </tr>
-              
+                <tr id="ex_posts"
+                    style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle . $exmanualstyle; ?>">
+                    <th class="hfcm-th-width"><?php esc_html_e('Exclude Posts', '99robots-header-footer-code-manager'); ?></th>
+                    <td>
+                        <div>
+
+                            <?php
+
+                            $post_type = '';
+                            $taxonomy = '';
+                            $filters = ['search', 'post_type', 'taxonomy'];
+
+                            // filters
+                            $filter_count = count($filters);
+                            $filter_post_type_choices = array();
+                            $filter_taxonomy_choices = array();
+
+                            // vars
+                            $post_types = array();
+
+                            // extract special arg
+                            $exclude = ['page'];
+                            $exclude[] = 'acf-field';
+                            $exclude[] = 'acf-field-group';
+
+                            // get post type objects
+                            $objects = get_post_types([], 'objects');
+
+                            // loop
+                            foreach ($objects as $i => $object) {
+
+                                // bail early if is exclude
+                                if (in_array($i, $exclude)) continue;
+
+                                // bail early if is builtin (WP) private post type
+                                // - nav_menu_item, revision, customize_changeset, etc
+                                if ($object->_builtin && !$object->public) continue;
+
+                                // append
+                                $filter_post_type_choices[] = $i;
+                            }
+
+                            // defaults
+                            $args = wp_parse_args([], array(
+                                'taxonomy' => null,
+                                'hide_empty' => false,
+                                'update_term_meta_cache' => false,
+                            ));
+
+                            $taxonomies = acf_get_taxonomies();
+
+
+                            // vars
+                            $ref = array();
+                            $data = array();
+
+                            // loop
+                            foreach ($taxonomies as $taxonomy) {
+
+                                // vars
+                                $object = get_taxonomy($taxonomy);
+                                $label = $object->labels->singular_name;
+
+                                // append
+                                $data[$taxonomy] = $label;
+
+                                // increase counter
+                                if (!isset($ref[$label])) {
+                                    $ref[$label] = 0;
+                                }
+                                $ref[$label]++;
+                            }
+
+                            // show taxonomy name next to label for shared labels
+                            foreach ($data as $taxonomy => $label) {
+                                if ($ref[$label] > 1) {
+                                    $data[$taxonomy] .= ' (' . $taxonomy . ')';
+                                }
+                            }
+                            $terms = get_terms($args);
+
+                            foreach ($data as $taxonomy => $label) {
+
+                                // vars
+                                $this_terms = array();
+
+                                // populate $this_terms
+                                foreach ($terms as $term) {
+                                    if ($term->taxonomy == $taxonomy) {
+                                        $this_terms[] = $term;
+                                    }
+                                }
+
+                                // bail early if no $items
+                                if (empty($this_terms)) continue;
+
+                                // sort into hierachial order
+                                // this will fail if a search has taken place because parents wont exist
+                                if (is_taxonomy_hierarchical($taxonomy) && empty($args['s'])) {
+
+                                    // get all terms from this taxonomy
+                                    $all_terms = get_terms(array_merge($args, array(
+                                        'number' => 0,
+                                        'offset' => 0,
+                                        'taxonomy' => $taxonomy
+                                    )));
+
+                                    // vars
+                                    $length = count($this_terms);
+                                    $offset = 0;
+
+                                    // find starting point (offset)
+                                    foreach ($all_terms as $i => $term) {
+                                        if ($term->term_id == $this_terms[0]->term_id) {
+                                            $offset = $i;
+                                            break;
+                                        }
+                                    }
+
+                                    // order terms
+                                    $parent = acf_maybe_get($args, 'parent', 0);
+                                    $parent = acf_maybe_get($args, 'child_of', $parent);
+                                    $ordered_terms = _get_term_children($parent, $all_terms, $taxonomy);
+
+                                    // compare aray lengths
+                                    // if $ordered_posts is smaller than $all_posts, WP has lost posts during the get_page_children() function
+                                    // this is possible when get_post( $args ) filter out parents (via taxonomy, meta and other search parameters)
+                                    if (count($ordered_terms) == count($all_terms)) {
+                                        $this_terms = array_slice($ordered_terms, $offset, $length);
+                                    }
+                                }
+
+                                // populate group
+                                $data[$label] = array();
+                                foreach ($this_terms as $term) {
+                                    $data[$label][$term->term_id] = $term;
+                                }
+                            }
+                            $filter_taxonomy_choices = $data;
+
+                            /* filters */
+                            if ($filter_count): ?>
+                                <div class="filters -f<?php echo esc_attr($filter_count); ?>">
+                                    <?php
+
+                                    /* search */
+                                    if (in_array('search', $filters)): ?>
+                                        <span class="filter-search">
+                                            <input placeholder="Search" type="text" name="ex_s"/>
+                                        </span>
+                                    <?php endif;
+
+
+                                    /* post_type */
+                                    if (in_array('post_type', $filters)): ?>
+                                        <span class="filter-post_type">
+                                            <select onchange="fetchExcludePosts(0);" name="ex_filter_post_type">
+                                                <option value="">Select post type</option>
+                                                <?php foreach ($filter_post_type_choices as $keyP => $itemP) { ?>
+                                                    <option value="<?php echo $itemP; ?>"><?php echo $itemP; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </span>
+                                    <?php endif;
+
+
+                                    /* post_type */
+                                    if (in_array('taxonomy', $filters)): ?>
+                                        <span class="filter-taxonomy">
+                                            <select onchange="fetchExcludePosts(0);" name="ex_filter_taxonomy">
+                                                <option value="">Select taxonomy</option>
+                                                <?php
+                                                foreach ($filter_taxonomy_choices as $keyT => $itemsT) {
+                                                    if (!is_array($itemsT)) {
+                                                        continue;
+                                                    }
+                                                    ?>
+                                                    <optgroup label="<?php echo $keyT; ?>">
+                                                        <?php foreach ($itemsT as $keyST => $itemsST) {
+                                                            if (empty($itemsST)) {
+                                                                continue;
+                                                            }
+                                                            ?>
+                                                            <option value="<?php echo $itemsST->taxonomy; ?>:<?php echo $itemsST->slug; ?>">
+                                                                <?php echo $itemsST->name; ?>
+                                                            </option>
+                                                        <?php } ?>
+                                                    </optgroup>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <select class="nnr-wraptext" name="data[ex_posts][]" multiple>
+                            <option disabled></option>
+                        </select> <img id="loader"
+                                       src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>">
+                    </td>
+                </tr>
                 <?php
                 $pages = get_pages();
                 $spagesstyle = ('s_pages' === $display_on) ? '' : 'display:none;';
@@ -396,251 +579,92 @@ wp_enqueue_script('hfcm_showboxes');
                             </p>
                         </td>
                     </tr>
-                <?php endif; ?>
-                <tr id="ex_posts"
-                    style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle . $exmanualstyle; ?>">
-                    <th class="hfcm-th-width"><?php esc_html_e('Exclude Posts', '99robots-header-footer-code-manager'); ?></th>
                     
+                <?php endif; ?>
+                <tr>
+                    <th class="hfcm-th-width"><?php esc_html_e('Exclude Posts', '99robots-header-footer-code-manager'); ?></th>
                     <td>
-                        <div>
+                    <?php
+                        // Initialize CMB2.
+                
+                        $exclude_posts = new_cmb2_box( array(
+                            'id'           => 'cmb2_attached_posts_field',
+                            'title'        => __( 'Exclude Posts', '99robots-header-footer-code-manager' ),
+                            'object_types' => array( 'options-page' ),
+                            'option_key'    => 'hfcm-create',
+                            'context'      => 'normal',
+                            'priority'     => 'high',
+                            'show_names'   => false, // Show field names on the left.
+                        ) );
+                    
+                        $exclude_posts->add_field( array(
+                            'name'    => __( 'Exclude Posts', '99robots-header-footer-code-manager' ),
+                            'desc'    => __( 'Drag posts from the left column to the right column to attach them to this page.<br />You may rearrange the order of the posts in the right column by dragging and dropping.', '99robots-header-footer-code-manager' ),
+                            'default' => $ex_posts,
+                            'id'      => 'data[hfcm_attached_cmb2_attached_posts]',
+                            'type'    => 'custom_attached_posts',
+                            'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column.
+                            'options' => array(
+                                'show_thumbnails' => true, // Show thumbnails on the left.
+                                'filter_boxes'    => true, // Show a text box for filtering the results.
+                                'query_args'      => array(
+                                    'posts_per_page' => -1,
+                                    //'post_type'      => array('post', 'page', 'attachment'),
+                                    'post_type'      => array( 'post' ),
+                                    'post_status'    => array('publish', 'inherit'),
 
-                            <?php
+                                ),
+                            ),
+                        ) );
+                    
 
-                            $post_type = '';
-                            $taxonomy = '';
-                            $filters = ['search', 'post_type', 'taxonomy'];
-
-                            // filters
-                            $filter_count = count($filters);
-                            $filter_post_type_choices = array();
-                            $filter_taxonomy_choices = array();
-
-                            // vars
-                            $post_types = array();
-
-                            // extract special arg
-                            //$exclude = ['page'];
-                            $exclude[] = 'acf-field';
-                            $exclude[] = 'acf-field-group';
-                            $exclude[] = 'acf-taxonomy';
-                            $exclude[] = 'acf-post-type';
-                            $exclude[] = 'acf-ui-options-page';
-
-                            // get post type objects
-                            $objects = get_post_types([], 'objects');
-
-                            // loop
-                            foreach ($objects as $i => $object) {
-
-                                // bail early if is exclude
-                                if (in_array($i, $exclude)) continue;
-
-                                // bail early if is builtin (WP) private post type
-                                // - nav_menu_item, revision, customize_changeset, etc
-                                if ($object->_builtin && !$object->public) continue;
-
-
-                                // append
-                                $filter_post_type_choices[] = $i;
-                            }
-
-                            
-                            // defaults
-                            $args = wp_parse_args([], array(
-                                'taxonomy' => null,
-                                'hide_empty' => false,
-                                'update_term_meta_cache' => false,
-                            ));
-
-                            // load taxonomies
-                            $taxonomies = acf_get_taxonomies();
-
-                           
-                          
-
-                            // vars
-                            $ref = array();
-                            $data = array();
-
-                            // loop
-                            foreach ($taxonomies as $taxonomy) {
-
-                                // vars
-                                $object = get_taxonomy($taxonomy);
-                                $label = $object->labels->singular_name;
-
-                                // append
-                                $data[$taxonomy] = $label;
-
-                                // increase counter
-                                if (!isset($ref[$label])) {
-                                    $ref[$label] = 0;
-                                }
-                                $ref[$label]++;
-                            }
-
-                            
-
-                            // show taxonomy name next to label for shared labels
-                            foreach ($data as $taxonomy => $label) {
-                                if ($ref[$label] > 1) {
-                                    $data[$taxonomy] .= ' (' . $taxonomy . ')';
-                                }
-                            }
-                            $terms = get_terms($args);
-
-
-                           
-
-                            foreach ($data as $taxonomy => $label) {
-
-                                // vars
-                                $this_terms = array();
-
-                                // populate $this_terms
-                                foreach ($terms as $term) {
-                                    if ($term->taxonomy == $taxonomy) {
-                                        $this_terms[] = $term;
-                                    }
-                                }
-
-                                // bail early if no $items
-                                if (empty($this_terms)) continue;
-
-                                // sort into hierachial order
-                                // this will fail if a search has taken place because parents wont exist
-                                if (is_taxonomy_hierarchical($taxonomy) && empty($args['s'])) {
-
-                                    // get all terms from this taxonomy
-                                    $all_terms = get_terms(array_merge($args, array(
-                                        'number' => 0,
-                                        'offset' => 0,
-                                        'taxonomy' => $taxonomy
-                                    )));
-
-                                    // vars
-                                    $length = count($this_terms);
-                                    $offset = 0;
-
-                                    // find starting point (offset)
-                                    foreach ($all_terms as $i => $term) {
-                                        if ($term->term_id == $this_terms[0]->term_id) {
-                                            $offset = $i;
-                                            break;
-                                        }
-                                    }
-
-                                    // order terms
-                                    $parent = acf_maybe_get($args, 'parent', 0);
-                                    $parent = acf_maybe_get($args, 'child_of', $parent);
-                                    $ordered_terms = _get_term_children($parent, $all_terms, $taxonomy);
-
-                                    // compare aray lengths
-                                    // if $ordered_posts is smaller than $all_posts, WP has lost posts during the get_page_children() function
-                                    // this is possible when get_post( $args ) filter out parents (via taxonomy, meta and other search parameters)
-                                    if (count($ordered_terms) == count($all_terms)) {
-                                        $this_terms = array_slice($ordered_terms, $offset, $length);
-                                    }
-                                }
-
-                                // populate group
-                                $data[$label] = array();
-                                foreach ($this_terms as $term) {
-                                    $data[$label][$term->term_id] = $term;
-                                }
-                            }
-                            $filter_taxonomy_choices = $data;
-
-                            /* filters */
-                            if ($filter_count): ?>
-                                <div class="filters-f<?php echo esc_attr($filter_count); ?>">
-                                    <?php
-
-                                    /* search */
-                                    if (in_array('search', $filters)): ?>
-                                        <span class="filter-search">
-                                            <input placeholder="Search" type="text" name="ex_s"/>
-                                        </span>
-                                    <?php endif;
-
-
-                                    /* post_type */
-                                    if (in_array('post_type', $filters)): ?>
-                                        <span class="filter-post_type">
-                                            <select onchange="fetchExcludePosts(1);" name="ex_filter_post_type">
-                                                <option value="">Select post type</option>
-                                                <?php foreach ($filter_post_type_choices as $keyP => $itemP) { ?>
-                                                    <option value="<?php echo $itemP; ?>"><?php echo $itemP; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </span>
-                                    <?php endif;
-
-
-                                    /* post_type */
-                                    if (in_array('taxonomy', $filters)): ?>
-                                        <span class="filter-taxonomy">
-                                            <select onchange="fetchExcludePosts(1);" name="ex_filter_taxonomy">
-                                                <option value="">Select taxonomy</option>
-                                                <?php
-                                                foreach ($filter_taxonomy_choices as $keyT => $itemsT) {
-                                                    if (!is_array($itemsT)) {
-                                                        continue;
-                                                    }
-                                                    ?>
-                                                    <optgroup label="<?php echo $keyT; ?>">
-                                                        <?php foreach ($itemsT as $keyST => $itemsST) {
-                                                            if (empty($itemsST)) {
-                                                                continue;
-                                                            }
-                                                            ?>
-                                                            <option value="<?php echo $itemsST->taxonomy; ?>:<?php echo $itemsST->slug; ?>">
-                                                                <?php echo $itemsST->name; ?>
-                                                            </option>
-                                                        <?php } ?>
-                                                    </optgroup>
-                                                    <?php
-                                                }
-                                                ?>
-                                            </select>
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                        // Output CMB2 options page fields.
+                        $exclude_posts->show_form();
+                        ?>
+                        
                     </td>
                 </tr>
                 <tr>
-                    <th class="hfcm-th-width"> </th>
+                    <th class="hfcm-th-width"><?php esc_html_e('Exclude Pages', '99robots-header-footer-code-manager'); ?></th>
                     <td>
-                        <select class="nnr-wraptext left-side" name="data[ex_posts][]" multiple>
-                            <option disabled></option>
-                        </select> 
-                        <img id="loader" src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>">
-                    </td>
-                    <td><select class="nnr-wraptext right-side" name="excluded_posts" multiple>
-                            <!-- <option disabled></option> -->
-                            <?php
-                            if(!empty( $ex_posts ) ){
-                                foreach ($ex_posts as $ex_post) {
-
-                                    // get the post title from the post id.
-                                    $post_title = get_the_title($ex_post);
-
-                                    echo '<option class="right-side-option remove-button" value="'.$ex_post.'">' . sanitize_text_field($post_title) . '-</option>';
-                                
-                                }
-                            }
-                            
-                            ?>
-                        </select>
-                    </td>
                     <?php
-                    $ex_posts_val = ( !empty($ex_posts) ) ? implode(',', $ex_posts) : '';
-                    ?>
-                    <input type="hidden" id="ex_posts_list" name="data[ex_posts_list]" value="<?php echo $ex_posts_val; ?>">  
+                        $exclude_pages = new_cmb2_box( array(
+                            'id'           => 'cmb2_attached_pages_field',
+                            'title'        => __( 'Exclude Pages', '99robots-header-footer-code-manager' ),
+                            'object_types' => array( 'options-page' ),
+                            'option_key'    => 'hfcm-create',
+                            'context'      => 'normal',
+                            'priority'     => 'high',
+                            'show_names'   => false, // Show field names on the left.
+                        ) );
+                    
+                        $exclude_pages->add_field( array(
+                            'name'    => __( 'Exclude Pages', '99robots-header-footer-code-manager' ),
+                            'default' => $ex_pages,
+                            'id'      => 'data[hfcm_attached_cmb2_attached_pages]',
+                            'type'    => 'custom_attached_posts',
+                            'column'  => true,
+                            'options' => array(
+                                'show_thumbnails' => true, 
+                                'filter_boxes'    => true, 
+                                'query_args'      => array(
+                                    'posts_per_page' => -1,
+                                    'post_type'      => array( 'page' ),
+                                    'post_status'    => array( 'publish' ),
+            
+                                ),
+                            ),
+                        ) );
+            
+                        // Output CMB2 options page fields.
+                        $exclude_pages->show_form();
+                        
+                        ?>
+                        
+                    </td>
                 </tr>
             </table>
+
             <div class="wrap">
                 <h1><?php esc_html_e('Snippet', '99robots-header-footer-code-manager'); ?>
                     / <?php esc_html_e('Code', '99robots-header-footer-code-manager') ?></h1>

@@ -71,9 +71,7 @@ jQuery(function ($) {
 
     var previousScrollTop = 0;
 
-    //fetchPosts();
-    runFetchPosts();
-    
+    fetchPosts();
     //fetchExcludePosts();
 
     jQuery('input[name="s"]').keyup(delay(function (e) {
@@ -117,15 +115,6 @@ jQuery(function ($) {
         var id = values[0];
         var title = values[1];
 
-        // add id in a hidden fields as a string #ex_posts_list
-        var ex_posts_list = jQuery('#ex_posts_list').val();
-        if(ex_posts_list == "") {
-            ex_posts_list = id;
-        } else {
-            ex_posts_list = ex_posts_list + "," + id;
-        }
-        jQuery('#ex_posts_list').val(ex_posts_list);
-
         // Create a new option element with class "right-side-option remove-button"
         var clonedOption = jQuery('<option class="right-side-option remove-button" value="' + id + '">' + title + '- </option>');
 
@@ -145,21 +134,11 @@ jQuery(function ($) {
 
 
         // get the current selected option
+
         var currentSelectedOption = jQuery(this);
 
         // get the id of the current selected option
         var selectedValue = currentSelectedOption.val();
-
-        // remove id from hidden field
-        var ex_posts_list = jQuery('#ex_posts_list').val();
-        var ex_posts_list_array = ex_posts_list.split(",");
-        var index = ex_posts_list_array.indexOf(selectedValue);
-        if (index > -1) {
-            ex_posts_list_array.splice(index, 1);
-        }
-        ex_posts_list = ex_posts_list_array.join(",");
-        jQuery('#ex_posts_list').val(ex_posts_list);
-
 
         // Disable the selected option on the left side
         jQuery('.button-id-' + selectedValue).prop('disabled', false);
@@ -169,6 +148,21 @@ jQuery(function ($) {
         // remove the selected option from the right-side select box
         currentSelectedOption.remove();
 
+        return;
+
+
+
+        var clonedOption = $(this).parent(); // Get the <option> element
+        var originalOption = clonedOption.data('original'); // Get the original option
+
+        // get the value of the current selected option
+        var selectedValue = clonedOption.val();
+
+        // Enable the original option on the left side
+        jQuery('.left-side').find('option[value="' + originalOption.val() + '"]').prop('disabled', false);
+
+        // Remove the cloned option from the right-side select box
+        clonedOption.remove();
     });
 
     
@@ -199,58 +193,6 @@ function OnSelectScrollExPosts(selectObj) {
     // }
 }
 
-function runFetchPosts(page = 1) {
-    if(page == 1) {
-        currentPageNoPosts = 1;
-    }
-    jQuery('#loader').show();
-    var searchQuery = jQuery('input[name="s"]').val();
-    var postType = jQuery('select[name="ex_filter_post_type"]').val();
-    var taxonomy = jQuery('select[name="ex_filter_taxonomy"]').val();
-    var disabledOptions = [];
-    jQuery('select[name="excluded_posts"] option').each(function() {
-        disabledOptions.push(jQuery(this).val());
-    });
-    var data = {
-        action: 'hfcm-request-example',
-        id: hfcm_localize.id,
-        getPosts: true,
-        postType: postType,
-        taxonomy: taxonomy,
-        s: searchQuery,
-        page: page,
-        security: hfcm_localize.security,
-        runFetchPosts: true
-    };
-   
-    jQuery.ajax({
-        type: 'POST',
-        url: ajaxurl,
-        data: data,
-        dataType: 'json',
-        async:false,
-        success: function (postData) {
-            console.log("success");
-            console.log(postData);
-            var options = {
-                plugins: ['remove_button'],
-                options: postData.posts,
-                items: postData.selected,
-            };
-            jQuery('#loader').hide();
-
-            
-            if(page == 1) {
-                jQuery('select[name="data[ex_posts][]"]').html(postData.posts);
-            } else {
-                jQuery('select[name="data[ex_posts][]"]').append(postData.posts);
-            }
-            jQuery('#loader').hide();
-            currentPageNoPosts += 1;
-        }
-    });
-}   
-
 function fetchPosts(page = 1) {
 
     if(page == 1) {
@@ -260,10 +202,6 @@ function fetchPosts(page = 1) {
     var searchQuery = jQuery('input[name="s"]').val();
     var postType = jQuery('select[name="ex_filter_post_type"]').val();
     var taxonomy = jQuery('select[name="ex_filter_taxonomy"]').val();
-    var disabledOptions = [];
-    jQuery('select[name="excluded_posts"] option').each(function() {
-        disabledOptions.push(jQuery(this).val());
-    });
     var data = {
         action: 'hfcm-request-example',
         id: hfcm_localize.id,
@@ -272,8 +210,7 @@ function fetchPosts(page = 1) {
         taxonomy: taxonomy,
         s: searchQuery,
         page: page,
-        security: hfcm_localize.security,
-        disabledOptions: disabledOptions
+        security: hfcm_localize.security
     };
     // var data = {
     //     action: 'hfcm-request',
@@ -302,11 +239,62 @@ function fetchPosts(page = 1) {
             };
             jQuery('#loader').hide();
 
+            // get all values from <select class="nnr-wraptext right-side" name="excluded_posts" multiple>
+            var excludedPosts = jQuery('select[name="excluded_posts"]').val();
+            // print all values of each options exists in <select class="nnr-wraptext right-side" name="excluded_posts" multiple>
             
+            var disabledOptions = [];
+            jQuery('select[name="excluded_posts"] option').each(function() {
+                console.log("Each Option Value");
+                console.log(jQuery(this).val());
+
+                disabledOptions.push(jQuery(this).val());
+            });		
+            console.log("disabledOptions");
+            console.log(disabledOptions);	
+
+            // Check and modify HTML content based on disabledOptions
+if (Array.isArray(postData.posts)) {
+    postData.posts = postData.posts.map(function (value) {
+        var postID = value.value.split('|')[0];
+
+        // Check if the postID is in disabledOptions
+        if (disabledOptions.indexOf(postID) > -1) {
+            console.log("Found disabled post ID: " + postID);
+
+            // Optionally, you can also add a class to the option for styling purposes
+            return {
+                value: value.value,
+                text: value.text + ' + ', // Modify text content
+                disabled: true
+            };
+        } else {
+            return value;
+        }
+    });
+}
+
+// Update the HTML content dynamically
+var selectOptions = '';
+jQuery(postData.posts).each(function (index, value) {
+    selectOptions += '<option class="left-side-option clone-button button-id-' + value.value.split('|')[0] + '" value="' + value.value + '"';
+    
+    console.log("value.disabled");
+    console.log(value);
+    console.log(value.disabled);
+    
+    if (value.disabled) {
+        selectOptions += ' disabled';
+    }
+    selectOptions += '>' + value.text + '</option>';
+});
+
+
+        
             if(page == 1) {
-                jQuery('select[name="data[ex_posts][]"]').html(postData.posts);
+                jQuery('select[name="data[ex_posts][]"]').html(selectOptions);
             } else {
-                jQuery('select[name="data[ex_posts][]"]').append(postData.posts);
+                jQuery('select[name="data[ex_posts][]"]').append(selectOptions);
             }
             jQuery('#loader').hide();
             currentPageNoPosts += 1;
@@ -326,11 +314,19 @@ function fetchExcludePosts(page = 1) {
     var searchQuery = jQuery('input[name="ex_s"]').val();
     var postType = jQuery('select[name="ex_filter_post_type"]').val();
     var taxonomy = jQuery('select[name="ex_filter_taxonomy"]').val();
+
+
     var disabledOptions = [];
     jQuery('select[name="excluded_posts"] option').each(function() {
+        console.log("Each Option Value");
+        console.log(jQuery(this).val());
+
         disabledOptions.push(jQuery(this).val());
     });		
-   	
+    console.log("disabledOptions");
+    console.log(disabledOptions);	
+
+
     var data = {
         action: 'hfcm-request-example',
         id: hfcm_localize.id,
@@ -360,10 +356,67 @@ function fetchExcludePosts(page = 1) {
                 items: postData.selected,
             };
             jQuery('#loader').hide();
+
+
+            
+
+            // Check and modify HTML content based on disabledOptions
+            if (Array.isArray(postData.posts)) {
+                postData.posts = postData.posts.map(function (value) {
+                    var postID = value.value.split('|')[0];
+
+                    // Check if the postID is in disabledOptions
+                    if (disabledOptions.indexOf(postID) > -1) {
+                        console.log("Found disabled post ID: " + postID);
+
+                        // Optionally, you can also add a class to the option for styling purposes
+                        return {
+                            value: value.value,
+                            text: value.text + ' + ', // Modify text content
+                            disabled: true
+                        };
+                    } else {
+                        return value;
+                    }
+                });
+            }
+
+            // Update the HTML content dynamically
+            var selectOptions = '';
+            jQuery(postData.posts).each(function (index, value) {
+                selectOptions += '<option class="left-side-option clone-button button-id-' + value.value.split('|')[0] + '" value="' + value.value + '"';
+                
+                console.log("value.disabled");
+                console.log(value);
+                console.log(value.disabled);
+                
+                // checl value.value.split('|')[0] is in disabledOptions array
+
+                // Function to check if a value is present in the array
+                var isValuePresent = (element) => element === value.value.split('|')[0];
+
+                // Using find to check if a value is present
+                var foundValue = disabledOptions.find(isValuePresent);
+
+
+                if (foundValue !== undefined) {
+                    selectOptions += ' disabled';
+                  } 
+
+                // if (value.disabled) {
+                //     selectOptions += ' disabled';
+                // }
+                selectOptions += '>' + value.text + '</option>';
+            });
+
+
+
+
+
             if(page == 1) {
-                jQuery('select[name="data[ex_posts][]"]').html(postData.posts);
+                jQuery('select[name="data[ex_posts][]"]').html(selectOptions);
             } else {
-                jQuery('select[name="data[ex_posts][]"]').append(postData.posts);
+                jQuery('select[name="data[ex_posts][]"]').append(selectOptions);
             }
             jQuery('#loader').hide();
             currentPageNoExPosts += 1;

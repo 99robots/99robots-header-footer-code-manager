@@ -23,25 +23,6 @@ wp_localize_script('hfcm_showboxes', 'hfcm_localize', $translation_array);
 wp_enqueue_script('hfcm_showboxes');
 ?>
 
-<style>
-    .hfcm-field-width, .hfcm-form-width select, .selectize-control {
-        width: 320px;
-    }
-    textarea.nnr-wraptext.left-side {
-        /* width: 44%; */
-        height: 100px;
-        margin-top: 10px;
-        resize: none;
-    }
-    .filters-f3 {
-        display: flex;
-        gap: 25px;
-    }
-    select.nnr-wraptext.left-side {
-        width: 100%;
-    }
-</style>
-
 <div class="wrap">
     <h1>
         <?php echo $update ? esc_html__('Edit Snippet', '99robots-header-footer-code-manager') : esc_html__('Add New Snippet', '99robots-header-footer-code-manager') ?>
@@ -222,6 +203,39 @@ wp_enqueue_script('hfcm_showboxes');
                                     <?php endif; ?>
                                 </div>
                             <?php endif; ?>
+
+                            <!--                            <div class="selection">-->
+                            <!--                                <div class="choices">-->
+                            <!--                                    <ul class="acf-bl list choices-list"></ul>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="values">-->
+                            <!--                                    <ul class="acf-bl list values-list">-->
+                            <!--                                        --><?php //if (!empty($field['value'])):
+                            //
+                            //                                            // get posts
+                            //                                            $posts = acf_get_posts(array(
+                            //                                                'post__in' => $field['value'],
+                            //                                                'post_type' => $field['post_type']
+                            //                                            ));
+                            //
+                            //
+                            //                                            // loop
+                            //                                            foreach ($posts as $post): ?>
+                            <!--                                                <li>-->
+                            <!--                                                    --><?php //acf_hidden_input(array('name' => $field['name'] . '[]', 'value' => $post->ID)); ?>
+                            <!--                                                    <span data-id="-->
+                            <?php //echo esc_attr($post->ID); ?><!--"-->
+                            <!--                                                          class="acf-rel-item">-->
+                            <!--                                                        --><?php //echo acf_esc_html($this->get_post_title($post, $field)); ?>
+                            <!--                                                        <a href="#" class="acf-icon -minus small dark"-->
+                            <!--                                                           data-name="remove_item"></a>-->
+                            <!--                                                    </span>-->
+                            <!--                                                </li>-->
+                            <!--                                            --><?php //endforeach; ?>
+                            <!--                                        --><?php //endif; ?>
+                            <!--                                    </ul>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
                         </div>
                         <select class="nnr-wraptext" name="data[s_posts][]" multiple>
                             <option disabled>...</option>
@@ -400,7 +414,6 @@ wp_enqueue_script('hfcm_showboxes');
                 <tr id="ex_posts"
                     style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle . $exmanualstyle; ?>">
                     <th class="hfcm-th-width"><?php esc_html_e('Exclude Posts', '99robots-header-footer-code-manager'); ?></th>
-                    
                     <td>
                         <div>
 
@@ -567,7 +580,7 @@ wp_enqueue_script('hfcm_showboxes');
                                     /* post_type */
                                     if (in_array('post_type', $filters)): ?>
                                         <span class="filter-post_type">
-                                            <select onchange="fetchExcludePosts(1);" name="ex_filter_post_type">
+                                            <select onchange="fetchExcludePosts(0);" name="ex_filter_post_type">
                                                 <option value="">Select post type</option>
                                                 <?php foreach ($filter_post_type_choices as $keyP => $itemP) { ?>
                                                     <option value="<?php echo $itemP; ?>"><?php echo $itemP; ?></option>
@@ -580,7 +593,7 @@ wp_enqueue_script('hfcm_showboxes');
                                     /* post_type */
                                     if (in_array('taxonomy', $filters)): ?>
                                         <span class="filter-taxonomy">
-                                            <select onchange="fetchExcludePosts(1);" name="ex_filter_taxonomy">
+                                            <select onchange="fetchExcludePosts(0);" name="ex_filter_taxonomy">
                                                 <option value="">Select taxonomy</option>
                                                 <?php
                                                 foreach ($filter_taxonomy_choices as $keyT => $itemsT) {
@@ -608,37 +621,11 @@ wp_enqueue_script('hfcm_showboxes');
                                 </div>
                             <?php endif; ?>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="hfcm-th-width"> </th>
-                    <td>
-                        <select class="nnr-wraptext left-side" name="data[ex_posts][]" multiple>
+                        <select class="nnr-wraptext" name="data[ex_posts][]" multiple>
                             <option disabled></option>
-                        </select> 
-                        <img id="loader" src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>">
+                        </select> <img id="loader"
+                                       src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>">
                     </td>
-                    <td><select class="nnr-wraptext right-side" name="excluded_posts" multiple>
-                            <!-- <option disabled></option> -->
-                            <?php
-                            if(!empty( $ex_posts ) ){
-                                foreach ($ex_posts as $ex_post) {
-
-                                    // get the post title from the post id.
-                                    $post_title = get_the_title($ex_post);
-
-                                    echo '<option class="right-side-option remove-button" value="'.$ex_post.'">' . sanitize_text_field($post_title) . '-</option>';
-                                
-                                }
-                            }
-                            
-                            ?>
-                        </select>
-                    </td>
-                    <?php
-                    $ex_posts_val = ( !empty($ex_posts) ) ? implode(',', $ex_posts) : '';
-                    ?>
-                    <input type="hidden" id="ex_posts_list" name="data[ex_posts_list]" value="<?php echo $ex_posts_val; ?>">  
                 </tr>
             </table>
             <div class="wrap">
