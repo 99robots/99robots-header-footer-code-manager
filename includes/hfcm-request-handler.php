@@ -59,8 +59,8 @@ function hfcm_request_handler() {
 		$ex_pages        = hfcm_sanitize_array( 'ex_pages' );
 		//$ex_pages        = hfcm_sanitize_array( 'hfcm_attached_cmb2_attached_pages' );
 		$s_posts        = hfcm_sanitize_array( 's_posts' );
-		//$ex_posts        = hfcm_sanitize_array( 'ex_posts' );
-		$ex_posts        = hfcm_sanitize_array( 'ex_posts_list' );
+		$ex_posts        = hfcm_sanitize_array( 'ex_posts' );
+		//$ex_posts        = hfcm_sanitize_array( 'ex_posts_list' );
 		$s_custom_posts = hfcm_sanitize_array( 's_custom_posts', 'string' );
 		$s_categories   = hfcm_sanitize_array( 's_categories' );
 		$s_tags         = hfcm_sanitize_array( 's_tags' );
@@ -317,7 +317,7 @@ function hfcm_request_handler_example() {
 
 		}
 
-		// Get all posts
+		// Get all posts.
 		$args = array(
 			'public' => true,
 			'_builtin' => false,
@@ -342,7 +342,6 @@ function hfcm_request_handler_example() {
 			$page = $_POST['page'];
 		}
 		
-		
         $argsPost = array(
             'post_type' => $postTypes,
             'posts_per_page' => 5,
@@ -357,8 +356,8 @@ function hfcm_request_handler_example() {
 
 	
         $searchQuery = "";
-        if(!empty($_POST['s'])) {
-            $argsPost['s'] = sanitize_text_field($_POST['s']);
+        if(!empty($_POST['q'])) {
+            $argsPost['s'] = sanitize_text_field($_POST['q']);
         }
 
         if(!empty($_POST['taxonomy'])) {
@@ -385,6 +384,7 @@ function hfcm_request_handler_example() {
 		);
 
         $selectOptions = "";
+		$selectizeResults = array();
 		foreach ( $posts as $pdata ) {
 		    $post_title = sanitize_text_field( $pdata->post_title );
 
@@ -392,22 +392,29 @@ function hfcm_request_handler_example() {
 			// if post id is in both arrays, then disable the option
 			// if post id is in $ex_posts, then disable the option
 
+
+
+
 			if( $_POST['runFetchPosts'] ){
 
 				if( is_array( $ex_posts ) && !empty( $ex_posts ) && in_array( $pdata->ID, $ex_posts ) ){
 					$selectOptions .= '<option class="left-side-option clone-button button-id-'.$pdata->ID.'" value="'.$pdata->ID.'|'.$pdata->post_title.'" disabled>'.sanitize_text_field( $pdata->post_title ).' + </option>';
+					$selectizeResults[] = array('value' => $pdata->ID, 'text' => sanitize_text_field( $pdata->post_title ), 'disabled' => true);
 				}
 				else {
 					$selectOptions .= '<option class="left-side-option clone-button button-id-'.$pdata->ID.'" value="'.$pdata->ID.'|'.$pdata->post_title.'">'.sanitize_text_field( $pdata->post_title ).' + </option>';
+					$selectizeResults[] = array('value' => $pdata->ID, 'text' => sanitize_text_field( $pdata->post_title ));
 				}
 
 			}
 			else {
 				if( is_array( $_POST['disabledOptions'] ) && !empty( $_POST['disabledOptions'] ) && in_array( $pdata->ID, $_POST['disabledOptions'] ) ){
 					$selectOptions .= '<option class="left-side-option clone-button button-id-'.$pdata->ID.'" value="'.$pdata->ID.'|'.$pdata->post_title.'" disabled>'.sanitize_text_field( $pdata->post_title ).' + </option>';
+					$selectizeResults[] = array('value' => $pdata->ID, 'text' => sanitize_text_field( $pdata->post_title ), 'disabled' => true);
 				}
 				else {
 					$selectOptions .= '<option class="left-side-option clone-button button-id-'.$pdata->ID.'" value="'.$pdata->ID.'|'.$pdata->post_title.'">'.sanitize_text_field( $pdata->post_title ).' + </option>';
+					$selectizeResults[] = array('value' => $pdata->ID, 'text' => sanitize_text_field( $pdata->post_title ));
 				}
 			}
 			
@@ -416,6 +423,7 @@ function hfcm_request_handler_example() {
 		}
         $json_output['posts'] = $selectOptions;
 		$json_output['count'] = count($posts);
+		$json_output['selectize_posts'] = $selectizeResults;
 		echo wp_json_encode( $json_output );
 		wp_die();
 	}

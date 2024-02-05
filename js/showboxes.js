@@ -51,7 +51,7 @@ function hfcm_remember_loc(new_html) {
 }
 
 // init selectize.js
-jQuery('#loader').show();
+//jQuery('#loader').show();
 
 var currentPageNoPosts = 1;
 var currentPageNoExPosts = 1;
@@ -69,12 +69,64 @@ function delay(callback, ms) {
 
 jQuery(function ($) {
 
+    // Initialize variables
+    var searchQuery, postType, taxonomy, page = 1;
     var previousScrollTop = 0;
 
-    //fetchPosts();
-    runFetchPosts();
-    
-    //fetchExcludePosts();
+    // Configure select2 for additional requests
+    $('#lazy-load-select').select2({
+        ajax: {
+            type: 'POST',
+            url: ajaxurl,
+            data: function (params) {
+                var query = {
+                    q: params.term,
+                    page: params.page || 1,
+                    per_page: 5, // Adjust per_page to the desired number of items
+                    action: 'hfcm-request-example',
+                    id: hfcm_localize.id,
+                    getPosts: true,
+                    postType: postType,
+                    taxonomy: taxonomy,
+                    s: searchQuery,
+                    security: hfcm_localize.security,
+                    runFetchPosts: true
+                };
+                console.log("PARAMS");
+                console.log(params);
+
+                // Query parameters will be ?q=[term]&page=[page]
+                return query;
+            },
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                var selectize_result = data.selectize_posts;
+                return {
+                    results: selectize_result.map(function (repo) {
+                        return { id: repo.value, text: repo.text };
+                    }),
+                    pagination: {
+                        more: selectize_result.length === 5
+                    }
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 0,
+        templateSelection: function (selectedRepo) {
+            // Customize the appearance of the selected item
+            return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+            
+        }
+    });
+
+    // hide loader
+    jQuery('#loader').hide();
+
+    //runFetchSelectize(page);
+
+
 
     jQuery('input[name="s"]').keyup(delay(function (e) {
         fetchPosts();
@@ -83,98 +135,29 @@ jQuery(function ($) {
         fetchExcludePosts();
     }, 500));
 
-    $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize();
+    $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').select2();
 
     jQuery('select[name="data[s_posts][]"]').scroll(function (event) {
         OnSelectScrollPosts(jQuery('select[name="data[s_posts][]"]'));
     });
 
-    jQuery('select[name="data[ex_posts][]"]').scroll(function (e) {
-        var currentScrollTop = jQuery(this).scrollTop();
-        var scrollHeight = jQuery(this)[0].scrollHeight;
-        var clientHeight = jQuery(this).height();
-        // Check if scrolled near the bottom (adjust the threshold as needed)
-        if (currentScrollTop > previousScrollTop && currentScrollTop + clientHeight >= scrollHeight - 10) {
-            // Scrolling down and near the bottom
-            OnSelectScrollExPosts(jQuery('select[name="data[ex_posts][]"]'));
-        }
+    // jQuery('select[name="data[ex_posts][]"]').scroll(function (e) {
+    //     var currentScrollTop = jQuery(this).scrollTop();
+    //     var scrollHeight = jQuery(this)[0].scrollHeight;
+    //     var clientHeight = jQuery(this).height();
+    //     // Check if scrolled near the bottom (adjust the threshold as needed)
+    //     if (currentScrollTop > previousScrollTop && currentScrollTop + clientHeight >= scrollHeight - 10) {
+    //         // Scrolling down and near the bottom
+    //         OnSelectScrollExPosts(jQuery('select[name="data[ex_posts][]"]'));
+    //     }
 
-        previousScrollTop = currentScrollTop;
-    });
+    //     previousScrollTop = currentScrollTop;
+    // });
 
-    jQuery('body').on('click', '.left-side-option.clone-button', function (e) {
-
-        e.preventDefault();
-        console.log("clone button clicked");
-
-        var selectedOption = jQuery(this).parent();
-        // Retrieve value and text of the selected option
-        var selectedValue = selectedOption.val(); 
-
-        // use String split method to split the string into an array
-
-        var values = String(selectedValue).split("|");
-        var id = values[0];
-        var title = values[1];
-
-        // add id in a hidden fields as a string #ex_posts_list
-        var ex_posts_list = jQuery('#ex_posts_list').val();
-        if(ex_posts_list == "") {
-            ex_posts_list = id;
-        } else {
-            ex_posts_list = ex_posts_list + "," + id;
-        }
-        jQuery('#ex_posts_list').val(ex_posts_list);
-
-        // Create a new option element with class "right-side-option remove-button"
-        var clonedOption = jQuery('<option class="right-side-option remove-button" value="' + id + '">' + title + '- </option>');
-
-        // Append the cloned option to the right-side select box
-        jQuery('.right-side').append(clonedOption);
-
-        // Disable the selected option on the left side
-        jQuery('.button-id-' + id).prop('disabled', true);
-
-        // Remove the clone button from the cloned option
-        clonedOption.find('.clone-button').remove();
-       
-    });
-
-    // Remove cloned option from the right-side select box
-    jQuery('body').on('click', '.right-side-option.remove-button', function () {
-
-
-        // get the current selected option
-        var currentSelectedOption = jQuery(this);
-
-        // get the id of the current selected option
-        var selectedValue = currentSelectedOption.val();
-
-        // remove id from hidden field
-        var ex_posts_list = jQuery('#ex_posts_list').val();
-        var ex_posts_list_array = ex_posts_list.split(",");
-        var index = ex_posts_list_array.indexOf(selectedValue);
-        if (index > -1) {
-            ex_posts_list_array.splice(index, 1);
-        }
-        ex_posts_list = ex_posts_list_array.join(",");
-        jQuery('#ex_posts_list').val(ex_posts_list);
-
-
-        // Disable the selected option on the left side
-        jQuery('.button-id-' + selectedValue).prop('disabled', false);
-
-        console.log(selectedValue);
-
-        // remove the selected option from the right-side select box
-        currentSelectedOption.remove();
-
-    });
-
-    
-
-
+     
 });
+
+
 
 function OnSelectScrollPosts(selectObj) {
     var st = jQuery(selectObj).scrollTop();
@@ -192,11 +175,8 @@ function OnSelectScrollExPosts(selectObj) {
     var optionHeight = selectObj.find("option").height()
     var totalheight = optionLength * optionHeight;
 
-    fetchPosts(currentPageNoPosts);
-
-    // if ((optionLength == (currentPageNoExPosts * 100)) && (st > (totalheight - 500))) {
-    //     fetchExcludePosts(currentPageNoExPosts);
-    // }
+    //fetchPosts(currentPageNoPosts);
+    runFetchSelectize(currentPageNoPosts);
 }
 
 function runFetchPosts(page = 1) {
@@ -251,6 +231,50 @@ function runFetchPosts(page = 1) {
     });
 }   
 
+function runFetchSelectize(page = 1) {
+    if(page == 1) {
+        currentPageNoPosts = 1;
+    }
+    jQuery('#loader').show();
+    var searchQuery = jQuery('input[name="s"]').val();
+    var postType = jQuery('select[name="ex_filter_post_type"]').val();
+    var taxonomy = jQuery('select[name="ex_filter_taxonomy"]').val();
+
+    // Initial request for the first 5 repositories
+    jQuery.ajax({
+        url: ajaxurl,
+        type: 'POST',
+        data: {
+            q: '',
+            page: page,
+            per_page: 5, // Adjust per_page to the desired number of items
+            action: 'hfcm-request-example',
+            id: hfcm_localize.id,
+            getPosts: true,
+            postType: postType,
+            taxonomy: taxonomy,
+            s: searchQuery,
+            security: hfcm_localize.security,
+            runFetchPosts: true
+        },
+        dataType: 'json',
+        success: function (data) {
+            var selectize_result = data.selectize_posts;
+            // Process the initial results and populate the select2 dropdown
+            jQuery('#lazy-load-select').select2({
+                data: selectize_result.map(function (repo) {
+                    return { id: repo.value, text: repo.text };
+                })
+            });
+            jQuery('#loader').hide();
+            currentPageNoPosts += 1;
+        }
+    });
+}
+
+
+
+
 function fetchPosts(page = 1) {
 
     if(page == 1) {
@@ -275,16 +299,7 @@ function fetchPosts(page = 1) {
         security: hfcm_localize.security,
         disabledOptions: disabledOptions
     };
-    // var data = {
-    //     action: 'hfcm-request',
-    //     id: hfcm_localize.id,
-    //     getPosts: true,
-    //     postType: postType,
-    //     taxonomy: taxonomy,
-    //     s: searchQuery,
-    //     page: page,
-    //     security: hfcm_localize.security
-    // };
+
 
     jQuery.ajax({
         type: 'POST',

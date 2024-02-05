@@ -120,11 +120,18 @@ function hfcm_enqueue_assets( $hook ) {
 	array_shift( $allowed_pages );
 
 	if ( in_array( $hook, $allowed_pages ) ) {
+		
 		// selectize.js plugin CSS and JS files
-		wp_register_style( 'selectize-css', plugins_url( 'css/selectize.bootstrap3.css', __FILE__ ) );
+		// wp_register_style( 'selectize-css', plugins_url( 'css/selectize.bootstrap3.css', __FILE__ ) );
+		// wp_enqueue_style( 'selectize-css' );
+
+		// wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array( 'jquery' ) );
+		// wp_enqueue_script( 'selectize-js' );
+
+		wp_register_style( 'selectize-css', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css' );
 		wp_enqueue_style( 'selectize-css' );
 
-		wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array( 'jquery' ) );
+		wp_register_script( 'selectize-js', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'selectize-js' );
 	}
 }
