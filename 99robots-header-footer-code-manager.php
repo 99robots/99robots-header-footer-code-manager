@@ -120,7 +120,7 @@ function hfcm_enqueue_assets( $hook ) {
 	array_shift( $allowed_pages );
 
 	if ( in_array( $hook, $allowed_pages ) ) {
-		
+
 		// selectize.js plugin CSS and JS files
 		// wp_register_style( 'selectize-css', plugins_url( 'css/selectize.bootstrap3.css', __FILE__ ) );
 		// wp_enqueue_style( 'selectize-css' );
@@ -262,12 +262,6 @@ function hfcm_plugin_notice_dismissed() {
 add_action( 'admin_init', 'hfcm_plugin_notice_dismissed' );
 
 /*****/
-
-// including CMB2 library.
-require_once plugin_dir_path( __FILE__ ) . 'includes/lib/CMB2/init.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/lib/cmb2-attached-posts/cmb2-attached-posts-field.php';
-
-
 // Files containing submenu functions
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-list.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/hfcm-create.php' );

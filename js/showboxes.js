@@ -74,7 +74,7 @@ jQuery(function ($) {
     var previousScrollTop = 0;
 
     // Configure select2 for additional requests
-    $('#lazy-load-select').select2({
+    jQuery('#lazy-load-select').select2({
         ajax: {
             type: 'POST',
             url: ajaxurl,
@@ -121,11 +121,56 @@ jQuery(function ($) {
         }
     });
 
+
+     // Configure select2 for additional requests
+     jQuery('#lazy-load-page').select2({
+        ajax: {
+            type: 'POST',
+            url: ajaxurl,
+            data: function (params) {
+                var query = {
+                    q: params.term,
+                    page: params.page || 1,
+                    per_page: 5, // Adjust per_page to the desired number of items
+                    action: 'hfcm-request-example',
+                    id: hfcm_localize.id,
+                    getPosts: true,
+                    postType: 'page',
+                    taxonomy: taxonomy,
+                    s: searchQuery,
+                    security: hfcm_localize.security,
+                    runFetchPosts: true
+                };
+              
+
+                // Query parameters will be ?q=[term]&page=[page]
+                return query;
+            },
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                var selectize_result = data.selectize_posts;
+                return {
+                    results: selectize_result.map(function (repo) {
+                        return { id: repo.value, text: repo.text };
+                    }),
+                    pagination: {
+                        more: selectize_result.length === 5
+                    }
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 0,
+        templateSelection: function (selectedRepo) {
+            // Customize the appearance of the selected item
+            return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+            
+        }
+    });
+
     // hide loader
     jQuery('#loader').hide();
-
-    //runFetchSelectize(page);
-
 
 
     jQuery('input[name="s"]').keyup(delay(function (e) {
@@ -135,7 +180,7 @@ jQuery(function ($) {
         fetchExcludePosts();
     }, 500));
 
-    $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').select2();
+    $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select').select2();
 
     jQuery('select[name="data[s_posts][]"]').scroll(function (event) {
         OnSelectScrollPosts(jQuery('select[name="data[s_posts][]"]'));
@@ -176,7 +221,7 @@ function OnSelectScrollExPosts(selectObj) {
     var totalheight = optionLength * optionHeight;
 
     //fetchPosts(currentPageNoPosts);
-    runFetchSelectize(currentPageNoPosts);
+    //runFetchSelectize(currentPageNoPosts);
 }
 
 function runFetchPosts(page = 1) {

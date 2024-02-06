@@ -128,16 +128,16 @@ wp_enqueue_script('hfcm_showboxes');
                     style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle . $exmanualstyle; ?>">
                     <th class="hfcm-th-width"><?php esc_html_e('Exclude Pages', '99robots-header-footer-code-manager'); ?></th>
                     <td>
-                        <select name="data[ex_pages][]" multiple>
-                            <?php
-                            foreach ($pages as $pdata) {
-                                if (in_array($pdata->ID, $ex_pages)) {
-                                    printf('<option value="%1$s" selected="selected">%2$s</option>', $pdata->ID, $pdata->post_title);
-                                } else {
-                                    printf('<option value="%1$s">%2$s</option>', $pdata->ID, $pdata->post_title);
-                                }
+                        <select id="lazy-load-page" name="data[ex_pages][]" multiple>
+                        <?php
+                        if (!empty($ex_pages)) {
+                            foreach ($ex_pages as $page_id) {
+                                // get post title by ID
+                                $page_title = get_the_title($page_id);
+                                echo "<option value='{$page_id}' selected>{$page_title}</option>";
                             }
-                            ?>
+                        }
+                        ?>
                         </select>
                     </td>
                 </tr>
