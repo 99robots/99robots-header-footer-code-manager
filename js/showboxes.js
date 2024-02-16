@@ -73,101 +73,66 @@ jQuery(function ($) {
     var searchQuery, postType, taxonomy, page = 1;
     var previousScrollTop = 0;
 
-    // Configure select2 for additional requests
-    jQuery('#lazy-load-select').select2({
-        ajax: {
-            type: 'POST',
-            url: ajaxurl,
-            data: function (params) {
-                var query = {
-                    q: params.term,
-                    page: params.page || 1,
-                    per_page: 5, // Adjust per_page to the desired number of items
-                    action: 'hfcm-request-example',
-                    id: hfcm_localize.id,
-                    getPosts: true,
-                    postType: postType,
-                    taxonomy: taxonomy,
-                    s: searchQuery,
-                    security: hfcm_localize.security,
-                    runFetchPosts: true
-                };
-                console.log("PARAMS");
-                console.log(params);
-
-                // Query parameters will be ?q=[term]&page=[page]
-                return query;
-            },
-            dataType: 'json',
-            delay: 250,
-            processResults: function (data) {
-                var selectize_result = data.selectize_posts;
-                return {
-                    results: selectize_result.map(function (repo) {
-                        return { id: repo.value, text: repo.text };
-                    }),
-                    pagination: {
-                        more: selectize_result.length === 5
-                    }
-                };
-            },
-            cache: true
-        },
-        minimumInputLength: 0,
-        templateSelection: function (selectedRepo) {
-            // Customize the appearance of the selected item
-            return $('<span style="color: #2271B1;">').text(selectedRepo.text);
-            
-        }
-    });
+    
+    // Initialize select2 for the post type 'page'
+    var selectIdPage = 'lazy-load-page';
+    var postTypePage = 'page';
+    initializeDynamicSelect2(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
 
 
-     // Configure select2 for additional requests
-     jQuery('#lazy-load-page').select2({
-        ajax: {
-            type: 'POST',
-            url: ajaxurl,
-            data: function (params) {
-                var query = {
-                    q: params.term,
-                    page: params.page || 1,
-                    per_page: 5, // Adjust per_page to the desired number of items
-                    action: 'hfcm-request-example',
-                    id: hfcm_localize.id,
-                    getPosts: true,
-                    postType: 'page',
-                    taxonomy: taxonomy,
-                    s: searchQuery,
-                    security: hfcm_localize.security,
-                    runFetchPosts: true
-                };
-              
+    var selectIdPost = 'lazy-load-select';
+    var postTypePost = 'post';
+    initializeDynamicSelect2(selectIdPost, ajaxurl, postTypePost, taxonomy, searchQuery);
 
-                // Query parameters will be ?q=[term]&page=[page]
-                return query;
+    function initializeDynamicSelect2(selectId, ajaxurl, postType, taxonomy, searchQuery) {
+        jQuery('#' + selectId).select2({
+            ajax: {
+                type: 'POST',
+                url: ajaxurl,
+                data: function (params) {
+                    var query = {
+                        q: params.term,
+                        page: params.page || 1,
+                        per_page: 5, // Adjust per_page to the desired number of items
+                        action: 'hfcm-request-example',
+                        id: hfcm_localize.id,
+                        getPosts: true,
+                        postType: postType,
+                        taxonomy: taxonomy,
+                        s: searchQuery,
+                        security: hfcm_localize.security,
+                        runFetchPosts: true
+                    };
+    
+                    // Query parameters will be ?q=[term]&page=[page]
+                    return query;
+                },
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    var selectize_result = data.selectize_posts;
+                    return {
+                        results: selectize_result.map(function (repo) {
+                            return { id: repo.value, text: repo.text };
+                        }),
+                        pagination: {
+                            more: selectize_result.length === 5
+                        }
+                    };
+                },
+                cache: true
             },
-            dataType: 'json',
-            delay: 250,
-            processResults: function (data) {
-                var selectize_result = data.selectize_posts;
-                return {
-                    results: selectize_result.map(function (repo) {
-                        return { id: repo.value, text: repo.text };
-                    }),
-                    pagination: {
-                        more: selectize_result.length === 5
-                    }
-                };
-            },
-            cache: true
-        },
-        minimumInputLength: 0,
-        templateSelection: function (selectedRepo) {
-            // Customize the appearance of the selected item
-            return $('<span style="color: #2271B1;">').text(selectedRepo.text);
-            
-        }
-    });
+            minimumInputLength: 0,
+            templateSelection: function (selectedRepo) {
+                // Customize the appearance of the selected item
+                return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+            }
+        });
+    }
+    
+
+
+
 
     // hide loader
     jQuery('#loader').hide();

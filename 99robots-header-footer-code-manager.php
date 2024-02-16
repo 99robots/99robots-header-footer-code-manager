@@ -505,3 +505,13 @@ function hfcm_sanitize_array( $key, $type = 'integer' ) {
 
 	return array();
 }
+
+
+
+function generate_dynamic_select2($selectId, $selectClass, $selectName, $options) {
+    echo "<select id='$selectId' class='$selectClass' name='$selectName' multiple>";
+    foreach ($options as $value => $label) {
+        echo "<option value='$value'>$label</option>";
+    }
+    echo "</select>";
+}

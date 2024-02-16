@@ -128,17 +128,9 @@ wp_enqueue_script('hfcm_showboxes');
                     style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle . $exmanualstyle; ?>">
                     <th class="hfcm-th-width"><?php esc_html_e('Exclude Pages', '99robots-header-footer-code-manager'); ?></th>
                     <td>
-                        <select id="lazy-load-page" name="data[ex_pages][]" multiple>
-                        <?php
-                        if (!empty($ex_pages)) {
-                            foreach ($ex_pages as $page_id) {
-                                // get post title by ID
-                                $page_title = get_the_title($page_id);
-                                echo "<option value='{$page_id}' selected>{$page_title}</option>";
-                            }
-                        }
+                        <?php 
+                        generate_dynamic_select2('lazy-load-page','','data[ex_pages][]',$ex_pages);
                         ?>
-                        </select>
                     </td>
                 </tr>
               
@@ -419,19 +411,10 @@ wp_enqueue_script('hfcm_showboxes');
                             if ($filter_count): 
                             ?>
                               
-                                <select id="lazy-load-select" class="nnr-wraptext left-side" name="data[ex_posts][]" multiple>
-                                    <?php 
-                                    if (!empty($ex_posts)) {
-                                        foreach ($ex_posts as $pdata) {
-                                            // get post title by ID
-                                            $post_title = get_the_title($pdata);
                                 
-                                            echo "<option value='{$pdata}' selected>{$post_title}</option>";
-                                        }
-                                    }
-                                    
-                                    ?>
-                                </select> 
+                                <?php 
+                                    generate_dynamic_select2('lazy-load-select', 'nnr-wraptext left-side', 'data[ex_posts][]', $ex_posts);
+                                ?>
                                 <img id="loader" src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>">
                             <?php endif; ?>
                         </div>
