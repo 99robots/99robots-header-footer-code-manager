@@ -79,7 +79,7 @@ jQuery(function ($) {
     var postTypePage = 'page';
     initializeDynamicSelect2(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
 
-
+    // Initialize select2 for the post type 'post'
     var selectIdPost = 'lazy-load-select';
     var postTypePost = 'post';
     initializeDynamicSelect2(selectIdPost, ajaxurl, postTypePost, taxonomy, searchQuery);
