@@ -128,7 +128,7 @@ wp_enqueue_script('hfcm_showboxes');
                     style="<?php echo $expagesstyle . $expostsstyle . $extagsstyle . $excpostssstyle . $excategoriesstyle . $exlpcountstyle . $exmanualstyle; ?>">
                     <th class="hfcm-th-width"><?php esc_html_e('Exclude Pages', '99robots-header-footer-code-manager'); ?></th>
                     <td>
-                        <?php 
+                        <?php
                         generate_dynamic_select2('lazy-load-page','','data[ex_pages][]',$ex_pages);
                         ?>
                     </td>
@@ -410,8 +410,6 @@ wp_enqueue_script('hfcm_showboxes');
                             /* filters */
                             if ($filter_count): 
                             ?>
-                              
-                                
                                 <?php 
                                     generate_dynamic_select2('lazy-load-select', 'nnr-wraptext left-side', 'data[ex_posts][]', $ex_posts);
                                 ?>
