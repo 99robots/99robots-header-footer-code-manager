@@ -14,6 +14,18 @@
 .selectize-control {
     width: 400px;
 }
+
+/* Hide the specific .selectize-control.multi.plugin-remove_button related to the select with ID lazy-load-page */
+#lazy-load-page ~ .selectize-control.multi.plugin-remove_button {
+    display: none;
+}
+
+#lazy-load-post ~ .selectize-control.multi.plugin-remove_button {
+    display: none;
+}
+
+
+
 #nnr_newcontent {
     width: 75%;
 }

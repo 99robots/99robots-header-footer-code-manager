@@ -144,16 +144,16 @@ wp_enqueue_script( 'hfcm_showboxes' );
                         ?>
                     </td>
                 </tr>
-                <tr id="ex_posts"
+                <tr id="ex_posts" 
                     style="<?php echo esc_attr( $nnr_hfcm_exclude_pages_style . $nnr_hfcm_exclude_posts_style . $nnr_hfcm_exclude_tags_style . $nnr_hfcm_exclude_custom_posts_style . $nnr_hfcm_exclude_categories_style . $nnr_hfcm_exclude_lp_count_style . $nnr_hfcm_exclude_manual_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Exclude Posts', 'header-footer-code-manager' ); ?></th>
                     <td>
-                        <select class="nnr-wraptext" name="data[ex_posts][]" multiple>
-                            <option disabled></option>
-                        </select> <img id="loader"
-                                       src="<?php echo plugins_url( 'images/ajax-loader.gif', dirname( __FILE__ ) ); ?>">
+                        <?php
+                            NNR_HFCM::generate_dynamic_select2('lazy-load-post','','data[ex_posts][]',$ex_posts);
+                        ?>
                     </td>
                 </tr>
+            
                 <?php
                 $nnr_hfcm_pages       = get_pages();
                 $nnr_hfcm_pages_style = ('s_pages' === $display_on) ? '' : 'display:none;';
