@@ -139,17 +139,9 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     style="<?php echo esc_attr( $nnr_hfcm_exclude_pages_style . $nnr_hfcm_exclude_posts_style . $nnr_hfcm_exclude_tags_style . $nnr_hfcm_exclude_custom_posts_style . $nnr_hfcm_exclude_categories_style . $nnr_hfcm_exclude_lp_count_style . $nnr_hfcm_exclude_manual_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Exclude Pages', 'header-footer-code-manager' ); ?></th>
                     <td>
-                        <select name="data[ex_pages][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_pages as $pdata ) {
-                                if ( in_array( $pdata->ID, $ex_pages ) ) {
-                                    printf( '<option value="%1$s" selected="selected">%2$s</option>', $pdata->ID, $pdata->post_title );
-                                } else {
-                                    printf( '<option value="%1$s">%2$s</option>', $pdata->ID, $pdata->post_title );
-                                }
-                            }
-                            ?>
-                        </select>
+                        <?php
+                            NNR_HFCM::generate_dynamic_select2('lazy-load-page','','data[ex_pages][]',$ex_pages);
+                        ?>
                     </td>
                 </tr>
                 <tr id="ex_posts"

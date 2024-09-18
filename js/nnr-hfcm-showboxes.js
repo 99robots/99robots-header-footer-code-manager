@@ -165,10 +165,75 @@ jQuery(
             var editor = wp.codeEditor.initialize($('#nnr_newcontent'), editorSettings);
         }
 
-        document.getElementById("hfcm_copy_shortcode").addEventListener(
-            "click", function () {
-                hfcmCopyToClipboard(document.getElementById("hfcm_copy_shortcode"));
-            }
-        );
+
+        var copyButton = document.getElementById("hfcm_copy_shortcode");
+        if (copyButton) {
+            copyButton.addEventListener("click", function () {
+                hfcmCopyToClipboard(copyButton);
+            });
+        }
+
+     
+        // Initialize variables
+        var searchQuery, postType, taxonomy, page = 1;
+        var previousScrollTop = 0;
+
+        // Initialize select2 for the post type 'page'
+        var selectIdPage = 'lazy-load-page';
+        var postTypePage = 'page';
+        initializeDynamicSelect2(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
+
+        // Initialize select2 for the post type 'post'
+        var selectIdPost = 'lazy-load-select';
+        var postTypePost = 'post';
+        initializeDynamicSelect2(selectIdPost, ajaxurl, postTypePost, taxonomy, searchQuery);
+
+        function initializeDynamicSelect2(selectId, ajaxurl, postType, taxonomy, searchQuery) {
+            jQuery('#' + selectId).select2({
+                ajax: {
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            page: params.page || 1,
+                            per_page: 5, // Adjust per_page to the desired number of items
+                            action: 'hfcm-request-example',
+                            id: hfcm_localize.id,
+                            getPosts: true,
+                            postType: postType,
+                            taxonomy: taxonomy,
+                            s: searchQuery,
+                            security: hfcm_localize.security,
+                            runFetchPosts: true
+                        };
+        
+                        // Query parameters will be ?q=[term]&page=[page]
+                        return query;
+                    },
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        var selectize_result = data.selectize_posts;
+                        return {
+                            results: selectize_result.map(function (repo) {
+                                return { id: repo.value, text: repo.text };
+                            }),
+                            pagination: {
+                                more: selectize_result.length === 5
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (selectedRepo) {
+                    // Customize the appearance of the selected item
+                    return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+                }
+            });
+        }
+
+
     }
 );
