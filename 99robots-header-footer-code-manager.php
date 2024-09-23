@@ -183,6 +183,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             $allowed_pages = array(
                 'toplevel_page_hfcm-list',
                 'hfcm_page_hfcm-create',
+                'hfcm_page_hfcm-update',
                 'admin_page_hfcm-update',
             );
 
