@@ -162,18 +162,11 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <th class="hfcm-th-width">
                         <?php esc_html_e( 'Page List', 'header-footer-code-manager' ); ?>
                     </th>
+                   
                     <td>
-                        <select name="data[s_pages][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_pages as $pdata ) {
-                                if ( in_array( $pdata->ID, $s_pages ) ) {
-                                    printf( '<option value="%1$s" selected="selected">%2$s</option>', esc_attr( $pdata->ID ), esc_attr( $pdata->post_title ) );
-                                } else {
-                                    printf( '<option value="%1$s">%2$s</option>', esc_attr( $pdata->ID ), esc_attr( $pdata->post_title ) );
-                                }
-                            }
-                            ?>
-                        </select>
+                        <?php
+                            NNR_HFCM::generate_dynamic_select2('lazy-load-s-pages','','data[s_pages][]',$s_pages);
+                        ?>
                     </td>
                 </tr>
                 <?php $nnr_hfcm_posts_style = 's_posts' === $display_on ? '' : 'display:none;'; ?>
@@ -181,10 +174,15 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <th class="hfcm-th-width">
                         <?php esc_html_e( 'Post List', 'header-footer-code-manager' ); ?>
                     </th>
-                    <td>
+                    <!-- <td>
                         <select class="nnr-wraptext" name="data[s_posts][]" multiple>
                             <option disabled>...</option>
                         </select>
+                    </td> -->
+                    <td>
+                        <?php
+                            NNR_HFCM::generate_dynamic_select2('lazy-load-s-posts','','data[s_posts][]',$s_posts);
+                        ?>
                     </td>
                 </tr>
                 <?php
