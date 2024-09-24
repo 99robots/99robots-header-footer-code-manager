@@ -204,8 +204,12 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 wp_register_style( 'selectize-css', plugins_url( 'css/select2.min.css', __FILE__ ) );
                 wp_enqueue_style( 'selectize-css' );
 
-                wp_register_script( 'selectize-js', plugins_url( 'js/select2.min.js', __FILE__ ), array( 'jquery' ) );
+
+                wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array( 'jquery' ) );
                 wp_enqueue_script( 'selectize-js' );
+
+                wp_register_script( 'selectize2-js', plugins_url( 'js/select2.min.js', __FILE__ ), array( 'jquery' ) );
+                wp_enqueue_script( 'selectize2-js' );
 
                 wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
             }
