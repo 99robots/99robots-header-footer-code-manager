@@ -229,34 +229,25 @@ wp_enqueue_script( 'hfcm_showboxes' );
                 </tr> -->
                 <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
                     <?php 
-                        echo "<pre>";
-                        var_dump("CATEGORIES",$s_categories);
-                        echo "</pre>";
+                        // echo "<pre>";
+                        // var_dump("CATEGORIES",$s_categories);
+                        // echo "</pre>";
                     ?>
                     <th class="hfcm-th-width"><?php esc_html_e( 'Category List', 'header-footer-code-manager' ); ?></th>
                     <td>
                         <?php
-                            NNR_HFCM::categories_dynamic_select2('lazy-load-s-categories','','data[s_categories][]',$s_categories,true);
+                            NNR_HFCM::taxonomies_dynamic_select2('lazy-load-s-categories','','data[s_categories][]',$s_categories,true);
                         ?>
                     </td>
                 </tr>
                 <tr id="s_tags" style="<?php echo esc_attr( $nnr_hfcm_tags_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Tags List', 'header-footer-code-manager' ); ?></th>
                     <td>
-                        <select name="data[s_tags][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_tags as $nnr_key_cat => $nnr_item_tag ) {
-                                foreach ( $nnr_item_tag['terms'] as $nnr_item_tag_key => $nnr_item_tag_term ) {
-                                    if ( in_array( $nnr_item_tag_term->term_id, $s_tags ) ) {
-                                        echo "<option value='" . esc_attr( $nnr_item_tag_term->term_id ) . "' selected>" . esc_html( $nnr_item_tag['name'] ) . " - " . esc_html( $nnr_item_tag_term->name ) . "</option>";
-                                    } else {
-                                        echo "<option value='" . esc_attr( $nnr_item_tag_term->term_id ) . "'>" . esc_html( $nnr_item_tag['name'] ) . " - " . esc_html( $nnr_item_tag_term->name ) . "</option>";
-                                    }
-                                }
-                            }
-                            ?>
-                        </select>
+                        <?php
+                            NNR_HFCM::taxonomies_dynamic_select2('lazy-load-s-tags','','data[s_tags][]',$s_tags,true);
+                        ?>
                     </td>
+                            
                 </tr>
                 <tr id="c_posttype" style="<?php echo esc_attr( $nnr_hfcm_custom_posts_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Post Types', 'header-footer-code-manager' ); ?></th>
@@ -273,6 +264,15 @@ wp_enqueue_script( 'hfcm_showboxes' );
                             ?>
                         </select>
                     </td>
+                </tr>
+                <tr id="c_posttype" style="<?php echo esc_attr( $nnr_hfcm_custom_posts_style ); ?>">
+                    <th class="hfcm-th-width"><?php esc_html_e( 'Post Types', 'header-footer-code-manager' ); ?></th>
+                    <td>
+                        <?php
+                            NNR_HFCM::generate_dynamic_select2('lazy-load-c-posttype','','data[s_custom_posts][]',$s_custom_posts );
+                        ?>
+                    </td>
+                            
                 </tr>
                 <tr id="lp_count" style="<?php echo esc_attr( $nnr_hfcm_lpcount_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Post Count', 'header-footer-code-manager' ); ?></th>

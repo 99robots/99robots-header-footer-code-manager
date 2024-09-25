@@ -38,7 +38,9 @@ add_action( 'wp_footer', array( 'NNR_HFCM', 'hfcm_footer_scripts' ) );
 add_action( 'the_content', array( 'NNR_HFCM', 'hfcm_content_scripts' ) );
 add_action( 'wp_ajax_hfcm-request', array( 'NNR_HFCM', 'hfcm_request_handler' ) );
 add_action( 'wp_ajax_hfcm-request-example', array( 'NNR_HFCM', 'hfcm_request_handler_example' ) );
-add_action( 'wp_ajax_hfcm-request-categories', array( 'NNR_HFCM', 'hfcm_request_handler_categories' ) );
+add_action( 'wp_ajax_hfcm-request-taxonomies', array( 'NNR_HFCM', 'hfcm_request_handler_taxonomies' ) );
+add_action( 'wp_ajax_hfcm-request-custom-post-type', array( 'NNR_HFCM', 'hfcm_request_handler_custom_post_type' ) );
+
 
 add_action( 'admin_head', array( 'NNR_HFCM', 'hfcm_hide_custom_submenus' ) );
 
@@ -1189,7 +1191,87 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             }
         }
 
-        public static function hfcm_request_handler_categories() {
+
+        public static function hfcm_request_handler_custom_post_type() {
+            // Check user capabilities.
+            if ( ! current_user_can( 'manage_options' ) ) {
+                echo 'Sorry, you do not have access to this page.';
+                wp_die();
+            }
+        
+            // Verify nonce for security.
+            check_ajax_referer( 'hfcm-get-posts', 'security' );
+        
+            
+            // Prepare response structure
+            $json_output = array(
+                'posttypes' => '',
+                'count' => count( $filtered_post_types ),
+                'selectize_posttypes' =>  array(),
+            );
+        
+            // Get the search query if provided
+            $searchQuery = "";
+            if ( ! empty( $_POST['q'] ) ) {
+                $searchQuery = sanitize_text_field( $_POST['q'] );
+            }
+        
+            // Get registered post types
+            $args = array(
+                'public'   => true,
+                'exclude_from_search' => false,
+            );
+            $registered_post_types = get_post_types( $args, 'objects' );
+        
+            // Filter by search term if provided
+            $filtered_post_types = array();
+            foreach ( $registered_post_types as $post_type_slug => $post_type_object ) {
+                if ( empty( $searchQuery ) || stripos( $post_type_object->label, $searchQuery ) !== false ) {
+                    $filtered_post_types[ $post_type_slug ] = $post_type_object;
+                }
+            }
+        
+            // Fetch selected post types (assuming $s_custom_posts is retrieved from DB or options)
+            $s_custom_posts = isset( $_POST['s_custom_posts'] ) ? $_POST['s_custom_posts'] : array();
+        
+            // Build options for Selectize2
+            $selectOptions = "";
+            $selectizeResults = array();
+        
+            foreach ( $filtered_post_types as $post_type_slug => $post_type_object ) {
+                $post_type_name = sanitize_text_field( $post_type_object->label );
+        
+                if ( in_array( $post_type_slug, $s_custom_posts ) ) {
+                    $selectOptions .= '<option value="' . esc_attr( $post_type_slug ) . '" disabled>' . esc_html( $post_type_name ) . ' + </option>';
+                    $selectizeResults[] = array(
+                        'value' => $post_type_slug,
+                        'text'  => $post_type_name,
+                        'disabled' => true,
+                    );
+                } else {
+                    $selectOptions .= '<option value="' . esc_attr( $post_type_slug ) . '">' . esc_html( $post_type_name ) . '</option>';
+                    $selectizeResults[] = array(
+                        'value' => $post_type_slug,
+                        'text'  => $post_type_name,
+                    );
+                }
+            }
+        
+            // Prepare response data
+            $json_output = array(
+                'posttypes' => $selectOptions,
+                'count' => count( $filtered_post_types ),
+                'selectize_posttypes' => $selectizeResults,
+            );
+        
+            // Return JSON response
+            echo wp_json_encode( $json_output );
+            wp_die();
+        }
+        
+        
+
+        public static function hfcm_request_handler_taxonomies() {
 
             // check user capabilities.
             $nnr_hfcm_can_edit = current_user_can( 'manage_options' );
@@ -1233,6 +1315,12 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 // Global vars
                 global $wpdb;
                 $table_name = $wpdb->prefix . 'hfcm_scripts';
+
+                $json_output = array(
+                    'terms' => "",
+                    'count' => 0,
+                    'selectize_terms' => array(),
+                );
         
                 // Get all selected posts
                 if ( -1 === $id ) {
@@ -1243,44 +1331,88 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 } else {
 
                     
-                    // Select value to update.
-                    $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_categories from $table_name where script_id=%s", $id ) );
-                    foreach ( $script as $s ) {
-                        $s_categories = json_decode( $s->s_categories );
-                        if ( ! is_array( $s_categories ) ) {
-                            $s_categories = array();
+                    if( isset( $_POST['taxonomy'] ) && 'post_tag' ==  $_POST['taxonomy'] ){
+
+                        // Select value to update.
+                        $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_tags from $table_name where script_id=%s", $id ) );
+                        foreach ( $script as $s ) {
+                            $s_tags = json_decode( $s->s_tags );
+                            if ( ! is_array( $s_tags ) ) {
+                                $s_tags = array();
+                            }
                         }
-                    }
-        
-                  
-                }
 
-                // Handle category search
+                        // Handle tag search
+                        $tags = get_tags( array(
+                            'hide_empty' => false,
+                        ) );
+
+                        $selectOptions = "";
+                        $selectizeResults = array();
+
+                        foreach ( $tags as $tag ) {
+                            $tag_name = sanitize_text_field( $tag->name );
+                
+                            if ( in_array( $tag->term_id, $s_tags ) ) {
+                                $selectOptions .= '<option class="left-side-option clone-button button-id-'.$tag->term_id.'" value="'.$tag->term_id.'|'.$tag_name.'" disabled>'.sanitize_text_field( $tag_name ).' + </option>';
+                                $selectizeResults[] = array('value' => $tag->term_id, 'text' => sanitize_text_field( $tag_name ), 'disabled' => true);
+                            } else {
+                                $selectOptions .= '<option class="left-side-option clone-button button-id-'.$tag->term_id.'" value="'.$tag->term_id.'|'.$tag_name.'">'.sanitize_text_field( $tag_name ).' + </option>';
+                                $selectizeResults[] = array('value' => $tag->term_id, 'text' => sanitize_text_field( $tag_name ));
+                            }
+                        }
+
+                        
+                        $json_output = array(
+                            'terms' => $selectOptions,
+                            'count' => count($tags),
+                            'selectize_terms' => $selectizeResults,
+                        );
+                
+
+                    }
+                    else {
+
+                        // Select value to update.
+                        $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_categories from $table_name where script_id=%s", $id ) );
+                        foreach ( $script as $s ) {
+                            $s_categories = json_decode( $s->s_categories );
+                            if ( ! is_array( $s_categories ) ) {
+                                $s_categories = array();
+                            }
+                        }
+
+                        // Handle category search
          
-                $categories = get_categories( array(
-                    'hide_empty' => false,
-                ) );
+                        $categories = get_categories( array(
+                            'hide_empty' => false,
+                        ) );
 
-                $selectOptions = "";
-                $selectizeResults = array();
+                        $selectOptions = "";
+                        $selectizeResults = array();
 
-                foreach ( $categories as $category ) {
-                    $category_name = sanitize_text_field( $category->name );
+                        foreach ( $categories as $category ) {
+                            $category_name = sanitize_text_field( $category->name );
 
-                    if ( in_array( $category->term_id, $s_categories ) ) {
-                        $selectOptions .= '<option class="left-side-option clone-button button-id-'.$category->term_id.'" value="'.$category->term_id.'|'.$category_name.'" disabled>'.sanitize_text_field( $category_name ).' + </option>';
-                        $selectizeResults[] = array('value' => $category->term_id, 'text' => sanitize_text_field( $category_name ), 'disabled' => true);
-                    } else {
-                        $selectOptions .= '<option class="left-side-option clone-button button-id-'.$category->term_id.'" value="'.$category->term_id.'|'.$category_name.'">'.sanitize_text_field( $category_name ).' + </option>';
-                        $selectizeResults[] = array('value' => $category->term_id, 'text' => sanitize_text_field( $category_name ));
+                            if ( in_array( $category->term_id, $s_categories ) ) {
+                                $selectOptions .= '<option class="left-side-option clone-button button-id-'.$category->term_id.'" value="'.$category->term_id.'|'.$category_name.'" disabled>'.sanitize_text_field( $category_name ).' + </option>';
+                                $selectizeResults[] = array('value' => $category->term_id, 'text' => sanitize_text_field( $category_name ), 'disabled' => true);
+                            } else {
+                                $selectOptions .= '<option class="left-side-option clone-button button-id-'.$category->term_id.'" value="'.$category->term_id.'|'.$category_name.'">'.sanitize_text_field( $category_name ).' + </option>';
+                                $selectizeResults[] = array('value' => $category->term_id, 'text' => sanitize_text_field( $category_name ));
+                            }
+                        }
+
+                        $json_output = array(
+                            'terms' => $selectOptions,
+                            'count' => count($categories),
+                            'selectize_terms' => $selectizeResults,
+                        );
                     }
+                    
                 }
 
-                $json_output = array(
-                    'categories' => $selectOptions,
-                    'count' => count($categories),
-                    'selectize_categories' => $selectizeResults,
-                );
+                
 
                 echo wp_json_encode( $json_output );
                 wp_die();
@@ -1732,7 +1864,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             echo "</select>";
         }
 
-        public static function categories_dynamic_select2($selectId, $selectClass, $selectName, $options, $is_taxonomy = false) {
+        public static function taxonomies_dynamic_select2($selectId, $selectClass, $selectName, $options, $is_taxonomy = false) {
             echo "<select id='" . esc_attr($selectId) . "' class='" . esc_attr($selectClass) . "' name='" . esc_attr($selectName) . "' multiple>";
             
             foreach ($options as $value) {

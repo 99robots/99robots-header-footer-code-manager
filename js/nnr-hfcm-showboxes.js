@@ -204,6 +204,67 @@ jQuery(
         var postTypePost = 'post';
         initializeDynamicSelect2(selectIdPost, ajaxurl, postTypePost, taxonomy, searchQuery);
 
+        // Initialize select2 for categories
+        var selectIdCategory = 'lazy-load-s-categories';
+        var postTypeCategory = 'post'; // Using 'category' as the taxonomy type
+        var postTypeTaxonomy = 'category'; // Using 'category' as the taxonomy type
+        initializeDynamicCategoriesSelect2(selectIdCategory, ajaxurl, postTypeCategory, postTypeTaxonomy, searchQuery);
+
+
+        // Initialize select2 for tags
+        var selectIdTag = 'lazy-load-s-tags';
+        var postTypeTag = 'post'; // Using 'category' as the taxonomy type
+        var postTypeTaxonomy = 'post_tag'; // Using 'category' as the taxonomy type
+        initializeDynamicCategoriesSelect2(selectIdTag, ajaxurl, postTypeTag, postTypeTaxonomy, searchQuery);
+
+        // Initialize select2 for custom post types
+        var selectIdCustomPost = 'lazy-load-c-posttype';
+        initializeDynamicCustomPostTypeSelect2(selectIdCustomPost, ajaxurl, searchQuery);
+
+        function initializeDynamicCustomPostTypeSelect2(selectId, ajaxurl, searchQuery) {
+            jQuery('#' + selectId).select2({
+                ajax: {
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            page: params.page || 1,
+                            per_page: 5, // Adjust per_page to the desired number of items
+                            action: 'hfcm-request-custom-post-type',
+                            id: hfcm_localize.id,
+                            getCustomPostType: true, // can be renamed to "getTerms" for categories
+                            s: searchQuery, // Any additional search query
+                            security: hfcm_localize.security  // Nonce for security
+                        };
+        
+                        // Query parameters will be ?q=[term]&page=[page]
+                        return query;
+                    },
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        var selectize_result = data.selectize_posttypes;
+                        return {
+                            results: selectize_result.map(function (repo) {
+                                return { id: repo.value, text: repo.text };
+                            }),
+                            pagination: {
+                                more: selectize_result.length === 5
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (selectedRepo) {
+                    // Customize the appearance of the selected item
+                    return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+                }
+            });
+        }
+
+
         function initializeDynamicSelect2(selectId, ajaxurl, postType, taxonomy, searchQuery) {
             jQuery('#' + selectId).select2({
                 ajax: {
@@ -251,12 +312,7 @@ jQuery(
         }
 
 
-        // Initialize select2 for categories
-        var selectIdCategory = 'lazy-load-s-categories';
-        var postTypeCategory = 'post'; // Using 'category' as the taxonomy type
-        var postTypeTaxonomy = 'category'; // Using 'category' as the taxonomy type
-        initializeDynamicCategoriesSelect2(selectIdCategory, ajaxurl, postTypeCategory, postTypeTaxonomy, searchQuery);
-
+        
 
         function initializeDynamicCategoriesSelect2(selectId, ajaxurl, postType, taxonomy, searchQuery) {
             jQuery('#' + selectId).select2({
@@ -268,7 +324,7 @@ jQuery(
                             q: params.term,
                             page: params.page || 1,
                             per_page: 5, // Adjust per_page to the desired number of items
-                            action: 'hfcm-request-categories',
+                            action: 'hfcm-request-taxonomies',
                             id: hfcm_localize.id,
                             getTaxonomies: true, // can be renamed to "getTerms" for categories
                             postType: postType, // For categories, this would be 'category' or another taxonomy
@@ -284,7 +340,7 @@ jQuery(
                     dataType: 'json',
                     delay: 250,
                     processResults: function (data) {
-                        var selectize_result = data.selectize_categories;
+                        var selectize_result = data.selectize_terms;
                         return {
                             results: selectize_result.map(function (repo) {
                                 return { id: repo.value, text: repo.text };
@@ -303,6 +359,8 @@ jQuery(
                 }
             });
         }
+
+        
 
 
     }
