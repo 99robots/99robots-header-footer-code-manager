@@ -24,6 +24,14 @@
     display: none;
 }
 
+#lazy-load-s-categories ~ .selectize-control.multi.plugin-remove_button {
+    display: none;
+}
+
+#lazy-load-s-tags ~ .selectize-control.multi.plugin-remove_button {
+    display: none;
+}
+
 
 
 #nnr_newcontent {

@@ -209,7 +209,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     $nnr_hfcm_post_types[] = $cpdata;
                 }
                 ?>
-                <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
+                <!-- <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Category List', 'header-footer-code-manager' ); ?></th>
                     <td>
                         <select name="data[s_categories][]" multiple>
@@ -225,6 +225,19 @@ wp_enqueue_script( 'hfcm_showboxes' );
                             }
                             ?>
                         </select>
+                    </td>
+                </tr> -->
+                <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
+                    <?php 
+                        echo "<pre>";
+                        var_dump("CATEGORIES",$s_categories);
+                        echo "</pre>";
+                    ?>
+                    <th class="hfcm-th-width"><?php esc_html_e( 'Category List', 'header-footer-code-manager' ); ?></th>
+                    <td>
+                        <?php
+                            NNR_HFCM::categories_dynamic_select2('lazy-load-s-categories','','data[s_categories][]',$s_categories,true);
+                        ?>
                     </td>
                 </tr>
                 <tr id="s_tags" style="<?php echo esc_attr( $nnr_hfcm_tags_style ); ?>">

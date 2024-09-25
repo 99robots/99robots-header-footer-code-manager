@@ -38,6 +38,8 @@ add_action( 'wp_footer', array( 'NNR_HFCM', 'hfcm_footer_scripts' ) );
 add_action( 'the_content', array( 'NNR_HFCM', 'hfcm_content_scripts' ) );
 add_action( 'wp_ajax_hfcm-request', array( 'NNR_HFCM', 'hfcm_request_handler' ) );
 add_action( 'wp_ajax_hfcm-request-example', array( 'NNR_HFCM', 'hfcm_request_handler_example' ) );
+add_action( 'wp_ajax_hfcm-request-categories', array( 'NNR_HFCM', 'hfcm_request_handler_categories' ) );
+
 add_action( 'admin_head', array( 'NNR_HFCM', 'hfcm_hide_custom_submenus' ) );
 
 
@@ -1187,6 +1189,105 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             }
         }
 
+        public static function hfcm_request_handler_categories() {
+
+            // check user capabilities.
+            $nnr_hfcm_can_edit = current_user_can( 'manage_options' );
+
+            if ( !$nnr_hfcm_can_edit ) {
+                echo 'Sorry, you do not have access to this page.';
+                return false;
+            }
+
+            if ( isset( $_POST['insert'] ) ) {
+                // Check nonce
+                check_admin_referer( 'create-snippet' );
+            } else {
+                if ( empty( $_REQUEST['id'] ) ) {
+                    die( 'Missing ID parameter.' );
+                }
+                $id = absint( $_REQUEST['id'] );
+            }
+        
+            if ( isset( $_POST['insert'] ) ) {
+                // Check nonce
+                check_admin_referer( 'create-snippet' );
+            } else {
+                if ( ! isset( $_REQUEST['id'] ) ) {
+                    die( 'Missing ID parameter.' );
+                }
+                $id = (int) $_REQUEST['id'];
+            }
+            if ( isset( $_POST['update'] ) ) {
+                // Check nonce
+                check_admin_referer( 'update-snippet_' . $id );
+            }
+        
+            // Handle AJAX on/off toggle for snippets
+            if ( isset( $_POST['getTaxonomies'] ) ) {
+        
+        
+                // Check nonce
+                check_ajax_referer( 'hfcm-get-posts', 'security' );
+        
+                // Global vars
+                global $wpdb;
+                $table_name = $wpdb->prefix . 'hfcm_scripts';
+        
+                // Get all selected posts
+                if ( -1 === $id ) {
+                    $s_posts = array();
+                    $ex_posts = array();
+                    $s_categories = array();
+                    $s_tags = array();
+                } else {
+
+                    
+                    // Select value to update.
+                    $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_categories from $table_name where script_id=%s", $id ) );
+                    foreach ( $script as $s ) {
+                        $s_categories = json_decode( $s->s_categories );
+                        if ( ! is_array( $s_categories ) ) {
+                            $s_categories = array();
+                        }
+                    }
+        
+                  
+                }
+
+                // Handle category search
+         
+                $categories = get_categories( array(
+                    'hide_empty' => false,
+                ) );
+
+                $selectOptions = "";
+                $selectizeResults = array();
+
+                foreach ( $categories as $category ) {
+                    $category_name = sanitize_text_field( $category->name );
+
+                    if ( in_array( $category->term_id, $s_categories ) ) {
+                        $selectOptions .= '<option class="left-side-option clone-button button-id-'.$category->term_id.'" value="'.$category->term_id.'|'.$category_name.'" disabled>'.sanitize_text_field( $category_name ).' + </option>';
+                        $selectizeResults[] = array('value' => $category->term_id, 'text' => sanitize_text_field( $category_name ), 'disabled' => true);
+                    } else {
+                        $selectOptions .= '<option class="left-side-option clone-button button-id-'.$category->term_id.'" value="'.$category->term_id.'|'.$category_name.'">'.sanitize_text_field( $category_name ).' + </option>';
+                        $selectizeResults[] = array('value' => $category->term_id, 'text' => sanitize_text_field( $category_name ));
+                    }
+                }
+
+                $json_output = array(
+                    'categories' => $selectOptions,
+                    'count' => count($categories),
+                    'selectize_categories' => $selectizeResults,
+                );
+
+                echo wp_json_encode( $json_output );
+                wp_die();
+              
+            }
+        }
+
         /*
         * function to hide custom submenus
         */
@@ -1630,6 +1731,28 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             }
             echo "</select>";
         }
+
+        public static function categories_dynamic_select2($selectId, $selectClass, $selectName, $options, $is_taxonomy = false) {
+            echo "<select id='" . esc_attr($selectId) . "' class='" . esc_attr($selectClass) . "' name='" . esc_attr($selectName) . "' multiple>";
+            
+            foreach ($options as $value) {
+                
+                if ($is_taxonomy) {
+                    // If it's a taxonomy, we get the term name instead of post title
+                    $term = get_term($value);
+                    if ($term) {
+                        echo "<option value='" . esc_attr($value) . "' selected>" . esc_html($term->name) . "</option>";
+                    }
+                } else {
+                    // If it's a post, get the title
+                    $post_title = get_the_title($value);
+                    echo "<option value='" . esc_attr($value) . "' selected>" . esc_html($post_title) . "</option>";
+                }
+            }
+            
+            echo "</select>";
+        }
+        
     }
 
 endif;

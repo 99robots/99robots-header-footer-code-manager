@@ -146,11 +146,11 @@ jQuery(
         // );
 
         // selectize all <select multiple> elements
-        // $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize(
-        //     {
-        //         plugins: ['remove_button']
-        //     }
-        // );
+        $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize(
+            {
+                plugins: ['remove_button']
+            }
+        );
 
         // Initialize the CodeMirror editor
         if ($('#nnr_newcontent').length) {
@@ -181,6 +181,7 @@ jQuery(
         var previousScrollTop = 0;
 
 
+    
         // Initialize select2 for the post type 'post'
         var selectIdPage = 'lazy-load-s-posts';
         var postTypePage = 'post';
@@ -215,11 +216,11 @@ jQuery(
                             per_page: 5, // Adjust per_page to the desired number of items
                             action: 'hfcm-request-example',
                             id: hfcm_localize.id,
-                            getPosts: true,
-                            postType: postType,
-                            taxonomy: taxonomy,
-                            s: searchQuery,
-                            security: hfcm_localize.security,
+                            getPosts: true, // can be renamed to "getTerms" for categories
+                            postType: postType, // For categories, this would be 'category' or another taxonomy
+                            taxonomy: taxonomy, // Pass the taxonomy (like 'category')
+                            s: searchQuery, // Any additional search query
+                            security: hfcm_localize.security,  // Nonce for security
                             runFetchPosts: true
                         };
         
@@ -230,6 +231,60 @@ jQuery(
                     delay: 250,
                     processResults: function (data) {
                         var selectize_result = data.selectize_posts;
+                        return {
+                            results: selectize_result.map(function (repo) {
+                                return { id: repo.value, text: repo.text };
+                            }),
+                            pagination: {
+                                more: selectize_result.length === 5
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (selectedRepo) {
+                    // Customize the appearance of the selected item
+                    return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+                }
+            });
+        }
+
+
+        // Initialize select2 for categories
+        var selectIdCategory = 'lazy-load-s-categories';
+        var postTypeCategory = 'post'; // Using 'category' as the taxonomy type
+        var postTypeTaxonomy = 'category'; // Using 'category' as the taxonomy type
+        initializeDynamicCategoriesSelect2(selectIdCategory, ajaxurl, postTypeCategory, postTypeTaxonomy, searchQuery);
+
+
+        function initializeDynamicCategoriesSelect2(selectId, ajaxurl, postType, taxonomy, searchQuery) {
+            jQuery('#' + selectId).select2({
+                ajax: {
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            page: params.page || 1,
+                            per_page: 5, // Adjust per_page to the desired number of items
+                            action: 'hfcm-request-categories',
+                            id: hfcm_localize.id,
+                            getTaxonomies: true, // can be renamed to "getTerms" for categories
+                            postType: postType, // For categories, this would be 'category' or another taxonomy
+                            taxonomy: taxonomy, // Pass the taxonomy (like 'category')
+                            s: searchQuery, // Any additional search query
+                            security: hfcm_localize.security,  // Nonce for security
+                            runFetchPosts: true
+                        };
+        
+                        // Query parameters will be ?q=[term]&page=[page]
+                        return query;
+                    },
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        var selectize_result = data.selectize_categories;
                         return {
                             results: selectize_result.map(function (repo) {
                                 return { id: repo.value, text: repo.text };
