@@ -244,6 +244,7 @@ jQuery(
                     dataType: 'json',
                     delay: 250,
                     processResults: function (data) {
+                       
                         var selectize_result = data.selectize_posttypes;
                         return {
                             results: selectize_result.map(function (repo) {
@@ -291,6 +292,7 @@ jQuery(
                     dataType: 'json',
                     delay: 250,
                     processResults: function (data) {
+                
                         var selectize_result = data.selectize_posts;
                         return {
                             results: selectize_result.map(function (repo) {

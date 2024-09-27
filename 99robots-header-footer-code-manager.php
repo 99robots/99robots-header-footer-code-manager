@@ -1191,86 +1191,146 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             }
         }
 
-
         public static function hfcm_request_handler_custom_post_type() {
-            // Check user capabilities.
-            if ( ! current_user_can( 'manage_options' ) ) {
+            
+            // check user capabilities.
+            $nnr_hfcm_can_edit = current_user_can( 'manage_options' );
+
+            if ( !$nnr_hfcm_can_edit ) {
                 echo 'Sorry, you do not have access to this page.';
+                return false;
+            }
+
+        
+            if ( isset( $_POST['insert'] ) ) {
+                // Check nonce
+                check_admin_referer( 'create-snippet' );
+            } else {
+                if ( ! isset( $_REQUEST['id'] ) ) {
+                    die( 'Missing ID parameter.' );
+                }
+                $id = (int) $_REQUEST['id'];
+            }
+
+            if ( isset( $_POST['update'] ) ) {
+                // Check nonce
+                check_admin_referer( 'update-snippet_' . $id );
+            }
+         
+            // Handle AJAX on/off toggle for snippets
+            if ( isset( $_POST['getCustomPostType'] ) ) {
+            
+        
+                // Verify nonce for security.
+                check_ajax_referer( 'hfcm-get-posts', 'security' );
+
+                // Global vars
+                global $wpdb;
+                $table_name = $wpdb->prefix . 'hfcm_scripts';
+
+                // Prepare response structure
+                $json_output = array(
+                    'posttypes' => '',
+                    'count' => 0,
+                    'selectize_posttypes' =>  array(),
+                );
+
+                // Get all selected posts
+                if ( -1 === $id ) {
+                    $s_custom_posts = array();
+                   
+                } else {
+
+
+                    // Select value to update.
+                    $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_custom_posts from $table_name where script_id=%s", $id ) );
+                    foreach ( $script as $s ) {
+                        $s_custom_posts = json_decode( $s->s_custom_posts );
+                        if ( ! is_array( $s_custom_posts ) ) {
+                            $s_custom_posts = array();
+                        }
+                    }
+
+                    // Get the search query if provided
+                    $searchQuery = "";
+                    if ( ! empty( $_POST['q'] ) ) {
+                        $searchQuery = sanitize_text_field( $_POST['q'] );
+                    }
+            
+                    // Get registered post types
+                    $args = array(
+                        'public'   => true,
+                        'exclude_from_search' => false,
+                    );
+                    $registered_post_types = get_post_types( $args, 'objects' );
+                    $all_post_types = array();
+                    // Filter by search term if provided
+                    $filtered_post_types = array();
+
+                    foreach ( $registered_post_types as $post_type_slug => $post_type_object ) {
+                        $post_type_value = sanitize_text_field( $post_type_object->name );
+                        $post_type_name = sanitize_text_field( $post_type_object->label );
+
+                        if ( empty( $searchQuery ) || stripos( $post_type_value, $searchQuery ) !== false ) {
+                            $filtered_post_types[ $post_type_value ] = $post_type_name;
+                        }
+                        else {
+                            $filtered_post_types[ $post_type_value ] = $post_type_name;
+                        }
+                    }
+
+                    // echo "<pre>";
+                    // var_dump("filtered_post_types",$filtered_post_types);
+    
+                    // var_dump("s_custom_posts",$s_custom_posts);
+                    // echo "</pre>";
+            
+                    // Build options for Selectize2
+                    $selectOptions = "";
+                    $selectizeResults = array();
+        
+                    foreach ( $filtered_post_types as $post_type_key => $post_type_name ) {
+
+                        $post_type_key = sanitize_text_field( $post_type_key );
+                        $post_type_name = sanitize_text_field( $post_type_name );
+            
+                        // echo "<pre>";
+                        // var_dump("post_type_value",$post_type_object);
+                        // var_dump("s_custom_posts",$s_custom_posts);
+                        // echo "</pre>";
+
+                        if ( in_array( $post_type_key, $s_custom_posts ) ) {
+                            $selectOptions .= '<option value="' . esc_attr( $post_type_key ) . '" disabled>' . esc_html( $post_type_name ) . ' + </option>';
+                            $selectizeResults[] = array(
+                                'value' => $post_type_key,
+                                'text'  => $post_type_name,
+
+                            );
+                        } else {
+                            $selectOptions .= '<option value="' . esc_attr( $post_type_key ) . '">' . esc_html( $post_type_name ) . '</option>';
+                            $selectizeResults[] = array(
+                                'value' => $post_type_key,
+                                'text'  => $post_type_name,
+                            );
+                        }
+                    }
+
+
+                    $json_output = array(
+                        'posttypes' => $selectOptions,
+                        'count' => count($filtered_post_types),
+                        'selectize_posttypes' => $selectizeResults,
+                    );
+
+                }
+        
+                // Return JSON response
+                echo wp_json_encode( $json_output );
                 wp_die();
             }
-        
-            // Verify nonce for security.
-            check_ajax_referer( 'hfcm-get-posts', 'security' );
-        
-            
-            // Prepare response structure
-            $json_output = array(
-                'posttypes' => '',
-                'count' => count( $filtered_post_types ),
-                'selectize_posttypes' =>  array(),
-            );
-        
-            // Get the search query if provided
-            $searchQuery = "";
-            if ( ! empty( $_POST['q'] ) ) {
-                $searchQuery = sanitize_text_field( $_POST['q'] );
-            }
-        
-            // Get registered post types
-            $args = array(
-                'public'   => true,
-                'exclude_from_search' => false,
-            );
-            $registered_post_types = get_post_types( $args, 'objects' );
-        
-            // Filter by search term if provided
-            $filtered_post_types = array();
-            foreach ( $registered_post_types as $post_type_slug => $post_type_object ) {
-                if ( empty( $searchQuery ) || stripos( $post_type_object->label, $searchQuery ) !== false ) {
-                    $filtered_post_types[ $post_type_slug ] = $post_type_object;
-                }
-            }
-        
-            // Fetch selected post types (assuming $s_custom_posts is retrieved from DB or options)
-            $s_custom_posts = isset( $_POST['s_custom_posts'] ) ? $_POST['s_custom_posts'] : array();
-        
-            // Build options for Selectize2
-            $selectOptions = "";
-            $selectizeResults = array();
-        
-            foreach ( $filtered_post_types as $post_type_slug => $post_type_object ) {
-                $post_type_name = sanitize_text_field( $post_type_object->label );
-        
-                if ( in_array( $post_type_slug, $s_custom_posts ) ) {
-                    $selectOptions .= '<option value="' . esc_attr( $post_type_slug ) . '" disabled>' . esc_html( $post_type_name ) . ' + </option>';
-                    $selectizeResults[] = array(
-                        'value' => $post_type_slug,
-                        'text'  => $post_type_name,
-                        'disabled' => true,
-                    );
-                } else {
-                    $selectOptions .= '<option value="' . esc_attr( $post_type_slug ) . '">' . esc_html( $post_type_name ) . '</option>';
-                    $selectizeResults[] = array(
-                        'value' => $post_type_slug,
-                        'text'  => $post_type_name,
-                    );
-                }
-            }
-        
-            // Prepare response data
-            $json_output = array(
-                'posttypes' => $selectOptions,
-                'count' => count( $filtered_post_types ),
-                'selectize_posttypes' => $selectizeResults,
-            );
-        
-            // Return JSON response
-            echo wp_json_encode( $json_output );
-            wp_die();
         }
         
         
-
         public static function hfcm_request_handler_taxonomies() {
 
             // check user capabilities.
@@ -1860,6 +1920,27 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 $post_title = get_the_title($value);
         
                 echo "<option value='$value' selected>$post_title</option>";
+            }
+            echo "</select>";
+        }
+
+        /**
+         * Function to generate dynamic select2
+         *
+         * @param $selectId
+         * @param $selectClass
+         * @param $selectName
+         * @param $options
+         */
+        public static function generate_dynamic_cp_select2($selectId, $selectClass, $selectName, $options) {
+            echo "<select id='$selectId' class='$selectClass' name='$selectName' multiple>";
+            foreach ($options as $value) {
+                // get the post type name from the $value.
+                $post_type = get_post_type_object($value);
+                $post_type_name = $post_type->label;
+                $post_type_value = $post_type->name;
+                     
+                echo "<option value='$post_type_value' selected>$post_type_name</option>";
             }
             echo "</select>";
         }

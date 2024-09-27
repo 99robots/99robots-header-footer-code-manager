@@ -252,24 +252,8 @@ wp_enqueue_script( 'hfcm_showboxes' );
                 <tr id="c_posttype" style="<?php echo esc_attr( $nnr_hfcm_custom_posts_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Post Types', 'header-footer-code-manager' ); ?></th>
                     <td>
-                        <select name="data[s_custom_posts][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_custom_post_types as $cpkey => $cpdata ) {
-                                if ( in_array( $cpkey, $s_custom_posts ) ) {
-                                    echo "<option value='" . esc_attr( $cpkey ) . "' selected>" . esc_html( $cpdata ) . "</option>";
-                                } else {
-                                    echo "<option value='" . esc_attr( $cpkey ) . "'>" . esc_html( $cpdata ) . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr id="c_posttype" style="<?php echo esc_attr( $nnr_hfcm_custom_posts_style ); ?>">
-                    <th class="hfcm-th-width"><?php esc_html_e( 'Post Types', 'header-footer-code-manager' ); ?></th>
-                    <td>
                         <?php
-                            NNR_HFCM::generate_dynamic_select2('lazy-load-c-posttype','','data[s_custom_posts][]',$s_custom_posts );
+                            NNR_HFCM::generate_dynamic_cp_select2('lazy-load-c-posttype','','data[s_custom_posts][]',$s_custom_posts );
                         ?>
                     </td>
                             

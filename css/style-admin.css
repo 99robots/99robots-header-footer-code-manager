@@ -32,6 +32,17 @@
     display: none;
 }
 
+#lazy-load-s-pages ~ .selectize-control.multi.plugin-remove_button {
+    display: none;
+}
+
+#lazy-load-c-posttype ~ .selectize-control.multi.plugin-remove_button {
+    display: none;
+}
+
+
+
+
 
 
 #nnr_newcontent {
