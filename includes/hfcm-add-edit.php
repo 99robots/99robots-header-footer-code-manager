@@ -139,29 +139,21 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     style="<?php echo esc_attr( $nnr_hfcm_exclude_pages_style . $nnr_hfcm_exclude_posts_style . $nnr_hfcm_exclude_tags_style . $nnr_hfcm_exclude_custom_posts_style . $nnr_hfcm_exclude_categories_style . $nnr_hfcm_exclude_lp_count_style . $nnr_hfcm_exclude_manual_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Exclude Pages', 'header-footer-code-manager' ); ?></th>
                     <td>
-                        <select name="data[ex_pages][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_pages as $pdata ) {
-                                if ( in_array( $pdata->ID, $ex_pages ) ) {
-                                    printf( '<option value="%1$s" selected="selected">%2$s</option>', $pdata->ID, $pdata->post_title );
-                                } else {
-                                    printf( '<option value="%1$s">%2$s</option>', $pdata->ID, $pdata->post_title );
-                                }
-                            }
-                            ?>
-                        </select>
+                        <?php
+                            NNR_HFCM::hfcm_generate_posts('lazy-load-page','','data[ex_pages][]',$ex_pages);
+                        ?>
                     </td>
                 </tr>
-                <tr id="ex_posts"
+                <tr id="ex_posts" 
                     style="<?php echo esc_attr( $nnr_hfcm_exclude_pages_style . $nnr_hfcm_exclude_posts_style . $nnr_hfcm_exclude_tags_style . $nnr_hfcm_exclude_custom_posts_style . $nnr_hfcm_exclude_categories_style . $nnr_hfcm_exclude_lp_count_style . $nnr_hfcm_exclude_manual_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Exclude Posts', 'header-footer-code-manager' ); ?></th>
                     <td>
-                        <select class="nnr-wraptext" name="data[ex_posts][]" multiple>
-                            <option disabled></option>
-                        </select> <img id="loader"
-                                       src="<?php echo plugins_url( 'images/ajax-loader.gif', dirname( __FILE__ ) ); ?>">
+                        <?php
+                            NNR_HFCM::hfcm_generate_posts('lazy-load-post','','data[ex_posts][]',$ex_posts);
+                        ?>
                     </td>
                 </tr>
+            
                 <?php
                 $nnr_hfcm_pages       = get_pages();
                 $nnr_hfcm_pages_style = ('s_pages' === $display_on) ? '' : 'display:none;';
@@ -170,18 +162,11 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <th class="hfcm-th-width">
                         <?php esc_html_e( 'Page List', 'header-footer-code-manager' ); ?>
                     </th>
+                   
                     <td>
-                        <select name="data[s_pages][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_pages as $pdata ) {
-                                if ( in_array( $pdata->ID, $s_pages ) ) {
-                                    printf( '<option value="%1$s" selected="selected">%2$s</option>', esc_attr( $pdata->ID ), esc_attr( $pdata->post_title ) );
-                                } else {
-                                    printf( '<option value="%1$s">%2$s</option>', esc_attr( $pdata->ID ), esc_attr( $pdata->post_title ) );
-                                }
-                            }
-                            ?>
-                        </select>
+                        <?php
+                            NNR_HFCM::hfcm_generate_posts('lazy-load-s-pages','','data[s_pages][]',$s_pages);
+                        ?>
                     </td>
                 </tr>
                 <?php $nnr_hfcm_posts_style = 's_posts' === $display_on ? '' : 'display:none;'; ?>
@@ -190,9 +175,9 @@ wp_enqueue_script( 'hfcm_showboxes' );
                         <?php esc_html_e( 'Post List', 'header-footer-code-manager' ); ?>
                     </th>
                     <td>
-                        <select class="nnr-wraptext" name="data[s_posts][]" multiple>
-                            <option disabled>...</option>
-                        </select>
+                        <?php
+                            NNR_HFCM::hfcm_generate_posts('lazy-load-s-posts','','data[s_posts][]',$s_posts);
+                        ?>
                     </td>
                 </tr>
                 <?php
@@ -219,7 +204,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     $nnr_hfcm_post_types[] = $cpdata;
                 }
                 ?>
-                <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
+                <!-- <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Category List', 'header-footer-code-manager' ); ?></th>
                     <td>
                         <select name="data[s_categories][]" multiple>
@@ -236,40 +221,37 @@ wp_enqueue_script( 'hfcm_showboxes' );
                             ?>
                         </select>
                     </td>
+                </tr> -->
+                <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
+                    <?php 
+                        // echo "<pre>";
+                        // var_dump("CATEGORIES",$s_categories);
+                        // echo "</pre>";
+                    ?>
+                    <th class="hfcm-th-width"><?php esc_html_e( 'Category List', 'header-footer-code-manager' ); ?></th>
+                    <td>
+                        <?php
+                            NNR_HFCM::taxonomies_dynamic_select2('lazy-load-s-categories','','data[s_categories][]',$s_categories,true);
+                        ?>
+                    </td>
                 </tr>
                 <tr id="s_tags" style="<?php echo esc_attr( $nnr_hfcm_tags_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Tags List', 'header-footer-code-manager' ); ?></th>
                     <td>
-                        <select name="data[s_tags][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_tags as $nnr_key_cat => $nnr_item_tag ) {
-                                foreach ( $nnr_item_tag['terms'] as $nnr_item_tag_key => $nnr_item_tag_term ) {
-                                    if ( in_array( $nnr_item_tag_term->term_id, $s_tags ) ) {
-                                        echo "<option value='" . esc_attr( $nnr_item_tag_term->term_id ) . "' selected>" . esc_html( $nnr_item_tag['name'] ) . " - " . esc_html( $nnr_item_tag_term->name ) . "</option>";
-                                    } else {
-                                        echo "<option value='" . esc_attr( $nnr_item_tag_term->term_id ) . "'>" . esc_html( $nnr_item_tag['name'] ) . " - " . esc_html( $nnr_item_tag_term->name ) . "</option>";
-                                    }
-                                }
-                            }
-                            ?>
-                        </select>
+                        <?php
+                            NNR_HFCM::taxonomies_dynamic_select2('lazy-load-s-tags','','data[s_tags][]',$s_tags,true);
+                        ?>
                     </td>
+                            
                 </tr>
                 <tr id="c_posttype" style="<?php echo esc_attr( $nnr_hfcm_custom_posts_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Post Types', 'header-footer-code-manager' ); ?></th>
                     <td>
-                        <select name="data[s_custom_posts][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_custom_post_types as $cpkey => $cpdata ) {
-                                if ( in_array( $cpkey, $s_custom_posts ) ) {
-                                    echo "<option value='" . esc_attr( $cpkey ) . "' selected>" . esc_html( $cpdata ) . "</option>";
-                                } else {
-                                    echo "<option value='" . esc_attr( $cpkey ) . "'>" . esc_html( $cpdata ) . "</option>";
-                                }
-                            }
-                            ?>
-                        </select>
+                        <?php
+                            NNR_HFCM::generate_dynamic_cp_select2('lazy-load-c-posttype','','data[s_custom_posts][]',$s_custom_posts );
+                        ?>
                     </td>
+                            
                 </tr>
                 <tr id="lp_count" style="<?php echo esc_attr( $nnr_hfcm_lpcount_style ); ?>">
                     <th class="hfcm-th-width"><?php esc_html_e( 'Post Count', 'header-footer-code-manager' ); ?></th>
