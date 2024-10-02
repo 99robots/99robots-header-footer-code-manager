@@ -140,7 +140,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <th class="hfcm-th-width"><?php esc_html_e( 'Exclude Pages', 'header-footer-code-manager' ); ?></th>
                     <td>
                         <?php
-                            NNR_HFCM::generate_dynamic_select2('lazy-load-page','','data[ex_pages][]',$ex_pages);
+                            NNR_HFCM::hfcm_generate_posts('lazy-load-page','','data[ex_pages][]',$ex_pages);
                         ?>
                     </td>
                 </tr>
@@ -149,7 +149,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <th class="hfcm-th-width"><?php esc_html_e( 'Exclude Posts', 'header-footer-code-manager' ); ?></th>
                     <td>
                         <?php
-                            NNR_HFCM::generate_dynamic_select2('lazy-load-post','','data[ex_posts][]',$ex_posts);
+                            NNR_HFCM::hfcm_generate_posts('lazy-load-post','','data[ex_posts][]',$ex_posts);
                         ?>
                     </td>
                 </tr>
@@ -165,7 +165,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
                    
                     <td>
                         <?php
-                            NNR_HFCM::generate_dynamic_select2('lazy-load-s-pages','','data[s_pages][]',$s_pages);
+                            NNR_HFCM::hfcm_generate_posts('lazy-load-s-pages','','data[s_pages][]',$s_pages);
                         ?>
                     </td>
                 </tr>
@@ -174,14 +174,9 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     <th class="hfcm-th-width">
                         <?php esc_html_e( 'Post List', 'header-footer-code-manager' ); ?>
                     </th>
-                    <!-- <td>
-                        <select class="nnr-wraptext" name="data[s_posts][]" multiple>
-                            <option disabled>...</option>
-                        </select>
-                    </td> -->
                     <td>
                         <?php
-                            NNR_HFCM::generate_dynamic_select2('lazy-load-s-posts','','data[s_posts][]',$s_posts);
+                            NNR_HFCM::hfcm_generate_posts('lazy-load-s-posts','','data[s_posts][]',$s_posts);
                         ?>
                     </td>
                 </tr>

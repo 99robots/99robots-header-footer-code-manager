@@ -37,7 +37,7 @@ add_action( 'wp_head', array( 'NNR_HFCM', 'hfcm_header_scripts' ) );
 add_action( 'wp_footer', array( 'NNR_HFCM', 'hfcm_footer_scripts' ) );
 add_action( 'the_content', array( 'NNR_HFCM', 'hfcm_content_scripts' ) );
 add_action( 'wp_ajax_hfcm-request', array( 'NNR_HFCM', 'hfcm_request_handler' ) );
-add_action( 'wp_ajax_hfcm-request-example', array( 'NNR_HFCM', 'hfcm_request_handler_example' ) );
+add_action( 'wp_ajax_hfcm-request-posts', array( 'NNR_HFCM', 'hfcm_request_posts' ) );
 add_action( 'wp_ajax_hfcm-request-taxonomies', array( 'NNR_HFCM', 'hfcm_request_handler_taxonomies' ) );
 add_action( 'wp_ajax_hfcm-request-custom-post-type', array( 'NNR_HFCM', 'hfcm_request_handler_custom_post_type' ) );
 
@@ -1017,7 +1017,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
         }
 
        
-        public static function hfcm_request_handler_example() {
+        public static function hfcm_request_posts() {
 
             // check user capabilities.
             $nnr_hfcm_can_edit = current_user_can( 'manage_options' );
@@ -1330,7 +1330,6 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             }
         }
         
-        
         public static function hfcm_request_handler_taxonomies() {
 
             // check user capabilities.
@@ -1371,115 +1370,54 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
         
                 // Check nonce
                 check_ajax_referer( 'hfcm-get-posts', 'security' );
-        
-                // Global vars
-                global $wpdb;
-                $table_name = $wpdb->prefix . 'hfcm_scripts';
 
-                $json_output = array(
-                    'terms' => "",
-                    'count' => 0,
-                    'selectize_terms' => array(),
+                // Set defaults and sanitize the inputs
+                $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+                $per_page = isset($_POST['per_page']) ? intval($_POST['per_page']) : 10;
+                $search_query = isset($_POST['q']) ? sanitize_text_field($_POST['q']) : '';
+                $taxonomy = isset($_POST['taxonomy']) ? sanitize_text_field($_POST['taxonomy']) : 'category';
+                
+                // Set up the query arguments for terms
+                $args = array(
+                    'taxonomy' => $taxonomy,
+                    'hide_empty' => false,
+                    'number' => $per_page,
+                    'offset' => ($page - 1) * $per_page,
+                    'search' => $search_query,
                 );
-        
-                // Get all selected posts
-                if ( -1 === $id ) {
-                    $s_posts = array();
-                    $ex_posts = array();
-                    $s_categories = array();
-                    $s_tags = array();
-                } else {
 
-                    
-                    if( isset( $_POST['taxonomy'] ) && 'post_tag' ==  $_POST['taxonomy'] ){
+                $term_query = new WP_Term_Query($args);
+                $terms = $term_query->get_terms();
 
-                        // Select value to update.
-                        $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_tags from $table_name where script_id=%s", $id ) );
-                        foreach ( $script as $s ) {
-                            $s_tags = json_decode( $s->s_tags );
-                            if ( ! is_array( $s_tags ) ) {
-                                $s_tags = array();
-                            }
-                        }
+                $selectize_results = array();
 
-                        // Handle tag search
-                        $tags = get_tags( array(
-                            'hide_empty' => false,
-                        ) );
-
-                        $selectOptions = "";
-                        $selectizeResults = array();
-
-                        foreach ( $tags as $tag ) {
-                            $tag_name = sanitize_text_field( $tag->name );
-                
-                            if ( in_array( $tag->term_id, $s_tags ) ) {
-                                $selectOptions .= '<option class="left-side-option clone-button button-id-'.$tag->term_id.'" value="'.$tag->term_id.'|'.$tag_name.'" disabled>'.sanitize_text_field( $tag_name ).' + </option>';
-                                $selectizeResults[] = array('value' => $tag->term_id, 'text' => sanitize_text_field( $tag_name ), 'disabled' => true);
-                            } else {
-                                $selectOptions .= '<option class="left-side-option clone-button button-id-'.$tag->term_id.'" value="'.$tag->term_id.'|'.$tag_name.'">'.sanitize_text_field( $tag_name ).' + </option>';
-                                $selectizeResults[] = array('value' => $tag->term_id, 'text' => sanitize_text_field( $tag_name ));
-                            }
-                        }
-
-                        
-                        $json_output = array(
-                            'terms' => $selectOptions,
-                            'count' => count($tags),
-                            'selectize_terms' => $selectizeResults,
-                        );
-                
-
-                    }
-                    else {
-
-                        // Select value to update.
-                        $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_categories from $table_name where script_id=%s", $id ) );
-                        foreach ( $script as $s ) {
-                            $s_categories = json_decode( $s->s_categories );
-                            if ( ! is_array( $s_categories ) ) {
-                                $s_categories = array();
-                            }
-                        }
-
-                        // Handle category search
-         
-                        $categories = get_categories( array(
-                            'hide_empty' => false,
-                        ) );
-
-                        $selectOptions = "";
-                        $selectizeResults = array();
-
-                        foreach ( $categories as $category ) {
-                            $category_name = sanitize_text_field( $category->name );
-
-                            if ( in_array( $category->term_id, $s_categories ) ) {
-                                $selectOptions .= '<option class="left-side-option clone-button button-id-'.$category->term_id.'" value="'.$category->term_id.'|'.$category_name.'" disabled>'.sanitize_text_field( $category_name ).' + </option>';
-                                $selectizeResults[] = array('value' => $category->term_id, 'text' => sanitize_text_field( $category_name ), 'disabled' => true);
-                            } else {
-                                $selectOptions .= '<option class="left-side-option clone-button button-id-'.$category->term_id.'" value="'.$category->term_id.'|'.$category_name.'">'.sanitize_text_field( $category_name ).' + </option>';
-                                $selectizeResults[] = array('value' => $category->term_id, 'text' => sanitize_text_field( $category_name ));
-                            }
-                        }
-
-                        $json_output = array(
-                            'terms' => $selectOptions,
-                            'count' => count($categories),
-                            'selectize_terms' => $selectizeResults,
-                        );
-                    }
-                    
+                foreach ($terms as $term) {
+                    $selectize_results[] = array(
+                        'value' => $term->term_id,
+                        'text' => $term->name,
+                    );
                 }
 
+                $json_output = array(
+                    'count' => count($terms),
+                    'selectize_terms' => $selectize_results,
+                );
                 
-
                 echo wp_json_encode( $json_output );
                 wp_die();
+
+                // Send the response
+                // wp_send_json_success(array(
+                //     'selectize_terms' => $selectize_results,
+                //     'count' => count($terms),
+                // ));
+
+               
+                
               
             }
         }
-
+        
         /*
         * function to hide custom submenus
         */
@@ -1905,14 +1843,14 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
         }
 
         /**
-         * Function to generate dynamic select2
+         * Function to hfcm_generate_posts
          *
          * @param $selectId
          * @param $selectClass
          * @param $selectName
          * @param $options
          */
-        public static function generate_dynamic_select2($selectId, $selectClass, $selectName, $options) {
+        public static function hfcm_generate_posts($selectId, $selectClass, $selectName, $options) {
             echo "<select id='$selectId' class='$selectClass' name='$selectName' multiple>";
             foreach ($options as $value) {
         

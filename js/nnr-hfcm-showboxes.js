@@ -185,43 +185,43 @@ jQuery(
         // Initialize select2 for the post type 'post'
         var selectIdPage = 'lazy-load-s-posts';
         var postTypePage = 'post';
-        initializeDynamicSelect2(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
+        hfcmInitializeDynamicPosts(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
 
         // Initialize select2 for the post type 'page'
         var selectIdPage = 'lazy-load-s-pages';
         var postTypePage = 'page';
-        initializeDynamicSelect2(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
+        hfcmInitializeDynamicPosts(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
 
 
 
         // Initialize select2 for the post type 'page'
         var selectIdPage = 'lazy-load-page';
         var postTypePage = 'page';
-        initializeDynamicSelect2(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
+        hfcmInitializeDynamicPosts(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
 
         // Initialize select2 for the post type 'post'
         var selectIdPost = 'lazy-load-post';
         var postTypePost = 'post';
-        initializeDynamicSelect2(selectIdPost, ajaxurl, postTypePost, taxonomy, searchQuery);
+        hfcmInitializeDynamicPosts(selectIdPost, ajaxurl, postTypePost, taxonomy, searchQuery);
 
         // Initialize select2 for categories
         var selectIdCategory = 'lazy-load-s-categories';
         var postTypeCategory = 'post'; // Using 'category' as the taxonomy type
         var postTypeTaxonomy = 'category'; // Using 'category' as the taxonomy type
-        initializeDynamicCategoriesSelect2(selectIdCategory, ajaxurl, postTypeCategory, postTypeTaxonomy, searchQuery);
+        hfcmInitializeDynamicCategories(selectIdCategory, ajaxurl, postTypeCategory, postTypeTaxonomy, searchQuery);
 
 
         // Initialize select2 for tags
         var selectIdTag = 'lazy-load-s-tags';
         var postTypeTag = 'post'; // Using 'category' as the taxonomy type
         var postTypeTaxonomy = 'post_tag'; // Using 'category' as the taxonomy type
-        initializeDynamicCategoriesSelect2(selectIdTag, ajaxurl, postTypeTag, postTypeTaxonomy, searchQuery);
+        hfcmInitializeDynamicCategories(selectIdTag, ajaxurl, postTypeTag, postTypeTaxonomy, searchQuery);
 
         // Initialize select2 for custom post types
         var selectIdCustomPost = 'lazy-load-c-posttype';
-        initializeDynamicCustomPostTypeSelect2(selectIdCustomPost, ajaxurl, searchQuery);
+        hfcmInitializeDynamicCustomPostType(selectIdCustomPost, ajaxurl, searchQuery);
 
-        function initializeDynamicCustomPostTypeSelect2(selectId, ajaxurl, searchQuery) {
+        function hfcmInitializeDynamicCustomPostType(selectId, ajaxurl, searchQuery) {
             jQuery('#' + selectId).select2({
                 ajax: {
                     type: 'POST',
@@ -265,8 +265,7 @@ jQuery(
             });
         }
 
-
-        function initializeDynamicSelect2(selectId, ajaxurl, postType, taxonomy, searchQuery) {
+        function hfcmInitializeDynamicPosts(selectId, ajaxurl, postType, taxonomy, searchQuery) {
             jQuery('#' + selectId).select2({
                 ajax: {
                     type: 'POST',
@@ -276,7 +275,7 @@ jQuery(
                             q: params.term,
                             page: params.page || 1,
                             per_page: 5, // Adjust per_page to the desired number of items
-                            action: 'hfcm-request-example',
+                            action: 'hfcm-request-posts',
                             id: hfcm_localize.id,
                             getPosts: true, // can be renamed to "getTerms" for categories
                             postType: postType, // For categories, this would be 'category' or another taxonomy
@@ -314,9 +313,7 @@ jQuery(
         }
 
 
-        
-
-        function initializeDynamicCategoriesSelect2(selectId, ajaxurl, postType, taxonomy, searchQuery) {
+        function hfcmInitializeDynamicCategories(selectId, ajaxurl, postType, taxonomy, searchQuery) {
             jQuery('#' + selectId).select2({
                 ajax: {
                     type: 'POST',
@@ -348,7 +345,7 @@ jQuery(
                                 return { id: repo.value, text: repo.text };
                             }),
                             pagination: {
-                                more: selectize_result.length === 5
+                                more: selectize_result.length === 10
                             }
                         };
                     },
@@ -361,9 +358,6 @@ jQuery(
                 }
             });
         }
-
-        
-
 
     }
 );
