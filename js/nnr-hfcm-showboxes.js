@@ -115,36 +115,6 @@ jQuery('#loader').show();
 jQuery(
     function ($) {
 
-        // var nnr_hfcm_data = {
-        //     action: 'hfcm-request',
-        //     id: hfcm_localize.id,
-        //     get_posts: true,
-        //     security: hfcm_localize.security
-        // };
-
-        // $.post(
-        //     ajaxurl,
-        //     nnr_hfcm_data,
-        //     function (new_data) {
-        //         var all_posts = $.merge([{text: "", value:""}], new_data.posts);
-        //         var options = {
-        //             plugins: ['remove_button'],
-        //             options: all_posts,
-        //             items: new_data.selected
-        //         };
-        //         $('#loader').hide();
-        //         $('#s_posts select').selectize(options);
-        //         var options = {
-        //             plugins: ['remove_button'],
-        //             options: new_data.posts,
-        //             items: new_data.excluded
-        //         };
-        //         $('#loader').hide();
-        //         $('#ex_posts select').selectize(options);
-        //     },
-        //     'json', // ajax result format
-        // );
-
         // selectize all <select multiple> elements
         $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize(
             {
