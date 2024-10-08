@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.39
+ * Version: 1.1.40
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: DraftPress
@@ -37,6 +37,13 @@ add_action( 'wp_head', array( 'NNR_HFCM', 'hfcm_header_scripts' ) );
 add_action( 'wp_footer', array( 'NNR_HFCM', 'hfcm_footer_scripts' ) );
 add_action( 'the_content', array( 'NNR_HFCM', 'hfcm_content_scripts' ) );
 add_action( 'wp_ajax_hfcm-request', array( 'NNR_HFCM', 'hfcm_request_handler' ) );
+add_action( 'wp_ajax_hfcm-request-posts', array( 'NNR_HFCM', 'hfcm_request_posts' ) );
+add_action( 'wp_ajax_hfcm-request-taxonomies', array( 'NNR_HFCM', 'hfcm_request_handler_taxonomies' ) );
+add_action( 'wp_ajax_hfcm-request-custom-post-type', array( 'NNR_HFCM', 'hfcm_request_handler_custom_post_type' ) );
+
+
+add_action( 'admin_head', array( 'NNR_HFCM', 'hfcm_hide_custom_submenus' ) );
+
 
 // Files containing submenu functions
 require_once plugin_dir_path( __FILE__ ) . 'includes/class-hfcm-snippets-list.php';
@@ -180,6 +187,7 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             $allowed_pages = array(
                 'toplevel_page_hfcm-list',
                 'hfcm_page_hfcm-create',
+                'hfcm_page_hfcm-update',
                 'admin_page_hfcm-update',
             );
 
@@ -200,8 +208,15 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
                 wp_register_style( 'selectize-css', plugins_url( 'css/selectize.bootstrap3.css', __FILE__ ) );
                 wp_enqueue_style( 'selectize-css' );
 
+                wp_register_style( 'selectize2-css', plugins_url( 'css/select2.min.css', __FILE__ ) );
+                wp_enqueue_style( 'selectize2-css' );
+
+
                 wp_register_script( 'selectize-js', plugins_url( 'js/selectize.min.js', __FILE__ ), array( 'jquery' ) );
                 wp_enqueue_script( 'selectize-js' );
+
+                wp_register_script( 'selectize2-js', plugins_url( 'js/select2.min.js', __FILE__ ), array( 'jquery' ) );
+                wp_enqueue_script( 'selectize2-js' );
 
                 wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
             }
@@ -1001,6 +1016,421 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
             }
         }
 
+       
+        public static function hfcm_request_posts() {
+
+            // check user capabilities.
+            $nnr_hfcm_can_edit = current_user_can( 'manage_options' );
+
+            if ( !$nnr_hfcm_can_edit ) {
+                echo 'Sorry, you do not have access to this page.';
+                return false;
+            }
+
+            if ( isset( $_POST['insert'] ) ) {
+                // Check nonce
+                check_admin_referer( 'create-snippet' );
+            } else {
+                if ( empty( $_REQUEST['id'] ) ) {
+                    die( 'Missing ID parameter.' );
+                }
+                $id = absint( $_REQUEST['id'] );
+            }
+        
+            if ( isset( $_POST['insert'] ) ) {
+                // Check nonce
+                check_admin_referer( 'create-snippet' );
+            } else {
+                if ( ! isset( $_REQUEST['id'] ) ) {
+                    die( 'Missing ID parameter.' );
+                }
+                $id = (int) $_REQUEST['id'];
+            }
+            if ( isset( $_POST['update'] ) ) {
+                // Check nonce
+                check_admin_referer( 'update-snippet_' . $id );
+            }
+        
+            // Handle AJAX on/off toggle for snippets
+            if ( isset( $_POST['getPosts'] ) ) {
+        
+        
+                // Check nonce
+                check_ajax_referer( 'hfcm-get-posts', 'security' );
+        
+                // Global vars
+                global $wpdb;
+                $table_name = $wpdb->prefix . 'hfcm_scripts';
+        
+                // Get all selected posts
+                if ( -1 === $id ) {
+                    $s_posts = array();
+                    $ex_posts = array();
+                } else {
+        
+                    // Select value to update.
+                    $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_posts from $table_name where script_id=%s", $id ) );
+                    foreach ( $script as $s ) {
+                        $s_posts = json_decode( $s->s_posts );
+                        if ( ! is_array( $s_posts ) ) {
+                            $s_posts = array();
+                        }
+                    }
+        
+                    $script_ex = $wpdb->get_results( $wpdb->prepare( "SELECT ex_posts from $table_name where script_id=%s", $id ) );
+                    foreach ( $script_ex as $s ) {
+                        $ex_posts = json_decode( $s->ex_posts );
+                        if ( ! is_array( $ex_posts ) ) {
+                            $ex_posts = array();
+                        }
+                    }
+        
+                }
+        
+                // Get all posts.
+                $args = array(
+                    'public' => true,
+                    '_builtin' => false,
+                );
+        
+                $offset = 0;
+                if(!empty($_POST['page'])) {
+                    $offset = 100 * sanitize_text_field($_POST['page']);
+                }
+                if(!empty($_POST['postType'])) {
+                    $postTypes = array(sanitize_text_field($_POST['postType']));
+                } else {
+                    $postTypes = array_diff(
+                        array_merge(array( 'post' ), get_post_types( $args, 'names', 'and' )), array('page')
+                    );
+                }
+        
+                if( isset( $_POST['page'] ) && 1 === $_POST['page'] ) {		
+                    $page = 1;
+                }
+                else {
+                    $page = $_POST['page'];
+                }
+                
+                $argsPost = array(
+                    'post_type' => $postTypes,
+                    'posts_per_page' => 5,
+                    'paged' => $page,
+                    'orderby' => 'title',
+                    // orderby created date
+                    'order' => 'DESC',
+                    //'order' => 'ASC',
+                    //'offset' => $offset,
+                    'post_status' => ['publish']
+                );
+        
+            
+                $searchQuery = "";
+                if(!empty($_POST['q'])) {
+                    $argsPost['s'] = sanitize_text_field($_POST['q']);
+                }
+        
+                if(!empty($_POST['taxonomy'])) {
+                    $taxonomySearch =  sanitize_text_field($_POST['taxonomy']);
+                    $taxonomySearch =  explode(':', $taxonomySearch);
+                    if(!empty($taxonomySearch)) {
+                        $argsPost['tax_query'] = array(
+                            array(
+                                'taxonomy' => $taxonomySearch[0],
+                                'field' => 'slug',
+                                'terms' => $taxonomySearch[1],
+                            )
+                        );
+                    }
+                }
+        
+        
+                $posts = get_posts($argsPost);
+        
+                $json_output = array(
+                    'selected' => array(),
+                    'posts' => '',
+                    'excluded' => array(),
+                );
+        
+                $selectOptions = "";
+                $selectizeResults = array();
+                foreach ( $posts as $pdata ) {
+                    $post_title = sanitize_text_field( $pdata->post_title );
+    
+                    if( $_POST['runFetchPosts'] ){
+        
+                        if( is_array( $ex_posts ) && !empty( $ex_posts ) && in_array( $pdata->ID, $ex_posts ) ){
+                            $selectOptions .= '<option class="left-side-option clone-button button-id-'.$pdata->ID.'" value="'.$pdata->ID.'|'.$pdata->post_title.'" disabled>'.sanitize_text_field( $pdata->post_title ).' + </option>';
+                            $selectizeResults[] = array('value' => $pdata->ID, 'text' => sanitize_text_field( $pdata->post_title ), 'disabled' => true);
+                        }
+                        else {
+                            $selectOptions .= '<option class="left-side-option clone-button button-id-'.$pdata->ID.'" value="'.$pdata->ID.'|'.$pdata->post_title.'">'.sanitize_text_field( $pdata->post_title ).' + </option>';
+                            $selectizeResults[] = array('value' => $pdata->ID, 'text' => sanitize_text_field( $pdata->post_title ));
+                        }
+        
+                    }
+                    else {
+                        if( is_array( $_POST['disabledOptions'] ) && !empty( $_POST['disabledOptions'] ) && in_array( $pdata->ID, $_POST['disabledOptions'] ) ){
+                            $selectOptions .= '<option class="left-side-option clone-button button-id-'.$pdata->ID.'" value="'.$pdata->ID.'|'.$pdata->post_title.'" disabled>'.sanitize_text_field( $pdata->post_title ).' + </option>';
+                            $selectizeResults[] = array('value' => $pdata->ID, 'text' => sanitize_text_field( $pdata->post_title ), 'disabled' => true);
+                        }
+                        else {
+                            $selectOptions .= '<option class="left-side-option clone-button button-id-'.$pdata->ID.'" value="'.$pdata->ID.'|'.$pdata->post_title.'">'.sanitize_text_field( $pdata->post_title ).' + </option>';
+                            $selectizeResults[] = array('value' => $pdata->ID, 'text' => sanitize_text_field( $pdata->post_title ));
+                        }
+                    }
+                    
+        
+                }
+                $json_output['posts'] = $selectOptions;
+                $json_output['count'] = count($posts);
+                $json_output['selectize_posts'] = $selectizeResults;
+                echo wp_json_encode( $json_output );
+                wp_die();
+            }
+        }
+
+        public static function hfcm_request_handler_custom_post_type() {
+            
+            // check user capabilities.
+            $nnr_hfcm_can_edit = current_user_can( 'manage_options' );
+
+            if ( !$nnr_hfcm_can_edit ) {
+                echo 'Sorry, you do not have access to this page.';
+                return false;
+            }
+
+        
+            if ( isset( $_POST['insert'] ) ) {
+                // Check nonce
+                check_admin_referer( 'create-snippet' );
+            } else {
+                if ( ! isset( $_REQUEST['id'] ) ) {
+                    die( 'Missing ID parameter.' );
+                }
+                $id = (int) $_REQUEST['id'];
+            }
+
+            if ( isset( $_POST['update'] ) ) {
+                // Check nonce
+                check_admin_referer( 'update-snippet_' . $id );
+            }
+         
+            // Handle AJAX on/off toggle for snippets
+            if ( isset( $_POST['getCustomPostType'] ) ) {
+            
+        
+                // Verify nonce for security.
+                check_ajax_referer( 'hfcm-get-posts', 'security' );
+
+                // Global vars
+                global $wpdb;
+                $table_name = $wpdb->prefix . 'hfcm_scripts';
+
+                // Prepare response structure
+                $json_output = array(
+                    'posttypes' => '',
+                    'count' => 0,
+                    'selectize_posttypes' =>  array(),
+                );
+
+                // Get all selected posts
+                if ( -1 === $id ) {
+                    $s_custom_posts = array();
+                   
+                } else {
+
+
+                    // Select value to update.
+                    $script = $wpdb->get_results( $wpdb->prepare( "SELECT s_custom_posts from $table_name where script_id=%s", $id ) );
+                    foreach ( $script as $s ) {
+                        $s_custom_posts = json_decode( $s->s_custom_posts );
+                        if ( ! is_array( $s_custom_posts ) ) {
+                            $s_custom_posts = array();
+                        }
+                    }
+
+                    // Get the search query if provided
+                    $searchQuery = "";
+                    if ( ! empty( $_POST['q'] ) ) {
+                        $searchQuery = sanitize_text_field( $_POST['q'] );
+                    }
+            
+                    // Get registered post types
+                    $args = array(
+                        'public'   => true,
+                        'exclude_from_search' => false,
+                    );
+                    $registered_post_types = get_post_types( $args, 'objects' );
+                    $all_post_types = array();
+                    // Filter by search term if provided
+                    $filtered_post_types = array();
+
+                    foreach ( $registered_post_types as $post_type_slug => $post_type_object ) {
+                        $post_type_value = sanitize_text_field( $post_type_object->name );
+                        $post_type_name = sanitize_text_field( $post_type_object->label );
+
+                        if ( empty( $searchQuery ) || stripos( $post_type_value, $searchQuery ) !== false ) {
+                            $filtered_post_types[ $post_type_value ] = $post_type_name;
+                        }
+                        else {
+                            $filtered_post_types[ $post_type_value ] = $post_type_name;
+                        }
+                    }
+
+                    // echo "<pre>";
+                    // var_dump("filtered_post_types",$filtered_post_types);
+    
+                    // var_dump("s_custom_posts",$s_custom_posts);
+                    // echo "</pre>";
+            
+                    // Build options for Selectize2
+                    $selectOptions = "";
+                    $selectizeResults = array();
+        
+                    foreach ( $filtered_post_types as $post_type_key => $post_type_name ) {
+
+                        $post_type_key = sanitize_text_field( $post_type_key );
+                        $post_type_name = sanitize_text_field( $post_type_name );
+            
+                        // echo "<pre>";
+                        // var_dump("post_type_value",$post_type_object);
+                        // var_dump("s_custom_posts",$s_custom_posts);
+                        // echo "</pre>";
+
+                        if ( in_array( $post_type_key, $s_custom_posts ) ) {
+                            $selectOptions .= '<option value="' . esc_attr( $post_type_key ) . '" disabled>' . esc_html( $post_type_name ) . ' + </option>';
+                            $selectizeResults[] = array(
+                                'value' => $post_type_key,
+                                'text'  => $post_type_name,
+
+                            );
+                        } else {
+                            $selectOptions .= '<option value="' . esc_attr( $post_type_key ) . '">' . esc_html( $post_type_name ) . '</option>';
+                            $selectizeResults[] = array(
+                                'value' => $post_type_key,
+                                'text'  => $post_type_name,
+                            );
+                        }
+                    }
+
+
+                    $json_output = array(
+                        'posttypes' => $selectOptions,
+                        'count' => count($filtered_post_types),
+                        'selectize_posttypes' => $selectizeResults,
+                    );
+
+                }
+        
+                // Return JSON response
+                echo wp_json_encode( $json_output );
+                wp_die();
+            }
+        }
+        
+        public static function hfcm_request_handler_taxonomies() {
+
+            // check user capabilities.
+            $nnr_hfcm_can_edit = current_user_can( 'manage_options' );
+
+            if ( !$nnr_hfcm_can_edit ) {
+                echo 'Sorry, you do not have access to this page.';
+                return false;
+            }
+
+            if ( isset( $_POST['insert'] ) ) {
+                // Check nonce
+                check_admin_referer( 'create-snippet' );
+            } else {
+                if ( empty( $_REQUEST['id'] ) ) {
+                    die( 'Missing ID parameter.' );
+                }
+                $id = absint( $_REQUEST['id'] );
+            }
+        
+            if ( isset( $_POST['insert'] ) ) {
+                // Check nonce
+                check_admin_referer( 'create-snippet' );
+            } else {
+                if ( ! isset( $_REQUEST['id'] ) ) {
+                    die( 'Missing ID parameter.' );
+                }
+                $id = (int) $_REQUEST['id'];
+            }
+            if ( isset( $_POST['update'] ) ) {
+                // Check nonce
+                check_admin_referer( 'update-snippet_' . $id );
+            }
+        
+            // Handle AJAX on/off toggle for snippets
+            if ( isset( $_POST['getTaxonomies'] ) ) {
+        
+        
+                // Check nonce
+                check_ajax_referer( 'hfcm-get-posts', 'security' );
+
+                // Set defaults and sanitize the inputs
+                $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+                $per_page = isset($_POST['per_page']) ? intval($_POST['per_page']) : 10;
+                $search_query = isset($_POST['q']) ? sanitize_text_field($_POST['q']) : '';
+                $taxonomy = isset($_POST['taxonomy']) ? sanitize_text_field($_POST['taxonomy']) : 'category';
+                
+                // Set up the query arguments for terms
+                $args = array(
+                    'taxonomy' => $taxonomy,
+                    'hide_empty' => false,
+                    'number' => $per_page,
+                    'offset' => ($page - 1) * $per_page,
+                    'search' => $search_query,
+                );
+
+                $term_query = new WP_Term_Query($args);
+                $terms = $term_query->get_terms();
+
+                $selectize_results = array();
+
+                foreach ($terms as $term) {
+                    $selectize_results[] = array(
+                        'value' => $term->term_id,
+                        'text' => $term->name,
+                    );
+                }
+
+                $json_output = array(
+                    'count' => count($terms),
+                    'selectize_terms' => $selectize_results,
+                );
+                
+                echo wp_json_encode( $json_output );
+                wp_die();
+
+                // Send the response
+                // wp_send_json_success(array(
+                //     'selectize_terms' => $selectize_results,
+                //     'count' => count($terms),
+                // ));
+
+               
+                
+              
+            }
+        }
+        
+        /*
+        * function to hide custom submenus
+        */
+        public static function hfcm_hide_custom_submenus() {
+            echo '<style>
+                #toplevel_page_hfcm-list .wp-submenu li a[href="admin.php?page=hfcm-update"],
+                #toplevel_page_hfcm-list .wp-submenu li a[href="admin.php?page=hfcm-request-handler"] {
+                    display: none !important;
+                }
+            </style>';
+        }
+        
+
         /*
          * function for submenu "Update snippet" page
          */
@@ -1411,6 +1841,69 @@ if ( !class_exists( 'NNR_HFCM' ) ) :
 
             return $nnr_hfcm_tags;
         }
+
+        /**
+         * Function to hfcm_generate_posts
+         *
+         * @param $selectId
+         * @param $selectClass
+         * @param $selectName
+         * @param $options
+         */
+        public static function hfcm_generate_posts($selectId, $selectClass, $selectName, $options) {
+            echo "<select id='$selectId' class='$selectClass' name='$selectName' multiple>";
+            foreach ($options as $value) {
+        
+                // get the title name from the post id.
+                $post_title = get_the_title($value);
+        
+                echo "<option value='$value' selected>$post_title</option>";
+            }
+            echo "</select>";
+        }
+
+        /**
+         * Function to generate dynamic select2
+         *
+         * @param $selectId
+         * @param $selectClass
+         * @param $selectName
+         * @param $options
+         */
+        public static function generate_dynamic_cp_select2($selectId, $selectClass, $selectName, $options) {
+            echo "<select id='$selectId' class='$selectClass' name='$selectName' multiple>";
+            foreach ($options as $value) {
+                // get the post type name from the $value.
+                $post_type = get_post_type_object($value);
+                $post_type_name = $post_type->label;
+                $post_type_value = $post_type->name;
+                     
+                echo "<option value='$post_type_value' selected>$post_type_name</option>";
+            }
+            echo "</select>";
+        }
+
+        public static function taxonomies_dynamic_select2($selectId, $selectClass, $selectName, $options, $is_taxonomy = false) {
+            echo "<select id='" . esc_attr($selectId) . "' class='" . esc_attr($selectClass) . "' name='" . esc_attr($selectName) . "' multiple>";
+            
+            foreach ($options as $value) {
+                
+                if ($is_taxonomy) {
+                    // If it's a taxonomy, we get the term name instead of post title
+                    $term = get_term($value);
+                    if ($term) {
+                        echo "<option value='" . esc_attr($value) . "' selected>" . esc_html($term->name) . "</option>";
+                    }
+                } else {
+                    // If it's a post, get the title
+                    $post_title = get_the_title($value);
+                    echo "<option value='" . esc_attr($value) . "' selected>" . esc_html($post_title) . "</option>";
+                }
+            }
+            
+            echo "</select>";
+        }
+        
     }
 
 endif;

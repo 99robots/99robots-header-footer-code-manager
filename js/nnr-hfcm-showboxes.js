@@ -115,35 +115,6 @@ jQuery('#loader').show();
 jQuery(
     function ($) {
 
-        var nnr_hfcm_data = {
-            action: 'hfcm-request',
-            id: hfcm_localize.id,
-            get_posts: true,
-            security: hfcm_localize.security
-        };
-
-        $.post(
-            ajaxurl,
-            nnr_hfcm_data,
-            function (new_data) {
-                var all_posts = $.merge([{text: "", value:""}], new_data.posts);
-                var options = {
-                    plugins: ['remove_button'],
-                    options: all_posts,
-                    items: new_data.selected
-                };
-                $('#loader').hide();
-                $('#s_posts select').selectize(options);
-                var options = {
-                    plugins: ['remove_button'],
-                    options: new_data.posts,
-                    items: new_data.excluded
-                };
-                $('#loader').hide();
-                $('#ex_posts select').selectize(options);
-            },
-            'json', // ajax result format
-        );
         // selectize all <select multiple> elements
         $('#s_pages select, #s_categories select, #c_posttype select, #s_tags select, #ex_pages select').selectize(
             {
@@ -151,6 +122,7 @@ jQuery(
             }
         );
 
+        // Initialize the CodeMirror editor
         if ($('#nnr_newcontent').length) {
             var editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
             editorSettings.codemirror = _.extend(
@@ -165,10 +137,197 @@ jQuery(
             var editor = wp.codeEditor.initialize($('#nnr_newcontent'), editorSettings);
         }
 
-        document.getElementById("hfcm_copy_shortcode").addEventListener(
-            "click", function () {
-                hfcmCopyToClipboard(document.getElementById("hfcm_copy_shortcode"));
-            }
-        );
+
+        var copyButton = document.getElementById("hfcm_copy_shortcode");
+        if (copyButton) {
+            copyButton.addEventListener("click", function () {
+                hfcmCopyToClipboard(copyButton);
+            });
+        }
+
+     
+        // Initialize variables
+        var searchQuery, postType, taxonomy, page = 1;
+        var previousScrollTop = 0;
+
+
+    
+        // Initialize select2 for the post type 'post'
+        var selectIdPage = 'lazy-load-s-posts';
+        var postTypePage = 'post';
+        hfcmInitializeDynamicPosts(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
+
+        // Initialize select2 for the post type 'page'
+        var selectIdPage = 'lazy-load-s-pages';
+        var postTypePage = 'page';
+        hfcmInitializeDynamicPosts(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
+
+
+
+        // Initialize select2 for the post type 'page'
+        var selectIdPage = 'lazy-load-page';
+        var postTypePage = 'page';
+        hfcmInitializeDynamicPosts(selectIdPage, ajaxurl, postTypePage, taxonomy, searchQuery);
+
+        // Initialize select2 for the post type 'post'
+        var selectIdPost = 'lazy-load-post';
+        var postTypePost = 'post';
+        hfcmInitializeDynamicPosts(selectIdPost, ajaxurl, postTypePost, taxonomy, searchQuery);
+
+        // Initialize select2 for categories
+        var selectIdCategory = 'lazy-load-s-categories';
+        var postTypeCategory = 'post'; // Using 'category' as the taxonomy type
+        var postTypeTaxonomy = 'category'; // Using 'category' as the taxonomy type
+        hfcmInitializeDynamicCategories(selectIdCategory, ajaxurl, postTypeCategory, postTypeTaxonomy, searchQuery);
+
+
+        // Initialize select2 for tags
+        var selectIdTag = 'lazy-load-s-tags';
+        var postTypeTag = 'post'; // Using 'category' as the taxonomy type
+        var postTypeTaxonomy = 'post_tag'; // Using 'category' as the taxonomy type
+        hfcmInitializeDynamicCategories(selectIdTag, ajaxurl, postTypeTag, postTypeTaxonomy, searchQuery);
+
+        // Initialize select2 for custom post types
+        var selectIdCustomPost = 'lazy-load-c-posttype';
+        hfcmInitializeDynamicCustomPostType(selectIdCustomPost, ajaxurl, searchQuery);
+
+        function hfcmInitializeDynamicCustomPostType(selectId, ajaxurl, searchQuery) {
+            jQuery('#' + selectId).select2({
+                ajax: {
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            page: params.page || 1,
+                            per_page: 5, // Adjust per_page to the desired number of items
+                            action: 'hfcm-request-custom-post-type',
+                            id: hfcm_localize.id,
+                            getCustomPostType: true, // can be renamed to "getTerms" for categories
+                            s: searchQuery, // Any additional search query
+                            security: hfcm_localize.security  // Nonce for security
+                        };
+        
+                        // Query parameters will be ?q=[term]&page=[page]
+                        return query;
+                    },
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                       
+                        var selectize_result = data.selectize_posttypes;
+                        return {
+                            results: selectize_result.map(function (repo) {
+                                return { id: repo.value, text: repo.text };
+                            }),
+                            pagination: {
+                                more: selectize_result.length === 5
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (selectedRepo) {
+                    // Customize the appearance of the selected item
+                    return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+                }
+            });
+        }
+
+        function hfcmInitializeDynamicPosts(selectId, ajaxurl, postType, taxonomy, searchQuery) {
+            jQuery('#' + selectId).select2({
+                ajax: {
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            page: params.page || 1,
+                            per_page: 5, // Adjust per_page to the desired number of items
+                            action: 'hfcm-request-posts',
+                            id: hfcm_localize.id,
+                            getPosts: true, // can be renamed to "getTerms" for categories
+                            postType: postType, // For categories, this would be 'category' or another taxonomy
+                            taxonomy: taxonomy, // Pass the taxonomy (like 'category')
+                            s: searchQuery, // Any additional search query
+                            security: hfcm_localize.security,  // Nonce for security
+                            runFetchPosts: true
+                        };
+        
+                        // Query parameters will be ?q=[term]&page=[page]
+                        return query;
+                    },
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                
+                        var selectize_result = data.selectize_posts;
+                        return {
+                            results: selectize_result.map(function (repo) {
+                                return { id: repo.value, text: repo.text };
+                            }),
+                            pagination: {
+                                more: selectize_result.length === 5
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (selectedRepo) {
+                    // Customize the appearance of the selected item
+                    return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+                }
+            });
+        }
+
+
+        function hfcmInitializeDynamicCategories(selectId, ajaxurl, postType, taxonomy, searchQuery) {
+            jQuery('#' + selectId).select2({
+                ajax: {
+                    type: 'POST',
+                    url: ajaxurl,
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            page: params.page || 1,
+                            per_page: 5, // Adjust per_page to the desired number of items
+                            action: 'hfcm-request-taxonomies',
+                            id: hfcm_localize.id,
+                            getTaxonomies: true, // can be renamed to "getTerms" for categories
+                            postType: postType, // For categories, this would be 'category' or another taxonomy
+                            taxonomy: taxonomy, // Pass the taxonomy (like 'category')
+                            s: searchQuery, // Any additional search query
+                            security: hfcm_localize.security,  // Nonce for security
+                            runFetchPosts: true
+                        };
+        
+                        // Query parameters will be ?q=[term]&page=[page]
+                        return query;
+                    },
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        var selectize_result = data.selectize_terms;
+                        return {
+                            results: selectize_result.map(function (repo) {
+                                return { id: repo.value, text: repo.text };
+                            }),
+                            pagination: {
+                                more: selectize_result.length === 5
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (selectedRepo) {
+                    // Customize the appearance of the selected item
+                    return $('<span style="color: #2271B1;">').text(selectedRepo.text);
+                }
+            });
+        }
+
     }
 );
