@@ -204,30 +204,7 @@ wp_enqueue_script( 'hfcm_showboxes' );
                     $nnr_hfcm_post_types[] = $cpdata;
                 }
                 ?>
-                <!-- <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
-                    <th class="hfcm-th-width"><?php esc_html_e( 'Category List', 'header-footer-code-manager' ); ?></th>
-                    <td>
-                        <select name="data[s_categories][]" multiple>
-                            <?php
-                            foreach ( $nnr_hfcm_categories as $nnr_key_cat => $nnr_item_cat ) {
-                                foreach ( $nnr_item_cat['terms'] as $nnr_item_cat_key => $nnr_item_cat_term ) {
-                                    if ( in_array( $nnr_item_cat_term->term_id, $s_categories ) ) {
-                                        echo "<option value='" . esc_attr( $nnr_item_cat_term->term_id ) . "' selected>" . esc_html( $nnr_item_cat['name'] ) . " - " . esc_html( $nnr_item_cat_term->name ) . "</option>";
-                                    } else {
-                                        echo "<option value='" . esc_attr( $nnr_item_cat_term->term_id ) . "'>" . esc_html( $nnr_item_cat['name'] ) . " - " . esc_html( $nnr_item_cat_term->name ) . "</option>";
-                                    }
-                                }
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr> -->
                 <tr id="s_categories" style="<?php echo esc_attr( $nnr_hfcm_categories_style ); ?>">
-                    <?php 
-                        // echo "<pre>";
-                        // var_dump("CATEGORIES",$s_categories);
-                        // echo "</pre>";
-                    ?>
                     <th class="hfcm-th-width"><?php esc_html_e( 'Category List', 'header-footer-code-manager' ); ?></th>
                     <td>
                         <?php

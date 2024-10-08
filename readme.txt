@@ -117,7 +117,7 @@ A. If your script is not supported, just let us know and we'll look into it imme
 A. The PRO version contains many more powerful features not available in the FREE version in addition to forthcoming features. See the [PRO vs FREE differences](https://draftpress.com/wp-content/uploads/2024/06/hfcm-pro-vs-free-differences.png).
 
 == Changelog ==
-= 1.1.40 = 2024-10-02
+= 1.1.40 = 2024-10-08
 * ADDED: Enhanced Selectize2 support for seamless selection of thousands of records. Now, you can effortlessly add or update posts, pages, categories, and exclude specific pages and posts from the settings.
 
 = 1.1.39 = 2024-09-27

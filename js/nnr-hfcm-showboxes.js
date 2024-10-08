@@ -315,7 +315,7 @@ jQuery(
                                 return { id: repo.value, text: repo.text };
                             }),
                             pagination: {
-                                more: selectize_result.length === 10
+                                more: selectize_result.length === 5
                             }
                         };
                     },
