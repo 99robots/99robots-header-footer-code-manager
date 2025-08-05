@@ -8,6 +8,7 @@ function hfcm_showotherboxes(type)
         footer = '<option value="footer">' + hfcm_localize.footer + '</option>',
         all_options = header + before_content + after_content + footer;
 
+    jQuery('#nnr-spt-display-on').hide();
     if (type == 'All') {
         jQuery('#ex_pages, #ex_posts,  #locationtr').show();
         hfcm_remember_loc(header + footer);
@@ -25,7 +26,7 @@ function hfcm_showotherboxes(type)
         hfcm_remember_loc(all_options);
         jQuery('#s_pages, #s_tags, #c_posttype, #ex_pages, #ex_posts,  #lp_count, #s_posts').hide();
     } else if (type == 's_custom_posts') {
-        jQuery('#c_posttype, #locationtr').show();
+        jQuery('#c_posttype, #locationtr, #nnr-spt-display-on').show();
         hfcm_remember_loc(all_options);
         jQuery('#s_categories, #s_tags, #s_pages, #ex_pages, #ex_posts,  #lp_count, #s_posts').hide();
     } else if (type == 's_tags') {
@@ -44,6 +45,7 @@ function hfcm_showotherboxes(type)
         jQuery('#locationtr').show();
     }
 }
+
 
 function hfcm_remember_loc(new_html)
 {
