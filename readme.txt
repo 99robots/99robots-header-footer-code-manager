@@ -3,8 +3,8 @@ Contributors: DraftPress, 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.9
 Requires PHP: 5.6.20
-Tested up to: 6.8.1
-Stable tag: 1.1.40
+Tested up to: 6.8.2
+Stable tag: 1.1.41
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -117,6 +117,11 @@ A. If your script is not supported, just let us know and we'll look into it imme
 A. The PRO version contains many more powerful features not available in the FREE version in addition to forthcoming features. See the [PRO vs FREE differences](https://draftpress.com/wp-content/uploads/2024/06/hfcm-pro-vs-free-differences.png).
 
 == Changelog ==
+= 1.1.41 = 2025-08-05
+* ADDED: Compatibility with WordPress 6.8.2
+* IMPROVED: Specific Post Types now includes options to display snippet on only posts, or archives, or both
+* FIXED: Snippets not showing on archives of specific post types
+
 = 1.1.40 = 2025-05-06
 * ADDED: Compatibility with WordPress 6.8.1
 
