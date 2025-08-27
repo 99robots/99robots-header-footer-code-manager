@@ -4,7 +4,7 @@ Tags: header, footer, code manager, snippet, functions.php, tracking, google ana
 Requires at least: 4.9
 Requires PHP: 5.6.20
 Tested up to: 6.8.2
-Stable tag: 1.1.41
+Stable tag: 1.1.42
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -117,6 +117,9 @@ A. If your script is not supported, just let us know and we'll look into it imme
 A. The PRO version contains many more powerful features not available in the FREE version in addition to forthcoming features. See the [PRO vs FREE differences](https://draftpress.com/wp-content/uploads/2024/06/hfcm-pro-vs-free-differences.png).
 
 == Changelog ==
+= 1.1.42 = 2025-08-27
+* FIXED: Import functionality not working
+
 = 1.1.41 = 2025-08-05
 * ADDED: Compatibility with WordPress 6.8.2
 * IMPROVED: Specific Post Types now includes options to display snippet on only posts, or archives, or both
