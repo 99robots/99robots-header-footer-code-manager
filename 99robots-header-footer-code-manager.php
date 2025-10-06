@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
- * Description: Header Footer Code Manager by 99 Robots is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. For detailed documentation, please visit the plugin's <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.42
+ * Description: Header Footer Code Manager is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. Used by 700,000+ sites. For detailed documentation, please visit the plugin’s <a href="https://draftpress.com/"> official page</a>.
+ * Version: 1.1.43
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: DraftPress
@@ -303,10 +303,14 @@ if (!class_exists('NNR_HFCM')) :
          */
         public static function hfcm_add_plugin_page_settings_link($links)
         {
+            $settings_link = '<a href="' . admin_url('admin.php?page=hfcm-list') . '">' . __('Settings') . '</a>';
+            $go_pro_link   = '<a href="https://draftpress.com/products/header-footer-code-manager-pro/?utm_source=hfcmfree&utm_medium=text-link&utm_campaign=plugin&utm_term=go-pro" target="_blank" class="nnr-hfcm-go-pro">Go&nbsp;Pro</a>';
+
             $links = array_merge(
-                array('<a href="' . admin_url('admin.php?page=hfcm-list') . '">' . __('Settings') . '</a>'),
-                $links
+                $links,
+                array($settings_link, $go_pro_link)
             );
+
             return $links;
         }
 
