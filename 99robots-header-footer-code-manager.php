@@ -271,6 +271,16 @@ if (!class_exists('NNR_HFCM')) :
             // This is a submenu
             add_submenu_page(
                 'hfcm-list',
+                __('Settings', 'header-footer-code-manager'),
+                __('Settings', 'header-footer-code-manager'),
+                'manage_options',
+                'hfcm-settings',
+                array('NNR_HFCM', 'hfcm_settings')
+            );
+
+            // This is a submenu
+            add_submenu_page(
+                'hfcm-list',
                 __('Tools', 'header-footer-code-manager'),
                 __('Tools', 'header-footer-code-manager'),
                 'manage_options',
@@ -304,7 +314,7 @@ if (!class_exists('NNR_HFCM')) :
          */
         public static function hfcm_add_plugin_page_settings_link($links)
         {
-            $settings_link = '<a href="' . admin_url('admin.php?page=hfcm-list') . '">' . __('Settings') . '</a>';
+            $settings_link = '<a href="' . admin_url('admin.php?page=hfcm-settings') . '">' . __('Settings') . '</a>';
             $go_pro_link   = '<a href="https://draftpress.com/products/header-footer-code-manager-pro/?utm_source=hfcmfree&utm_medium=text-link&utm_campaign=plugin&utm_term=go-pro" target="_blank" class="nnr-hfcm-go-pro">Go&nbsp;Pro</a>';
 
             $links = array_merge(
@@ -1160,9 +1170,23 @@ if (!class_exists('NNR_HFCM')) :
             $nnr_hfcm_table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
             $nnr_hfcm_snippets = $wpdb->get_results("SELECT * from `{$nnr_hfcm_table_name}`");
-            $hfcm_enforce_disallow_unfiltered_html = self::hfcm_should_enforce_disallow_unfiltered_html();
 
             include_once plugin_dir_path(__FILE__) . 'includes/hfcm-tools.php';
+        }
+
+        /*
+         * function to load settings page
+         */
+        public static function hfcm_settings()
+        {
+            if (!current_user_can('manage_options')) {
+                echo 'Sorry, you do not have access to this page.';
+                return false;
+            }
+
+            $hfcm_enforce_disallow_unfiltered_html = self::hfcm_should_enforce_disallow_unfiltered_html();
+
+            include_once plugin_dir_path(__FILE__) . 'includes/hfcm-settings.php';
         }
 
         /*
