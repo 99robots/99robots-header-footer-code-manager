@@ -268,15 +268,17 @@ if (!class_exists('NNR_HFCM')) :
                 array('NNR_HFCM', 'hfcm_create')
             );
 
-            // This is a submenu
-            add_submenu_page(
-                'hfcm-list',
-                __('Settings', 'header-footer-code-manager'),
-                __('Settings', 'header-footer-code-manager'),
-                'manage_options',
-                'hfcm-settings',
-                array('NNR_HFCM', 'hfcm_settings')
-            );
+            if (self::hfcm_is_disallow_unfiltered_html_enabled()) {
+                // Show settings only when the wp-config flag is enabled.
+                add_submenu_page(
+                    'hfcm-list',
+                    __('Settings', 'header-footer-code-manager'),
+                    __('Settings', 'header-footer-code-manager'),
+                    'manage_options',
+                    'hfcm-settings',
+                    array('NNR_HFCM', 'hfcm_settings')
+                );
+            }
 
             // This is a submenu
             add_submenu_page(
@@ -314,7 +316,8 @@ if (!class_exists('NNR_HFCM')) :
          */
         public static function hfcm_add_plugin_page_settings_link($links)
         {
-            $settings_link = '<a href="' . admin_url('admin.php?page=hfcm-settings') . '">' . __('Settings') . '</a>';
+            $settings_page = self::hfcm_is_disallow_unfiltered_html_enabled() ? 'hfcm-settings' : 'hfcm-list';
+            $settings_link = '<a href="' . admin_url('admin.php?page=' . $settings_page) . '">' . __('Settings') . '</a>';
             $go_pro_link   = '<a href="https://draftpress.com/products/header-footer-code-manager-pro/?utm_source=hfcmfree&utm_medium=text-link&utm_campaign=plugin&utm_term=go-pro" target="_blank" class="nnr-hfcm-go-pro">Go&nbsp;Pro</a>';
 
             $links = array_merge(
@@ -337,6 +340,70 @@ if (!class_exists('NNR_HFCM')) :
                 add_action('admin_notices', array('NNR_HFCM', 'hfcm_review_push_notice'));
             }
             add_action('admin_notices', array('NNR_HFCM', 'hfcm_static_notices'));
+            add_action('admin_notices', array('NNR_HFCM', 'hfcm_disallow_unfiltered_html_notice'));
+        }
+
+        /**
+         * Check whether DISALLOW_UNFILTERED_HTML is enabled in wp-config.php.
+         *
+         * @return bool
+         */
+        public static function hfcm_is_disallow_unfiltered_html_enabled()
+        {
+            return defined('DISALLOW_UNFILTERED_HTML') && true === DISALLOW_UNFILTERED_HTML;
+        }
+
+        /**
+         * Show a one-time reminder to enable enforcement from plugin settings.
+         */
+        public static function hfcm_disallow_unfiltered_html_notice()
+        {
+            if (!current_user_can('manage_options')) {
+                return;
+            }
+
+            if (!self::hfcm_is_disallow_unfiltered_html_enabled() || self::hfcm_should_enforce_disallow_unfiltered_html()) {
+                return;
+            }
+
+            $user_id = get_current_user_id();
+            if (get_user_meta($user_id, 'hfcm_disallow_unfiltered_html_notice_dismissed', true)) {
+                return;
+            }
+
+            $screen = get_current_screen();
+            if (empty($screen) || empty($screen->id)) {
+                return;
+            }
+
+            $allowed_pages_notices = array(
+                'toplevel_page_hfcm-list',
+                'hfcm_page_hfcm-create',
+                'admin_page_hfcm-update',
+                'hfcm_page_hfcm-tools',
+                'hfcm_page_hfcm-settings',
+            );
+
+            if (!in_array($screen->id, $allowed_pages_notices, true)) {
+                return;
+            }
+
+            $settings_url = admin_url('admin.php?page=hfcm-settings');
+            ?>
+            <div id="hfcm-message" class="notice notice-warning">
+                <a class="hfcm-dismiss-alert notice-dismiss" href="?hfcm-disallow-unfiltered-html-notice-dismissed">Dismiss</a>
+                <p>
+                    <?php
+                    echo wp_kses_post(
+                        sprintf(
+                            __('<code>DISALLOW_UNFILTERED_HTML</code> is currently enabled. To enforce it for this plugin, enable the checkbox in <a href="%s">HFCM Settings</a>.', 'header-footer-code-manager'),
+                            esc_url($settings_url)
+                        )
+                    );
+                    ?>
+                </p>
+            </div>
+            <?php
         }
 
         /*
@@ -412,6 +479,14 @@ if (!class_exists('NNR_HFCM')) :
             // Checking if user clicked on the 'I understand' button
             if (isset($_GET['hfcm-file-edit-notice-dismissed'])) {
                 add_user_meta($user_id, 'hfcm_file_edit_plugin_notice_dismissed', 'true', true);
+            }
+
+            // Checking if user clicked on the DISALLOW_UNFILTERED_HTML reminder dismiss button
+            if (isset($_GET['hfcm-disallow-unfiltered-html-notice-dismissed'])) {
+                add_user_meta($user_id, 'hfcm_disallow_unfiltered_html_notice_dismissed', 'true', true);
+                $current_url = wp_get_referer();
+                wp_redirect($current_url);
+                exit;
             }
         }
 
@@ -695,11 +770,15 @@ if (!class_exists('NNR_HFCM')) :
          */
         public static function hfcm_should_enforce_disallow_unfiltered_html()
         {
+            if (!self::hfcm_is_disallow_unfiltered_html_enabled()) {
+                return false;
+            }
+
             return (bool) get_option('hfcm_enforce_disallow_unfiltered_html', 0);
         }
 
         /**
-         * Save security settings from the tools page.
+         * Save security settings from the settings page.
          */
         public static function hfcm_save_security_settings()
         {
@@ -713,10 +792,17 @@ if (!class_exists('NNR_HFCM')) :
 
             check_admin_referer('hfcm-security-settings');
 
+            if (!self::hfcm_is_disallow_unfiltered_html_enabled()) {
+                // Keep setting off when wp-config constant is not enabled.
+                update_option('hfcm_enforce_disallow_unfiltered_html', 0);
+                self::hfcm_redirect(admin_url('admin.php?page=hfcm-settings&settings-updated=1'));
+                return;
+            }
+
             $enforce_disallow = isset($_POST['hfcm_enforce_disallow_unfiltered_html']) ? 1 : 0;
             update_option('hfcm_enforce_disallow_unfiltered_html', $enforce_disallow);
 
-            self::hfcm_redirect(admin_url('admin.php?page=hfcm-tools&settings-updated=1'));
+            self::hfcm_redirect(admin_url('admin.php?page=hfcm-settings&settings-updated=1'));
         }
 
         /**
@@ -793,12 +879,6 @@ if (!class_exists('NNR_HFCM')) :
                 return false;
             }
 
-            $snippet_access = self::hfcm_current_user_can_manage_snippets();
-            if (is_wp_error($snippet_access)) {
-                echo '<div class="notice notice-error"><p>' . wp_kses_post($snippet_access->get_error_message()) . '</p></div>';
-                return false;
-            }
-
             // prepare variables for includes/hfcm-add-edit.php
             $name = '';
             $snippet = '';
@@ -834,11 +914,6 @@ if (!class_exists('NNR_HFCM')) :
                 return false;
             }
 
-            $snippet_access = self::hfcm_current_user_can_manage_snippets();
-            if (is_wp_error($snippet_access)) {
-                wp_die(wp_kses_post($snippet_access->get_error_message()), 403);
-            }
-
             global $wpdb, $current_user;
             $table_name = $wpdb->prefix . self::$nnr_hfcm_table;
 
@@ -871,6 +946,13 @@ if (!class_exists('NNR_HFCM')) :
 
             // Insert / Update snippet
             if (isset($_POST['insert']) || isset($_POST['update'])) {
+                $snippet_access = self::hfcm_current_user_can_manage_snippets();
+                if (is_wp_error($snippet_access)) {
+                    $error_page = $id ? 'hfcm-update&id=' . absint($id) : 'hfcm-create';
+                    self::hfcm_redirect(admin_url('admin.php?page=' . $error_page . '&hfcm_error=disallow_unfiltered_html'));
+                    return;
+                }
+
                 $fields = [
                     'name' => self::hfcm_sanitize_text('name'),
                     'snippet' => self::hfcm_sanitize_text('snippet', false),
@@ -982,12 +1064,6 @@ if (!class_exists('NNR_HFCM')) :
 
             if (!$nnr_hfcm_can_edit) {
                 echo 'Sorry, you do not have access to this page.';
-                return false;
-            }
-
-            $snippet_access = self::hfcm_current_user_can_manage_snippets();
-            if (is_wp_error($snippet_access)) {
-                echo '<div class="notice notice-error"><p>' . wp_kses_post($snippet_access->get_error_message()) . '</p></div>';
                 return false;
             }
 
@@ -1184,6 +1260,12 @@ if (!class_exists('NNR_HFCM')) :
                 return false;
             }
 
+            if (!self::hfcm_is_disallow_unfiltered_html_enabled()) {
+                self::hfcm_redirect(admin_url('admin.php?page=hfcm-list'));
+                return false;
+            }
+
+            $hfcm_disallow_unfiltered_html_enabled = self::hfcm_is_disallow_unfiltered_html_enabled();
             $hfcm_enforce_disallow_unfiltered_html = self::hfcm_should_enforce_disallow_unfiltered_html();
 
             include_once plugin_dir_path(__FILE__) . 'includes/hfcm-settings.php';
