@@ -48,6 +48,12 @@ function hfcm_render_options($options, $selected = null) {
         <?php endif; ?>
     <?php endif; ?>
 
+    <?php if (!empty($_GET['hfcm_error']) && 'disallow_unfiltered_html' === sanitize_key($_GET['hfcm_error'])): ?>
+        <div class="notice notice-error">
+            <p><?php esc_html_e('Saving snippets is not allowed because DISALLOW_UNFILTERED_HTML enforcement is enabled in HFCM Settings.', 'header-footer-code-manager'); ?></p>
+        </div>
+    <?php endif; ?>
+
     <?php
     $hfcm_form_action = admin_url('admin.php?page=hfcm-request-handler' . ($update ? '&id=' . absint($id) : ''));
     ?>
