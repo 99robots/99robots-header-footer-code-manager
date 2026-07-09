@@ -3,7 +3,7 @@
  * Plugin Name: Header Footer Code Manager
  * Plugin URI: https://draftpress.com/products
  * Description: Header Footer Code Manager is a quick and simple way for you to add tracking code snippets, conversion pixels, or other scripts required by third party services for analytics, tracking, marketing, or chat functions. Used by 700,000+ sites. For detailed documentation, please visit the plugin’s <a href="https://draftpress.com/"> official page</a>.
- * Version: 1.1.45
+ * Version: 1.1.46
  * Requires at least: 4.9
  * Requires PHP: 5.6.20
  * Author: DraftPress
@@ -812,6 +812,16 @@ if (!class_exists('NNR_HFCM')) :
          */
         public static function hfcm_current_user_can_manage_snippets()
         {
+            // Only users allowed to post unfiltered HTML may store raw snippets. This is
+            // automatically false on multisite for non-super-admins and whenever
+            // DISALLOW_UNFILTERED_HTML is enabled.
+            if (!current_user_can('unfiltered_html')) {
+                return new WP_Error(
+                    'hfcm_unfiltered_html',
+                    __('Snippet management is disabled because your account is not permitted to save unfiltered HTML or JavaScript on this site.', 'header-footer-code-manager')
+                );
+            }
+
             // Respect DISALLOW_UNFILTERED_HTML only when explicitly enabled in plugin settings.
             if (self::hfcm_should_enforce_disallow_unfiltered_html() && defined('DISALLOW_UNFILTERED_HTML') && true === DISALLOW_UNFILTERED_HTML) {
                 return new WP_Error(
@@ -1321,6 +1331,11 @@ if (!class_exists('NNR_HFCM')) :
         public static function hfcm_import_snippets()
         {
             if (!empty($_FILES['nnr_hfcm_import_file']['tmp_name']) && check_admin_referer('hfcm-nonce')) {
+                $snippet_access = self::hfcm_current_user_can_manage_snippets();
+                if (is_wp_error($snippet_access)) {
+                    self::hfcm_redirect(admin_url('admin.php?page=hfcm-list&hfcm_error=disallow_unfiltered_html'));
+                    return;
+                }
                 if (!empty($_FILES['nnr_hfcm_pro_import_file']['type']) && $_FILES['nnr_hfcm_pro_import_file']['type'] != "application/json") {
                     ?>
                     <div class="notice hfcm-warning-notice notice-warning">

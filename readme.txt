@@ -4,7 +4,7 @@ Tags: header, footer, code manager, snippet, functions.php, tracking, google ana
 Requires at least: 4.9
 Requires PHP: 5.6.20
 Tested up to: 6.8.3
-Stable tag: 1.1.45
+Stable tag: 1.1.46
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -117,6 +117,9 @@ A. If your script is not supported, just let us know and we'll look into it imme
 A. The PRO version contains many more powerful features not available in the FREE version in addition to forthcoming features. See the [PRO vs FREE differences](https://draftpress.com/wp-content/uploads/2024/06/hfcm-pro-vs-free-differences.png).
 
 == Changelog ==
+= 1.1.46 = 2026-07-09
+* FIXED: Stored XSS - snippet saving and importing now require the unfiltered_html capability, blocking raw HTML/JavaScript from users who lack it (e.g. non-super-admins on multisite or when DISALLOW_UNFILTERED_HTML is set). Thanks to Luca Jungnickel for the report
+
 = 1.1.45 = 2026-06-09
 * ADDED: Security setting to optionally enforce DISALLOW_UNFILTERED_HTML when managing snippets
 
