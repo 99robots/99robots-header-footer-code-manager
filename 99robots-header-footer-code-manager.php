@@ -1333,7 +1333,11 @@ if (!class_exists('NNR_HFCM')) :
             if (!empty($_FILES['nnr_hfcm_import_file']['tmp_name']) && check_admin_referer('hfcm-nonce')) {
                 $snippet_access = self::hfcm_current_user_can_manage_snippets();
                 if (is_wp_error($snippet_access)) {
-                    self::hfcm_redirect(admin_url('admin.php?page=hfcm-list&hfcm_error=disallow_unfiltered_html'));
+                    ?>
+                    <div class="notice hfcm-warning-notice notice-warning">
+                        <?php echo wp_kses_post($snippet_access->get_error_message()); ?>
+                    </div>
+                    <?php
                     return;
                 }
                 if (!empty($_FILES['nnr_hfcm_pro_import_file']['type']) && $_FILES['nnr_hfcm_pro_import_file']['type'] != "application/json") {

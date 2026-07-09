@@ -50,7 +50,7 @@ function hfcm_render_options($options, $selected = null) {
 
     <?php if (!empty($_GET['hfcm_error']) && 'disallow_unfiltered_html' === sanitize_key($_GET['hfcm_error'])): ?>
         <div class="notice notice-error">
-            <p><?php esc_html_e('Saving snippets is not allowed because DISALLOW_UNFILTERED_HTML enforcement is enabled in HFCM Settings.', 'header-footer-code-manager'); ?></p>
+            <p><?php esc_html_e('Saving snippets is not allowed because your account is not permitted to store unfiltered HTML or JavaScript on this site. This can occur when DISALLOW_UNFILTERED_HTML is enabled, or on multisite when you are not a Super Admin.', 'header-footer-code-manager'); ?></p>
         </div>
     <?php endif; ?>
 
