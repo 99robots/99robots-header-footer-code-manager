@@ -3,8 +3,8 @@ Contributors: DraftPress, 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
 Requires at least: 4.9
 Requires PHP: 5.6.20
-Tested up to: 6.8.3
-Stable tag: 1.1.45
+Tested up to: 7.0.1
+Stable tag: 1.1.46
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -117,6 +117,9 @@ A. If your script is not supported, just let us know and we'll look into it imme
 A. The PRO version contains many more powerful features not available in the FREE version in addition to forthcoming features. See the [PRO vs FREE differences](https://draftpress.com/wp-content/uploads/2024/06/hfcm-pro-vs-free-differences.png).
 
 == Changelog ==
+= 1.1.46 = 2026-07-15
+* ADDED: Compatibility with WordPress 7.0.1
+
 = 1.1.45 = 2026-06-09
 * ADDED: Security setting to optionally enforce DISALLOW_UNFILTERED_HTML when managing snippets
 
