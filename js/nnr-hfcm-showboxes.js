@@ -167,10 +167,13 @@ jQuery(
             var editor = wp.codeEditor.initialize($('#nnr_newcontent'), editorSettings);
         }
 
-        document.getElementById("hfcm_copy_shortcode").addEventListener(
-            "click", function () {
-                hfcmCopyToClipboard(document.getElementById("hfcm_copy_shortcode"));
-            }
-        );
+        // The Copy button only exists on the edit screen (a new snippet has no shortcode yet).
+        if (document.getElementById("hfcm_copy_shortcode")) {
+            document.getElementById("hfcm_copy_shortcode").addEventListener(
+                "click", function () {
+                    hfcmCopyToClipboard(document.getElementById("hfcm_copy_shortcode"));
+                }
+            );
+        }
     }
 );

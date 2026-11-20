@@ -131,6 +131,7 @@ A. The PRO version contains many more powerful features not available in the FRE
 * FIXED: "Deactivate the free version" warning never detected HFCM Pro
 * FIXED: Invalid field values could make saving a snippet fail silently
 * FIXED: PHP 8 warnings in the snippets list and edit screens
+* FIXED: JavaScript errors on the Add New and Tools screens
 * UPDATED: Requires WordPress 6.0 and PHP 7.4, tested up to WordPress 7.1
 * UPDATED: Uninstall also removes plugin options and dismissed-notice flags
 
