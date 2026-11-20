@@ -47,44 +47,17 @@ class Hfcm_Snippets_List extends WP_List_Table
             }
         }
         if ( !empty( $_GET['order'] ) ) {
-            $order = strtolower( sanitize_sql_orderby( $_GET['order'] ) );
-            if ( empty( $order ) || !in_array( $order, array( 'desc', 'asc' ) ) ) {
-                $order = 'ASC';
-            }
+            $order = 'desc' === strtolower( sanitize_key( $_GET['order'] ) ) ? 'DESC' : 'ASC';
         }
 
-        $sql              = "SELECT * FROM `{$table_name}` WHERE 1";
-        $placeholder_args = array();
-        if ( in_array( $customvar, array( 'inactive', 'active' ) ) ) {
-            $sql                .= " AND status = '%s'";
-            $placeholder_args[] = $customvar;
-        }
-        if ( !empty( $_POST['snippet_type'] ) ) {
-            if ( check_admin_referer( 'bulk-snippets' ) ) {
-                $snippet_type = addslashes( sanitize_text_field( $_POST['snippet_type'] ) );
-                if ( in_array( $snippet_type, array( 'html', 'css', 'js' ) ) ) {
-                    $sql                .= " AND snippet_type = %s";
-                    $placeholder_args[] = $snippet_type;
-                }
-            }
-        }
-        if ( !empty( $_POST['s'] ) ) {
-            if ( check_admin_referer( 'bulk-snippets' ) ) {
-                $search_query       = addslashes( sanitize_text_field( $_POST['s'] ) );
-                $sql                .= " AND name LIKE %s";
-                $placeholder_args[] = '%' . $search_query . '%';
-            }
-        }
+        list( $where, $placeholder_args ) = self::build_where( $customvar );
 
-        $sql                .= ' ORDER BY %s %s LIMIT %d OFFSET %d';
-        $placeholder_args[] = $orderby;
-        $placeholder_args[] = $order;
+        // $orderby and $order are whitelisted above; identifiers cannot be bound with prepare().
+        $sql                = "SELECT * FROM `{$table_name}`" . $where . " ORDER BY `{$orderby}` {$order} LIMIT %d OFFSET %d";
         $placeholder_args[] = $per_page;
         $placeholder_args[] = ($page_number - 1) * $per_page;
 
-        if ( !empty( $placeholder_args ) ) {
-            $sql = $wpdb->prepare( $sql, $placeholder_args );
-        }
+        $sql = $wpdb->prepare( $sql, $placeholder_args ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         $result = $wpdb->get_results(
             $sql, 'ARRAY_A'
         );
@@ -163,25 +136,58 @@ class Hfcm_Snippets_List extends WP_List_Table
      *
      * @return null|string
      */
-    public static function record_count( $customvar = 'all' )
+    public static function record_count( $customvar = 'all', $apply_filters = false )
     {
 
         global $wpdb;
-        $table_name       = "{$wpdb->prefix}hfcm_scripts";
-        $sql              = "SELECT COUNT(*) FROM `{$table_name}`";
-        $placeholder_args = [];
+        $table_name = "{$wpdb->prefix}hfcm_scripts";
 
-        $customvar = sanitize_text_field( $customvar );
-
-        if ( in_array( $customvar, array( 'inactive', 'active' ) ) ) {
-            $sql                .= " WHERE status = %s";
-            $placeholder_args[] = $customvar;
+        if ( $apply_filters ) {
+            list( $where, $placeholder_args ) = self::build_where( $customvar );
+        } else {
+            $where            = ' WHERE 1=1';
+            $placeholder_args = array();
+            if ( in_array( $customvar, array( 'inactive', 'active' ), true ) ) {
+                $where             .= ' AND status = %s';
+                $placeholder_args[] = $customvar;
+            }
         }
+        $sql = "SELECT COUNT(*) FROM `{$table_name}`" . $where;
         if ( !empty( $placeholder_args ) ) {
-            $sql = $wpdb->prepare( $sql, $placeholder_args );
+            $sql = $wpdb->prepare( $sql, $placeholder_args ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         }
 
-        return $wpdb->get_var( $sql );
+        return (int) $wpdb->get_var( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+    }
+
+    /**
+     * WHERE clause (with placeholders) for the status view, type and search filters.
+     *
+     * @return array { string $where, array $args }
+     */
+    private static function build_where( $customvar )
+    {
+        global $wpdb;
+        $where = ' WHERE 1=1';
+        $args  = array();
+
+        if ( in_array( $customvar, array( 'inactive', 'active' ), true ) ) {
+            $where .= ' AND status = %s';
+            $args[] = $customvar;
+        }
+        // Read-only list filters (no state change).
+        $snippet_type = isset( $_POST['snippet_type'] ) ? sanitize_key( $_POST['snippet_type'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+        if ( in_array( $snippet_type, array( 'html', 'css', 'js' ), true ) ) {
+            $where .= ' AND snippet_type = %s';
+            $args[] = $snippet_type;
+        }
+        $search = isset( $_POST['s'] ) ? sanitize_text_field( wp_unslash( $_POST['s'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+        if ( '' !== $search ) {
+            $where .= ' AND name LIKE %s';
+            $args[] = '%' . $wpdb->esc_like( $search ) . '%';
+        }
+
+        return array( $where, $args );
     }
 
     /**
@@ -225,9 +231,9 @@ class Hfcm_Snippets_List extends WP_List_Table
                 if ( 's_posts' === $item[ $column_name ] ) {
 
                     $empty   = 1;
-                    $s_posts = json_decode( $item['s_posts'] );
+                    $s_posts = json_decode( (string) $item['s_posts'] );
 
-                    foreach ( $s_posts as $id ) {
+                    foreach ( (array) $s_posts as $id ) {
                         $id = absint( $id );
                         if ( 'publish' === get_post_status( $id ) ) {
                             $empty = 0;
@@ -239,7 +245,7 @@ class Hfcm_Snippets_List extends WP_List_Table
                     }
                 }
 
-                return esc_html( $nnr_hfcm_display_array[ $item[ $column_name ] ] );
+                return esc_html( isset( $nnr_hfcm_display_array[ $item[ $column_name ] ] ) ? $nnr_hfcm_display_array[ $item[ $column_name ] ] : $item[ $column_name ] );
 
             case 'location':
 
@@ -253,7 +259,7 @@ class Hfcm_Snippets_List extends WP_List_Table
                     'after_content'  => esc_html__( 'After Content', 'header-footer-code-manager' ),
                     'footer'         => esc_html__( 'Footer', 'header-footer-code-manager' ),
                 );
-                return esc_html( $nnr_hfcm_locations[ $item[ $column_name ] ] );
+                return esc_html( isset( $nnr_hfcm_locations[ $item[ $column_name ] ] ) ? $nnr_hfcm_locations[ $item[ $column_name ] ] : $item[ $column_name ] );
 
             case 'device_type':
 
@@ -272,7 +278,7 @@ class Hfcm_Snippets_List extends WP_List_Table
                     'css'  => esc_html__( 'CSS', 'header-footer-code-manager' ),
                     'js'   => esc_html__( 'Javascript', 'header-footer-code-manager' )
                 );
-                return esc_html( $snippet_types[ $item[ $column_name ] ] );
+                return esc_html( isset( $snippet_types[ $item[ $column_name ] ] ) ? $snippet_types[ $item[ $column_name ] ] : $item[ $column_name ] );
 
             case 'status':
 
@@ -303,7 +309,7 @@ class Hfcm_Snippets_List extends WP_List_Table
                 return '[hfcm id="' . absint( $item['script_id'] ) . '"]';
 
             default:
-                return print_r( $item, true ); // Show the whole array for troubleshooting purposes
+                return '';
         }
     }
 
@@ -317,7 +323,7 @@ class Hfcm_Snippets_List extends WP_List_Table
     function column_cb( $item )
     {
         return sprintf(
-            '<input type="checkbox" name="snippets[]" value="%s" />', $item['script_id']
+            '<input type="checkbox" name="snippets[]" value="%d" />', absint( $item['script_id'] )
         );
     }
 
@@ -341,8 +347,9 @@ class Hfcm_Snippets_List extends WP_List_Table
         if ( !empty( $nnr_current_screen->parent_base ) ) {
             $page = $nnr_current_screen->parent_base;
         } else {
-            $page = sanitize_text_field( $_GET['page'] );
+            $page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : 'hfcm-list';
         }
+        $page = esc_attr( $page );
         $actions = array(
             'edit'   => sprintf( '<a href="?page=%s&action=%s&id=%s&_wpnonce=%s">' . esc_html__( 'Edit', 'header-footer-code-manager' ) . '</a>', esc_attr( 'hfcm-update' ), 'edit', absint( $item['script_id'] ), $edit_nonce ),
             'copy'   => sprintf( '<a href="javascript:void(0);" data-shortcode=\'[hfcm id="%s"]\'  class="hfcm_copy_shortcode" id="hfcm_copy_shortcode_%s">' . esc_html__( 'Copy Shortcode', 'header-footer-code-manager' ) . '</a>', absint( $item['script_id'] ), absint( $item['script_id'] ) ),
@@ -469,7 +476,7 @@ class Hfcm_Snippets_List extends WP_List_Table
         $this->views();
         $per_page     = $this->get_items_per_page( 'snippets_per_page', 20 );
         $current_page = $this->get_pagenum();
-        $total_items  = self::record_count();
+        $total_items  = self::record_count( $customvar, true );
 
         $this->set_pagination_args(
             array(
@@ -492,17 +499,17 @@ class Hfcm_Snippets_List extends WP_List_Table
         //All link
         $class        = 'all' === $current ? 'current' : '';
         $all_url      = remove_query_arg( 'customvar' );
-        $views['all'] = '<a href="' . esc_html( $all_url ) . '" class="' . esc_html( $class ) . '">' . esc_html__( 'All', 'header-footer-code-manager' ) . ' (' . esc_html__( $this->record_count() ) . ')</a>';
+        $views['all'] = '<a href="' . esc_url( $all_url ) . '" class="' . esc_html( $class ) . '">' . esc_html__( 'All', 'header-footer-code-manager' ) . ' (' . esc_html( $this->record_count() ) . ')</a>';
 
         //Foo link
         $foo_url         = add_query_arg( 'customvar', 'active' );
         $class           = ('active' === $current ? 'current' : '');
-        $views['active'] = '<a href="' . esc_html( $foo_url ) . '" class="' . esc_html( $class ) . '">' . esc_html__( 'Active', 'header-footer-code-manager' ) . ' (' . esc_html__( $this->record_count( 'active' ) ) . ')</a>';
+        $views['active'] = '<a href="' . esc_url( $foo_url ) . '" class="' . esc_html( $class ) . '">' . esc_html__( 'Active', 'header-footer-code-manager' ) . ' (' . esc_html( $this->record_count( 'active' ) ) . ')</a>';
 
         //Bar link
         $bar_url           = add_query_arg( 'customvar', 'inactive' );
         $class             = ('inactive' === $current ? 'current' : '');
-        $views['inactive'] = '<a href="' . esc_html( $bar_url ) . '" class="' . esc_html( $class ) . '">' . esc_html__( 'Inactive', 'header-footer-code-manager' ) . ' (' . esc_html__( $this->record_count( 'inactive' ) ) . ')</a>';
+        $views['inactive'] = '<a href="' . esc_url( $bar_url ) . '" class="' . esc_html( $class ) . '">' . esc_html__( 'Inactive', 'header-footer-code-manager' ) . ' (' . esc_html( $this->record_count( 'inactive' ) ) . ')</a>';
 
         return $views;
     }
@@ -537,7 +544,7 @@ class Hfcm_Snippets_List extends WP_List_Table
             || (isset( $_POST['action2'] ) && 'bulk-delete' === $_POST['action2'])
         ) {
             if ( check_admin_referer( 'bulk-snippets' ) ) {
-                $bulk_snippets = $_POST['snippets'];
+                $bulk_snippets = isset( $_POST['snippets'] ) ? (array) $_POST['snippets'] : array();
                 // loop over the array of record IDs and delete them
                 foreach ( $bulk_snippets as $id ) {
                     $id = absint( $id );
@@ -553,7 +560,12 @@ class Hfcm_Snippets_List extends WP_List_Table
             || (isset( $_POST['action2'] ) && 'bulk-activate' === $_POST['action2'])
         ) {
             if ( check_admin_referer( 'bulk-snippets' ) ) {
-                $bulk_snippets = $_POST['snippets'];
+                // Activating publishes raw HTML/JS, so it is blocked under enforcement.
+                if ( is_wp_error( NNR_HFCM::hfcm_current_user_can_manage_snippets() ) ) {
+                    NNR_HFCM::hfcm_redirect( admin_url( 'admin.php?page=hfcm-list&hfcm_error=disallow_unfiltered_html' ) );
+                    return;
+                }
+                $bulk_snippets = isset( $_POST['snippets'] ) ? (array) $_POST['snippets'] : array();
                 // loop over the array of record IDs and activate them
                 foreach ( $bulk_snippets as $id ) {
                     $id = absint( $id );
@@ -569,7 +581,7 @@ class Hfcm_Snippets_List extends WP_List_Table
             || (isset( $_POST['action2'] ) && 'bulk-deactivate' === $_POST['action2'])
         ) {
             if ( check_admin_referer( 'bulk-snippets' ) ) {
-                $bulk_snippets = $_POST['snippets'];
+                $bulk_snippets = isset( $_POST['snippets'] ) ? (array) $_POST['snippets'] : array();
                 // loop over the array of record IDs and deactivate them
                 foreach ( $bulk_snippets as $id ) {
                     $id = absint( $id );

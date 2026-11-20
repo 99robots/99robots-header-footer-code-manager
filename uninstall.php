@@ -6,6 +6,11 @@ if (! defined('WP_UNINSTALL_PLUGIN') ) {
 
 $option_name = 'hfcm_db_version';
 delete_option($option_name);
+delete_option('hfcm_activation_date');
+delete_option('hfcm_enforce_disallow_unfiltered_html');
+delete_metadata('user', 0, 'hfcm_plugin_notice_dismissed', '', true);
+delete_metadata('user', 0, 'hfcm_file_edit_plugin_notice_dismissed', '', true);
+delete_metadata('user', 0, 'hfcm_disallow_unfiltered_html_notice_dismissed', '', true);
 
 // Drop a custom db table
 global $wpdb;
