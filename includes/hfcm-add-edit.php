@@ -1,6 +1,6 @@
 <?php
 // Register and localize the script for AJAX
-wp_register_script('hfcm_showboxes', plugins_url('js/nnr-hfcm-showboxes.js', dirname(__FILE__)), array('jquery'));
+wp_register_script('hfcm_showboxes', plugins_url('js/nnr-hfcm-showboxes.js', dirname(__FILE__)), array('jquery'), NNR_HFCM::$nnr_hfcm_version);
 
 if (!isset($id)) $id = -1;
 
@@ -9,7 +9,8 @@ wp_localize_script('hfcm_showboxes', 'hfcm_localize', [
     'before_content' => __('Before Content', 'header-footer-code-manager'),
     'after_content'  => __('After Content', 'header-footer-code-manager'),
     'footer'         => __('Footer', 'header-footer-code-manager'),
-    'id'             => absint($id),
+    // 0 on "Add New" so the posts lookup doesn't load another snippet's selections.
+    'id'             => (!empty($update) && $id > 0) ? absint($id) : 0,
     'security'       => wp_create_nonce('hfcm-get-posts'),
 ]);
 
@@ -33,7 +34,7 @@ function hfcm_render_options($options, $selected = null) {
     <h1>
         <?php echo $update ? esc_html__('Edit Snippet', 'header-footer-code-manager') : esc_html__('Add New Snippet', 'header-footer-code-manager'); ?>
         <?php if ($update): ?>
-            <a href="<?php echo admin_url('admin.php?page=hfcm-create'); ?>" class="page-title-action">
+            <a href="<?php echo esc_url(admin_url('admin.php?page=hfcm-create')); ?>" class="page-title-action">
                 <?php esc_html_e('Add New Snippet', 'header-footer-code-manager'); ?>
             </a>
         <?php endif; ?>
@@ -41,10 +42,10 @@ function hfcm_render_options($options, $selected = null) {
     <?php if (!empty($_GET['message'])): ?>
         <?php if (1 === (int)$_GET['message']): ?>
             <div class="updated"><p><?php esc_html_e('Script updated', 'header-footer-code-manager'); ?></p></div>
-            <a href="<?php echo admin_url('admin.php?page=hfcm-list'); ?>">&laquo; <?php esc_html_e('Back to list', 'header-footer-code-manager'); ?></a>
+            <a href="<?php echo esc_url(admin_url('admin.php?page=hfcm-list')); ?>">&laquo; <?php esc_html_e('Back to list', 'header-footer-code-manager'); ?></a>
         <?php elseif (6 === (int)$_GET['message']): ?>
             <div class="updated"><p><?php esc_html_e('Script Added Successfully', 'header-footer-code-manager'); ?></p></div>
-            <a href="<?php echo admin_url('admin.php?page=hfcm-list'); ?>">&laquo; <?php esc_html_e('Back to list', 'header-footer-code-manager'); ?></a>
+            <a href="<?php echo esc_url(admin_url('admin.php?page=hfcm-list')); ?>">&laquo; <?php esc_html_e('Back to list', 'header-footer-code-manager'); ?></a>
         <?php endif; ?>
     <?php endif; ?>
 
@@ -58,7 +59,7 @@ function hfcm_render_options($options, $selected = null) {
     $hfcm_form_action = admin_url('admin.php?page=hfcm-request-handler' . ($update ? '&id=' . absint($id) : ''));
     ?>
 
-    <form method="post" action="<?php echo $hfcm_form_action; ?>">
+    <form method="post" action="<?php echo esc_url($hfcm_form_action); ?>">
         <?php
         $update ? wp_nonce_field('update-snippet_' . absint($id)) : wp_nonce_field('create-snippet');
         ?>
@@ -159,7 +160,7 @@ function hfcm_render_options($options, $selected = null) {
                     <select class="nnr-wraptext" name="data[ex_posts][]" multiple>
                         <option disabled></option>
                     </select>
-                    <img id="loader" src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>">
+                    <img id="loader" alt="" src="<?php echo esc_url(plugins_url('images/ajax-loader.gif', dirname(__FILE__))); ?>">
                 </td>
             </tr>
 
@@ -323,12 +324,12 @@ function hfcm_render_options($options, $selected = null) {
                         <p>
                             <?php esc_html_e('Snippet created by', 'header-footer-code-manager'); ?>
                             <b><?php echo esc_html($createdby); ?></b>
-                            <?php echo _e('on', 'header-footer-code-manager') . ' ' . date_i18n(get_option('date_format'), strtotime($createdon)) . ' ' . __('at', 'header-footer-code-manager') . ' ' . date_i18n(get_option('time_format'), strtotime($createdon)) ?>
+                            <?php echo esc_html(__('on', 'header-footer-code-manager') . ' ' . date_i18n(get_option('date_format'), strtotime($createdon)) . ' ' . __('at', 'header-footer-code-manager') . ' ' . date_i18n(get_option('time_format'), strtotime($createdon))); ?>
                             <br />
                             <?php if (!empty($lastmodifiedby)): ?>
                                 <?php esc_html_e('Last edited by', 'header-footer-code-manager'); ?>
                                 <b><?php echo esc_html($lastmodifiedby); ?></b>
-                                <?php echo _e('on', 'header-footer-code-manager') . ' ' . date_i18n(get_option('date_format'), strtotime($lastrevisiondate)) . ' ' . __('at', 'header-footer-code-manager') . ' ' . date_i18n(get_option('time_format'), strtotime($lastrevisiondate)) ?>
+                                <?php echo esc_html(__('on', 'header-footer-code-manager') . ' ' . date_i18n(get_option('date_format'), strtotime($lastrevisiondate)) . ' ' . __('at', 'header-footer-code-manager') . ' ' . date_i18n(get_option('time_format'), strtotime($lastrevisiondate))); ?>
                             <?php endif; ?>
                         </p>
                     </td>
@@ -374,11 +375,14 @@ if (defined('DISALLOW_FILE_EDIT') && true === DISALLOW_FILE_EDIT && !get_user_me
                 </div>
                 <p>
                     <?php
-                    $hfcm_file_edit_dismiss_action = $update
-                        ? admin_url('admin.php?page=hfcm-update&hfcm-file-edit-notice-dismissed=1&id=' . absint($id))
-                        : admin_url('admin.php?page=hfcm-create&hfcm-file-edit-notice-dismissed=1');
+                    $hfcm_file_edit_dismiss_action = wp_nonce_url(
+                        $update
+                            ? admin_url('admin.php?page=hfcm-update&hfcm-file-edit-notice-dismissed=1&id=' . absint($id))
+                            : admin_url('admin.php?page=hfcm-create&hfcm-file-edit-notice-dismissed=1'),
+                        'hfcm_dismiss_notice'
+                    );
                     ?>
-                    <a href="<?php echo $hfcm_file_edit_dismiss_action; ?>" class="file-editor-warning-dismiss button button-primary" id="nnr-dismiss-editor-warning">I understand</a>
+                    <a href="<?php echo esc_url($hfcm_file_edit_dismiss_action); ?>" class="file-editor-warning-dismiss button button-primary" id="nnr-dismiss-editor-warning">I understand</a>
                 </p>
             </div>
         </div>

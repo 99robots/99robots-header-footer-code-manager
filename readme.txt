@@ -1,10 +1,10 @@
 === Header Footer Code Manager ===
 Contributors: DraftPress, 99robots, charliepatel
 Tags: header, footer, code manager, snippet, functions.php, tracking, google analytics, adsense, verification, pixel
-Requires at least: 4.9
-Requires PHP: 5.6.20
-Tested up to: 7.0.1
-Stable tag: 1.1.46
+Requires at least: 6.0
+Requires PHP: 7.4
+Tested up to: 7.1
+Stable tag: 1.1.47
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://draftpress.com
@@ -117,6 +117,24 @@ A. If your script is not supported, just let us know and we'll look into it imme
 A. The PRO version contains many more powerful features not available in the FREE version in addition to forthcoming features. See the [PRO vs FREE differences](https://draftpress.com/wp-content/uploads/2024/06/hfcm-pro-vs-free-differences.png).
 
 == Changelog ==
+= 1.1.47 = 2026-11-20
+* SECURITY: Capability checks on import and export
+* SECURITY: Import only accepts known fields and values, and follows the DISALLOW_UNFILTERED_HTML enforcement setting
+* SECURITY: Activating snippets (toggle and bulk) follows the DISALLOW_UNFILTERED_HTML enforcement setting
+* SECURITY: Notice dismiss links require a nonce
+* SECURITY: Search and filter queries are fully prepared; admin links and URLs are escaped
+* FIXED: New snippets pre-selected the posts of snippet #1
+* FIXED: Sorting the snippets list had no effect
+* FIXED: Snippet counts/pagination ignored the Active/Inactive view and filters
+* FIXED: Search terms with quotes found no snippets
+* FIXED: Import file type check looked at the wrong upload field
+* FIXED: "Deactivate the free version" warning never detected HFCM Pro
+* FIXED: Invalid field values could make saving a snippet fail silently
+* FIXED: PHP 8 warnings in the snippets list and edit screens
+* FIXED: JavaScript errors on the Add New and Tools screens
+* UPDATED: Requires WordPress 6.0 and PHP 7.4, tested up to WordPress 7.1
+* UPDATED: Uninstall also removes plugin options and dismissed-notice flags
+
 = 1.1.46 = 2026-07-15
 * ADDED: Compatibility with WordPress 7.0.1
 

@@ -1,21 +1,7 @@
 <?php
 
-// Register the script
-wp_register_script('hfcm_showboxes', plugins_url('js/nnr-hfcm-showboxes.js', dirname(__FILE__)), array( 'jquery' ));
-
-
-// Localize the script with new data
-$translation_array = array(
-    'header'         => __('Header', 'header-footer-code-manager'),
-    'before_content' => __('Before Content', 'header-footer-code-manager'),
-    'after_content'  => __('After Content', 'header-footer-code-manager'),
-    'footer'         => __('Footer', 'header-footer-code-manager'),
-    'security'       => wp_create_nonce('hfcm-get-posts'),
-);
-wp_localize_script('hfcm_showboxes', 'hfcm_localize', $translation_array);
-
-// Enqueued script with localized data.
-wp_enqueue_script('hfcm_showboxes');
+// The Tools screen does not use the snippet form's script (nnr-hfcm-showboxes.js). It needs selectize, which is only
+// loaded on the add/edit screens, and threw "$(...).selectize is not a function" here.
 ?>
 
 <div class="wrap">

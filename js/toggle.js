@@ -15,7 +15,10 @@ jQuery('.nnr-switch input').on(
         jQuery.post(
             ajaxurl,
             data
-        );
+        ).fail(function () {
+            // Not saved (e.g. activation blocked by DISALLOW_UNFILTERED_HTML enforcement): undo the switch.
+            t.prop('checked', togvalue !== 'on');
+        });
     }
 );
 
